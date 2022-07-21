@@ -1,36 +1,89 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-      <div>
-        <b-button>Button</b-button>
-        <b-button variant="danger">Button</b-button>
-        <b-button variant="success">Button</b-button>
-        <b-button variant="outline-primary">Button</b-button>
-      </div>
-  </nav>
-  <router-view/>
+<div>
+  <NavBar/>
+  <div class="main-container">
+    <router-view/>
+  </div>
+</div>
 </template>
+
+<script>
+import NavBar from '@/components/NavBar.vue';
+
+export default {
+  components: {
+    NavBar,
+  },
+};
+</script>
 
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+   /* display: flex; */
+  font-family: 'LeferiBaseType-BoldA', 'Noto Sans KR', sans-serif;
+  color:#4E8AFF;
+  background-color: #F6F7F9;
+  font-size : 14px;
+  height: 100%;
 }
 
-nav {
-  padding: 30px;
+/* font import */
+
+/* 레페리포인트 WHITE OBLIQUE */
+@font-face {
+    font-family: 'LeferiPoint-WhiteObliqueA';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/LeferiPoint-WhiteObliqueA.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
 }
 
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
+/* 레페리포인트 BLACK OBLIQUE */
+@font-face {
+    font-family: 'LeferiPoint-BlackObliqueA';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/LeferiPoint-BlackObliqueA.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
 }
 
-nav a.router-link-exact-active {
-  color: #42b983;
+/* 레페리베이스 BLACK */
+@font-face {
+    font-family: 'LeferiPoint-BlackA';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/LeferiPoint-BlackA.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
 }
+
+/* 레페리베이스 BOLD */
+@font-face {
+    font-family: 'LeferiBaseType-BoldA';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/LeferiBaseType-BoldA.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* 레페리베이스 REAULAR */
+@font-face {
+    font-family: 'LeferiBaseType-RegularA';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/LeferiBaseType-RegularA.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* Color Palette */
+/*
+  Main: 4E8AFF
+  Sub1: 274C95
+  Sub2: 98BBFF
+  Sub3: CEDFFF
+  Extra1: DE7474
+  Extra2: C5A180
+  Extra3: CCB9A8
+  Basic1: 2E2E2E
+  Basic2: 828282
+  Basic3: v
+  BackGround1: F6F7F9
+  Background2: 383838 투명도 60% === background-color: #38383899;
+  ddd
+*/
 </style>
