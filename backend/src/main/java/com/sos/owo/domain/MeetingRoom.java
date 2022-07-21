@@ -1,5 +1,6 @@
 package com.sos.owo.domain;
 
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,24 +13,23 @@ import java.util.List;
 @Getter @Setter
 @Table(name = "meeting_room")
 public class MeetingRoom {
-
     @Id @GeneratedValue
-    @Column(name="metting_room_id")
+    @Column(name="meeting_room_id")
     private int id;
 
-    @Column(name = "meeting_room_name")
+    @Column(name="meeting_room_name",nullable = false)
     private String name;
 
-    @Column(name = "meeting_room_secret")
+    @Column(name="meeting_room_secret")
     private int secret;
 
-    @Column(name = "meeting_room_mode")
+    @Column(name="meeting_room_mode")
     private int mode;
 
-    @Column(name = "meeting_room_type")
+    @Column(name="meeting_room_type")
     private int type;
 
-    @Column(name = "meeting_room_link")
+    @Column(name="meeting_room_link")
     private String link;
 
     @Column(name = "meeting_room_open_date")
@@ -55,4 +55,7 @@ public class MeetingRoom {
 
     @OneToMany(mappedBy = "meeting_oauth")
     private List<MeetingOauth> oauthList = new ArrayList<>();
+
+
+
 }

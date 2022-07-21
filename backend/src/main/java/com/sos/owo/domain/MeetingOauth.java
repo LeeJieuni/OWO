@@ -10,17 +10,20 @@ import javax.persistence.*;
 @Table(name = "meeting_oauth")
 public class MeetingOauth {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     @Column(name = "meeting_oauth_id")
     private int id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "meeting_room_id")
-    private MeetingRoom meetingRoomId;
+    private MeetingRoom meetingId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member memberId;
 
+    @Column(name="is_oauth")
     private int isOauth;
+
 }
