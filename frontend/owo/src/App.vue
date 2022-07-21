@@ -2,6 +2,12 @@
   <nav>
     <router-link to="/">Home</router-link> |
     <router-link to="/about">About</router-link>
+      <div>
+        <b-button>Button</b-button>
+        <b-button variant="danger">Button</b-button>
+        <b-button variant="success">Button</b-button>
+        <b-button variant="outline-primary">Button</b-button>
+      </div>
   </nav>
   <router-view/>
 </template>
