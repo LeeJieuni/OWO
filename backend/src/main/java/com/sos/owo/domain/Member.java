@@ -12,18 +12,21 @@ import java.util.List;
 @Getter @Setter
 @Table(name = "member")
 public class Member {
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
     private int id;
 
-    @Column(name = "member_email")
+    @Column(name = "member_email", nullable = false)
     private String email;
 
-    @Column(name ="member_pw")
+    @Column(name ="member_pw", nullable = false)
     private String pw;
 
     @Column(name="member_nick")
     private String nick;
+
+    @Column(name = "member_age")
+    private int age;
 
     @Column(name = "member_gender")
     @Enumerated(EnumType.STRING)
@@ -59,11 +62,9 @@ public class Member {
     @Column(name = "member_joindate")
     private LocalDateTime joindate;
 
-    @OneToMany(mappedBy = "goal")
+    @OneToMany
     private List<Goal> goalList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "meeting_oauth")
-    private List<MeetingOauth> meetingOauthList = new ArrayList<>();
 
 
 }

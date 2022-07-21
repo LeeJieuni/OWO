@@ -53,7 +53,7 @@ public class MeetingRoom {
     @Column(name = "meeting_room_manager",nullable = false)
     private int manager;
 
-    @OneToMany(mappedBy = "meeting_oauth")
+    @OneToMany
     private List<MeetingOauth> oauthList = new ArrayList<>();
 
 
