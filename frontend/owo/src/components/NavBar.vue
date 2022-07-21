@@ -7,7 +7,31 @@
         <div class="container-fluid">
           <!--logo-->
           <span class="navbar-brand mb-0 h1">
-            <img id="logo2" src="../assets/logo/logo2.png" alt=""></span>
+            <router-link to="/" >
+              <img id="logo2" src="../assets/logo/logo2.png" alt="">
+            </router-link>
+            </span>
+
+            <!--dropdows1-rooms-->
+            <li class="menu1 mypages nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#"
+              role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <span> Rooms</span>
+              </a>
+              <ul class="dropdown-menu">
+                <li><router-link class="dropdown-item"
+                to="/competition">Competition</router-link></li>
+                <li><router-link class="dropdown-item"
+                to="/friendchat">FriendChat</router-link></li>
+                <li><router-link class="dropdown-item"
+                to="/friendnochat">FriendNoChat</router-link></li>
+                <li><router-link class="dropdown-item"
+                to="/youtubechat">YoutubeChat</router-link></li>
+                <li><router-link class="dropdown-item"
+                to="/youtubenochat">YoutubeNoChat</router-link></li>
+              </ul>
+            </li>
+
             <!--dropdows2-mypages-->
             <li class="menu1 mypages nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#"
