@@ -6,14 +6,16 @@
     <div class="mypageContainer">
       <div class="title">
         <div class="slogan-box">
-          <p class="slogan">6월 바프까지 화이팅!</p>
+          <span class="slogan">{{ slogan }}</span> &nbsp; &nbsp; &nbsp;<span><img class="pencil" alt="pencil" src="https://img.icons8.com/ios-glyphs/30/000000/pencil--v1.png"/></span>
         </div>
         <div class="my-nav">
-          <ul>
-            <li><router-link to="/mypage/main">운동 분석</router-link></li>
-            <li><router-link to="/mypage/update">내 정보 수정</router-link></li>
-            <li><router-link to="/mypage/schedule">운동 일지</router-link></li>
-          </ul>
+          <div class="my-nav-bottom d-flex align-items-end">
+            <ul>
+              <li class="ps-3"><router-link to="/mypage/main">⚒ 운동 분석</router-link></li>
+              <li class="ps-3"><router-link to="/mypage/update">👧 내 정보 수정</router-link></li>
+              <li class="ps-3"><router-link to="/mypage/schedule">📆 운동 일지</router-link></li>
+            </ul>
+          </div>
         </div>
       </div>
       <div>
@@ -28,7 +30,7 @@ export default {
   components: {},
   data() {
     return {
-      sampleData: '',
+      slogan: '6월 바디프로필까지 화이팅~이다아',
     };
   },
   setup() {},
@@ -52,7 +54,7 @@ export default {
     font-family: 'LeferiBaseType-BoldA';
   }
   .mypageContainer {
-    max-width: 860px;
+    max-width: 980px;
     margin: 0 auto;
 
     background-color: white;
@@ -65,7 +67,7 @@ export default {
   }
   .title {
     border-bottom: solid #DFDFDF 1px;
-    height: 100px;
+    height: 80px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -76,27 +78,42 @@ export default {
     height: 100%;
     padding: 30px;
     margin: 0px;
-    border-right: solid #DFDFDF 1px;
+    text-align: left;
+    /* border-right: solid #DFDFDF 1px; */
 
   }
   .slogan {
     text-align: left;
-    font-size: 18px;
+    font-size: 24px;
     padding: 0px;
     margin: 0px;
     margin-right: auto;
     /* background-color: aqua; */
-
   }
+
+  .pencil {
+    width: 20px;
+  }
+
   .my-nav {
-    /* background-color: aqua; */
+    width: 40%;
+    height: 100%;
     display: flex;
     text-align: right;
+    align-items:flex-end;
+    justify-content: flex-end;
+    padding-right: 20px;
   }
+
   .my-nav li {
     display: inline;
-    padding: 0 20px;
     font-size: 13px;
+    color: #2E2E2E;
+  }
+
+  .my-nav ul {
+    padding-left: 0px;
+    margin-bottom: 5px;
   }
 
 </style>

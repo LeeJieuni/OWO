@@ -5,6 +5,7 @@
   <div class="main-container">
     <router-view/>
   </div>
+  <Footer/>
 </div>
 </template>
 
@@ -23,10 +24,12 @@ export default {
   text-align: center;
    /* display: flex; */
   font-family: 'LeferiBaseType-BoldA', 'Noto Sans KR', sans-serif;
-  color:#4E8AFF;
+  color:#2E2E2E;
   background-color: #F6F7F9;
   font-size : 14px;
   height: 100%;
+  letter-spacing : -0.05em;
+
 }
 
 /* font import */
@@ -82,7 +85,7 @@ export default {
   Extra3: CCB9A8
   Basic1: 2E2E2E
   Basic2: 828282
-  Basic3: v
+  Basic3: DFDFDF
   BackGround1: F6F7F9
   Background2: 383838 투명도 60% === background-color: #38383899;
   ddd
