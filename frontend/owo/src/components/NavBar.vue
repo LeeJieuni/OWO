@@ -62,9 +62,9 @@ li{
    }
 
 .navContainer {
-  margin-bottom: 50px;
-  padding-right: 30px;
-  padding-left: 30px;
+  margin-bottom: 0px;
+  padding-right: 0px;
+  padding-left: 0px;
   font-family: 'Noto Sans KR', sans-serif;
 }
 
@@ -88,7 +88,7 @@ li{
  .container-fluid {
   display: flex;
   align-items: center;
-  max-width: 1100px;
+  max-width: 100%;
   margin: 0 auto;
   height: 100%;
   padding: 0 22px;
