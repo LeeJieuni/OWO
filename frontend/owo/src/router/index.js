@@ -4,6 +4,11 @@ import MyPageView from '../views/MyPage/MyPageView.vue';
 import MyPageMainView from '../views/MyPage/MyPageMainView.vue';
 import MyPageUpdateView from '../views/MyPage/MyPageUpdateView.vue';
 import MyPageScheduleView from '../views/MyPage/MyPageScheduleView.vue';
+import CompetitionView from '../views/Room/competition.vue';
+import FriendChatView from '../views/Room/FriendChatView.vue';
+import FriendNoChatView from '../views/Room/FriendNoChatView.vue';
+import YoutubeChatView from '../views/Room/YoutubeChatView.vue';
+import YoutubeNoChatView from '../views/Room/YoutubeNoChatView.vue';
 
 const routes = [
   {
@@ -37,6 +42,31 @@ const routes = [
         component: MyPageScheduleView,
       },
     ],
+  },
+  {
+    path: '/competition',
+    name: 'competition',
+    component: CompetitionView,
+  },
+  {
+    path: '/friendchat',
+    name: 'friendChat',
+    component: FriendChatView,
+  },
+  {
+    path: '/friendnochat',
+    name: 'friendNoChat',
+    component: FriendNoChatView,
+  },
+  {
+    path: '/youtubechat',
+    name: 'YoutubeChat',
+    component: YoutubeChatView,
+  },
+  {
+    path: '/youtubenochat',
+    name: 'YoutubeNoChat',
+    component: YoutubeNoChatView,
   },
 ];
 
