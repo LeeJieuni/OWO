@@ -2,34 +2,7 @@
   <div class="wrap">
     <!--나의 운동 레벨-->
     <div class="my-level">
-      <div class="row">
-        <p class="my-level-title">나의 운동 레벨</p>
-      </div>
-      <div class="my-level-info align-items-center">
-        <div class="my-level-icon align-self-center">
-          <img
-            class="my-level-icon-img"
-            src="@/assets/icon/exercise.png" alt="tear1">
-        </div>
-        <div class="bar-info">
-          <div class="progress bar">
-            <div
-              class="progress-bar bg-warning progress-bar-striped progress-bar-animated"
-              role="progressbar"
-              aria-label="Example with label"
-              style="width: 25%;"
-              aria-valuenow="25"
-              aria-valuemin="0"
-              aria-valuemax="100">25%
-            </div>
-          </div>
-          <div class="tear-info d-flex text-center align-items-end">
-            <div class="tear-name">브론즈&nbsp;&nbsp;</div>
-            <div class="me-auto user-percent">전체 사용자 중 상위 10%</div>
-            <div class="user-point">20 / 100 P</div>
-          </div>
-        </div>
-      </div>
+      <MyExerciseRecord/>
     </div>
 
     <!--운동 비율-->
@@ -63,9 +36,11 @@
   </div>
 </template>
 <script>
+import MyExerciseRecord from '@/components/MyPage/MyExerciseRecord.vue';
+
 export default {
   name: 'MyPageMainView',
-  components: {},
+  components: { MyExerciseRecord },
   data() {
     return {
       goals: [

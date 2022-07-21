@@ -17,11 +17,6 @@ const routes = [
     component: mainPageView,
   },
   {
-    path: '/about',
-    name: 'about',
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue'),
-  },
-  {
     path: '/mypage',
     name: 'MyPage',
     component: MyPageView,
