@@ -64,9 +64,12 @@
                   <span> MyPage</span>
                 </a>
                 <ul class="dropdown-menu">
-                  <li><router-link class="dropdown-item" to="/mypage">My Page</router-link></li>
-                  <li><a class="dropdown-item" href="#">Edit My Info</a></li>
-                  <li><a class="dropdown-item" href="#">Exercise Calendar</a></li>
+                  <li><router-link class="dropdown-item" to="/mypage/main">
+                  My Page</router-link></li>
+                  <li><router-link class="dropdown-item" to="/mypage/update">
+                  Edit My Info</router-link></li>
+                  <li><router-link class="dropdown-item" to="/mypage/schedule">
+                  Exercise Calendar</router-link></li>
                   <li><hr class="dropdown-divider"></li>
                   <li><a class="dropdown-item" href="#">LogOut</a></li>
                 </ul>
