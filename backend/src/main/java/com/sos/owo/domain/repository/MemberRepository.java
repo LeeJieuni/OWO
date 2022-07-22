@@ -1,11 +1,13 @@
 package com.sos.owo.domain.repository;
 
+import com.sos.owo.domain.Compete;
 import com.sos.owo.domain.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -33,6 +35,13 @@ public class MemberRepository {
                 .getResultList();
         if(memberList.size() == 0) return false;
         return true;
+    }
+
+    //자유,영상모드 경험치 저장
+    public void saveExp(int exp, int id){
+        Member findMember = em.find(Member.class, id);
+        int current = findMember.getExp();
+        findMember.setPoint(current+exp);
     }
 
     public void setVerified(Member member){

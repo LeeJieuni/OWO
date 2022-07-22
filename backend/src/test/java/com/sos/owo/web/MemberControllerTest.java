@@ -1,6 +1,8 @@
 package com.sos.owo.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sos.owo.domain.Compete;
+import com.sos.owo.domain.Member;
 import com.sos.owo.domain.repository.MemberRepository;
 import com.sos.owo.dto.MemberResponseDto;
 import com.sos.owo.dto.MemberSaveRequestDto;
@@ -17,6 +19,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -39,6 +43,9 @@ class MemberControllerTest {
     private WebApplicationContext context;
 
     private MockMvc mvc;
+
+    @PersistenceContext
+    EntityManager em;
 
     @Test
     public void 회원_가입한다() throws Exception {
@@ -65,4 +72,7 @@ class MemberControllerTest {
 //        Assertions.assertThat(all.get(0).getContent()).isEqualTo(content);
 
     }
+
+
+
 }
