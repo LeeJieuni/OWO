@@ -1,6 +1,8 @@
 <template>
   <div>
-    <h3>{{ user }}님의 캘린더</h3>
+    <div class="title">
+      <h3>{{ user.nick }}님의 캘린더</h3>
+    </div>
   </div>
 </template>
 <script>
@@ -9,7 +11,9 @@ export default {
   components: {},
   data() {
     return {
-      user: '',
+      user: {
+        nick: '한나',
+      },
     };
   },
   setup() {},
@@ -19,3 +23,9 @@ export default {
   methods: {},
 };
 </script>
+
+<style scoped>
+  .title {
+    padding: 50px;
+  }
+</style>

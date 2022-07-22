@@ -17,7 +17,9 @@
     </div>
 
     <!-- 신체 정보 분석 & 운동일지 -->
-    <physical-info-analys/>
+    <div class="physical-info-analys">
+      <physical-info-analys/>
+    </div>
 
   </div>
 </template>
@@ -52,17 +54,23 @@ export default {
 /* 운동 비율 */
 
 .my-level {
-  height: 180px;
+  height: 220px;
   border-bottom: solid #DFDFDF 1px;
 }
 
 .my-exercise-rate {
-  height: 180px;
+  height: 220px;
   border-bottom: solid #DFDFDF 1px;
 }
 .weekly-goal-achivement-rate {
-  height: 310px;
+  height: 350px;
   border-bottom: solid #DFDFDF 1px;
+}
+
+.physical-info-analys {
+  height: 400px;
+  padding: 0px;
+  margin: 0px;
 }
 
 /* Color Palette */

@@ -1,9 +1,9 @@
 <template>
   <div>
     <div class="row">
-        <p class="my-level-title">나의 운동 비율</p>
+        <p class="my-rate-title">나의 운동 비율</p>
       </div>
-      <div class="my-level-info align-items-center">
+      <div class="my-rate-info align-items-center">
         <div class="bar-info">
           <div class="progress bar">
             <div class="progress bar">
@@ -63,20 +63,20 @@ export default {
 
 <style scoped>
   /* 나의 운동 레벨 */
-.my-level {
+.my-rate {
   height: 250px;
   border-bottom: solid #DFDFDF 1px;
 }
 
-.my-level-title {
+.my-rate-title {
   text-align: left;
-  padding-top: 30px;
+  padding-top: 50px;
   font-size: 22px;
   padding-left: 50px;
-  padding-bottom: 0px;
+  padding-bottom: 5px;
 }
 
-.my-level-info {
+.my-rate-info {
   width: 90%;
   display: flex;
   padding-left: 50px;
@@ -84,10 +84,10 @@ export default {
 
 }
 
-.my-level-icon {
+.my-rate-icon {
   width: 100px;
 }
-.my-level-icon-img {
+.my-rate-icon-img {
   width: 60px;
 }
 .bar-info {

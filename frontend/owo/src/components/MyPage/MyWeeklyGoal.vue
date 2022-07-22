@@ -1,9 +1,9 @@
 <template>
   <div>
     <div class="row">
-        <p class="my-rate-title">주간 목표 달성률</p>
+        <p class="my-weekly-goal-title">주간 목표 달성률</p>
       </div>
-      <div class="my-rate-info align-items-center">
+      <div class="my-weekly-goal-info align-items-center">
         <div class="bar-info">
           <div class="row d-flex justify-content-center mt-100">
             <div class="col-md-10">
@@ -14,7 +14,7 @@
                     <div class="progress blue">
                       <span class="progress-left"><span class="progress-bar"></span></span>
                       <span class="progress-right"><span class="progress-bar"></span></span>
-                      <div class="progress-value">90%</div>
+                      <div class="progress-value">{{value}}</div>
                     </div>
                   </div>
                 </div>
@@ -31,6 +31,7 @@ export default {
   components: {},
   data() {
     return {
+      value: '90%',
       goals: [
         '유산소', '스트레칭', '헬스',
       ],
@@ -50,15 +51,15 @@ export default {
   width: 100%;
   padding-left: 20px;
 }
-.my-rate-title {
+.my-weekly-goal-title {
   text-align: left;
-  padding-top: 30px;
+  padding-top: 50px;
   font-size: 22px;
   padding-left: 50px;
-  padding-bottom: 0px;
+  padding-bottom: 10px;
 }
 
-.my-rate-info {
+.my-weekly-goal-info {
   width: 90%;
   display: flex;
   padding-left: 50px;

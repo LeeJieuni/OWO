@@ -56,10 +56,10 @@ export default {
 
 .my-level-title {
   text-align: left;
-  padding-top: 30px;
+  padding-top: 40px;
   font-size: 22px;
   padding-left: 50px;
-  padding-bottom: 0px;
+  padding-bottom: 10px;
 }
 
 .my-level-info {
