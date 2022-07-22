@@ -32,7 +32,7 @@
 </template>
 <script>
 export default {
-  name: 'MyExerciseRecord',
+  name: 'MyExerciseLevel',
   components: {},
   data() {
     return {
@@ -50,16 +50,16 @@ export default {
 <style scoped>
   /* 나의 운동 레벨 */
 .my-level {
-  height: 250px;
+  /* height: 150px; */
   border-bottom: solid #DFDFDF 1px;
 }
 
 .my-level-title {
   text-align: left;
-  padding-top: 50px;
-  font-size: 24px;
+  padding-top: 30px;
+  font-size: 22px;
   padding-left: 50px;
-  padding-bottom: 10px;
+  padding-bottom: 0px;
 }
 
 .my-level-info {
@@ -88,11 +88,12 @@ export default {
 
 .bar {
   width: 100%;
-  height: 25px;
+  height: 20px;
 }
 
 .progress-bar {
-  font-size: 15px;
+  font-size: 14px;
+  text-shadow: 2px 2px 2px #2E2E2E;
   width: 90%
 }
 .tear-info {

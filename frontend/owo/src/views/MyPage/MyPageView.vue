@@ -54,7 +54,7 @@ export default {
     font-family: 'LeferiBaseType-BoldA';
   }
   .mypageContainer {
-    max-width: 980px;
+    max-width: 800px;
     margin: 0 auto;
 
     background-color: white;
@@ -62,7 +62,7 @@ export default {
     border: solid #DFDFDF 1px;
     box-sizing: border-box;
     border-radius: 20px;
-    height: 1000px;
+    height: 1200px;
     /* padding: 35px; */
   }
   .title {
@@ -84,7 +84,7 @@ export default {
   }
   .slogan {
     text-align: left;
-    font-size: 24px;
+    font-size: 20px;
     padding: 0px;
     margin: 0px;
     margin-right: auto;

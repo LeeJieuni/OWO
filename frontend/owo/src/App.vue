@@ -29,6 +29,7 @@ export default {
   font-size : 14px;
   height: 100%;
   letter-spacing : -0.05em;
+  padding-bottom: 100px;
 
 }
 
