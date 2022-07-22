@@ -12,13 +12,13 @@
         <div class="bar-info">
           <div class="progress bar">
             <div
-              class="progress-bar bg-warning progress-bar-striped progress-bar-animated"
+              class="progress-bar progress-bar-striped progress-bar-animated"
               role="progressbar"
               aria-label="Example with label"
-              style="width: 25%;"
-              aria-valuenow="25"
+              v-bind:style="{ width: tearPercent, backgroundColor: tearColor }"
+              :aria-valuenow="{tearPercentage}"
               aria-valuemin="0"
-              aria-valuemax="100">25%
+              aria-valuemax="100">{{tearPercent}}
             </div>
           </div>
           <div class="tear-info d-flex text-center align-items-end">
@@ -37,6 +37,9 @@ export default {
   data() {
     return {
       a: '',
+      tearPercent: '25%',
+      tearPercentage: 25,
+      tearColor: '#89621d',
     };
   },
   setup() {},
@@ -70,6 +73,11 @@ export default {
 
 }
 
+.user-percent {
+  font-family: 'LeferiPoint-WhiteA';
+  font-size: 12px;
+}
+
 .my-level-icon {
   width: 100px;
 }
@@ -84,6 +92,10 @@ export default {
 .tear-name {
   padding-top: 10px;
   margin-bottom: 0px;
+}
+
+.tear-bar {
+  background-color: #89621d;
 }
 
 .bar {

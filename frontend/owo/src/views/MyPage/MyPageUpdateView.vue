@@ -12,22 +12,31 @@
         <h3>{{ user.nick }}님의 정보 수정</h3><br>
           <p>이번주 운동 목표</p>
           <form action="">
-            <th class="th-2">
-              <label for="goal-type">
-                <select class="form-select form-select-sm" name="radio" id="goal_type">
-                  <option value="유산소">유산소</option>
-                  <option value="헬스">헬스</option>
-                  <option value="스트레칭">스트레칭</option>
-                  <option value="맨몸운동">맨몸운동</option>
-                  <option value="요가">요가</option>
-                  <option value="필라테스">필라테스</option>
-                  <option value="기타">기타</option>
-                </select></label>&nbsp;
-              <input type="number" name="goal-hour" style="width: 50px;"> 시간&nbsp;
-              <button @click="addGoal($value)" class="btn btn-outline-secondary">추가</button>
-            </th>
+            <label for="goal-type">
+              <select v-model="inputGoalType"
+                class="form-select form-select-sm goal-type-select"
+                name="radio" id="goal_type">
+                <option value="유산소">유산소</option>
+                <option value="헬스">헬스</option>
+                <option value="스트레칭">스트레칭</option>
+                <option value="맨몸운동">맨몸운동</option>
+                <option value="요가">요가</option>
+                <option value="필라테스">필라테스</option>
+                <option value="기타">기타</option>
+              </select></label>&nbsp;
+            <input type="number" name="goalHour" style="width: 70px;" v-model="inputGoalHour"> 시간
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button @click="addGoal($event)" class="btn btn-outline-secondary">추가</button>
           </form>
-        <p v-for="(goal, goalIndex) in user.goals" :key="goalIndex">{{goal.goalType}}</p>
+        <div class="tags row">
+          <button
+            v-for="(goal, goalI) in user.goals"
+            :key="goalI"
+            class="tag"
+            @click="tagDelete">
+            <p>{{goal.goalType}} {{goal.goalHour}}H</p>
+          </button>
+        </div>
       </div>
     </div>
     <div class="row profile-form p-5">
@@ -78,9 +87,9 @@
             <th class="th-1">활동량</th>
             <th class="th-2">
               <label for="activity-num"> 주
-                <input type="number" style="width: 50px;" name="activity-num">&nbsp;회&nbsp;</label>
+                <input type="number" style="width: 55px;" name="activity-num">&nbsp;회&nbsp;</label>
               <label for="activity-hour">
-                <input type="number" style="width: 50px;" name="activity-hour">
+                <input type="number" style="width: 60px;" name="activity-hour">
                 &nbsp;시간 운동&nbsp;</label>
             </th>
           </tr>
@@ -111,8 +120,8 @@ export default {
   components: {},
   data() {
     return {
-      goalType: '',
-      goalHour: 0,
+      inputGoalType: '',
+      inputGoalHour: 0,
       user: {
         nick: '한나',
         slogan: '아자아자 화이팅!',
@@ -125,17 +134,51 @@ export default {
   mounted() {},
   unmounted() {},
   methods: {
-    addGoal() {
-      this.user.goals.push({ goalType: this.goalType, goalHour: this.goalHour });
+    addGoal(event) {
+      event.preventDefault();
+      this.user.goals.push({ goalType: this.inputGoalType, goalHour: this.inputGoalHour });
+    },
+    tagDelete() {
+      // alert('주간 목표를 삭제하시겠습니까?');
     },
   },
 };
 </script>
 
 <style scoped>
-
+.btn-outline-secondary {
+  width: 60px;
+  height: 25px;
+  font-size: 13px;
+}
+  .tags {
+    padding: 10px;
+  }
+  .tag {
+    width: 105px;
+    height: 26px;
+    border: solid #828282 1px;
+    display:inline-block;
+    border-radius: 20px;
+    padding: 4px;
+    margin: 2px;
+    font-size: 12px;
+    background-color:aliceblue;
+    padding-left: 10px;
+  }
+  .tag:hover {
+    background-color: #DE7474;
+    color: white;
+    transition: 0.2s;
+    cursor: pointer;
+  }
+  .tag p {
+    text-align: left;
+  }
   button {
     border-radius: 15px;
+    height: 29px;
+    padding-top: 3px;
   }
   .profile-img {
     border-radius: 50%;
@@ -149,39 +192,49 @@ export default {
     text-align: left;
   }
 
+  .goal-type-select {
+    width: 120px;
+  }
+
   table {
     margin: auto;
     border-spacing: 6px;
     border-collapse: separate;
     line-height: 32px;
-    font-size: 16px;
     text-align: left;
   }
   input:not(.profile-input) {
     height: 30px;
-    width: 150px;
+    width: 162px;
     border:  solid rgb(165, 165, 165) 1px;
     border-radius: 15px;
-    padding: 15px;
+    padding: 10px;
     margin: 3px;
+    font-size: 16px;
   }
 
   select {
-    height: 28px;
+    height: 30px;
+    width: 162px;
     font-size:16px;
     border:  solid rgb(165, 165, 165) 1px;
     border-radius: 15px;
+    padding-left: 10px;
+    padding-top: 1px;
+  }
+
+  select:hover {
+    cursor: pointer;
   }
 
   .form-label {
-    width: 150px;
+    width: 162px;
   }
 
   .profile-input {
     margin-top: 20px;
     font-size: 10px;
     height: 15px;
-    color: ;
   }
 
   .buttons {

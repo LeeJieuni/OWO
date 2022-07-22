@@ -22,9 +22,9 @@ export default {
 #app {
   text-align: center;
    /* display: flex; */
-  font-family: 'LeferiBaseType-BoldA', 'Noto Sans KR', sans-serif;
+  font-family: 'NanumSquareRound', 'Noto Sans KR', sans-serif;
   color:#2E2E2E;
-  background-color: #F6F7F9;
+  background-color: #ffffff;
   font-size : 14px;
   height: 100%;
   letter-spacing : -0.05em;
@@ -33,6 +33,20 @@ export default {
 }
 
 /* font import */
+
+/* 나눔스퀘어 라운드
+font-family: 'NanumSquareRoundLight';
+font-family: 'NanumSquareRound';
+font-family: 'NanumSquareRoundBold';
+font-family: 'NanumSquareRoundExtraBold';
+*/
+
+@font-face {
+    font-family: 'NanumSquareRound';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/NanumSquareRound.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
 
 /* 레페리포인트 WHITE OBLIQUE */
 @font-face {
@@ -46,30 +60,6 @@ export default {
 @font-face {
     font-family: 'LeferiPoint-BlackObliqueA';
     src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/LeferiPoint-BlackObliqueA.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-}
-
-/* 레페리베이스 BLACK */
-@font-face {
-    font-family: 'LeferiPoint-BlackA';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/LeferiPoint-BlackA.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-}
-
-/* 레페리베이스 BOLD */
-@font-face {
-    font-family: 'LeferiBaseType-BoldA';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/LeferiBaseType-BoldA.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-}
-
-/* 레페리베이스 REAULAR */
-@font-face {
-    font-family: 'LeferiBaseType-RegularA';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/LeferiBaseType-RegularA.woff') format('woff');
     font-weight: normal;
     font-style: normal;
 }
