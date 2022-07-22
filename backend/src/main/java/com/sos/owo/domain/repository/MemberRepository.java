@@ -16,6 +16,7 @@ public class MemberRepository {
     private final EntityManager em;
 
     public void save(Member member){
+        member.setEnable(false);
         em.persist(member);
     }
 
@@ -33,6 +34,13 @@ public class MemberRepository {
         if(memberList.size() == 0) return false;
         return true;
     }
+
+    public void setVerified(Member member){
+        member.setEnable(true);
+        em.persist(member);
+        em.flush();
+    }
+
 
 
 

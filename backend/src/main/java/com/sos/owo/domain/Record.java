@@ -33,14 +33,16 @@ public class Record {
     @Column(name="record_hour")
     private int recordHour;
 
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "record_img_id")
+    private RecordImg recordImg;
+
     @Column(name="record_memo")
     private String recordMemo;
 
     @Column(name="record_datetime")
     private LocalDateTime recordDatetime;
 
-    @Column(name="record_img")
-    private String recordImg;
-
-
+    @Column(name="record_secret")
+    private int record_secret;
 }

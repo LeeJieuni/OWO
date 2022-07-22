@@ -44,17 +44,11 @@ public class Member {
     @Column(name = "member_activity_hour")
     private int activityHour;
 
-    @Column(name = "member_img")
-    private String img;
-
     @Column(name = "member_point")
     private int point;
 
     @Column(name = "member_secret")
     private int secret;
-
-    @Column(name = "member_token")
-    private String token;
 
     @Column(name = "member_exp")
     private int exp;
@@ -62,9 +56,14 @@ public class Member {
     @Column(name = "member_joindate")
     private LocalDateTime joindate;
 
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "profile_id")
+    private ProfileImg profileImg;
+
+    @Column(name = "member_enable")
+    private boolean enable;
+
     @OneToMany
     private List<Goal> goalList = new ArrayList<>();
-
-
 
 }

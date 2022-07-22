@@ -1,7 +1,7 @@
 package com.sos.owo.controller;
 
 import com.sos.owo.dto.MemberSaveRequestDto;
-import com.sos.owo.dto.MemberResponseDto;
+import com.sos.owo.service.EmailTokenService;
 import com.sos.owo.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,13 +15,16 @@ import org.springframework.web.bind.annotation.RestController;
 public class MemberController {
 
     private final MemberService memberService;
+    private final EmailTokenService emailTokenService;
 
     @PostMapping("/api/auth/join")
     public ResponseEntity<?> signUp(@RequestBody MemberSaveRequestDto requestDto){
         try {
             int id = memberService.join(requestDto.toEntity());
-            return new ResponseEntity<MemberResponseDto>(memberService.findOne(id), HttpStatus.OK);
+            String emailTokenId = emailTokenService.createEmailToken(id, requestDto.getEmail());
+            return new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
         } catch (IllegalStateException e){
+            e.printStackTrace();
             return new ResponseEntity<String>("OVERLAP", HttpStatus.CONFLICT);
         } catch (Exception e){
             e.printStackTrace();
