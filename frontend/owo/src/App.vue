@@ -1,12 +1,12 @@
 <template>
-  <div>
+<div>
 
-    <NavBar/>
-    <div class="main-container">
-      <router-view/>
-    </div>
-    <Footer/>
+  <NavBar/>
+  <div class="main-container">
+    <router-view/>
   </div>
+  <Footer/>
+</div>
 </template>
 
 <script>
