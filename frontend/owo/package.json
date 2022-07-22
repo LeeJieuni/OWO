@@ -11,6 +11,7 @@
     "bootstrap": "^5.2.0",
     "bootstrap-vue-3": "^0.1.14",
     "core-js": "^3.8.3",
+    "v-calendar": "^3.0.0-alpha.8",
     "vue": "^3.2.37",
     "vue-router": "^4.0.3",
     "vue3-carousel": "^0.1.40",

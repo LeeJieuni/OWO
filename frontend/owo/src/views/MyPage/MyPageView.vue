@@ -6,7 +6,12 @@
     <div class="mypageContainer">
       <div class="title">
         <div class="slogan-box">
-          <span class="slogan">{{ slogan }}</span> &nbsp; &nbsp; &nbsp;<span><img class="pencil" alt="pencil" src="https://img.icons8.com/ios-glyphs/30/000000/pencil--v1.png"/></span>
+          <span v-if="slogan === ''" class="slogan" style="color: #828282;">목표 및 슬로건을 입력해 주세요!
+            <span class="material-symbols-outlined">edit</span>
+          </span>
+          <span v-else class="slogan">{{ slogan }}
+            <span class="material-symbols-outlined">edit</span>
+          </span>
         </div>
         <div class="my-nav">
           <div class="my-nav-bottom d-flex align-items-end">
@@ -30,7 +35,7 @@ export default {
   components: {},
   data() {
     return {
-      slogan: '6월 바디프로필까지 화이팅~이다아',
+      slogan: '',
     };
   },
   setup() {},
@@ -67,7 +72,7 @@ export default {
   }
   .title {
     border-bottom: solid #DFDFDF 1px;
-    height: 80px;
+    height: 90px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -116,4 +121,8 @@ export default {
     margin-bottom: 5px;
   }
 
+  .material-symbols-outlined {
+    font-size:20px;
+    /* line-height: 0px; */
+  }
 </style>
