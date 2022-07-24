@@ -31,7 +31,7 @@
                   to="/youtubenochat">YoutubeNoChat</router-link></li>
                 </ul>
               </li>
-              <li class="menu1">
+              <li class="menu1" v-b-modal.modal-prevent-closing>
                 login
               </li>
             </div>
@@ -123,6 +123,7 @@ li{
   padding-right: 0px;
   padding-left: 0px;
   font-family: 'Noto Sans KR', sans-serif;
+  background-color: rgb(255, 255, 255);/* navbar color */
 }
 
 .owonav {

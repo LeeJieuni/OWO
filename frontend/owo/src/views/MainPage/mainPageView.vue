@@ -11,17 +11,22 @@
       </div>
     </div>
     <TodayKing/>
+    <transition name="bounce" mode="out-in">
+      <MyModal></MyModal>
+    </transition>
   </div>
 </template>>
 
 <script>
 import Carousel from '@/components/MainPage/Carousel.vue';
 import TodayKing from '@/components/MainPage/TodayKing.vue';
+import MyModal from '@/components/MainPage/MyModal.vue';
 
 export default {
   components: {
     Carousel,
     TodayKing,
+    MyModal,
   },
 };
 </script>
