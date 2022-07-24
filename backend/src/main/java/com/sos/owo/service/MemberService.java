@@ -39,21 +39,10 @@ public class MemberService {
     }
 
     @Transactional
-    public MemberResponseDto findOne(int memberId){
-        Member findMember = memberRepository.findOne(memberId);
-        MemberResponseDto responseDto = new MemberResponseDto();
-        responseDto.setId(findMember.getId());
-        responseDto.setEmail(findMember.getEmail());
-        responseDto.setPw(findMember.getPw());
-        responseDto.setAge(findMember.getAge());
-        if(findMember.getGender() != null)
-            responseDto.setGender(findMember.getGender().toString());
-        responseDto.setHeight(findMember.getHeight());
-        responseDto.setWeight(findMember.getWeight());
-        responseDto.setActivityNum(findMember.getActivityNum());
-        responseDto.setActivityHour(findMember.getActivityHour());
-
-        return responseDto;
+    public boolean checkEnable(String email) throws IllegalStateException {
+        Member findMember = memberRepository.findByEmail(email);
+        if(findMember.isEnable()) return true;
+        return false;
     }
 
     @Transactional
@@ -126,7 +115,9 @@ public class MemberService {
     }
 
     @Transactional
-    public void logoutMember(String token){
+    public void logoutMember(String token) throws IllegalStateException {
+        boolean result = jwtTokenProvider.validateToken(token);
+        if(!result) throw new IllegalStateException("토큰 만료 되었습니다.");
         Member member = memberRepository.findByEmail(jwtTokenProvider.getUserPk(token));
         member.changeRefreshToken("invalidate");
     }

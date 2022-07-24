@@ -39,7 +39,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)  // 토큰 기반 인증이므로 세션 역시 사용하지 않음
                 .and()
                 .authorizeRequests()  // 요청에 대한 사용 권한 체크
-                .antMatchers("/api").authenticated()
+                .antMatchers("/api/**").authenticated()
                 .antMatchers("/user/**").hasRole("USER")
                 .anyRequest().permitAll()   // 그 외 나머지 요청은 누구나 접근 가능
                 .and()

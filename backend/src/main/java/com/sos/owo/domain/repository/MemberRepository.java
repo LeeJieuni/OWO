@@ -56,10 +56,11 @@ public class MemberRepository {
         em.flush();
     }
 
-    public Member findByEmail(String email){
+    public Member findByEmail(String email) throws IllegalStateException {
         List<Member> memberList = em.createQuery("select m from Member m where m.email = :email", Member.class)
                 .setParameter("email", email)
                 .getResultList();
+        if(memberList.size() == 0) throw new IllegalStateException("해당 이메일을 가진 사용자가 없습니다.");
         return memberList.get(0);
     }
 
