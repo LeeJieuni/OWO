@@ -123,7 +123,7 @@ public class MemberController {
             }
             MemberLoginResponseDto member = memberService.login(user.get("email"), user.get("password"));
             return new ResponseEntity<MemberLoginResponseDto>(member, HttpStatus.OK);
-        } catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException | IllegalStateException e){
             e.printStackTrace();
             return new ResponseEntity<String>("CHECK EMAIL OR PASSWORD", HttpStatus.BAD_REQUEST);
         } catch (Exception e){
