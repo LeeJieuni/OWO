@@ -39,5 +39,13 @@ public class EmailService {
 
     }
 
+    // 이메일 토큰을 검증하는 메소드
+    public void verifyPasswordToken(String token) throws Exception{
+        System.out.println(token);
+        // 이메일 토큰을 찾아옴
+        EmailToken findEmailToken = emailTokenService.findByIdAndExpirationDateAfterAndExpired(token);
+
+    }
+
 
 }

@@ -18,7 +18,7 @@ public class EmailTokenService {
     private final EmailSenderService emailSenderService;
     private final EmailTokenRepository emailTokenRepository;
 
-    // 이메일 토큰 생성
+    // 이메일 토큰 생성(회원가입)
     public String createEmailToken(int memberId, String receiverEmail){
         Assert.notNull(memberId, "memberId는 필수입니다.");
         Assert.hasText(receiverEmail, "receiverEmail은 필수입니다.");
@@ -37,6 +37,28 @@ public class EmailTokenService {
         // 인증메일 전송 시 토큰 변환
         return emailToken.getId();
     }
+
+    // 이메일 토큰 생성 (회원가입)
+    public String createPasswordEmailToken(int memberId, String receiverEmail){
+        Assert.notNull(memberId, "memberId는 필수입니다.");
+        Assert.hasText(receiverEmail, "receiverEmail은 필수입니다.");
+
+        // 이메일 토큰 저장
+        EmailToken emailToken = EmailToken.createEmailToekn(memberId);
+        emailTokenRepository.save(emailToken);
+
+        // 이메일 전송
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setTo(receiverEmail);
+        mailMessage.setSubject("[#오운완] 비밀번호 찾기 및 변경 이메일 인증");
+        mailMessage.setText("확인 입력 코드 : " + emailToken.getId());
+        emailSenderService.sendEmail(mailMessage);
+
+        // 인증메일 전송 시 토큰 변환
+        return emailToken.getId();
+    }
+
+
 
     // 유효한 토큰 가져오기
     public EmailToken findByIdAndExpirationDateAfterAndExpired(String emailTokenId)  {

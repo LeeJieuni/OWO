@@ -21,13 +21,27 @@ public class EmailController {
     // 인증 URL이 담긴 이메일을 전송받은 사용자가 URL을 클릭 시 해당 URI로 매핑됨
     @GetMapping("/confirm-email")
     public ResponseEntity<String> viewConfirmEmail(@Valid @RequestParam String token){
-        boolean result = emailService.verifyEmail(token);
-        if(result){
+        try {
+            boolean result = emailService.verifyEmail(token);
             return new ResponseEntity<>("이메일 인증 성공", HttpStatus.OK);
-        } else {
+        } catch (IllegalArgumentException e){
             return new ResponseEntity<>("이메일 인증 실패", HttpStatus.CONFLICT);
+        } catch (Exception e){
+            return new ResponseEntity<String>("SERVER_ERROR", HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
+    }
+
+    @GetMapping("/confirm-email-password")
+    public ResponseEntity<String> viewConfirmPassword(@Valid @RequestParam String token){
+        try {
+            emailService.verifyPasswordToken(token);
+            return new ResponseEntity<>("이메일 인증 성공", HttpStatus.OK);
+        } catch (IllegalArgumentException e){
+            return new ResponseEntity<>("이메일 인증 실패", HttpStatus.CONFLICT);
+        } catch (Exception e){
+            return new ResponseEntity<String>("SERVER_ERROR", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 }

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Repository
@@ -19,13 +20,12 @@ public class MemberRepository {
 
     public void save(Member member){
         member.setEnable(false);
+        member.setRoles(Collections.singletonList("ROLE_USER")); // 최초 가입 시 USER로 설정
         em.persist(member);
     }
 
     public Member findOne(int id){
-        System.out.println(id);
         Member findMember = em.find(Member.class, id);
-        System.out.println(findMember.getEmail());
         return findMember;
     }
 
@@ -35,6 +35,12 @@ public class MemberRepository {
                 .getResultList();
         if(memberList.size() == 0) return false;
         return true;
+    }
+
+    public boolean isLogout(String email){
+        Member findMember = findByEmail(email);
+        if(findMember.getRefreshToken().equals("invalid")) return true;
+        return false;
     }
 
     //자유,영상모드 경험치 저장
@@ -50,7 +56,18 @@ public class MemberRepository {
         em.flush();
     }
 
+    public Member findByEmail(String email){
+        List<Member> memberList = em.createQuery("select m from Member m where m.email = :email", Member.class)
+                .setParameter("email", email)
+                .getResultList();
+        return memberList.get(0);
+    }
 
 
-
+    public void updatePassword(String email, String password) {
+        Member findMember = findByEmail(email);
+        findMember.setPw(password);
+        em.persist(findMember);
+        em.flush();
+    }
 }
