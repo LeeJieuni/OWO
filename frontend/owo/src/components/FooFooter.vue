@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="wrapper">
     icons : <a target="_blank" href="https://icons8.com/icon/85962/pencil">Pencil icon by Icons8</a>
   </div>
 </template>
@@ -19,3 +19,10 @@ export default {
   methods: {},
 };
 </script>
+
+<style scoped>
+.wrapper {
+  background-color: blue;
+  height: 200px;
+}
+</style>

@@ -10,8 +10,7 @@
       <MyExerciseRate/>
     </div>
 
-    <!--운동 비율-->
-
+    <!--주간 목표 달성량-->
     <div class="weekly-goal-achivement-rate">
       <MyWeeklyGoal/>
     </div>
