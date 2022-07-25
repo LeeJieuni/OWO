@@ -44,9 +44,10 @@ export default {
   components: {},
   data() {
     return {
+      sumOfExerciseHours: 0,
       records: [
         { exerciseName: '헬스', exerciseHours: 24 },
-        { exerciseName: '스트레칭', exerciseHours: 15 },
+        { exerciseName: '스트레칭', exerciseHours: 16 },
         { exerciseName: '요가', exerciseHours: 10 },
         { exerciseName: '헬스', exerciseHours: 40 },
       ],
@@ -57,7 +58,18 @@ export default {
   moundted() {},
   unmounted() {},
   methods: {},
-  computed() {},
+  computed() {
+    for (let i = 0; i < this.records.length; i += 1) {
+      this.SumOfExerciseHours += this.records[i].exerciseHours;
+    }
+    for (let i = 0; i < this.records.length; i += 1) {
+      this.records[i].push(
+        {
+          exerciseRate: Math.round((this.records[i].exerciseHours / this.sumOfExerciseHours) * 100),
+        },
+      );
+    }
+  },
 };
 </script>
 

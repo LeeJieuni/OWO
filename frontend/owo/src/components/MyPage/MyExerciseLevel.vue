@@ -7,7 +7,7 @@
         <div class="my-level-icon align-self-center">
           <img
             class="my-level-icon-img"
-            src="@/assets/icon/exercise.png" alt="tear1">
+            :src="require(`@/assets/icon/tier${tierNum}.png`)" alt="tear1">
         </div>
         <div class="bar-info">
           <div class="progress bar">
@@ -15,7 +15,7 @@
               class="progress-bar progress-bar-striped progress-bar-animated"
               role="progressbar"
               aria-label="Example with label"
-              v-bind:style="{ width: tearPercent, backgroundColor: tearColor }"
+              v-bind:style="{ width: tearPercent, backgroundColor: tierColor }"
               :aria-valuenow="{tearPercentage}"
               aria-valuemin="0"
               aria-valuemax="100">{{tearPercent}}
@@ -39,7 +39,8 @@ export default {
       a: '',
       tearPercent: '25%',
       tearPercentage: 25,
-      tearColor: '#89621d',
+      tierColor: '#89621d',
+      tierNum: 2,
     };
   },
   setup() {},

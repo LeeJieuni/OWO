@@ -24,9 +24,15 @@
                 <option value="필라테스">필라테스</option>
                 <option value="기타">기타</option>
               </select></label>&nbsp;
-            <input type="number" name="goalHour" style="width: 70px;" v-model="inputGoalHour"> 시간
+            <input
+              type="number"
+              name="goalHour"
+              style="width: 70px;"
+              v-model="inputGoalHour"
+              min='1'> 시간
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <button @click="addGoal($event)" class="btn btn-outline-secondary">추가</button>
+            <button @click="addGoal($event)" class="top-btns btn btn-outline-secondary">추가</button>
+            <button @click="registGoal($event)" class="top-btns btn btn-outline-warning">등록</button>
           </form>
         <div class="tags row">
           <button
@@ -150,18 +156,42 @@ export default {
   unmounted() {},
   methods: {
     addGoal(event) {
+      if (this.user.goals.length >= 3) {
+        /* eslint-disable */
+        alert('주간 목표는 3개까지 추가 가능합니다.');
+        event.preventDefault();
+        return;
+      }
+      else if (this.inputGoalType === '') {
+        /* eslint-disable */
+        alert('목표를 설정해 주세요!');
+        event.preventDefault();
+        return;
+      }
+      else if (this.inputGoalHour < 1) {
+        /* eslint-disable */
+        alert('시간을 설정해 주세요!');
+        event.preventDefault();
+        return;
+      }
       event.preventDefault();
       this.user.goals.push({ goalType: this.inputGoalType, goalHour: this.inputGoalHour });
     },
-    tagDelete() {
-      // alert('주간 목표를 삭제하시겠습니까?');
+    tagDelete(event) {
+      /* eslint-disable */
+      // alert('해당 주간 목표를 삭제하시겠습니까?');
+      event.preventDefault();
+      console.log(event)
     },
+    registGoal() {
+      // 솰라솰라
+    }
   },
 };
 </script>
 
 <style scoped>
-.btn-outline-secondary {
+.top-btns {
   width: 60px;
   height: 25px;
   font-size: 13px;
@@ -186,6 +216,7 @@ export default {
     color: white;
     transition: 0.2s;
     cursor: pointer;
+
   }
   .tag p {
     text-align: left;
