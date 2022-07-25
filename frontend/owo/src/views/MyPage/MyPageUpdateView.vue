@@ -45,13 +45,15 @@
         <tbody>
 
           <tr>
-            <th class="th-1">닉네임</th><label for="nick">
-              <th class="th-2"><input type="text" name="nick"></th></label>
+            <th class="th-1">닉네임</th>
+            <label for="nick">
+              <th class="th-2"><input type="text" name="nick" v-model=user.nick></th>
+            </label>
           </tr>
 
           <tr>
             <th class="th-1">나이</th><label for="age">
-              <th class="th-2"><input type="number" name="age">
+              <th class="th-2"><input type="number" name="age" v-model=user.age>
               <span class="th-2-text"> 세</span></th></label>
           </tr>
 
@@ -59,7 +61,8 @@
             <th class="th-1">성별</th>
             <label for="gender">
               <th class="th-2">
-                <select class="form-select form-select-sm" name="radio" id="gender">
+                <select class="form-select form-select-sm"
+                  name="radio" id="gender" v-model=user.gender>
                   <option value="female">여자</option>
                   <option value="male">남자</option>
                 </select>
@@ -70,7 +73,7 @@
           <tr>
             <th class="th-1">키</th><label for="height">
               <th class="th-2">
-                <input type="number" name="height"> cm
+                <input type="number" name="height" v-model=user.height> cm
               </th>
             </label>
           </tr>
@@ -78,7 +81,7 @@
           <tr>
             <th class="th-1">몸무게</th><label for="secret">
               <th class="th-2">
-                <input type="number" name="weight"> kg
+                <input type="number" name="weight" v-model=user.weight> kg
               </th>
             </label>
           </tr>
@@ -87,9 +90,11 @@
             <th class="th-1">활동량</th>
             <th class="th-2">
               <label for="activity-num"> 주
-                <input type="number" style="width: 55px;" name="activity-num">&nbsp;회&nbsp;</label>
+                <input type="number" style="width: 55px;"
+                  name="activity-num" v-model=user.activity.weektimes>&nbsp;회&nbsp;</label>
               <label for="activity-hour">
-                <input type="number" style="width: 60px;" name="activity-hour">
+                <input type="number" style="width: 60px;"
+                  name="activity-hour" v-model=user.activity.weekhours>
                 &nbsp;시간 운동&nbsp;</label>
             </th>
           </tr>
@@ -97,7 +102,8 @@
           <tr>
             <th class="th-1">내 정보 공개하기</th>
             <th class="th-2"><label for="secret">
-              <select class="form-select form-select-sm" name="radio" id="secret">
+              <select class="form-select form-select-sm"
+                name="radio" id="secret" v-model=user.secret>
                 <option value="1">공개</option>
                 <option value="2">비공개</option>
               </select></label>
@@ -125,6 +131,15 @@ export default {
       user: {
         nick: '한나',
         slogan: '아자아자 화이팅!',
+        age: 27,
+        gender: 'male',
+        height: 156,
+        weight: 44,
+        activity: {
+          weektimes: 5,
+          weekhours: 20,
+        },
+        secret: 2,
         goals: [],
       },
     };
