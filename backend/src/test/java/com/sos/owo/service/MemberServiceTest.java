@@ -2,6 +2,7 @@ package com.sos.owo.service;
 
 import com.sos.owo.domain.Compete;
 import com.sos.owo.domain.Member;
+import com.sos.owo.domain.repository.CompeteRepository;
 import org.assertj.core.api.Assertions;
 import com.sos.owo.domain.repository.MemberRepository;
 import org.junit.jupiter.api.Test;
@@ -26,6 +27,9 @@ public class MemberServiceTest {
 
     @Autowired
     MemberRepository memberRepository;
+
+    @Autowired
+    CompeteRepository competeRepository;
 
 
     @Test
@@ -68,6 +72,7 @@ public class MemberServiceTest {
 
         //given
         Member member = new Member();
+        member.setId(1);
         member.setEmail("1234@naver.com");
         member.setPw("1234");
 
@@ -75,14 +80,14 @@ public class MemberServiceTest {
         compete.setCompeteId(1);
         compete.setMember(member);
         compete.setCompeteScore1(60);
-        compete.setCompeteScore1(70);
-        compete.setCompeteScore1(80);
-
+        compete.setCompeteScore2(70);
+        compete.setCompeteScore3(80);
 
         //when
-//        System.out.println(member.getId());
-//        List<Integer> check = memberService.findBestScore(member.getId());
+        List<Integer> check = memberService.findBestScore(member.getId());
+        System.out.println(check);
     }
+
 
 
 }
