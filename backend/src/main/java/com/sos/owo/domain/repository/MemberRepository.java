@@ -1,6 +1,8 @@
 package com.sos.owo.domain.repository;
 
 import com.sos.owo.domain.Compete;
+import com.sos.owo.domain.Exercise;
+import com.sos.owo.domain.Goal;
 import com.sos.owo.domain.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -71,4 +73,9 @@ public class MemberRepository {
         em.persist(findMember);
         em.flush();
     }
+
+
+
+
+
 }

@@ -27,7 +27,7 @@ public class Record {
     @JoinColumn(name = "meeting_room_id")
     private MeetingRoom meetingRoom;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "record",cascade = CascadeType.ALL)
     private List<Tag> tags = new ArrayList<>();
 
     @Column(name="record_hour")

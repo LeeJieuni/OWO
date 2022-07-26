@@ -73,6 +73,9 @@ class MemberControllerTest {
 
     }
 
+    public void 목표_추가한다() throws Exception{
+
+    }
 
 
 }

@@ -1,6 +1,7 @@
 package com.sos.owo.service;
 
 import com.sos.owo.config.security.JwtTokenProvider;
+import com.sos.owo.domain.Goal;
 import com.sos.owo.domain.Member;
 import com.sos.owo.domain.repository.CompeteRepository;
 import com.sos.owo.domain.repository.MemberRepository;
@@ -121,5 +122,6 @@ public class MemberService {
         Member member = memberRepository.findByEmail(jwtTokenProvider.getUserPk(token));
         member.changeRefreshToken("invalidate");
     }
+
 
 }

@@ -70,7 +70,7 @@ public class Member implements UserDetails {
     @Column(name = "member_enable")
     private boolean enable;
 
-    @OneToMany
+    @OneToMany(mappedBy = "member",cascade = CascadeType.ALL)
     private List<Goal> goalList = new ArrayList<>();
 
 
@@ -121,4 +121,6 @@ public class Member implements UserDetails {
     public void changeRefreshToken(String refreshToken){
         this.refreshToken = refreshToken;
     }
+
+
 }

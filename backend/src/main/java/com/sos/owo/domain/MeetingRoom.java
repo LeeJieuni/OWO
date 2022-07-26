@@ -53,7 +53,7 @@ public class MeetingRoom {
     @Column(name = "meeting_room_manager",nullable = false)
     private int manager;
 
-    @OneToMany
+    @OneToMany(mappedBy = "meetingId",cascade = CascadeType.ALL)
     private List<MeetingOauth> oauthList = new ArrayList<>();
 
 
