@@ -57,5 +57,9 @@ public class GoalRepository {
 
     }
 
+    public List<Goal> findGoal(int memberId){
+        Member findMember = em.find(Member.class,memberId);
 
+        return findMember.getGoalList();
+    }
 }

@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 //@Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -28,5 +30,10 @@ public class GoalService {
     @Transactional
     public void deleteGoal(int memberId, int goal_id){
         goalRepository.deleteGoal(memberId,goal_id);
+    }
+
+    @Transactional
+    public List<Goal> findGoal(int memberId){
+        return goalRepository.findGoal(memberId);
     }
 }
