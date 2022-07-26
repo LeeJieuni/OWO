@@ -1,15 +1,13 @@
 package com.sos.owo.domain.repository;
 
-import com.sos.owo.domain.Compete;
-import com.sos.owo.domain.Exercise;
-import com.sos.owo.domain.Goal;
 import com.sos.owo.domain.Member;
+import com.sos.owo.dto.MemberUpdateDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
@@ -22,6 +20,7 @@ public class MemberRepository {
 
     public void save(Member member){
         member.setEnable(false);
+        member.setJoindate(LocalDateTime.now());
         member.setRoles(Collections.singletonList("ROLE_USER")); // 최초 가입 시 USER로 설정
         em.persist(member);
     }
@@ -74,8 +73,10 @@ public class MemberRepository {
         em.flush();
     }
 
-
-
+    public void updateMember(MemberUpdateDto memberUpdateDto){
+        Member findMember = findByEmail(memberUpdateDto.getEmail());
+        findMember.updateMember(memberUpdateDto);
+    }
 
 
 }

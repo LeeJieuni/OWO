@@ -1,21 +1,17 @@
 package com.sos.owo.service;
 
 import com.sos.owo.config.security.JwtTokenProvider;
-import com.sos.owo.domain.Goal;
 import com.sos.owo.domain.Member;
 import com.sos.owo.domain.repository.CompeteRepository;
 import com.sos.owo.domain.repository.MemberRepository;
-import com.sos.owo.domain.repository.MemberRepository2;
 import com.sos.owo.dto.MemberLoginResponseDto;
-import com.sos.owo.dto.MemberResponseDto;
-import io.jsonwebtoken.ExpiredJwtException;
-import lombok.Builder;
+import com.sos.owo.dto.MemberUpdateDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.nio.file.AccessDeniedException;
 import java.util.List;
@@ -94,7 +90,17 @@ public class MemberService {
 
         // 리프레쉬 토큰 발급
         member.changeRefreshToken(jwtTokenProvider.createRefreshToken(email, member.getRoles()));
-        return new MemberLoginResponseDto(email, jwtTokenProvider.createToken(email, member.getRoles()), member.getRefreshToken());
+        MemberLoginResponseDto memberDto = MemberLoginResponseDto.builder()
+                        .email(email)
+                        .accessToken(jwtTokenProvider.createToken(email, member.getRoles()))
+                        .refreshToken(member.getRefreshToken())
+                        .id(member.getId()).nick(member.getNick())
+                        .gender(member.getGender()).age(member.getAge())
+                        .height(member.getHeight()).weight(member.getWeight())
+                        .activityNum(member.getActivityNum()).activityHour(member.getActivityHour())
+                        .build();
+
+        return memberDto;
     }
 
     @Transactional
@@ -112,7 +118,18 @@ public class MemberService {
             throw new IllegalStateException("다시 로그인 해주세요.");
 
         member.changeRefreshToken(jwtTokenProvider.createRefreshToken(member.getEmail(), member.getRoles()));
-        return new MemberLoginResponseDto(member.getEmail(), jwtTokenProvider.createToken(member.getEmail(), member.getRoles()), member.getRefreshToken());
+
+        MemberLoginResponseDto memberDto = MemberLoginResponseDto.builder()
+                .email(member.getEmail())
+                .accessToken(jwtTokenProvider.createToken(member.getEmail(), member.getRoles()))
+                .refreshToken(member.getRefreshToken())
+                .id(member.getId()).nick(member.getNick())
+                .gender(member.getGender()).age(member.getAge())
+                .height(member.getHeight()).weight(member.getWeight())
+                .activityNum(member.getActivityNum()).activityHour(member.getActivityHour())
+                .build();
+
+        return memberDto;
     }
 
     @Transactional
@@ -121,6 +138,11 @@ public class MemberService {
         if(!result) throw new IllegalStateException("토큰 만료 되었습니다.");
         Member member = memberRepository.findByEmail(jwtTokenProvider.getUserPk(token));
         member.changeRefreshToken("invalidate");
+    }
+
+    @Transactional
+    public void updateMember(MemberUpdateDto memberUpdateDto){
+        memberRepository.updateMember(memberUpdateDto);
     }
 
 

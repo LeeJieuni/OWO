@@ -3,15 +3,13 @@ package com.sos.owo.dto;
 import com.sos.owo.domain.Gender;
 import lombok.*;
 
-import javax.validation.constraints.NotNull;
-
-@Getter @Setter
+@Getter
+@Setter
 @AllArgsConstructor
+@RequiredArgsConstructor
 @Builder
-public class MemberLoginResponseDto {
+public class MemberUpdateDto {
     String email;
-    String accessToken;
-    String refreshToken;
     int id;
     String nick;
     Gender gender;

@@ -1,5 +1,6 @@
 package com.sos.owo.domain;
 
+import com.sos.owo.dto.MemberUpdateDto;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -64,7 +65,7 @@ public class Member implements UserDetails {
     private LocalDateTime joindate;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "profile_id")
+    @JoinColumn(name = "profile_img_id")
     private ProfileImg profileImg;
 
     @Column(name = "member_enable")
@@ -122,5 +123,18 @@ public class Member implements UserDetails {
         this.refreshToken = refreshToken;
     }
 
+    public void updateMember(MemberUpdateDto memberUpdateDto){
+        this.nick = memberUpdateDto.getNick();
+        this.gender = memberUpdateDto.getGender();
+        this.age = memberUpdateDto.getAge();
+        this.height = memberUpdateDto.getHeight();
+        this.weight = memberUpdateDto.getWeight();
+        this.activityHour = memberUpdateDto.getActivityHour();
+        this.activityNum = memberUpdateDto.getActivityNum();
 
+    }
+
+    public void updateProfieImg(ProfileImg profileImg){
+        this.profileImg = profileImg;
+    }
 }

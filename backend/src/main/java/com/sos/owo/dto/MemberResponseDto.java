@@ -15,7 +15,7 @@ public class MemberResponseDto {
     int age;
     double height;
     double weight;
-    double activityNum;
-    double activityHour;
+    int activityNum;
+    int activityHour;
 
 }

@@ -1,7 +1,6 @@
 package com.sos.owo.domain;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -9,6 +8,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Table(name = "profile_img")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProfileImg {
 
     @Id
@@ -20,12 +20,24 @@ public class ProfileImg {
     private String fileName;
 
     @Column(name = "profile_img_oriname")
-    private String FileOriName;
+    private String fileOriName;
 
     @Column(name = "profile_img_fileurl")
-    private String FileUrl;
+    private String fileUrl;
 
+    @Builder
+    public ProfileImg(int id, String fileOriName, String fileName, String fileUrl) {
+        this.id = id;
+        this.fileOriName = fileOriName;
+        this.fileName = fileName;
+        this.fileUrl = fileUrl;
+    }
 
+    public void updateProfileImg(ProfileImg profileImg){
+        this.fileOriName = profileImg.getFileOriName();
+        this.fileName = profileImg.getFileName();
+        this.fileUrl = profileImg.getFileUrl();
+    }
 
 
 }
