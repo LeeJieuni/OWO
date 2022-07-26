@@ -18,4 +18,5 @@ public class MemberUpdateDto {
     double weight;
     int activityNum;
     int activityHour;
+    int activityLevel;
 }

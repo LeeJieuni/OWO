@@ -1,6 +1,7 @@
 package com.sos.owo.domain.repository;
 
 import com.sos.owo.domain.Member;
+import com.sos.owo.dto.MemberSloganDto;
 import com.sos.owo.dto.MemberUpdateDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -76,6 +77,16 @@ public class MemberRepository {
     public void updateMember(MemberUpdateDto memberUpdateDto){
         Member findMember = findByEmail(memberUpdateDto.getEmail());
         findMember.updateMember(memberUpdateDto);
+    }
+
+    public void updateMemberSlogan(MemberSloganDto memberSloganDto){
+        Member findMember = findOne(memberSloganDto.getId());
+        findMember.updateMemberSlogan(memberSloganDto.getSlogan());
+    }
+
+    public MemberSloganDto getMemberSlogan(int memberId){
+        Member findMember = findOne(memberId);
+        return new MemberSloganDto(memberId, findMember.getSlogan());
     }
 
 

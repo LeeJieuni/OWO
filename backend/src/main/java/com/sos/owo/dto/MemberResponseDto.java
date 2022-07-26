@@ -17,5 +17,5 @@ public class MemberResponseDto {
     double weight;
     int activityNum;
     int activityHour;
-
+    int activityLevel;
 }

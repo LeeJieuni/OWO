@@ -15,9 +15,10 @@ public class MemberLoginResponseDto {
     int id;
     String nick;
     Gender gender;
-    int age;
-    double height;
-    double weight;
-    int activityNum;
-    int activityHour;
+    int age = 0;
+    double height = 0;
+    double weight = 0;
+    int activityNum = 0;
+    int activityHour = 0;
+    int activityLevel = 0;
 }

@@ -1,17 +1,22 @@
 package com.sos.owo.service;
 
 import com.sos.owo.config.security.JwtTokenProvider;
+import com.sos.owo.domain.Gender;
 import com.sos.owo.domain.Member;
 import com.sos.owo.domain.repository.CompeteRepository;
 import com.sos.owo.domain.repository.MemberRepository;
+import com.sos.owo.domain.repository.MemberRepository2;
+import com.sos.owo.dto.MemberBodyDto;
 import com.sos.owo.dto.MemberLoginResponseDto;
+import com.sos.owo.dto.MemberSloganDto;
 import com.sos.owo.dto.MemberUpdateDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
+
+
 
 import java.nio.file.AccessDeniedException;
 import java.util.List;
@@ -22,9 +27,10 @@ import java.util.List;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final MemberRepository2 memberRepository2;
 
     private final CompeteRepository competeRepository;
-    private final PasswordEncoder passwordEncoder;
+
     private final JwtTokenProvider jwtTokenProvider;
 
     // 회원가입
@@ -98,6 +104,7 @@ public class MemberService {
                         .gender(member.getGender()).age(member.getAge())
                         .height(member.getHeight()).weight(member.getWeight())
                         .activityNum(member.getActivityNum()).activityHour(member.getActivityHour())
+                        .activityLevel(member.getActivityLevel())
                         .build();
 
         return memberDto;
@@ -127,6 +134,7 @@ public class MemberService {
                 .gender(member.getGender()).age(member.getAge())
                 .height(member.getHeight()).weight(member.getWeight())
                 .activityNum(member.getActivityNum()).activityHour(member.getActivityHour())
+                .activityLevel(member.getActivityLevel())
                 .build();
 
         return memberDto;
@@ -143,6 +151,61 @@ public class MemberService {
     @Transactional
     public void updateMember(MemberUpdateDto memberUpdateDto){
         memberRepository.updateMember(memberUpdateDto);
+    }
+
+    @Transactional
+    public void updateMemberSlogan(MemberSloganDto memberSloganDto){
+        memberRepository.updateMemberSlogan(memberSloganDto);
+    }
+
+    @Transactional
+    public MemberSloganDto getMemberSlogan(int memberId){
+        return memberRepository.getMemberSlogan(memberId);
+    }
+
+    @Transactional
+    public double getPointPercentage(int memberid) throws Exception {
+        int rank = memberRepository2.findRanking(memberid);
+        int allCnt = memberRepository2.findMemberCnt();
+        double percentage = ((double) rank / allCnt) * 100;
+        return percentage;
+    }
+
+    @Transactional
+    public int getMemberPoint(int memberId){
+        Member findMember = memberRepository.findOne(memberId);
+        return findMember.getPoint();
+    }
+
+    @Transactional
+    public MemberBodyDto getMemberBodyInformation(int memberId) throws IllegalStateException {
+        Member findMember = memberRepository.findOne(memberId);
+        MemberBodyDto memberBodyDto = new MemberBodyDto();
+        if(findMember.getHeight() == 0 || findMember.getWeight() == 0 || findMember.getAge() == 0 || findMember.getActivityLevel() == 0 || findMember.getGender() == null){
+            throw new IllegalStateException("신체 정보가 입력되지 않았습니다.");
+        }
+
+        double bmi = findMember.getWeight() / (findMember.getHeight() * 0.01) / (findMember.getHeight() * 0.01);
+        memberBodyDto.setBmi(bmi);
+        double bmr = 0.0;
+        double caloriePerDay = 0.0;
+        if(findMember.getGender().equals(Gender.MALE)){
+            bmr = 66.47 + (13.75*findMember.getWeight()) + (5*findMember.getHeight()) - (6.76*findMember.getAge());
+        } else {
+            bmr = 665.1 + (9.05*findMember.getWeight()) + (1.85*findMember.getHeight()) - (4.68*findMember.getAge());
+        }
+        memberBodyDto.setBmr(bmr);
+        if(findMember.getActivityLevel() == 1){
+           caloriePerDay = bmr * 1.2;
+        } else if(findMember.getActivityLevel() == 2){
+            caloriePerDay = bmr * 1.375;
+        } else if(findMember.getActivityLevel() == 3){
+            caloriePerDay = bmr * 1.55;
+        } else {
+            caloriePerDay = bmr * 1.725;
+        }
+        memberBodyDto.setCaloriePerDay(caloriePerDay);
+        return memberBodyDto;
     }
 
 

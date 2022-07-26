@@ -78,9 +78,15 @@ public class Member implements UserDetails {
     @Column(name = "member_refresh_token")
     private String refreshToken;
 
+    @Column(name = "member_activity_level")
+    private int activityLevel;
+
     @ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default
     private List<String> roles = new ArrayList<>();
+
+    @Column(name = "member_slogan")
+    private String slogan;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -131,10 +137,15 @@ public class Member implements UserDetails {
         this.weight = memberUpdateDto.getWeight();
         this.activityHour = memberUpdateDto.getActivityHour();
         this.activityNum = memberUpdateDto.getActivityNum();
+        this.activityLevel = memberUpdateDto.getActivityLevel();
 
     }
 
     public void updateProfieImg(ProfileImg profileImg){
         this.profileImg = profileImg;
+    }
+
+    public void updateMemberSlogan(String slogan){
+        this.slogan = slogan;
     }
 }
