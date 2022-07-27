@@ -6,16 +6,14 @@
 
           <div class="d-flex justify-content-between align-items-center" >
             <h3 class="m-0">방 이름</h3>
-            <h3 class="m-0">타이머</h3>
-            <button class="btn btn-primary">Ready</button>
+            <Timer></Timer>
           </div>
 
           <div class="d-flex">
             <div style="width:70%;">
               <div class="d-flex align-items-center justify-content-center mt-5"
               style="background-color:aqua;  height:400px">
-              <iframe width="100%" height="100%" src="https://www.youtube.com/embed/NONWar0jGLM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-              </div>
+              <iframe width="100%" height="100%" src="https://www.youtube.com/embed/gTowV_F07uI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>              </div>
               <div class="mt-3 d-flex align-items-center justify-content-center"
               style="background-color:gray; height:50px;">
                 도구 모음
@@ -79,10 +77,12 @@
   </div>
 </template>
 <script>
+import Timer from '@/components/SetTimer.vue';
+
 export default {
   name: 'FriendNoChatView',
   components: {
-
+    Timer,
   },
   data() {
     return {

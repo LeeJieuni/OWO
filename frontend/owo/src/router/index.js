@@ -9,6 +9,7 @@ import FriendChatView from '../views/Room/FriendChatView.vue';
 import FriendNoChatView from '../views/Room/FriendNoChatView.vue';
 import YoutubeChatView from '../views/Room/YoutubeChatView.vue';
 import YoutubeNoChatView from '../views/Room/YoutubeNoChatView.vue';
+import TestPage from '../views/Room/TestPage.vue';
 import login from '../views/accounts/loginView.vue';
 import register from '../views/accounts/registerView.vue';
 
@@ -75,6 +76,11 @@ const routes = [
     path: '/youtubenochat',
     name: 'YoutubeNoChat',
     component: YoutubeNoChatView,
+  },
+  {
+    path: '/testpage',
+    name: 'TestPage',
+    component: TestPage,
   },
 ];
 

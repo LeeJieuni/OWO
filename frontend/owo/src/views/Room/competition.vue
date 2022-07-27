@@ -1,77 +1,39 @@
 <template>
-  <div class="container-fluid">
-    <div class="container">
-      <div class="d-flex">
-        <div style="width:100%;">
-          <div class="d-flex justify-content-between align-items-center" >
-            <h3 class="m-0">팔굽혀펴기</h3>
-            <h3 class="m-0">타이머</h3>
-            <button class="btn btn-primary">Ready</button>
-          </div>
-
-          <div class="container d-flex justify-content-between mt-5">
-            <div class="card me-3" style="width: 25rem; height:18rem;">
-              <img src="" class="card-img-top" alt="...">
-              <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">Some quick example text to build onontent.</p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
-              </div>
-            </div>
-            <div class="card me-3" style="width: 25rem; height:18rem;">
-              <img src="" class="card-img-top" alt="...">
-              <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">Some quick example text to build onontent.</p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
-              </div>
-            </div>
-            <div class="card me-3" style="width: 25rem; height:18rem;">
-              <img src="" class="card-img-top" alt="...">
-              <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">Some quick example text to build onontent.</p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
-              </div>
+  <div class="container">
+    <div class="d-flex">
+      <div style="width:100%;">
+        <div class="d-flex justify-content-between align-items-center" >
+          <h3 class="m-0">팔굽혀펴기</h3>
+          <Timer/>
+        </div>
+        <div class="container d-flex justify-content-between mt-5">
+          <div class="container">
+            <div class="row">
+              <WebRTC v-if="false" class="col-lg-4 mb-5"></WebRTC>
+              <WebRTC class="col-4 mb-5"></WebRTC>
+              <WebRTC class="col-4 mb-5"></WebRTC>
+              <WebRTC class="col-4 mb-5"></WebRTC>
+              <WebRTC class="col-4 mb-5"></WebRTC>
+              <WebRTC class="col-4 mb-5"></WebRTC>
+              <RoomButton></RoomButton>
             </div>
           </div>
-          <div class="container d-flex justify-content-between mt-5">
-            <div class="card me-3" style="width: 25rem; height:18rem;">
-              <img src="" class="card-img-top" alt="...">
-              <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">Some quick example text to build onontent.</p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
-              </div>
-            </div>
-            <div class="card me-3" style="width: 25rem; height:18rem;">
-              <img src="" class="card-img-top" alt="...">
-              <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">Some quick example text to build onontent.</p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
-              </div>
-            </div>
-            <div class="card me-3" style="width: 25rem; height:18rem;">
-              <img src="" class="card-img-top" alt="...">
-              <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">Some quick example text to build onontent.</p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
-              </div>
-            </div>
-          </div>
-
         </div>
       </div>
     </div>
   </div>
 </template>
 <script>
+import Timer from '@/components/SetTimer.vue';
+import WebRTC from '@/components/Room/WebRTC.vue';
+import RoomButton from '@/components/Room/RoomButton.vue';
+
 export default {
   name: 'CompetitionView',
   components: {
-
+    Timer,
+    WebRTC,
+    RoomButton,
   },
   data() {
     return {
@@ -87,5 +49,9 @@ export default {
 <style scoped>
 div {
   color:black;
+}
+
+.container {
+  width:1600px;
 }
 </style>
