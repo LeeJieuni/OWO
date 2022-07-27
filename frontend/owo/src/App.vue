@@ -56,7 +56,6 @@ font-family: 'NanumSquareRoundExtraBold';
     font-weight: normal;
     font-style: normal;
 }
-
 /* 레페리포인트 BLACK OBLIQUE */
 @font-face {
     font-family: 'LeferiPoint-BlackObliqueA';
