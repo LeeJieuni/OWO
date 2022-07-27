@@ -1,33 +1,24 @@
 <template>
-  <div class="container-fluid">
-    <div class="d-flex">
-      <div style="width:100%;">
-        <div class="d-flex justify-content-between align-items-center" >
+  <div class="container-wrap d-flex justify-content-center">
+      <div>
+        <div class="container d-flex justify-content-between align-items-center"
+        style="height:80px;">
           <h3 class="m-0">팔굽혀펴기</h3>
           <Timer/>
         </div>
-        <div class="container d-flex justify-content-between mt-5">
-          <div class="container">
-            <div class="row">
-              <WebRTC v-if="false" class="col-lg-4 mb-5"></WebRTC>
-              <WebRTC class="col-4 mb-5"></WebRTC>
-              <WebRTC class="col-4 mb-5"></WebRTC>
-              <WebRTC class="col-4 mb-5"></WebRTC>
-              <WebRTC class="col-4 mb-5"></WebRTC>
-              <WebRTC class="col-4 mb-5"></WebRTC>
-              <RoomButton></RoomButton>
-              <div class="d-flex justify-content-between">
-                <div>오운완 로고1
-                </div>
-                <div>인삿말
-                </div>
-              </div>
-            </div>
+        <div class="container d-flex align-items-start justify-content-between">
+          <div class="row">
+            <WebRTC v-if="false" class="col-lg-4 mb-5"></WebRTC>
+            <WebRTC class="col-4 mb-5"></WebRTC>
+            <WebRTC class="col-4 mb-5"></WebRTC>
+            <WebRTC class="col-4 mb-5"></WebRTC>
+            <WebRTC class="col-4 mb-5"></WebRTC>
+            <WebRTC class="col-4 mb-5"></WebRTC>
+            <RoomButton></RoomButton>
           </div>
         </div>
       </div>
     </div>
-  </div>
 </template>
 <script>
 import Timer from '@/components/SetTimer.vue';
@@ -57,7 +48,4 @@ div {
   color:black;
 }
 
-.container {
-  width:1600px;
-}
 </style>

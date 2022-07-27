@@ -2,7 +2,11 @@
     <div>
         <div class="card me-3 d-flex justify-content-center align-items-center"
         style="width: 25rem; height:18rem;">
-          <img onclick="get_out()" id="img" src="@/assets/icon/more.png" alt="">
+        <div id="img_hover">
+          <button id="img" @click="get_out"><img style="width:25px;"
+          src="@/assets/icon/get_out.png" alt="">
+          </button>
+        </div>
         <div>
             <p>개인 WebRTC 영상</p>
         </div>
@@ -14,12 +18,7 @@ export default {
   components: {},
   data() {
     return {
-      user1_isActive: false,
-      user2_isActive: true,
-      user3_isActive: true,
-      user4_isActive: true,
-      user5_isActive: true,
-      user6_isActive: true,
+      user_isActive: false,
     };
   },
   setup() {},
@@ -28,16 +27,29 @@ export default {
   unmounted() {},
   methods: {
     get_out() {
-      alert('hello');
+      alert('추방하시겠습니까?');
     },
   },
 };
 </script>
 <style scoped>
+#img_hover {
+  display: inline-block;
+}
+
 #img {
-  width: 25px;
+  display: none;
   position : absolute;
   top:5%;
-  left:90%;
+  left:88%;
+  border: 0;
+  outline: 0;
+  background-color: #ffffff;
+  opacity: 0;
 }
+
+#img_hover:hover #img {
+  display: block;
+}
+
 </style>
