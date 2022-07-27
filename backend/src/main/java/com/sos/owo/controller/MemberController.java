@@ -7,6 +7,8 @@ import com.sos.owo.dto.*;
 import com.sos.owo.service.EmailTokenService;
 import com.sos.owo.service.MemberService;
 import com.sos.owo.service.ProfileImgService;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.annotations.Delete;
@@ -51,7 +53,7 @@ public class MemberController {
     @Value("${app.fileupload.uploadPath}")
     private String uploadPath;
 
-
+    @ApiOperation(value = "회원가입",notes = "email과 password를 받아서 회원가입을 한다.")
     @PostMapping("/auth/join")
     public ResponseEntity<?> signUp(@RequestBody MemberSaveRequestDto requestDto){
         Message message = new Message();
@@ -121,6 +123,8 @@ public class MemberController {
         }
     }
 
+    @ApiOperation(value = "비밀번호 찾기 요청",notes = "찾고자 하는 email로 비밀번호 찾기를 요청한다.(이메일 인증)")
+    @ApiImplicitParam(name = "email",value = "사용자 email",dataType = "String")
     @GetMapping("/api/auth/password")
     public ResponseEntity<?> findPassword(@RequestParam String email){
         Message message = new Message();
@@ -146,6 +150,7 @@ public class MemberController {
 
     }
 
+    @ApiOperation(value = "비밀번호 변경 요청",notes = "이메일 인증 후 email과 변경하고자 하는 password로 비밀번호 변경 요청을 한다.")
     @PutMapping("/api/auth/password")
     public ResponseEntity<?> updatePassword(@RequestBody MemberSaveRequestDto requestDto){
         Message message = new Message();
@@ -165,18 +170,20 @@ public class MemberController {
 
     }
 
+    @ApiOperation(value = "로그인 요청",notes = "email과 password로 로그인을 요청한다.")
     @PostMapping("/auth/login")
-    public ResponseEntity<?> login(@RequestBody Map<String, String> user){
+    public ResponseEntity<?> login(@RequestBody MemberRequestLoginDto memberRequestLoginDto){
+        System.out.println(memberRequestLoginDto.getEmail());
         Message message = new Message();
         HttpHeaders headers= new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
         try {
-            if(!memberService.checkEnable(user.get("email"))){
+            if(!memberService.checkEnable(memberRequestLoginDto.getEmail())){
                 message.setStatus(StatusEnum.BAD_REQUEST);
                 message.setMessage("회원가입 이메일 인증이 필요합니다.");
                 return new ResponseEntity<>(message, headers, HttpStatus.BAD_REQUEST);
             }
-            MemberLoginResponseDto member = memberService.login(user.get("email"), user.get("password"));
+            MemberLoginResponseDto member = memberService.login(memberRequestLoginDto.getEmail(), memberRequestLoginDto.getPassword());
             message.setStatus(StatusEnum.OK);
             message.setMessage("로그인 성공");
             message.setData(member);
@@ -195,6 +202,7 @@ public class MemberController {
     }
 
     // 토큰 재발급
+    @ApiOperation(value = "access token 재발급 요청",notes = "refresh 토큰으로 access 토큰을 재발급 신청한다.")
     @PostMapping(value = "/api/refresh")
     public ResponseEntity<?> refreshToken(
             @RequestHeader(value="X-AUTH-TOKEN") String token,
@@ -224,7 +232,7 @@ public class MemberController {
         }
 
     }
-
+    @ApiOperation(value = "로그아웃을 요청한다.",notes = "refresh 토큰으로 로그아웃을 요청한다.")
     @GetMapping("/api/logout")
     public ResponseEntity<?> logout(@RequestHeader(value="REFRESH-TOKEN") String refreshToken) {
         Message message = new Message();
@@ -242,6 +250,7 @@ public class MemberController {
         }
     }
 
+    @ApiOperation(value = "사용자 정보 수정 요청",notes = "사용자 정보 수정을 요청한다.")
     @PutMapping("/api/user")
     public ResponseEntity<?> updateMember(@RequestBody MemberUpdateDto memberUpdateDto, HttpServletRequest request){
         Message message = new Message();
@@ -266,7 +275,12 @@ public class MemberController {
             return new ResponseEntity<>(message, headers,  HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    @ApiOperation(value = "사용자 프로필 사진 수정 요청" ,notes = "사용자의 프로필 사진을 수정 요청한다.")
+    @ApiImplicitParams(
+            {
+                    @ApiImplicitParam(name = "file",value = "사용자 이미지 파일"),
+                    @ApiImplicitParam(name = "memberId",value = "사용자 memberId"),
+            })
     @PutMapping("/api/user/{memberId}")
     public ResponseEntity<?> updateProfileImg(@RequestParam("file") MultipartFile file, @PathVariable("memberId") int memberId) {
         Message message = new Message();
@@ -309,6 +323,8 @@ public class MemberController {
         }
     }
 
+    @ApiOperation(value = "사용자 프로필 사진파일 요청" ,notes = "사용자의 프로필 사진파일을 요청한다.")
+    @ApiImplicitParam(name = "memberId",value = "사용자 memberId",dataType = "int",paramType = "path")
     @GetMapping("/api/user/{memberId}")
     public ResponseEntity<?> getProfileImg(@PathVariable("memberId") int memberId) throws IOException {
         FileDto fileDto = profileImgService.getFile(memberId);
@@ -322,6 +338,7 @@ public class MemberController {
                 .body(resource);
     }
 
+    @ApiOperation(value = "사용자 슬로건 수정 요청" ,notes = "사용자의 슬로건의 수정을 요청한다.")
     @PutMapping("/api/user/slogan")
     public ResponseEntity<?> updateSlogan(@RequestBody MemberSloganDto memberSloganDto){
         Message message = new Message();
@@ -340,6 +357,8 @@ public class MemberController {
         }
     }
 
+    @ApiOperation(value = "사용자 슬로건 정보 요청" ,notes = "사용자의 슬로건의 정보를 요청한다.")
+    @ApiImplicitParam(name = "memberId",value = "사용자 memberId",dataType = "int",paramType = "path")
     @GetMapping("/api/user/slogan/{memberId}")
     public ResponseEntity<?> getMemberSlogan(@PathVariable("memberId") int memberId){
         Message message = new Message();
@@ -359,6 +378,8 @@ public class MemberController {
         }
     }
 
+    @ApiOperation(value = "사용자 포인트 상위 퍼센티지 요청" ,notes = "사용자 포인트 상위 퍼센티지 정보를 요청한다.")
+    @ApiImplicitParam(name = "memberId",value = "사용자 memberId",dataType = "int",paramType = "path")
     @GetMapping("/api/user/point/percentage/{memberId}")
     public ResponseEntity<?> getPercentage(@PathVariable int memberId){
         Message message = new Message();
@@ -378,6 +399,8 @@ public class MemberController {
         }
     }
 
+    @ApiOperation(value = "사용자 포인트 요청" ,notes = "사용자 포인트 정보를 요청한다.")
+    @ApiImplicitParam(name = "memberId",value = "사용자 memberId",dataType = "int",paramType = "path")
     @GetMapping("/api/user/point/{memberId}")
     public ResponseEntity<?> getPoint(@PathVariable int memberId){
         Message message = new Message();
@@ -396,6 +419,8 @@ public class MemberController {
         }
     }
 
+    @ApiOperation(value = "사용자 신체정보를 요청한다." ,notes = "사용자 신체정보(BMI/기초대사량/하루권장칼로리)에 대한 정보를 요청한다.")
+    @ApiImplicitParam(name = "memberId",value = "사용자 memberId",dataType = "int",paramType = "path")
     @GetMapping("/api/user/bmi/{memberId}")
     public ResponseEntity<?> getBMI(@PathVariable int memberId){
         Message message = new Message();
