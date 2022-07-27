@@ -7,7 +7,8 @@
         <div class="my-level-icon align-self-center">
           <img
             class="my-level-icon-img"
-            :src="require(`@/assets/icon/tier${tierNum}.png`)" alt="tear1">
+            :src="require(`@/assets/icon/tier${tierNum}.png`)"
+            alt="tear1">
         </div>
         <div class="bar-info">
           <div class="progress bar">
@@ -22,8 +23,8 @@
             </div>
           </div>
           <div class="tear-info d-flex text-center align-items-end">
-            <div class="tear-name">브론즈&nbsp;&nbsp;</div>
-            <div class="me-auto user-percent">전체 사용자 중 상위 10%</div>
+            <div class="tear-name">{{ tearName }}&nbsp;&nbsp;</div>
+            <div class="me-auto user-percent">전체 사용자 중 상위 {{rankPercent}}%</div>
             <div class="user-point">20 / 100 P</div>
           </div>
         </div>
@@ -36,11 +37,12 @@ export default {
   components: {},
   data() {
     return {
-      a: '',
       tearPercent: '25%',
       tearPercentage: 25,
-      tierColor: '#89621d',
+      tierColor: '#919191',
       tierNum: 2,
+      rankPercent: 70,
+      tearName: '실버',
     };
   },
   setup() {},

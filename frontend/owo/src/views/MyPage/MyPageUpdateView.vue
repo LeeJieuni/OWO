@@ -2,10 +2,13 @@
   <div class="container p-5">
     <div class="title-box row">
       <div class="profile col-5 d-flex justify-content-end">
-        <label for="formFile" class="form-label">
-          <img class="profile-img " src="https://picsum.photos/150" alt="">
+        <label for="formFile" class="form-label" >
+          <img class="profile-img " :src=user.profileImg alt="">
           <input class="form-control form-control-sm profile-input"
-          type="file" id="formFile">
+            type="file" id="formFile"
+            src=profileImg
+            v-on:change="profileImg($event)"
+            >
         </label>
       </div>
       <div class="col-7 title p-3">
@@ -147,6 +150,8 @@ export default {
         },
         secret: 2,
         goals: [],
+        /* eslint-disable global-require */
+        profileImg: 'https://picsum.photos/150',
       },
     };
   },
@@ -185,6 +190,12 @@ export default {
     },
     registGoal() {
       // 솰라솰라
+    },
+    profileImg(e) {
+      let files = e.target.files || e.dataTransfer.files;
+      if (!files.length)
+        return;
+      this.createImage(files[0]);
     }
   },
 };

@@ -8,16 +8,26 @@
           <div class="row d-flex justify-content-center mt-100">
             <div class="col-md-10">
               <div class="d-flex justify-content-center">
-                <div v-for="(goal, i) in goals" :key="i">
-                  <p class="goal-name">{{ goal }}</p>
-                  <div class="progress-box" >
-                    <div class="progress blue">
-                      <span class="progress-left"><span class="progress-bar"></span></span>
-                      <span class="progress-right"><span class="progress-bar"></span></span>
-                      <div class="progress-value">{{value}}</div>
+                <template v-for="(goal, i) in goals" :key="i">
+                  <div v-if="goal.name!==''">
+                    <p class="goal-name">{{ goal.name }}</p>
+                    <div class="progress-box" >
+                      <div class="progress blue">
+                        <span class="progress-left"><span class="progress-bar"></span></span>
+                        <span class="progress-right"><span class="progress-bar"></span></span>
+                        <div class="progress-value">{{value}}</div>
+                      </div>
                     </div>
                   </div>
-                </div>
+                  <div v-else>
+                    <p class="no-goal-name">목표가 없습니다.</p>
+                    <div class="progress-box">
+                      <router-link to="/mypage/update" class="no-goal">
+                        <p class="no-goal-text">목표를 추가해 보세요!</p>
+                      </router-link>
+                    </div>
+                  </div>
+                </template>
               </div>
             </div>
           </div>
@@ -33,7 +43,9 @@ export default {
     return {
       value: '90%',
       goals: [
-        '유산소', '스트레칭', '헬스',
+        { name: '유산소' },
+        { name: '스트레칭' },
+        { name: '' },
       ],
     };
   },
@@ -201,6 +213,16 @@ export default {
 
 .goal-name {
   font-size: 18px;
+}
+.no-goal-name {
+  color: gray;
+}
+.no-goal-text {
+  line-height: 150px;
+}
+.no-goal {
+  /* text-decoration: none; */
+  color: gray;
 }
 
 </style>

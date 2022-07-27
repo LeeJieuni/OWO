@@ -7,9 +7,6 @@
       <MyCalendar/>
     </div>
   </div>
-  <div>
-    <p>안녕</p>
-  </div>
 </template>
 
 <script>
@@ -41,5 +38,8 @@ export default {
 <style scoped>
   .title {
     padding: 50px;
+  }
+  .calendar {
+    margin: 0 auto;
   }
 </style>

@@ -8,18 +8,22 @@
         <label for="hi">
           <input v-if="slogan === ''" type="text" name="hi"
             class="slogan" placeholder="목표 및 슬로건을 입력해 주세요!"
-            v-model="slogan">
+            v-model="slogan" @input="sloganInput">
             <input v-else type="text" name="hi"
             class="slogan" :placeholder=slogan
             v-model="slogan" @keyup.enter="changeSlogan()">
             <span class="material-symbols-outlined">edit</span>
         </label>
-        <div class="my-nav text-end pb-1">
-            <span class="ps-3"><router-link to="/mypage/main">⚒ 운동 분석</router-link></span>
-            <span class="ps-3"><router-link to="/mypage/update">👧 내 정보 수정</router-link></span>
-            <span class="ps-3"><router-link to="/mypage/schedule">📆 운동 일지</router-link>
-            &nbsp;&nbsp;&nbsp;&nbsp;
-          </span>
+        <div class="my-nav row text-center">
+          <p class="col col-auto ms-auto">
+            <router-link to="/mypage/main">⚒ 운동 분석</router-link>
+          </p>
+          <p class="col col-auto">
+            <router-link to="/mypage/update">👧 내 정보 수정</router-link>
+          </p>
+          <p class="col col-auto me-4">
+            <router-link to="/mypage/schedule">📆 운동 일지</router-link>
+          </p>
         </div>
       </div>
       <div>
@@ -46,6 +50,9 @@ export default {
     changeSlogan() {
 
     },
+    sloganInput(e) {
+      this.slogan = e.target.value;
+    },
   },
 };
 </script>
@@ -65,20 +72,21 @@ export default {
   .mypageContainer {
     font-weight: 600;
     /* text-shadow: #7b7b7b 1px 1px; */
-    max-width: 800px;
+    max-width: 980px;
     margin: 0 auto;
     background-color: white;
     text-align: center;
     border: solid #DFDFDF 1px;
     box-sizing: border-box;
     border-radius: 20px;
-    height: 1200px;
+    height: 1500px;
     box-shadow: rgb(105, 105, 105) 3px 3px 10px;
     /* padding: 35px; */
   }
   .title {
     border-bottom: solid #DFDFDF 1px;
     font-weight: 800;
+    margin-top: 10px;
   }
 
   .slogan {
@@ -90,7 +98,7 @@ export default {
     padding: 2px;
   }
   .slogan::placeholder {
-    color: black;
+    color: #6f6f6f;
   }
   .slogan:hover {
     font-weight: 900;
@@ -105,37 +113,10 @@ export default {
   .material-symbols-outlined:hover {
     font-size: 19px;
   }
-
-/*
-  .slogan {
-    text-align: left;
-    font-size: 20px;
-    padding: 0px;
-    margin: 0px;
-    margin-right: auto;
+  .my-nav > p:hover {
+    color: white;
+    background-color: rgb(229, 241, 255);
+    border-radius: 10px;
+    transition: 0.3s;
   }
-
-  .my-nav {
-
-  }
-
-  .my-nav li {
-    text-decoration: none;
-  }
-
-  .my-nav ul {
-    height: 100%;
-    text-align: right;
-    align-items:flex-end;
-    justify-content: flex-end;
-    padding-right: 20px;
-    display: inline;
-    font-size: 13px;
-    color: #2E2E2E;
-  }
-
-  .material-symbols-outlined {
-    font-size:20px;
-  } */
-
 </style>

@@ -17,7 +17,7 @@
 
     <!-- 신체 정보 분석 & 운동일지 -->
     <div class="physical-info-analys">
-      <physical-info-analys/>
+      <physical-info-and-schedule/>
     </div>
 
   </div>
@@ -26,12 +26,12 @@
 import MyExerciseLevel from '@/components/MyPage/MyExerciseLevel.vue';
 import MyExerciseRate from '@/components/MyPage/MyExerciseRate.vue';
 import MyWeeklyGoal from '@/components/MyPage/MyWeeklyGoal.vue';
-import PhysicalInfoAnalys from '@/components/MyPage/PhysicalInfoAnalys.vue';
+import PhysicalInfoAndSchedule from '@/components/MyPage/PhysicalInfoAndSchedule.vue';
 
 export default {
   name: 'MyPageMainView',
   components: {
-    MyExerciseLevel, MyWeeklyGoal, MyExerciseRate, PhysicalInfoAnalys,
+    MyExerciseLevel, MyWeeklyGoal, MyExerciseRate, PhysicalInfoAndSchedule,
   },
   data() {
     return {

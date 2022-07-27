@@ -4,7 +4,6 @@
     <div class="main-container">
       <router-view/>
     </div>
-    <Footer/>
   </div>
 </template>
 
@@ -29,9 +28,11 @@ export default {
   height: 100%;
   letter-spacing : -0.05em;
   padding-bottom: 100px;
-
 }
-
+* {
+  margin: 0;
+  padding: 0;
+}
 /* font import */
 
 /* 나눔스퀘어 라운드

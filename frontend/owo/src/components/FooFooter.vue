@@ -1,6 +1,8 @@
 <template>
   <div class="wrapper">
-    icons : <a target="_blank" href="https://icons8.com/icon/85962/pencil">Pencil icon by Icons8</a>
+    <p>
+      icons : <a target="_blank" href="https://icons8.com/icon/85962/pencil">Pencil icon by Icons8</a>
+    </p>
   </div>
 </template>
 <script>

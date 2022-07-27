@@ -2,38 +2,26 @@
   <div>
     <div class="row">
         <p class="my-rate-title">나의 운동 비율</p>
+
       </div>
       <div class="my-rate-info align-items-center">
         <div class="bar-info">
           <div class="progress bar">
-            <div class="progress bar">
-              <div class="progress-bar"
-                role="progressbar" aria-label="Segment one"
-                style="width: 40%" aria-valuenow="40"
-                aria-valuemin="0" aria-valuemax="100" >헬스 40%
-              </div>
-              <div class="progress-bar bg-light"
-                role="progressbar" aria-label="Segment one"
-                style="width: 30%" aria-valuenow="30"
-                aria-valuemin="0" aria-valuemax="100">스트레칭 30%
-              </div>
-              <div class="progress-bar bg-secondary"
-                role="progressbar" aria-label="Segment one"
-                style="width: 20%" aria-valuenow="20"
-                aria-valuemin="0" aria-valuemax="100">?? 20%
-              </div>
-              <div class="progress-bar bg-black"
-                role="progressbar" aria-label="Segment one"
-                style="width: 10%" aria-valuenow="10"
-                aria-valuemin="0" aria-valuemax="100">요가 10%
-              </div>
-            </div>
+              <template v-for="(record, recordIndex) in records" :key="recordIndex">
+                <div v-if="record.exerciseHours!==0"
+                  class="progress-bar"
+                  role="progressbar" aria-label="Segment one"
+                  :style="{width: record.exerciseRate + '%',
+                    backgroundColor: colors[recordIndex] }"
+                  :aria-valuenow=record.exerciseRate
+                  aria-valuemin="0" aria-valuemax="100" >
+                  <span class="rate-name">
+                    {{record.name}} <span class="rate-rate">{{record.exerciseRate}}%</span>
+                  </span>
+                </div>
+              </template>
           </div>
-          <div class="tear-info d-flex text-center align-items-end">
-            <div class="tear-name">브론즈&nbsp;&nbsp;</div>
-            <div class="me-auto user-percent">ssss</div>
-            <div class="user-point">20 / 100 P</div>
-          </div>
+          <p class="text-start mt-2 fs-6">{{ user.name }}님은 유산소를 많이 하셨군요!</p>
         </div>
       </div>
   </div>
@@ -44,41 +32,47 @@ export default {
   components: {},
   data() {
     return {
+      user: {
+        name: '한나',
+      },
       sumOfExerciseHours: 0,
       records: [
-        { exerciseName: '헬스', exerciseHours: 24 },
-        { exerciseName: '스트레칭', exerciseHours: 16 },
-        { exerciseName: '요가', exerciseHours: 10 },
-        { exerciseName: '헬스', exerciseHours: 40 },
+        { name: '유산소', exerciseHours: 24, exerciseRate: null },
+        { name: '헬스', exerciseHours: 20, exerciseRate: null },
+        { name: '스트레칭', exerciseHours: 15, exerciseRate: null },
+        { name: '맨몸운동', exerciseHours: 12, exerciseRate: null },
+        { name: '요가', exerciseHours: 11, exerciseRate: null },
+        { name: '필라테스', exerciseHours: 0, exerciseRate: null },
+        { name: '기타', exerciseHours: 0, exerciseRate: null },
+      ],
+      colors: [
+        '#6842FF', '#3C48E8', '#4E8AFF', '#3CA3E8', '#42E5FF', '#31E8CE', '#36FFAA',
       ],
     };
   },
   setup() {},
-  created() {},
-  moundted() {},
-  unmounted() {},
-  methods: {},
-  computed() {
+  created() {
     for (let i = 0; i < this.records.length; i += 1) {
-      this.SumOfExerciseHours += this.records[i].exerciseHours;
+      this.sumOfExerciseHours += this.records[i].exerciseHours;
     }
     for (let i = 0; i < this.records.length; i += 1) {
-      this.records[i].push(
-        {
-          exerciseRate: Math.round((this.records[i].exerciseHours / this.sumOfExerciseHours) * 100),
-        },
+      this.records[i].exerciseRate = Math.round(
+        (this.records[i].exerciseHours / this.sumOfExerciseHours) * 100,
       );
     }
+  },
+  moundted() {},
+  unmounted() {},
+  methods: {
+  },
+  computed() {
+
   },
 };
 </script>
 
 <style scoped>
   /* 나의 운동 레벨 */
-.my-rate {
-  height: 250px;
-  border-bottom: solid #DFDFDF 1px;
-}
 
 .my-rate-title {
   text-align: left;
@@ -107,26 +101,31 @@ export default {
   padding-left: 20px;
 }
 
-.tear-name {
-  padding-top: 10px;
-  margin-bottom: 0px;
-}
-
 .bar {
   width: 100%;
   height: 20px;
 }
-
+.progress {
+  height: 30px;
+}
 .progress-bar {
   font-size: 14px;
   text-shadow: 2px 2px 2px #2E2E2E;
-  width: 90%
+  width: 90%;
 }
-.tear-info {
+.rate-info {
   padding-top: 10px;
 }
-.tear-name {
-  padding-top: 0px;
-  font-size: 20px;
+.rate-name {
+  font-size: 18px;
+}
+.rate-rate {
+  font-size: 14px;
+}
+.sm-text {
+  font-size: 10px;
+}
+.md-text {
+  font-size: 12px;
 }
 </style>
