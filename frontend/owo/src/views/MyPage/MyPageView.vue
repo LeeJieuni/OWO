@@ -72,14 +72,14 @@ export default {
   .mypageContainer {
     font-weight: 600;
     /* text-shadow: #7b7b7b 1px 1px; */
-    max-width: 980px;
+    max-width: 1200px;
     margin: 0 auto;
     background-color: white;
     text-align: center;
     border: solid #DFDFDF 1px;
     box-sizing: border-box;
     border-radius: 20px;
-    height: 1500px;
+    height: 100%;
     box-shadow: rgb(105, 105, 105) 3px 3px 10px;
     /* padding: 35px; */
   }

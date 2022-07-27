@@ -1,5 +1,6 @@
 <template>
   <div class="calendar">
+    <p class="my-calendar-title">운동일지</p>
     <div class="month-title">
       <h2>
         <a class="month-change-btn" href="#" v-on:click="onClickPrev(currentMonth)">◀</a>
@@ -7,27 +8,29 @@
         <a class="month-change-btn" href="#" v-on:click="onClickNext(currentMonth)">▶</a>
       </h2>
     </div>
-    <table class="table table-hover">
-      <thead>
-        <tr>
-          <td v-for="(weekName, index) in weekNames" v-bind:key="index">
-            {{weekName}}
-          </td>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(row, index) in currentCalendarMatrix" :key="index">
-          <td v-for="(day, index2) in row" :key="index2" style="padding:20px;">
-            <span v-if="isToday(currentYear, currentMonth, day)" class="rounded">
-              {{day}}
-            </span>
-            <span v-else>
-              {{day}}
-            </span>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="calendar-table">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <td v-for="(weekName, index) in weekNames" v-bind:key="index">
+              {{weekName}}
+            </td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(row, index) in currentCalendarMatrix" :key="index">
+            <td v-for="(day, index2) in row" :key="index2" style="padding:20px;">
+              <span v-if="isToday(currentYear, currentMonth, day)" class="rounded">
+                {{day}}
+              </span>
+              <span v-else>
+                {{day}}
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 
@@ -153,8 +156,19 @@ export default {
 </script>
 
 <style scoped>
+.my-calendar-title {
+  text-align: left;
+  padding-top: 50px;
+  font-size: 22px;
+  padding-bottom: 20px;
+  padding-left: 50px;
+}
 .calendar {
   max-width: 600px;
+}
+.calendar-table {
+  margin-left: 50px;
+  margin-right: 50px;
 }
 .month-change-btn {
   text-decoration: none;

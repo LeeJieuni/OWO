@@ -1,7 +1,7 @@
 <template>
-  <div class="container p-5">
+  <div class="container-box p-5">
     <div class="title-box row">
-      <div class="profile col-5 d-flex justify-content-end">
+      <div class="profile col d-flex justify-content-center">
         <label for="formFile" class="form-label" >
           <img class="profile-img " :src=user.profileImg alt="">
           <input class="form-control form-control-sm profile-input"
@@ -11,7 +11,7 @@
             >
         </label>
       </div>
-      <div class="col-7 title p-3">
+      <div class="col title p-3">
         <h3>{{ user.nick }}님의 정보 수정</h3><br>
           <p>이번주 운동 목표</p>
           <form action="">
@@ -32,10 +32,10 @@
               name="goalHour"
               style="width: 70px;"
               v-model="inputGoalHour"
-              min='1'> 시간
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              min='1'> 시간 <br>
             <button @click="addGoal($event)" class="top-btns btn btn-outline-secondary">추가</button>
-            <button @click="registGoal($event)" class="top-btns btn btn-outline-warning">등록</button>
+            <button @click="registGoal($event)"
+              class="top-btns btn btn-outline-warning">등록</button>
           </form>
         <div class="tags row">
           <button
@@ -202,6 +202,22 @@ export default {
 </script>
 
 <style scoped>
+.container-box {
+  margin: 0 auto;
+}
+.profile {
+  max-width: 150px;
+  display: flex;
+}
+.title {
+
+}
+.title-box {
+  margin: 0 auto;
+  max-width: 550px;
+  justify-content: center;
+
+}
 .top-btns {
   width: 60px;
   height: 25px;
@@ -242,7 +258,7 @@ export default {
   }
 
   .profile-form {
-    margin: 0, auto;
+    margin: 0 auto;
   }
 
   .title {

@@ -13,7 +13,7 @@
           </div>
           <div class="d-flex align-items-center">
             <div class="navbar-brand mb-0 h1">
-              <router-link to="/mypage"><span
+              <router-link to="/mypage/main"><span
               class="welcome">안녕하세요 오운완회원님, 반갑습니다!</span></router-link>
             </div>
             <div v-if="!isLoggedIn()" class="d-flex">
@@ -42,7 +42,7 @@
               <div class="dropdown">
                 <img class="profile-img " src="https://picsum.photos/150" alt="">
                 <div class="dropdown-content">
-                  <router-link to="/mypage"><li>마이페이지</li></router-link>
+                  <router-link to="/mypage/main"><li>마이페이지</li></router-link>
                   <router-link to=""><li>환경설정</li></router-link>
                   <router-link to=""><li>로그아웃</li></router-link>
                 </div>

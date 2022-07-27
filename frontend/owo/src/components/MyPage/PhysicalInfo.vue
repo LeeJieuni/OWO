@@ -4,8 +4,8 @@
       <p class="my-physical-info-title">신체 정보 분석</p>
     </div>
     <div class="row bmi">
-      <p class="sm-title">체질량지수</p>
       <div class="my-physical-info-graph align-items-center">
+        <p class="md-title">체질량지수</p>
         <div class="bar-info">
           <div class="progress ">
             <div class="progress-bar"
@@ -30,7 +30,7 @@
             </div>
           </div>
         </div>
-        <div class="bmi-solution pt-2">
+        <div class="bmi-solution pt-2 text-end">
           <p class="rg-font" v-if="user.bmi < 18.5">
             저체중입니다. 헬스로 근육을 찌워보시는 건 어떨까요?
           </p>
@@ -71,16 +71,17 @@ export default {
 
 <style scoped>
 
-.my-physical-info-title, .my-calendar-title {
+.my-physical-info-title {
   text-align: left;
   padding-top: 50px;
   font-size: 22px;
-  padding-bottom: 10px;
+  padding-bottom: 20px;
+  padding-left: 50px;
 }
 
-.my-physical-info, .my-calendar {
-  padding-left: 50px;
-  padding-right: 50px;
+.my-physical-info-graph {
+  padding-left: 60px;
+  padding-right: 60px;
   align-items: flex-start;
 }
 
@@ -88,7 +89,10 @@ export default {
   height: 30px;
   border-radius: 10;
 }
-
+.md-title {
+  font-size: 18px;
+  text-align: left;
+}
 .sm-title {
   text-align: left;
 }

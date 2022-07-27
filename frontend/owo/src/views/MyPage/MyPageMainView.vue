@@ -17,6 +17,14 @@
 
     <!-- 신체 정보 분석 & 운동일지 -->
     <div class="physical-info-analys">
+      <div class="row row1 p-0 m-0">
+        <div class="col col-6 my-physical-info">
+          <PhysicalInfo/>
+        </div>
+        <div class="col col-6 my-calendar">
+          <MyCalendar/>
+        </div>
+      </div>
       <physical-info-and-schedule/>
     </div>
 
@@ -26,12 +34,17 @@
 import MyExerciseLevel from '@/components/MyPage/MyExerciseLevel.vue';
 import MyExerciseRate from '@/components/MyPage/MyExerciseRate.vue';
 import MyWeeklyGoal from '@/components/MyPage/MyWeeklyGoal.vue';
-import PhysicalInfoAndSchedule from '@/components/MyPage/PhysicalInfoAndSchedule.vue';
+import PhysicalInfo from '@/components/MyPage/PhysicalInfo.vue';
+import MyCalendar from '@/components/MyPage/MyCalendar.vue';
 
 export default {
   name: 'MyPageMainView',
   components: {
-    MyExerciseLevel, MyWeeklyGoal, MyExerciseRate, PhysicalInfoAndSchedule,
+    MyExerciseLevel,
+    MyWeeklyGoal,
+    MyExerciseRate,
+    PhysicalInfo,
+    MyCalendar,
   },
   data() {
     return {
@@ -66,10 +79,8 @@ export default {
   border-bottom: solid #DFDFDF 1px;
 }
 
-.physical-info-analys {
-  height: 400px;
-  padding: 0px;
-  margin: 0px;
+.my-physical-info {
+  border-right: solid #DFDFDF 1px;
 }
 
 /* Color Palette */
