@@ -9,6 +9,8 @@ import FriendChatView from '../views/Room/FriendChatView.vue';
 import FriendNoChatView from '../views/Room/FriendNoChatView.vue';
 import YoutubeChatView from '../views/Room/YoutubeChatView.vue';
 import YoutubeNoChatView from '../views/Room/YoutubeNoChatView.vue';
+import login from '../views/accounts/loginView.vue';
+import register from '../views/accounts/registerView.vue';
 
 const routes = [
   {
@@ -16,6 +18,17 @@ const routes = [
     name: 'mainPageView',
     component: mainPageView,
   },
+  {
+    path: '/login',
+    name: 'login',
+    component: login,
+  },
+  {
+    path: '/join',
+    name: 'join',
+    component: register,
+  },
+
   {
     path: '/mypage',
     name: 'MyPage',

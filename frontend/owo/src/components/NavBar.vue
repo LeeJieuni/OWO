@@ -10,6 +10,8 @@
             <router-link to="/" >
               <img id="logo2" src="../assets/logo/logo2.png" alt="">
             </router-link>
+            <router-link to="/mypage"><span
+            class="welcome">안녕하세요 오운완회원님, 반갑습니다!</span></router-link>
           </span>
           <div v-if="!isLoggedIn()" class="d-flex">
           <!--dropdows1-rooms-->
@@ -31,9 +33,7 @@
                   to="/youtubenochat">YoutubeNoChat</router-link></li>
                 </ul>
               </li>
-              <li class="menu1" v-b-modal.modal-prevent-closing>
-                login
-              </li>
+              <router-link to="/login"><li class="menu1">login</li></router-link>
             </div>
             <div v-if="isLoggedIn()" class="d-flex">
               <div>
@@ -210,5 +210,10 @@ li{
   font-size: 14px;
   line-height: 1.4rem;
   padding: 10px;
+}
+.welcome {
+  font-size: 15px;
+  font-weight: lighter;
+  color: black;
 }
 </style>

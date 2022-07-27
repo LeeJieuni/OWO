@@ -13,7 +13,6 @@
     <SecondIntro/>
     <TodayKing/>
     <transition name="bounce" mode="out-in">
-      <MyModal></MyModal>
     </transition>
     <FooFooter/>
   </div>
@@ -23,14 +22,12 @@
 import Carousel from '@/components/MainPage/Carousel.vue';
 import SecondIntro from '@/components/MainPage/SecondIntro.vue';
 import TodayKing from '@/components/MainPage/TodayKing.vue';
-import MyModal from '@/components/MainPage/MyModal.vue';
 
 export default {
   components: {
     Carousel,
     TodayKing,
     SecondIntro,
-    MyModal,
   },
 };
 </script>

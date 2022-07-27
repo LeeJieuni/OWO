@@ -1,86 +1,47 @@
 <template>
   <div>
-    <b-button v-b-modal.modal-prevent-closing>Open Modal</b-button>
     <b-modal
-      id="modal-prevent-closing"
-      ref="modal"
-      title="로그인"
-      @show="resetModal"
-      @hidden="resetModal"
-      @ok="handleOk"
-      :hide-footer="true"
+    id="login-modal"
+    title="로그인"
+    :hide-footer="true"
     >
-      <form ref="form" @submit.stop.prevent="handleSubmit">
+      <form action="" @submit.stop.prevent="">
         <b-form-group
-          label="ID"
-          label-for="ID-input"
+          label="아이디"
+          label-for="user-id-input"
           invalid-feedback="ID is required"
-          :state="idState"
         >
-          <b-form-input
-            id="ID-input"
-            v-model="id"
-            :state="idState"
-            required
-          ></b-form-input>
+        <b-form-input id="user_id_input" v-model="user.username"></b-form-input>
         </b-form-group>
         <b-form-group
-          label="password"
-          label-for="password-input"
-          invalid-feedback="password is required"
-          :state="passwordState"
+          label="비밀번호"
+          label-for="user-pw-input"
+          invalid-feedback="PassWord is required"
         >
-          <b-form-input
-            id="password-input"
-            v-model="password"
-            :state="passwordState"
-            required
-          ></b-form-input>
+        <b-form-input id="user_pw_input" v-model="user.password"></b-form-input>
         </b-form-group>
-      </form>
-      <br>
-      <div class="signup"><p>회원이 아니신가요? <a href="">회원가입</a>하기</p></div>
-      <div class="buttons"><b-button class="loginbtn">로그인</b-button></div>
-      <br>
-      <hr>
-      <div class="snsButtons">
-        <h2>소셜로그인</h2>
-        <p></p>
-        <div class="snsBtn d-flex justify-content-center">
-          <!-- <img class="kakao" src="@/assets/socialLogo/" alt=""> -->
-          <img class="naver" src="@/assets/socialLogo/naverLogi2.png" alt="">
-          <!-- <img class="google" src="@/assets/socialLogo/" alt=""> -->
-        </div>
-      </div>
+        <input type="button" value="로그인" @click="ok()">
+        </form>
     </b-modal>
+
   </div>
 </template>
 
-<style>
-.snsBtn a {
-  padding: 10px;
-}
-.snsButtons h2 {
-  text-align: center;
-}
-.signup p {
-  text-align: center;
-}
-.loginbtn {
-  width: 80%;
-  height: 100%;
-}
-.buttons {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.naver {
-  width: 50px;
-  height: 50px;
-}
-.kakao {
-  width: 100px;
-  height: 50px;
-}
-</style>
+<script>
+export default {
+  data() {
+    return {
+      user: {
+        username: null,
+        password: null,
+      },
+    };
+  },
+  methods: {
+    print() {
+      console.log(this.user.username);
+      console.log(this.user.password);
+    },
+  },
+};
+</script>
