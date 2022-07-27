@@ -13,8 +13,9 @@
           </div>
           <div class="d-flex align-items-center">
             <div class="navbar-brand mb-0 h1">
-              <router-link to="/mypage/main"><span
-              class="welcome">안녕하세요 오운완회원님, 반갑습니다!</span></router-link>
+              <span>안녕하세요 <router-link
+            to="/mypage"><span
+            class="welcome">{{userInfo.username}}</span></router-link>님, 반갑습니다!</span>
             </div>
             <div v-if="!isLoggedIn()" class="d-flex">
             <!--dropdows1-rooms-->
@@ -61,6 +62,9 @@ export default {
   data() {
     return {
       sampleData: '',
+      userInfo: {
+        username: 'najangyeob',
+      },
     };
   },
   setup() {},
@@ -182,9 +186,10 @@ li{
   padding: 10px;
 }
 .welcome {
-  font-size: 15px;
+  font-size: 20px;
   font-weight: lighter;
   color: black;
+  text-decoration: underline;
 }
 .dropdown {
 position: relative;

@@ -16,7 +16,7 @@ import register from '../views/accounts/registerView.vue';
 const routes = [
   {
     path: '/',
-    name: 'mainPageView',
+    name: 'mainpage',
     component: mainPageView,
   },
   {
