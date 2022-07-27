@@ -1,5 +1,7 @@
 package com.sos.owo.config.security;
 
+import com.sos.owo.service.CustomOAuth2UserService;
+import com.sos.owo.service.CustomUserDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,6 +18,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JwtTokenProvider jwtTokenProvider;
+
+    private final CustomOAuth2UserService customOAuth2UserService;
+
 
     // 암호화에 필요한 PasswordEncoder를 Bean으로 등록
     @Bean
@@ -44,7 +49,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().permitAll()   // 그 외 나머지 요청은 누구나 접근 가능
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
-                        UsernamePasswordAuthenticationFilter.class);
+                        UsernamePasswordAuthenticationFilter.class)
+                .oauth2Login()
+                .userInfoEndpoint()
+                .userService(customOAuth2UserService);
 
     }
 }

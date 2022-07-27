@@ -148,4 +148,9 @@ public class Member implements UserDetails {
     public void updateMemberSlogan(String slogan){
         this.slogan = slogan;
     }
+
+    public Member update(String name){
+        this.nick = name;
+        return this;
+    }
 }
