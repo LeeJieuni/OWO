@@ -8,9 +8,10 @@
         <label for="email">아이디<input
           v-model="credential.email"
           class="form-control"
-          type="text"
+          type="email"
           name="email"
           placeholder="email@adress.com"
+          required
         /></label>
       </div>
       <div class="input">
@@ -20,6 +21,7 @@
           type="password"
           name="password"
           placeholder="password123"
+          required
         /></label>
       </div>
       <div class="alternative-option mt-4">

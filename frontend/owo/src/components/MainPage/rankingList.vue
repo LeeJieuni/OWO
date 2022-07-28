@@ -32,7 +32,7 @@
     </b-card>
 
     <b-card title="나의 운동분석" class="rounded-5">
-      <Calendar/>
+      <!-- <Calendar/> -->
     </b-card>
   </b-card-group>
 </div>
@@ -41,12 +41,12 @@
 <script>
 import 'vue3-circle-progress/dist/circle-progress.css';
 import CircleProgress from 'vue3-circle-progress';
-import Calendar from '@/components/MyPage/MyCalendar.vue';
+// import Calendar from '@/components/MyPage/MyCalendar.vue';
 
 export default {
   components: {
     CircleProgress,
-    Calendar,
+    // Calendar,
   },
   data() {
     return {
