@@ -79,7 +79,7 @@ public class MemberService {
 
     @Transactional
     public void savePoint(int point, int id){
-        competeRepository.savePoint(point, id);
+        memberRepository.savePoint(point, id);
     }
 
     @Transactional

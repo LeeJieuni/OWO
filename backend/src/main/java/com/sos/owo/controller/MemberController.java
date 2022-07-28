@@ -39,6 +39,7 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class MemberController {
 
     private final MemberService memberService;
@@ -118,6 +119,7 @@ public class MemberController {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(new MediaType("application","json", Charset.forName("UTF-8")));
         try {
+            System.out.println(point);
             memberService.savePoint(point, memberId);
             message.setStatus(StatusEnum.OK);
             message.setMessage("경쟁모드 경험치 저장성공");
@@ -141,7 +143,7 @@ public class MemberController {
             @ApiImplicitParam(name = "exp",value = "자유/영상모드 경험치",dataType = "int",paramType = "path"),
             @ApiImplicitParam(name = "memberId",value = "사용자 id",dataType = "int",paramType = "path")
     })
-    @PutMapping("/api/user/point/{exp}/{memberId}")
+    @PutMapping("/api/user/exp/{exp}/{memberId}")
     public ResponseEntity<?> saveExp(@PathVariable("exp") int exp, @PathVariable("memberId") int memberId){
         Message message = new Message();
         HttpHeaders httpHeaders = new HttpHeaders();

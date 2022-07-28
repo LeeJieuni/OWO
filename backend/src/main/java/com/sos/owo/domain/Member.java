@@ -153,4 +153,5 @@ public class Member implements UserDetails {
         this.nick = name;
         return this;
     }
+
 }

@@ -45,11 +45,22 @@ public class MemberRepository {
         return false;
     }
 
+    //경쟁모드 경험치 저장
+    public void savePoint(int point, int id){
+        Member findMember = findOne(id);
+        int current = findMember.getPoint() + point;
+        findMember.setPoint(current);
+        em.persist(findMember);
+        em.flush();
+    }
+
     //자유,영상모드 경험치 저장
     public void saveExp(int exp, int id){
-        Member findMember = em.find(Member.class, id);
-        int current = findMember.getExp();
-        findMember.setPoint(current+exp);
+        Member findMember = findOne(id);
+        int current = findMember.getExp() + exp;
+        findMember.setPoint(current);
+        em.persist(findMember);
+        em.flush();
     }
 
     public void setVerified(Member member){

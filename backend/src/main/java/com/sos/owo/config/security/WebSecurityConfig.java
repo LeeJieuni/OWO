@@ -59,13 +59,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(AUTH_WHITELIST).permitAll()
                 .antMatchers("/api/**").authenticated()
                 .antMatchers("/user/**").hasRole("USER")
-                .anyRequest().permitAll()   // 그 외 나머지 요청은 누구나 접근 가능
-                .and()
-                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
-                        UsernamePasswordAuthenticationFilter.class);
+                .anyRequest().permitAll();  // 그 외 나머지 요청은 누구나 접근 가능
+//                .and()
 //                .oauth2Login()
 //                .userInfoEndpoint()
 //                .userService(customOAuth2UserService);
+
+                http.addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
+                        UsernamePasswordAuthenticationFilter.class);
+
 
     }
 

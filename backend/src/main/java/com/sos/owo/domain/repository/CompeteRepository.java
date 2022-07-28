@@ -1,14 +1,12 @@
 package com.sos.owo.domain.repository;
 
 import com.sos.owo.domain.Compete;
-import com.sos.owo.domain.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import javax.persistence.TypedQuery;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,12 +42,8 @@ public class CompeteRepository {
         return result;
     }
 
-    //경쟁모드 경험치 저장
-    public void savePoint(int point, int id){
-        Member findMember = em.find(Member.class, id);
-        int current = findMember.getPoint();
-        findMember.setPoint(current+point);
-    }
+
+
 
 
 }
