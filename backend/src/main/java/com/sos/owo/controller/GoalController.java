@@ -36,7 +36,7 @@ public class GoalController {
 //            @ApiResponse(code = 403,message = "금지됨"),
 //            @ApiResponse(code = 500,message = "내부 서버 에러___")
 //    })
-    @PostMapping("/goal/{memberId}")
+    @PostMapping("/api/user/goal/{memberId}")
     public ResponseEntity<?> saveGoal(@PathVariable("memberId") int memberId, @RequestBody GoalSaveRequestDto goalSaveRequestDto){
         Message message = new Message();
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -68,7 +68,7 @@ public class GoalController {
     //운동 목표 수정
     @ApiOperation(value = "운동 목표 수정",notes = "memberId와 목표운동, 목표시간을 받아서 수정한다.")
     @ApiImplicitParam(name = "memberId",value = "사용자 id",dataType = "int",paramType = "path")
-    @PutMapping("/goal/{memberId}")
+    @PutMapping("/api/user/goal/{memberId}")
     public ResponseEntity<?> updateGoal(@PathVariable("memberId") int memberId, @RequestBody GoalSaveRequestDto goalSaveRequestDto){
         Message message = new Message();
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -188,7 +188,7 @@ public class GoalController {
             message.setMessage("내부 서버 에러");
             return new ResponseEntity<>(message,httpHeaders,HttpStatus.INTERNAL_SERVER_ERROR);
 //            return new ResponseEntity<String>("SERVER_ERROR", HttpStatus.INTERNAL_SERVER_ERROR);
-            
+
         }
     }
 }
