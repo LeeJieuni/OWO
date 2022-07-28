@@ -18,10 +18,11 @@
     <!-- 신체 정보 분석 & 운동일지 -->
     <div class="physical-info-analys">
       <div class="row row1 p-0 m-0">
-        <div class="col col-6 my-physical-info">
+        <div class="col col-4 my-physical-info">
           <PhysicalInfo/>
         </div>
-        <div class="col col-6 my-calendar">
+        <div class="col col-8 my-calendar">
+          <p class="my-calendar-title">운동일지</p>
           <MyCalendar/>
         </div>
       </div>
@@ -81,6 +82,14 @@ export default {
 
 .my-physical-info {
   border-right: solid #DFDFDF 1px;
+}
+
+.my-calendar-title {
+  text-align: left;
+  padding-top: 50px;
+  font-size: 22px;
+  padding-bottom: 20px;
+  padding-left: 50px;
 }
 
 /* Color Palette */

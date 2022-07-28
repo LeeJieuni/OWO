@@ -279,7 +279,7 @@ export default {
   input:not(.profile-input) {
     height: 30px;
     width: 162px;
-    border:  solid rgb(165, 165, 165) 1px;
+    border:  solid rgb(165, 165, 165) 2px;
     border-radius: 15px;
     padding: 10px;
     margin: 3px;
@@ -290,7 +290,7 @@ export default {
     height: 30px;
     width: 162px;
     font-size:16px;
-    border:  solid rgb(165, 165, 165) 1px;
+    border:  solid rgb(165, 165, 165) 2px;
     border-radius: 15px;
     padding-left: 10px;
     padding-top: 1px;

@@ -3,10 +3,12 @@
     <div class="row">
       <p class="my-physical-info-title">신체 정보 분석</p>
     </div>
+
+    <!--체질량지수(bmi)-->
     <div class="row bmi">
       <div class="my-physical-info-graph align-items-center">
         <p class="md-title">체질량지수</p>
-        <div class="bar-info">
+        <!-- <div class="bar-info">
           <div class="progress ">
             <div class="progress-bar"
               role="progressbar" aria-label="Segment 1"
@@ -29,8 +31,8 @@
               aria-valuemin="0" aria-valuemax="100">비만
             </div>
           </div>
-        </div>
-        <div class="bmi-solution pt-2 text-end">
+        </div> -->
+        <div class="bmi-solution pt-2 text-start">
           <p class="rg-font" v-if="user.bmi < 18.5">
             저체중입니다. 헬스로 근육을 찌워보시는 건 어떨까요?
           </p>
@@ -46,6 +48,9 @@
         </div>
       </div>
     </div>
+
+    <!--칼로리1 기초대사량-->
+    <!--칼로리2 하루섭취-->
   </div>
 </template>
 <script>

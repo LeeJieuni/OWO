@@ -8,7 +8,7 @@
         <div class="bar-info">
           <div class="progress bar">
               <template v-for="(record, recordIndex) in records" :key="recordIndex">
-                <div v-if="record.exerciseHours!==0"
+                <div v-if="record.exerciseHours > 10"
                   class="progress-bar"
                   role="progressbar" aria-label="Segment one"
                   :style="{width: record.exerciseRate + '%',
@@ -18,6 +18,14 @@
                   <span class="rate-name">
                     {{record.name}} <span class="rate-rate">{{record.exerciseRate}}%</span>
                   </span>
+                </div>
+                <div v-else
+                  class="progress-bar"
+                  role="progressbar" aria-label="Segment one"
+                  :style="{width: record.exerciseRate + '%',
+                    backgroundColor: '#2E2E2E' }"
+                  :aria-valuenow=record.exerciseRate
+                  aria-valuemin="0" aria-valuemax="100">
                 </div>
               </template>
           </div>
@@ -42,8 +50,8 @@ export default {
         { name: '스트레칭', exerciseHours: 15, exerciseRate: null },
         { name: '맨몸운동', exerciseHours: 12, exerciseRate: null },
         { name: '요가', exerciseHours: 11, exerciseRate: null },
-        { name: '필라테스', exerciseHours: 0, exerciseRate: null },
-        { name: '기타', exerciseHours: 0, exerciseRate: null },
+        { name: '필라테스', exerciseHours: 3, exerciseRate: null },
+        { name: '기타', exerciseHours: 2, exerciseRate: null },
       ],
       colors: [
         '#6842FF', '#3C48E8', '#4E8AFF', '#3CA3E8', '#42E5FF', '#31E8CE', '#36FFAA',
@@ -109,15 +117,16 @@ export default {
   height: 30px;
 }
 .progress-bar {
-  font-size: 14px;
-  text-shadow: 2px 2px 2px #2E2E2E;
+  font-size: 12px;
+  /* font-weight: 500; */
+  /* text-shadow: 2px 2px 2px #2E2E2E; */
   width: 90%;
 }
 .rate-info {
   padding-top: 10px;
 }
 .rate-name {
-  font-size: 18px;
+  font-size: 14px;
 }
 .rate-rate {
   font-size: 14px;

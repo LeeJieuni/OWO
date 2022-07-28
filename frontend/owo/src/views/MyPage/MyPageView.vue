@@ -1,42 +1,31 @@
 <template>
   <div class="mypageview">
-
-    <h3>👧 5년째 헬린이 님의 운동 기록</h3>
-    <br>
-    <div class="mypageContainer"><br>
-      <div class="title text-start">
-        <label for="hi">
-          <input v-if="slogan === ''" type="text" name="hi"
-            class="slogan" placeholder="목표 및 슬로건을 입력해 주세요!"
-            v-model="slogan" @input="sloganInput">
-            <input v-else type="text" name="hi"
-            class="slogan" :placeholder=slogan
-            v-model="slogan" @keyup.enter="changeSlogan()">
-            <span class="material-symbols-outlined">edit</span>
-        </label>
-        <div class="my-nav row text-center">
-          <p class="col col-auto ms-auto">
-            <router-link to="/mypage/main">⚒ 운동 분석</router-link>
-          </p>
-          <p class="col col-auto">
-            <router-link to="/mypage/update">👧 내 정보 수정</router-link>
-          </p>
-          <p class="col col-auto me-4">
-            <router-link to="/mypage/schedule">📆 운동 일지</router-link>
-          </p>
+    <div class="background-box">
+      <div class="front-box row">
+        <div class="mypageContainer row">
+          <div class="col-3 sidebar m-0 p-0">
+            <MySidebar/>
+          </div>
+          <div class="col-9 m-0 p-0">
+            <div class="title text-center">
+              <h3>👧 5년째 헬린이 님의 운동 기록</h3>
+            </div>
+            <div>
+              <router-view></router-view>
+            </div>
+          </div>
         </div>
-      </div>
-      <div>
-        <router-view></router-view>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import MySidebar from '@/components/MyPage/MySidebar.vue';
+
 export default {
   name: 'MyPage',
-  components: {},
+  components: { MySidebar },
   data() {
     return {
       slogan: '',
@@ -67,12 +56,12 @@ export default {
     color: black;
   }
   h1, h2, h3, h4, h5 {
-    font-family: 'LeferiBaseType-BoldA';
+    font-weight: 900;
   }
   .mypageContainer {
     font-weight: 600;
     /* text-shadow: #7b7b7b 1px 1px; */
-    max-width: 1200px;
+    max-width: 1100px;
     margin: 0 auto;
     background-color: white;
     text-align: center;
@@ -87,36 +76,20 @@ export default {
     border-bottom: solid #DFDFDF 1px;
     font-weight: 800;
     margin-top: 10px;
+    height: 100px;
+    padding: 30px;
   }
-
-  .slogan {
-    font-size: 18px;
-    margin-left: 40px;
-    margin-right: 3px;
-    border: 0px;
-    width: 330px;
-    padding: 2px;
+  .background-box {
+    width: 100vw;
+    height: 300px;
+    background: linear-gradient(lightCyan, skyBlue, deepSkyBlue);
+    position: relative;
   }
-  .slogan::placeholder {
-    color: #6f6f6f;
+  .front-box {
+    position: relative;
+    top: 100px;
   }
-  .slogan:hover {
-    font-weight: 900;
-    cursor: pointer;
-    transition: 0.4s;
-    border: solid #6f6f6f 1px;
-  }
-
-  .material-symbols-outlined {
-    font-size:17px;
-  }
-  .material-symbols-outlined:hover {
-    font-size: 19px;
-  }
-  .my-nav > p:hover {
-    color: white;
-    background-color: rgb(229, 241, 255);
-    border-radius: 10px;
-    transition: 0.3s;
+  .sidebar {
+    border-right: solid 1px #DFDFDF;
   }
 </style>

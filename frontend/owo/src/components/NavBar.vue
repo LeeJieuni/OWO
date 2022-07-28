@@ -14,10 +14,10 @@
           <div class="d-flex align-items-center">
             <div class="navbar-brand mb-0 h1">
               <span>안녕하세요 <router-link
-            to="/mypage"><span
+            to="/mypage/main"><span
             class="welcome">{{userInfo.username}}</span></router-link>님, 반갑습니다!</span>
             </div>
-            <div v-if="!isLoggedIn()" class="d-flex">
+            <div v-if="isLoggedIn()" class="d-flex">
             <!--dropdows1-rooms-->
               <li class="menu1 mypages nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#"

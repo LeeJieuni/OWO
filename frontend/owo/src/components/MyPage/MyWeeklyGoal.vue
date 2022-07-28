@@ -9,7 +9,7 @@
             <div class="col-md-10">
               <div class="d-flex justify-content-center">
                 <template v-for="(goal, i) in goals" :key="i">
-                  <div v-if="goal.name!==''">
+                  <div v-if="goal.name!==''" class="goal">
                     <p class="goal-name">{{ goal.name }}</p>
                     <div class="progress-box" >
                       <div class="progress blue">
@@ -58,7 +58,9 @@ export default {
 </script>
 
 <style scoped>
-
+.goal {
+  padding: 0 50px;
+}
 .bar-info {
   width: 100%;
   padding-left: 20px;
