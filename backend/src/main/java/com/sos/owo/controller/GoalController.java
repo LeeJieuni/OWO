@@ -51,7 +51,7 @@ public class GoalController {
         } catch (IllegalStateException e){
             e.printStackTrace();
             message.setStatus(StatusEnum.BAD_REQUEST);
-            message.setMessage("잘못된 요청");
+            message.setMessage("잘못된 요청(ex. memberId가 null인 경우)");
             return new ResponseEntity<>(message,httpHeaders,HttpStatus.BAD_REQUEST);
 //            return new ResponseEntity<String>("OVERLAP", HttpStatus.BAD_REQUEST);
 
@@ -83,7 +83,7 @@ public class GoalController {
         } catch (IllegalStateException e){
             e.printStackTrace();
             message.setStatus(StatusEnum.BAD_REQUEST);
-            message.setMessage("잘못된 요청");
+            message.setMessage("잘못된 요청(ex. memberId가 null인 경우)");
             return new ResponseEntity<>(message,httpHeaders,HttpStatus.BAD_REQUEST);
 //            return new ResponseEntity<String>("OVERLAP", HttpStatus.CONFLICT);
         } catch (Exception e){
@@ -115,7 +115,7 @@ public class GoalController {
         } catch (IllegalStateException e){
             e.printStackTrace();
             message.setStatus(StatusEnum.BAD_REQUEST);
-            message.setMessage("잘못된 요청");
+            message.setMessage("잘못된 요청(ex. memberId/goalId가 null인 경우)");
             return new ResponseEntity<>(message,httpHeaders,HttpStatus.BAD_REQUEST);
 //            return new ResponseEntity<String>("OVERLAP", HttpStatus.CONFLICT);
         } catch (Exception e){
@@ -145,7 +145,7 @@ public class GoalController {
         } catch (IllegalStateException e){
             e.printStackTrace();
             message.setStatus(StatusEnum.BAD_REQUEST);
-            message.setMessage("잘못된 요청");
+            message.setMessage("잘못된 요청(ex. memberId가 null인 경우)");
             return new ResponseEntity<>(message,httpHeaders,HttpStatus.BAD_REQUEST);
 //            return new ResponseEntity<String>("OVERLAP", HttpStatus.CONFLICT);
         } catch (Exception e){
@@ -179,7 +179,7 @@ public class GoalController {
         } catch (IllegalStateException e){
             e.printStackTrace();
             message.setStatus(StatusEnum.BAD_REQUEST);
-            message.setMessage("잘못된 요청");
+            message.setMessage("잘못된 요청(ex. memberId가 null인 경우)");
             return new ResponseEntity<>(message,httpHeaders,HttpStatus.BAD_REQUEST);
 //            return new ResponseEntity<String>("OVERLAP", HttpStatus.CONFLICT);
         } catch (Exception e){
@@ -188,6 +188,7 @@ public class GoalController {
             message.setMessage("내부 서버 에러");
             return new ResponseEntity<>(message,httpHeaders,HttpStatus.INTERNAL_SERVER_ERROR);
 //            return new ResponseEntity<String>("SERVER_ERROR", HttpStatus.INTERNAL_SERVER_ERROR);
+            
         }
     }
 }
