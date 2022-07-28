@@ -1,5 +1,5 @@
 <template>
-    <div style="background-color:;">
+    <div class="d-flex justify-content-center">
         <div class="d-flex justify-content-start align-items-center">
             <button class="btn btn-outline-secondary m-2 " style="width:145px;"
             @click="mic_on_off" v-if="mic">
@@ -32,10 +32,14 @@
                 <b-dropdown-item :value="timer" @click="set_timer_10">10초</b-dropdown-item>
             </b-dropdown>
             </div>
-            <button class="btn btn-outline-secondary m-2">
-                <img class="menu_icon" src="@/assets/icon/emoji.png" alt="mic_off">
+            <div>
+            <Emoji v-bind:style="{position: 'absolute', top: ey - 180 + 'px', left:ex -90 + 'px'}"
+            v-if="Emoji_ONOFF"/>
+            <button id="emoji_btn" @click="open_emoji" class="btn btn-outline-secondary m-2">이모티콘
+                <img class="menu_icon" src="@/assets/icon/emoji.png" alt="emoji">
             </button>
-            <button class="btn btn-outline-secondary m-2">
+            </div>
+            <button v-if="isMaster" class="btn btn-outline-secondary m-2">
                 <img class="menu_icon" src="@/assets/icon/room_setting.png" alt="mic_off">
                 설정
             </button>
@@ -57,23 +61,46 @@
     </div>
 </template>
 <script>
+import Emoji from '../MyEmoji.vue';
+
+let emojiX;
+let emojiY;
+
+window.onload = function () {
+  emojiX = document.getElementById('emoji_btn').getClientRects()[0].x;
+  emojiY = document.getElementById('emoji_btn').getClientRects()[0].y;
+};
+
 export default {
-  components: {},
+  components: {
+    Emoji,
+  },
   data() {
     return {
+      // input: '',
+      // search: '',
+      Emoji_ONOFF: null,
+      isMaster: false,
       video: true,
       mic: true,
       timer: 3,
       temp_timer: 3,
       take_photo_timer: null,
+      eh: null,
+      ew: null,
       is_take_photo: false,
+      // emoji_h: document.getElementById('emoji_btn').top,
     };
   },
   setup() {},
   created() {},
-  moundted() {},
+  moundted() {
+  },
   unmounted() {},
   methods: {
+    insert(emoji) {
+      this.input += emoji;
+    },
     mic_on_off() {
       this.mic = !this.mic;
     },
@@ -106,10 +133,24 @@ export default {
       this.timer = 10;
       console.log(this.timer);
     },
+    open_emoji() {
+      this.Emoji_ONOFF = !this.Emoji_ONOFF;
+      this.ex = emojiX;
+      this.ey = emojiY;
+    },
+    onSelectEmoji(emoji) {
+      console.log(emoji);
+    },
   },
 };
 </script>
 <style scoped>
+.Emoji {
+  position:fixed;
+  top:0px;
+  left:0px;
+  z-index: 103;
+}
 .menu_icon {
     width:30px;
 }
@@ -134,6 +175,7 @@ export default {
     opacity: 0.5;
     font-size:300px;
 }
+
 #take_photo_WebRTC {
     border: 1px solid black;
     background-color: darkgray;
