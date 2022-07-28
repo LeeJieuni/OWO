@@ -2,10 +2,11 @@
   <div>
     <div class="login">
       <div class="container">
-      <form @submit.prevent="login" class="loginForm">
+      <form @submit.prevent="login(credential)" class="loginForm">
       <h2 class="mb-3">Login</h2>
       <div class="input">
         <label for="email">아이디<input
+          v-model="credential.email"
           class="form-control"
           type="text"
           name="email"
@@ -14,6 +15,7 @@
       </div>
       <div class="input">
         <label for="password"><span>비밀번호</span><input
+          v-model="credential.password"
           class="form-control"
           type="password"
           name="password"
@@ -43,17 +45,22 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+
 export default {
   data() {
     return {
-      email: '',
-      password: '',
+      credential: {
+        email: '',
+        password: '',
+      },
     };
   },
   methods: {
     moveToRegister() {
       this.$router.push('/join');
     },
+    ...mapActions(['login']),
   },
 };
 </script>

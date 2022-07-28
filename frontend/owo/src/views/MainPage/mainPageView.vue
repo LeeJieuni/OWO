@@ -11,23 +11,19 @@
         <!-- <b-button pill class="btn-lg">What is <span class="owo"># 오운완</span>?</b-button> -->
       </div>
     </div>
-    <SecondIntro/>
-    <TodayKing/>
-    <transition name="bounce" mode="out-in">
-    </transition>
+    <hr/>
+    <rankingList/>
   </div>
 </template>>
 
 <script>
 import Carousel from '@/components/MainPage/Carousel.vue';
-import SecondIntro from '@/components/MainPage/SecondIntro.vue';
-import TodayKing from '@/components/MainPage/TodayKing.vue';
+import rankingList from '@/components/MainPage/rankingList.vue';
 
 export default {
   components: {
     Carousel,
-    TodayKing,
-    SecondIntro,
+    rankingList,
   },
 };
 </script>
