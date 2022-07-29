@@ -19,7 +19,7 @@
                       </div>
                     </div>
                   </div>
-                  <div v-else>
+                  <div v-else class="goal">
                     <p class="no-goal-name">목표가 없습니다.</p>
                     <div class="progress-box">
                       <router-link to="/mypage/update" class="no-goal">
@@ -59,7 +59,7 @@ export default {
 
 <style scoped>
 .goal {
-  padding: 0 50px;
+  padding: 0 20px;
 }
 .bar-info {
   width: 100%;
@@ -78,7 +78,31 @@ export default {
   display: flex;
   padding-left: 50px;
   height: 50px;
+}
 
+.progress-box {
+  border: solid black 1px;
+  width: 160px;
+  height: 160px;
+  border-radius: 20%;
+  display: inline-block;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.goal-name {
+  font-size: 18px;
+}
+.no-goal-name {
+  color: gray;
+  font-size: 18px;
+}
+.no-goal-text {
+  line-height: 150px;
+}
+.no-goal {
+  /* text-decoration: none; */
+  color: gray;
 }
 
 .mt-100{
@@ -202,29 +226,4 @@ export default {
     transform: rotate(135deg);
   }
 }
-
-.progress-box {
-  border: solid black 1px;
-  width: 160px;
-  height: 160px;
-  border-radius: 20%;
-  display: inline-block;
-  margin-left: 10px;
-  margin-right: 10px;
-}
-
-.goal-name {
-  font-size: 18px;
-}
-.no-goal-name {
-  color: gray;
-}
-.no-goal-text {
-  line-height: 150px;
-}
-.no-goal {
-  /* text-decoration: none; */
-  color: gray;
-}
-
 </style>

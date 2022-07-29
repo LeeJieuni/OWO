@@ -70,7 +70,9 @@ export default {
     border-radius: 20px;
     height: 100%;
     box-shadow: rgb(105, 105, 105) 3px 3px 10px;
+    opacity: 93%;
     /* padding: 35px; */
+    margin-bottom: 100px;
   }
   .title {
     border-bottom: solid #DFDFDF 1px;
@@ -81,13 +83,16 @@ export default {
   }
   .background-box {
     width: 100vw;
-    height: 300px;
-    background: linear-gradient(lightCyan, skyBlue, deepSkyBlue);
+    height: 500px;
+    /* background: linear-gradient(lightCyan, skyBlue, deepSkyBlue); */
+    background-image: url("http://health.chosun.com/site/data/img_dir/2019/02/14/2019021400989_0.jpg");
+    background-size: 100vh;
     position: relative;
   }
   .front-box {
     position: relative;
-    top: 100px;
+    padding-top: 100px;
+    backdrop-filter: blur(6px);
   }
   .sidebar {
     border-right: solid 1px #DFDFDF;

@@ -6,32 +6,32 @@
 
     <!--체질량지수(bmi)-->
     <div class="row analy-div bmi">
-      <div class="my-physical-info-graph align-items-center">
+      <div class="sm-div align-items-center">
         <p class="md-title">체질량지수</p>
-        <!-- <div class="bar-info">
-          <div class="progress ">
+        <div class="bar-info">
+          <div class="progress">
             <div class="progress-bar"
               role="progressbar" aria-label="Segment 1"
-              style="width: 40%; background-color: #CEDFFF;" aria-valuenow="40"
+              style="width: 30%; background-color: #CEDFFF;" aria-valuenow="30"
               aria-valuemin="0" aria-valuemax="100" >저체중
             </div>
             <div class="progress-bar"
               role="progressbar" aria-label="Segment 2"
-              style="width: 30%; background-color: #98BBFF;" aria-valuenow="30"
+              style="width: 20%; background-color: #98BBFF;" aria-valuenow="20"
               aria-valuemin="0" aria-valuemax="100">정상
             </div>
             <div class="progress-bar"
               role="progressbar" aria-label="Segment 3"
-              style="width: 20%; background-color: #4E8AFF;" aria-valuenow="20"
+              style="width: 10%; background-color: #4E8AFF;" aria-valuenow="10"
               aria-valuemin="0" aria-valuemax="100">과체중
             </div>
             <div class="progress-bar"
               role="progressbar" aria-label="Segment 4"
-              style="width: 10% background-color: #274C95;" aria-valuenow="10"
+              style="width: 40% background-color: #274C95;" aria-valuenow="10"
               aria-valuemin="0" aria-valuemax="100">비만
             </div>
           </div>
-        </div> -->
+        </div>
         <div class="bmi-solution pt-2 text-start">
           <p class="rg-font" v-if="user.bmi < 18.5">
             저체중입니다. 헬스로 근육을 찌워보시는 건 어떨까요?
@@ -51,12 +51,18 @@
 
     <!--칼로리1 기초대사량-->
     <div class="row analy-div meta">
-      <p class="md-title">기초대사량</p>
+      <div class="sm-div">
+        <p class="md-title">기초대사량</p>
+        <p class="kcal">{{ meta }} kcal</p>
+      </div>
     </div>
 
     <!--칼로리2 하루섭취-->
     <div class="row analy-div meta">
-      <p class="md-title">하루 섭취 권장 칼로리</p>
+      <div class="sm-div">
+        <p class="md-title">하루 섭취 권장 칼로리</p>
+        <p class="kcal">{{ eat }} kcal</p>
+      </div>
     </div>
   </div>
 </template>
@@ -70,11 +76,30 @@ export default {
       user: {
         name: '한나',
         bmi: 20,
+        gender: 'femail',
+        weight: 44,
+        height: 156,
+        age: 27,
+        activity: 4,
       },
+      meta: 0,
+      eat: 0,
     };
   },
   setup() {},
-  created() {},
+  created() {
+    if (this.user.gender === 'femail') {
+      this.meta = Math.round(
+        (10 * this.user.weight) + (6.25 * this.user.height) - (5 * this.user.age) - 161,
+      );
+    } else {
+      this.meta = Math.round(
+        (10 * this.user.weight) + (6.25 * this.user.height) - (5 * this.user.age) + 5,
+      );
+    }
+    const activityrule = [1.2, 1.375, 1.55, 1.725, 1.9];
+    this.eat = Math.round(activityrule[this.user.activity - 1] * this.meta);
+  },
   moundted() {},
   unmounted() {},
   methods: {},
@@ -82,17 +107,21 @@ export default {
 </script>
 
 <style scoped>
+.sm-div {
+  border-bottom: solid #DFDFDF 1px;
+  padding-top: 20px;
+  padding-bottom: 50px;
+}
 .my-physical-info-title {
   text-align: left;
   padding-top: 50px;
   font-size: 22px;
-  padding-bottom: 20px;
+  /* padding-bottom: 20px; */
   padding-left: 50px;
 }
 
 .analy-div {
-  padding-left: 60px;
-  padding-right: 60px;
+  padding: 10px 60px;
   align-items: flex-start;
 }
 
@@ -103,12 +132,20 @@ export default {
 .md-title {
   font-size: 18px;
   text-align: left;
-}
-.sm-title {
-  text-align: left;
+  margin-bottom: 20px;
 }
 
 .rg-font {
   font-family: 'LeferiBaseType-RegularA';
+}
+.progress-bar {
+  font-size: 18px;
+  /* height: 0px; */
+}
+.progress {
+  height: 25px;
+}
+.kcal {
+  font-size: 15px;
 }
 </style>

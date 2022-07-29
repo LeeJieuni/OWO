@@ -144,6 +144,7 @@ export default {
   }
   .sidebar-menu:hover {
     background-color: #F6F7F9;
+    color: black;
   }
   .sidbar-menu > a:hover {
     color: black;
