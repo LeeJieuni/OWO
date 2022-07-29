@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import mainPageView from '../views/MainPage/mainPageView.vue';
 import MyPageView from '../views/MyPage/MyPageView.vue';
 import MyPageMainView from '../views/MyPage/MyPageMainView.vue';
+import MyPageAnalysView from '../views/MyPage/MyPageAnalysView.vue';
 import MyPageUpdateView from '../views/MyPage/MyPageUpdateView.vue';
 import MyPageScheduleView from '../views/MyPage/MyPageScheduleView.vue';
 import CompetitionView from '../views/Room/competition.vue';
@@ -39,6 +40,11 @@ const routes = [
         path: 'main',
         // name: 'MyPageMainView',
         component: MyPageMainView,
+      },
+      {
+        path: 'analys',
+        // name: 'MyPageAnalysView',
+        component: MyPageAnalysView,
       },
       {
         path: 'update',

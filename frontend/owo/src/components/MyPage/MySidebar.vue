@@ -1,5 +1,5 @@
 <template>
-  <div class="container row">
+  <div class="row">
     <label for="hi">
       <input v-if="slogan === ''" type="text" name="hi"
         class="slogan" placeholder="슬로건을 입력해 주세요!"
@@ -15,15 +15,18 @@
       </p>
     </div>
 
-    <div class="my-nav text-center justify-content-center;">
+    <div class="sidebar-menus text-center justify-content-center;">
       <button class="row sidebar-menu">
-        <router-link to="/mypage/main">⚒ 운동 분석</router-link>
-      </button>
-      <button class="row sidebar-menu">
-        <router-link to="/mypage/update">👧 내 정보 수정</router-link>
+        <router-link to="/mypage/main">⚒ 운동 기록</router-link>
       </button>
       <button class="row sidebar-menu">
         <router-link to="/mypage/schedule">📆 운동 일지</router-link>
+      </button>
+      <button class="row sidebar-menu">
+        <router-link to="/mypage/analys">⚒ 운동 분석</router-link>
+      </button>
+      <button class="row sidebar-menu">
+        <router-link to="/mypage/update">👧 내 정보 수정</router-link>
       </button>
     </div>
 
