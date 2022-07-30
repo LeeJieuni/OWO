@@ -19,9 +19,10 @@
         <tbody>
           <tr v-for="(row, index) in currentCalendarMatrix" :key="index">
             <td v-for="(day, index2) in row" :key="index2" style="padding:20px;">
-              <span v-if="isToday(currentYear, currentMonth, day)" class="rounded">
+              <a href="#" v-if="isToday(currentYear, currentMonth, day)" class="rounded"
+                @click="selectDay(currentMonth, day)" v-b-modal="'my-modal'">
                 {{day}}
-              </span>
+              </a>
               <span v-else>
                 <a href="#" @click="selectDay(currentMonth, day)" v-b-modal="'my-modal'">{{day}}</a>
               </span>
@@ -29,6 +30,8 @@
           </tr>
         </tbody>
       </table>
+
+      <router-link to="/mypage/slide">변화 한 눈에 보기</router-link>
 
       <b-modal id="my-modal" size="md" button-size="sm" scrollable
         :title="`${currentYear}년 ${currentMonth}월 ${day}일`">
@@ -94,19 +97,23 @@
           </div>
         </div>
 
-        <template #modal-footer="{ ok, cancel, hide }">
-          <b>Custom Footer</b>
+        <template #modal-footer="{}">
+
           <!-- Emulate built in modal footer ok and cancel button actions -->
-          <b-button size="sm" variant="success" @click="ok()">
+          <!-- <b-button size="sm" variant="success" @click="ok()">
             OK
           </b-button>
           <b-button size="sm" variant="danger" @click="cancel()">
             Cancel
+          </b-button> -->
+          <b-button size="sm" variant="danger">
+            Cancel
           </b-button>
+
           <!-- Button with custom close trigger value -->
-          <b-button size="sm" variant="outline-secondary" @click="hide('forget')">
+          <!-- <b-button size="sm" variant="outline-secondary" @click="hide('forget')">
             Forget it
-          </b-button>
+          </b-button> -->
         </template>
       </b-modal>
     </div>
@@ -242,6 +249,10 @@ export default {
     selectDay(currentMonth, day) {
       this.day = day;
     },
+    cancle() {
+      const modal = document.querySelector('.modal');
+      modal('hide');
+    },
   },
 };
 </script>
@@ -334,7 +345,7 @@ export default {
 .tag p {
   text-align: left;
 }
-table > a {
+.table > a {
   text-decoration: none;
 }
 .people-title, .exercise-type-box {

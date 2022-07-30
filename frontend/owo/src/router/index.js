@@ -5,6 +5,7 @@ import MyPageMainView from '../views/MyPage/MyPageMainView.vue';
 import MyPageAnalysView from '../views/MyPage/MyPageAnalysView.vue';
 import MyPageUpdateView from '../views/MyPage/MyPageUpdateView.vue';
 import MyPageScheduleView from '../views/MyPage/MyPageScheduleView.vue';
+import MyPageSlideView from '../views/MyPage/MyPageSlideView.vue';
 import CompetitionView from '../views/Room/competition.vue';
 import FriendChatView from '../views/Room/FriendChatView.vue';
 import FriendNoChatView from '../views/Room/FriendNoChatView.vue';
@@ -55,6 +56,11 @@ const routes = [
         path: 'schedule',
         // name: 'MyPageScheduleView',
         component: MyPageScheduleView,
+      },
+      {
+        path: 'slide',
+        // name: 'MyPageSlideView',
+        component: MyPageSlideView,
       },
     ],
   },

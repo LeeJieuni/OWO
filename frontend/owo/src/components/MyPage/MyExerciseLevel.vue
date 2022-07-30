@@ -62,16 +62,16 @@ export default {
 
 .my-level-title {
   text-align: left;
-  padding-top: 40px;
-  font-size: 22px;
-  padding-left: 50px;
+  padding-top: 30px;
+  font-size: 18px;
+  padding-left: 40px;
   padding-bottom: 10px;
 }
 
 .my-level-info {
   width: 90%;
   display: flex;
-  padding-left: 50px;
+  padding-left: 40px;
   height: 80px;
 
 }
@@ -85,16 +85,11 @@ export default {
   width: 100px;
 }
 .my-level-icon-img {
-  width: 60px;
+  width: 50px;
 }
 .bar-info {
   width: 100%;
-  padding-left: 20px;
-}
-
-.tear-name {
-  padding-top: 10px;
-  margin-bottom: 0px;
+  padding-left: 15px;
 }
 
 .tear-bar {
@@ -103,7 +98,7 @@ export default {
 
 .bar {
   width: 100%;
-  height: 20px;
+  height: 18px;
 }
 
 .progress-bar {
@@ -112,10 +107,11 @@ export default {
   width: 90%
 }
 .tear-info {
-  padding-top: 10px;
+  padding-top: 5px;
+  font-size: 12px;
 }
 .tear-name {
   padding-top: 0px;
-  font-size: 20px;
+  font-size: 16px;
 }
 </style>

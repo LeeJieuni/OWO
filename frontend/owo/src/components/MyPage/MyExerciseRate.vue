@@ -29,7 +29,7 @@
                 </div>
               </template>
           </div>
-          <p class="text-start mt-2 fs-6">{{ user.name }}님은 유산소를 많이 하셨군요!</p>
+          <p class="rate-comment">{{ user.name }}님은 유산소를 많이 하셨군요!</p>
         </div>
       </div>
   </div>
@@ -84,17 +84,17 @@ export default {
 
 .my-rate-title {
   text-align: left;
-  padding-top: 50px;
-  font-size: 22px;
-  padding-left: 50px;
-  padding-bottom: 5px;
+  padding-top: 30px;
+  font-size: 18px;
+  padding-left: 40px;
+  padding-bottom: 30px;
 }
 
 .my-rate-info {
   width: 90%;
   display: flex;
-  padding-left: 50px;
-  height: 80px;
+  padding-left: 40px;
+  height: 60px;
 
 }
 
@@ -109,32 +109,21 @@ export default {
   padding-left: 20px;
 }
 
-.bar {
-  width: 100%;
-  height: 20px;
-}
 .progress {
-  height: 30px;
+  height: 20px;
 }
 .progress-bar {
   font-size: 12px;
-  /* font-weight: 500; */
-  /* text-shadow: 2px 2px 2px #2E2E2E; */
-  width: 90%;
-}
-.rate-info {
-  padding-top: 10px;
 }
 .rate-name {
   font-size: 14px;
 }
 .rate-rate {
-  font-size: 14px;
-}
-.sm-text {
-  font-size: 10px;
-}
-.md-text {
   font-size: 12px;
+}
+.rate-comment {
+  text-align : left;
+  font-size: 14px;
+  margin-top: 10px;
 }
 </style>

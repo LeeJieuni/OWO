@@ -1,7 +1,8 @@
 <template>
   <div class="container-box p-5">
+    <h3>{{ user.nick }}님의 정보 수정</h3><br>
     <div class="title-box row">
-      <div class="profile col d-flex justify-content-center">
+      <div class="profile d-flex justify-content-center">
         <label for="formFile" class="form-label" >
           <img class="profile-img " :src=user.profileImg alt="">
           <input class="form-control form-control-sm profile-input"
@@ -11,101 +12,138 @@
             >
         </label>
       </div>
-      <div class="col title p-3">
-        <h3>{{ user.nick }}님의 정보 수정</h3><br>
-          <p>이번주 운동 목표</p>
-          <form action="">
-            <label for="goal-type">
-              <select v-model="inputGoalType"
-                class="form-select form-select-sm goal-type-select"
-                name="radio" id="goal_type">
-                <option value="유산소">유산소</option>
-                <option value="헬스">헬스</option>
-                <option value="스트레칭">스트레칭</option>
-                <option value="맨몸운동">맨몸운동</option>
-                <option value="요가">요가</option>
-                <option value="필라테스">필라테스</option>
-                <option value="기타">기타</option>
-              </select></label>&nbsp;
-            <input
-              type="number"
-              name="goalHour"
-              style="width: 70px;"
-              v-model="inputGoalHour"
-              min='1'> 시간 <br>
-            <button @click="addGoal($event)" class="top-btns btn btn-outline-secondary">추가</button>
-            <button @click="registGoal($event)"
-              class="top-btns btn btn-outline-warning">등록</button>
-          </form>
-        <div class="tags row">
-          <button
-            v-for="(goal, goalI) in user.goals"
-            :key="goalI"
-            class="tag"
-            @click="tagDelete">
-            <p>{{goal.goalType}} {{goal.goalHour}}H</p>
-          </button>
-        </div>
-      </div>
     </div>
-    <div class="row profile-form p-5">
+
+    <div class="row profile-form p-1">
       <form action="">
       <table>
         <tbody>
 
           <tr>
-            <th class="th-1">닉네임</th>
-            <label for="nick">
-              <th class="th-2"><input type="text" name="nick" v-model=user.nick></th>
-            </label>
+            <th class="th-1">슬로건</th>
+              <th class="th-2">
+              <label for="slogan">
+                <input type="text" name="slogan" v-model=user.slogan>
+              </label>
+            </th>
           </tr>
 
           <tr>
-            <th class="th-1">나이</th><label for="age">
-              <th class="th-2"><input type="number" name="age" v-model=user.age>
-              <span class="th-2-text"> 세</span></th></label>
+            <th class="th-1">닉네임</th>
+              <th class="th-2">
+              <label for="nick">
+                <input type="text" name="nick" v-model=user.nick>
+              </label>
+            </th>
+          </tr>
+
+          <tr>
+            <th class="th-1">나이</th>
+            <th class="th-2">
+              <label for="age">
+                <input type="number" name="age" v-model=user.age>
+                <span class="th-2-text"> 세</span>
+              </label>
+            </th>
           </tr>
 
           <tr>
             <th class="th-1">성별</th>
-            <label for="gender">
-              <th class="th-2">
+            <th class="th-2">
+              <label for="gender">
                 <select class="form-select form-select-sm"
                   name="radio" id="gender" v-model=user.gender>
                   <option value="female">여자</option>
                   <option value="male">남자</option>
                 </select>
-              </th>
-            </label>
+              </label>
+            </th>
           </tr>
 
           <tr>
-            <th class="th-1">키</th><label for="height">
-              <th class="th-2">
+            <th class="th-1">키</th>
+            <th class="th-2">
+              <label for="height">
                 <input type="number" name="height" v-model=user.height> cm
-              </th>
-            </label>
+              </label>
+            </th>
           </tr>
 
           <tr>
-            <th class="th-1">몸무게</th><label for="secret">
-              <th class="th-2">
+            <th class="th-1">몸무게</th>
+            <th class="th-2">
+              <label for="secret">
                 <input type="number" name="weight" v-model=user.weight> kg
-              </th>
-            </label>
+              </label>
+            </th>
           </tr>
 
           <tr>
             <th class="th-1">활동량</th>
             <th class="th-2">
-              <label for="activity-num"> 주
-                <input type="number" style="width: 55px;"
-                  name="activity-num" v-model=user.activity.weektimes>&nbsp;회&nbsp;</label>
-              <label for="activity-hour">
-                <input type="number" style="width: 60px;"
-                  name="activity-hour" v-model=user.activity.weekhours>
-                &nbsp;시간 운동&nbsp;</label>
+              <b-form-group>
+                <b-form-radio-group
+                  id="radio-group-1"
+                  v-model="selected"
+                  :options="options"
+                  :aria-describedby="ariaDescribedby"
+                  name="radio-options"
+                  v-b-tooltip.hover title="라디오 아... 툴팁 아...."
+                ></b-form-radio-group>
+              </b-form-group>
+
+              <!-- <label for="activity-num">
+                <select class="form-select form-select-sm"
+                  name="radio" id="activity" v-model=user.activity>
+                  <option value="1">주로 앉아서 보냄</option>
+                  <option value="2">약간 활동적</option>
+                  <option value="3">중간 활동적</option>
+                  <option value="4">꽤나 활동적</option>
+                  <option value="5">매우 활동적</option>
+                </select>
+              </label> -->
             </th>
+          </tr>
+
+          <tr>
+            <th class="th-1">주간 목표</th>
+            <th class="th-2">
+              <form action="">
+                <label for="goal-type">
+                  <select v-model="inputGoalType"
+                    class="form-select form-select-sm goal-type-select"
+                    name="radio" id="goal_type">
+                    <option value="유산소">유산소</option>
+                    <option value="헬스">헬스</option>
+                    <option value="스트레칭">스트레칭</option>
+                    <option value="맨몸운동">맨몸운동</option>
+                    <option value="요가">요가</option>
+                    <option value="필라테스">필라테스</option>
+                    <option value="기타">기타</option>
+                  </select></label>&nbsp;
+                <input
+                  type="number"
+                  name="goalHour"
+                  style="width: 70px;"
+                  v-model="inputGoalHour"
+                  min='1'> 시간
+                <button @click="addGoal($event)"
+                  class="top-btns btn btn-outline-secondary ms-2">추가</button>
+                <!-- <button @click="registGoal($event)"
+                  class="top-btns btn btn-outline-warning">등록</button> -->
+              </form>
+              <tr>
+                <div class="tags row">
+                  <button
+                    v-for="(goal, goalI) in user.goals"
+                    :key="goalI"
+                    class="tag"
+                    @click="tagDelete">
+                    <p>{{goal.goalType}} {{goal.goalHour}}H</p>
+                  </button>
+                </div>
+              </tr>
+              </th>
           </tr>
 
           <tr>
@@ -138,21 +176,25 @@ export default {
       inputGoalType: '',
       inputGoalHour: 0,
       user: {
+        slogan: '8월 바프까지 화이팅!',
         nick: '한나',
-        slogan: '아자아자 화이팅!',
         age: 27,
-        gender: 'male',
+        gender: 'female',
         height: 156,
         weight: 44,
-        activity: {
-          weektimes: 5,
-          weekhours: 20,
-        },
+        activity: 4,
         secret: 2,
         goals: [],
-        /* eslint-disable global-require */
         profileImg: 'https://picsum.photos/150',
       },
+      selected: '',
+      options: [
+        { text: '없음', value: '1' },
+        { text: '약간', value: '2' },
+        { text: '중간', value: '3' },
+        { text: '많음', value: '4' },
+        { text: '매우 많음', value: '5' },
+      ],
     };
   },
   setup() {},
@@ -188,9 +230,9 @@ export default {
       event.preventDefault();
       console.log(event)
     },
-    registGoal() {
-      // 솰라솰라
-    },
+    // registGoal() {
+    //   // 솰라솰라
+    // },
     profileImg(e) {
       let files = e.target.files || e.dataTransfer.files;
       if (!files.length)
@@ -237,6 +279,7 @@ export default {
     font-size: 12px;
     background-color:aliceblue;
     padding-left: 10px;
+    line-height: 18px; 
   }
   .tag:hover {
     background-color: #DE7474;
@@ -278,9 +321,9 @@ export default {
   }
   input:not(.profile-input) {
     height: 30px;
-    width: 162px;
-    border:  solid rgb(165, 165, 165) 2px;
-    border-radius: 15px;
+    width: 300px;
+    border:  solid rgb(165, 165, 165) 1px;
+    border-radius: 10px;
     padding: 10px;
     margin: 3px;
     font-size: 16px;
@@ -288,10 +331,10 @@ export default {
 
   select {
     height: 30px;
-    width: 162px;
+    width: 300px;
     font-size:16px;
-    border:  solid rgb(165, 165, 165) 2px;
-    border-radius: 15px;
+    border:  solid rgb(165, 165, 165) 1px;
+    border-radius: 10px;
     padding-left: 10px;
     padding-top: 1px;
   }
@@ -324,5 +367,6 @@ export default {
     /* border-left: solid black 1px; */
     text-align: left;
     font-family: 'LeferiBaseType-RegularA';
+    width: 70%;
   }
 </style>

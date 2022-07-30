@@ -67,16 +67,15 @@ export default {
 /* 운동 비율 */
 
 .my-level {
-  height: 220px;
+  height: 170px;
   border-bottom: solid #DFDFDF 1px;
 }
-
 .my-exercise-rate {
-  height: 220px;
+  height: 170px;
   border-bottom: solid #DFDFDF 1px;
 }
 .weekly-goal-achivement-rate {
-  height: 350px;
+  height: 280px;
   border-bottom: solid #DFDFDF 1px;
 }
 

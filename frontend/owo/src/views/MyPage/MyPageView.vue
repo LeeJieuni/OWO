@@ -8,7 +8,7 @@
           </div>
           <div class="col-9 m-0 p-0">
             <div class="title text-center">
-              <h3>👧 5년째 헬린이 님의 운동 기록</h3>
+              <h4>{{slogan}}</h4>
             </div>
             <div>
               <router-view></router-view>
@@ -28,7 +28,7 @@ export default {
   components: { MySidebar },
   data() {
     return {
-      slogan: '',
+      slogan: '👧 8월 바프까지 화이팅!',
     };
   },
   setup() {},
@@ -61,7 +61,7 @@ export default {
   .mypageContainer {
     font-weight: 600;
     /* text-shadow: #7b7b7b 1px 1px; */
-    max-width: 1100px;
+    max-width: 900px;
     margin: 0 auto;
     background-color: white;
     text-align: center;
