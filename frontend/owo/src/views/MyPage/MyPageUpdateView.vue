@@ -88,7 +88,12 @@
                   :options="options"
                   :aria-describedby="ariaDescribedby"
                   name="radio-options"
-                  v-b-tooltip.hover title="라디오 아... 툴팁 아...."
+                  v-b-tooltip.hover title="
+                    1) 주로 앉아서 보냄<br>
+                    2) 주 1-3일<br>
+                    3) 주 3-5일<br>
+                    4) 주 6-7일<br>
+                    5) 하루 2회 등 격렬한 운동"
                 ></b-form-radio-group>
               </b-form-group>
 
@@ -250,9 +255,6 @@ export default {
 .profile {
   max-width: 150px;
   display: flex;
-}
-.title {
-
 }
 .title-box {
   margin: 0 auto;
