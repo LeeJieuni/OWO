@@ -23,7 +23,8 @@
             <th class="th-1">슬로건</th>
               <th class="th-2">
               <label for="slogan">
-                <input type="text" name="slogan" v-model=user.slogan>
+                <input class="form-input text-center slogan-input"
+                  type="text" name="slogan" v-model=user.slogan>
               </label>
             </th>
           </tr>
@@ -32,7 +33,7 @@
             <th class="th-1">닉네임</th>
               <th class="th-2">
               <label for="nick">
-                <input type="text" name="nick" v-model=user.nick>
+                <input class="form-input text-center" type="text" name="nick" v-model=user.nick>
               </label>
             </th>
           </tr>
@@ -41,7 +42,7 @@
             <th class="th-1">나이</th>
             <th class="th-2">
               <label for="age">
-                <input type="number" name="age" v-model=user.age>
+                <input class="form-input text-center" type="number" name="age" v-model=user.age>
                 <span class="th-2-text"> 세</span>
               </label>
             </th>
@@ -51,7 +52,7 @@
             <th class="th-1">성별</th>
             <th class="th-2">
               <label for="gender">
-                <select class="form-select form-select-sm"
+                <select class="form-select form-select-sm form-input text-center"
                   name="radio" id="gender" v-model=user.gender>
                   <option value="female">여자</option>
                   <option value="male">남자</option>
@@ -64,7 +65,8 @@
             <th class="th-1">키</th>
             <th class="th-2">
               <label for="height">
-                <input type="number" name="height" v-model=user.height> cm
+                <input class="form-input text-center text-center"
+                  type="number" name="height" v-model=user.height> cm
               </label>
             </th>
           </tr>
@@ -73,7 +75,8 @@
             <th class="th-1">몸무게</th>
             <th class="th-2">
               <label for="secret">
-                <input type="number" name="weight" v-model=user.weight> kg
+                <input class="form-input text-center"
+                  type="number" name="weight" v-model=user.weight> kg
               </label>
             </th>
           </tr>
@@ -81,7 +84,7 @@
           <tr>
             <th class="th-1">활동량</th>
             <th class="th-2">
-              <b-form-group>
+              <!-- <b-form-group>
                 <b-form-radio-group
                   id="radio-group-1"
                   v-model="selected"
@@ -95,10 +98,10 @@
                     4) 주 6-7일<br>
                     5) 하루 2회 등 격렬한 운동"
                 ></b-form-radio-group>
-              </b-form-group>
+              </b-form-group> -->
 
-              <!-- <label for="activity-num">
-                <select class="form-select form-select-sm"
+              <label for="activity-num">
+                <select class="form-select form-select-sm form-input text-center"
                   name="radio" id="activity" v-model=user.activity>
                   <option value="1">주로 앉아서 보냄</option>
                   <option value="2">약간 활동적</option>
@@ -106,7 +109,7 @@
                   <option value="4">꽤나 활동적</option>
                   <option value="5">매우 활동적</option>
                 </select>
-              </label> -->
+              </label>
             </th>
           </tr>
 
@@ -127,6 +130,7 @@
                     <option value="기타">기타</option>
                   </select></label>&nbsp;
                 <input
+                  class="form-input text-center"
                   type="number"
                   name="goalHour"
                   style="width: 70px;"
@@ -154,7 +158,7 @@
           <tr>
             <th class="th-1">내 정보 공개하기</th>
             <th class="th-2"><label for="secret">
-              <select class="form-select form-select-sm"
+              <select class="form-select form-select-sm form-input text-center"
                 name="radio" id="secret" v-model=user.secret>
                 <option value="1">공개</option>
                 <option value="2">비공개</option>
@@ -268,20 +272,23 @@ export default {
   font-size: 13px;
 }
   .tags {
-    padding: 10px;
+    padding: 0 10px;
   }
   .tag {
     width: 105px;
     height: 26px;
-    border: solid #828282 1px;
+    border: solid #828282 0px;
     display:inline-block;
-    border-radius: 20px;
-    padding: 4px;
+    border-radius: 10px;
+    /* padding: 4px; */
     margin: 2px;
     font-size: 12px;
-    background-color:aliceblue;
-    padding-left: 10px;
+    font-weight: 700;
+    background-color:#828282;
+    /* padding-left: 10px; */
     line-height: 18px; 
+    color: white;
+    letter-spacing: -1.5;
   }
   .tag:hover {
     background-color: #DE7474;
@@ -291,7 +298,7 @@ export default {
 
   }
   .tag p {
-    text-align: left;
+    text-align: center;
   }
   button {
     border-radius: 15px;
@@ -321,19 +328,25 @@ export default {
     line-height: 32px;
     text-align: left;
   }
-  input:not(.profile-input) {
+  .form-input {
     height: 30px;
-    width: 300px;
+    width: 200px;
     border:  solid rgb(165, 165, 165) 1px;
     border-radius: 10px;
-    padding: 10px;
+    /* padding: 10px; */
     margin: 3px;
     font-size: 16px;
+    /* text-indent: 10px; */
+    align-items: center;
   }
-
+  .form-input::-webkit-input-placeholder { text-align: center; }
+  .form-input::-moz-placeholder { text-align: center; }
+  .form-input:-ms-input-placeholder { text-align: center; }
+  .form-input:-moz-placeholder { text-align: center; }
+  .form-input::placeholder { text-align: center; }
   select {
     height: 30px;
-    width: 300px;
+    width: 250px;
     font-size:16px;
     border:  solid rgb(165, 165, 165) 1px;
     border-radius: 10px;
@@ -370,5 +383,7 @@ export default {
     text-align: left;
     font-family: 'LeferiBaseType-RegularA';
     width: 70%;
+    align-items: center;
+    align-self: center;
   }
 </style>

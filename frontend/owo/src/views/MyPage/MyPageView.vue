@@ -85,7 +85,7 @@ export default {
     width: 100vw;
     height: 500px;
     /* background: linear-gradient(lightCyan, skyBlue, deepSkyBlue); */
-    background-image: url("http://health.chosun.com/site/data/img_dir/2019/02/14/2019021400989_0.jpg");
+    background-image: url("https://i.pinimg.com/originals/07/7e/a6/077ea6de7db29b564b4335dfd2ba7c15.jpg");
     background-size: 100vh;
     position: relative;
   }

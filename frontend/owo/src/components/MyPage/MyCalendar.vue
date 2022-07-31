@@ -33,7 +33,7 @@
 
       <router-link to="/slide">변화 한 눈에 보기</router-link>
 
-      <b-modal id="my-modal" size="md" button-size="sm" scrollable
+      <b-modal id="my-modal" size="lg" button-size="sm" scrollable
         :title="`${currentYear}년 ${currentMonth}월 ${day}일`">
         <div class="carousel-box">
 
@@ -69,7 +69,7 @@
               :key="tagI"
               class="tag"
             >
-              <p># {{tag}}</p>
+              <p class="tag-name"># {{tag}}</p>
             </button>
           </div>
 
@@ -81,9 +81,8 @@
           <!--메모-->
           <div class="memo-box">
             <p class="memo">
-              사레레 10*20*3 , 사레레 10*20*3 , 사레레 10*20*3 , 사레레 10*20*3 , 사레레 10*20*3 ,
-              사레레 10*20*3 함. 개힘들었다 정말... 내일도 해야하는데 정말 미쳐버리겠다 운동을 좋아서
-              하는 사람들은 대체 어떤 사람
+              사레레 10*20*3 , 밀리터리 프레스 10*20*3 , 프레 10*20*3 , 벤치프레스 10*20*3 , 스쿼트 40*20*3 ,
+              레그레이즈 20*3 함. 힘들다.. 그래도 친구들이랑 같이 해서 재밌었다!
             </p>
           </div>
 
@@ -323,17 +322,24 @@ export default {
   margin-bottom: 50px;
 }
 .tag {
-  width: 105px;
+  width: 80px;
   height: 26px;
-  border: solid #828282 1px;
+  border: solid #828282 0px;
   display:inline-block;
-  border-radius: 20px;
-  padding: 4px;
+  border-radius: 10px;
+  /* padding: 4px; */
   margin: 2px;
   font-size: 12px;
-  background-color:aliceblue;
-  padding-left: 10px;
-  margin-bottom: 20px;
+  font-weight: 700;
+  background-color:#4E8AFF;
+  /* padding-left: 10px; */
+  line-height: 25px;
+  color: white;
+  letter-spacing: -1.5;
+  text-align: center;
+}
+.tag-name {
+  text-align: center;
 }
 .tag:hover {
   background-color: #DE7474;
@@ -361,6 +367,7 @@ export default {
   margin: 20px;
   padding: 20px;
   margin-bottom: 50px;
+  border-radius: 10px;
 }
 .memo {
   text-align: justify;

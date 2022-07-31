@@ -10,7 +10,7 @@
             <p class="goal-name">{{ goal.name }}</p>
             <div class="progress-box">
               <circle-progress
-              class="progress-bar" :percent="30" :show-percent="true"
+              class="progress-bar" :percent="goal.rate" :show-percent="true"
               :viewport="true" :size="130"/>
             </div>
           </div>
@@ -38,9 +38,9 @@ export default {
     return {
       value: '90%',
       goals: [
-        { name: '유산소' },
-        { name: '스트레칭' },
-        { name: '' },
+        { name: '유산소', rate: 50 },
+        { name: '스트레칭', rate: 80 },
+        { name: '', rate: 0 },
       ],
     };
   },
