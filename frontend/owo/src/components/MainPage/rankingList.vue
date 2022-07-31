@@ -25,8 +25,12 @@
     <b-card title='"운동왕의 Record"' class="rounded-5">
       <h2>{{userrank.username}}</h2>
       <div class="d-flex justify-content-center" sytle="margin-bottom: 10px">
-        <circle-progress class="progress-bar" :percent="30" :show-percent="true"
-        :viewport="true" :size="220"/>
+        <circle-progress
+          class="progress-bar"
+          :percent="80"
+          :show-percent="true"
+          :viewport="true"
+          :size="100"/>
       </div>
       <h3 style="margin-top:10px">연속 3일동안 운동하고 있어요!</h3>
     </b-card>

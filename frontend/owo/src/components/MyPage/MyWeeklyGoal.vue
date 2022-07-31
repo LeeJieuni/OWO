@@ -11,7 +11,7 @@
             <div class="progress-box">
               <circle-progress
               class="progress-bar" :percent="30" :show-percent="true"
-              :viewport="true" :size="220"/>
+              :viewport="true" :size="130"/>
             </div>
           </div>
           <div v-else class="goal">
@@ -28,9 +28,12 @@
   </div>
 </template>
 <script>
+import 'vue3-circle-progress/dist/circle-progress.css';
+import CircleProgress from 'vue3-circle-progress';
+
 export default {
   name: 'MyWeeklyGoal',
-  components: {},
+  components: { CircleProgress },
   data() {
     return {
       value: '90%',
@@ -57,6 +60,9 @@ export default {
   padding-left: 40px;
   padding-bottom: 20px;
 }
+.progress-bar {
+  padding: 20px;
+}
 .progress-box {
   border: solid black 1px;
   width: 130px;
@@ -75,7 +81,7 @@ export default {
   color: gray;
 }
 .no-goal-text {
-  line-height: 50px;
+  line-height: 130px;
 }
 .no-goal {
   /* text-decoration: none; */

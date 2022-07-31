@@ -31,7 +31,7 @@
         </tbody>
       </table>
 
-      <router-link to="/mypage/slide">변화 한 눈에 보기</router-link>
+      <router-link to="/slide">변화 한 눈에 보기</router-link>
 
       <b-modal id="my-modal" size="md" button-size="sm" scrollable
         :title="`${currentYear}년 ${currentMonth}월 ${day}일`">

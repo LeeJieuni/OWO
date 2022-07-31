@@ -57,12 +57,12 @@ const routes = [
         // name: 'MyPageScheduleView',
         component: MyPageScheduleView,
       },
-      {
-        path: 'slide',
-        // name: 'MyPageSlideView',
-        component: MyPageSlideView,
-      },
     ],
+  },
+  {
+    path: '/slide',
+    name: 'MyPageSlideView',
+    component: MyPageSlideView,
   },
   {
     path: '/competition',
