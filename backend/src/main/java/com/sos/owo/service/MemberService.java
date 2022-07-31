@@ -37,6 +37,7 @@ public class MemberService {
     @Transactional
     public int join(Member member){
         checkEmailDuplicate(member.getEmail()); // 중복 회원 검증
+        member.setEnable(false);
         memberRepository.save(member);
         return member.getId();
     }
@@ -206,6 +207,41 @@ public class MemberService {
         }
         memberBodyDto.setCaloriePerDay(caloriePerDay);
         return memberBodyDto;
+    }
+
+    @Transactional
+    public MemberLoginResponseDto getMember(String accessToken) throws Exception {
+        String email = jwtTokenProvider.getUserPk(accessToken);
+        Member member = memberRepository.findByEmail(email);
+
+        // 리프레쉬 토큰 발급
+        MemberLoginResponseDto memberDto = MemberLoginResponseDto.builder()
+                .email(email)
+                .accessToken(accessToken)
+                .refreshToken(member.getRefreshToken())
+                .id(member.getId()).nick(member.getNick())
+                .gender(member.getGender()).age(member.getAge())
+                .height(member.getHeight()).weight(member.getWeight())
+                .activityNum(member.getActivityNum()).activityHour(member.getActivityHour())
+                .activityLevel(member.getActivityLevel())
+                .build();
+
+        return memberDto;
+    }
+
+    @Transactional
+    public void joinSocial(UserDto user){
+        Member member = new Member();
+        member.setEmail(user.getEmail());
+        member.setNick(user.getName());
+        member.setPw("social");
+        member.setEnable(true);
+        memberRepository.save(member);
+    }
+
+    @Transactional
+    public void socialLogin(String email, String refreshToken){
+        memberRepository.socialLogin(email, refreshToken);
     }
 
 

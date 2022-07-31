@@ -486,35 +486,29 @@ public class MemberController {
             return new ResponseEntity<>(message, headers,  HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @GetMapping("/oauth/google")
-    public ResponseEntity<?> GoogleLogin() throws IOException {
+
+    @ApiOperation(value = "소셜로그인 - 멤버정보 요청",notes = "발급받은 accessToken으로 멤버정보를 요청한다.")
+    @GetMapping("/api/social")
+    public ResponseEntity<?> getMember(
+            @RequestHeader(value="X-AUTH-TOKEN") String token) {
+        System.out.println("???????!!!!!!!!!!");
+        Message message = new Message();
+        HttpHeaders headers= new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
         try {
-            SessionUser user = (SessionUser)httpSession.getAttribute("user");
-            System.out.println(user);
-            return new ResponseEntity<SessionUser>(user, HttpStatus.OK);
-        } catch (IllegalArgumentException | IllegalStateException e){
+            message.setStatus(StatusEnum.OK);
+            message.setMessage("access token으로 정보 불러오기 성공");
+            message.setData(memberService.getMember(token));
+            return new ResponseEntity<>(message, headers, HttpStatus.OK);
+        }  catch (Exception e){
             e.printStackTrace();
-            return new ResponseEntity<String>("구글 로그인 오류", HttpStatus.BAD_REQUEST);
-        } catch (Exception e){
-            e.printStackTrace();
-            return new ResponseEntity<String>("SERVER_ERROR", HttpStatus.INTERNAL_SERVER_ERROR);
+            message.setStatus(StatusEnum.INTERNAL_SERVER_ERROR);
+            message.setMessage("서버 에러 발생");
+            return new ResponseEntity<>(message, headers,  HttpStatus.INTERNAL_SERVER_ERROR);
         }
+
     }
-
-//    @GetMapping("/oauth/naver")
-//    public ResponseEntity<?> NaverLogin(Model model) throws IOException {
-//        try {
-//            SessionUser user = (SessionUser)httpSession.getAttribute("user");
-//            return new ResponseEntity<SessionUser>(user, HttpStatus.OK);
-//        } catch (IllegalArgumentException | IllegalStateException e){
-//            e.printStackTrace();
-//            return new ResponseEntity<String>("네이버 로그인 오류", HttpStatus.BAD_REQUEST);
-//        } catch (Exception e){
-//            e.printStackTrace();
-//            return new ResponseEntity<String>("SERVER_ERROR", HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//    }
-
 
 
 

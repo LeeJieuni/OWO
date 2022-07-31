@@ -21,6 +21,7 @@ public class OAuthAttributes {
         this.email = email;
     }
 
+    // 구글인지 네이버인지 카카오인지 구분하기 위한 메소드
     public static OAuthAttributes of(String registrationId, String userNameAttributesName, Map<String, Object> attributes){
         if("naver".equals(registrationId)) {
             return ofNaver("id", attributes);
@@ -53,6 +54,7 @@ public class OAuthAttributes {
                 .nick(name)
                 .email(email)
                 .pw("0000")
+                .enable(true)
                 .build();
     }
 

@@ -38,4 +38,4 @@ out/
 .vscode/
 
 application-oauth.properties
-
+keystore.p12

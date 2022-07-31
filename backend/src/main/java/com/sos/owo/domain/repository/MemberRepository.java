@@ -20,7 +20,6 @@ public class MemberRepository {
     private final EntityManager em;
 
     public void save(Member member){
-        member.setEnable(false);
         member.setJoindate(LocalDateTime.now());
         member.setRoles(Collections.singletonList("ROLE_USER")); // 최초 가입 시 USER로 설정
         em.persist(member);
@@ -98,6 +97,11 @@ public class MemberRepository {
     public MemberSloganDto getMemberSlogan(int memberId){
         Member findMember = findOne(memberId);
         return new MemberSloganDto(memberId, findMember.getSlogan());
+    }
+
+    public void socialLogin(String email, String refresh){
+        Member member = findByEmail(email);
+        member.changeRefreshToken(refresh);
     }
 
 
