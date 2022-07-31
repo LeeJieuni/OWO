@@ -37,7 +37,6 @@
       </div>
       <b-button type="submit"
       class="mt-3 btn-pers" id="login_button" variant="outline-primary">
-
         Login
       </b-button>
     </form>

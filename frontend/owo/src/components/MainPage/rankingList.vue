@@ -1,5 +1,5 @@
 <template>
-<div>
+  <div>
   <h1>오늘의 운동왕은 누구?</h1>
   <b-card-group deck>
     <b-card title="7월 둘째주 운동왕"  class="rounded-5">
@@ -34,26 +34,23 @@
       </div>
       <h3 style="margin-top:10px">연속 3일동안 운동하고 있어요!</h3>
     </b-card>
-
     <b-card title="나의 운동분석" class="rounded-5">
-      <!-- <Calendar/> -->
-      <!-- <physicalInfo/> -->
+     <!-- <v-calendar ></v-calendar> -->
+     <v-date-picker is-range v-model="date" is-expanded></v-date-picker>
     </b-card>
   </b-card-group>
-</div>
+  <div></div>
+  <hr/>
+  </div>
 </template>
 
 <script>
 import 'vue3-circle-progress/dist/circle-progress.css';
 import CircleProgress from 'vue3-circle-progress';
-// import PhysicalInfo from '../MyPage/PhysicalInfo.vue';
-// import Calendar from '@/components/MyPage/MyCalendar.vue';
 
 export default {
   components: {
     CircleProgress,
-    // PhysicalInfo,
-    // Calendar,
   },
   data() {
     return {
@@ -63,6 +60,7 @@ export default {
         username: '백한나',
         workoutTime: 10,
       },
+      date: new Date(),
     };
   },
 };

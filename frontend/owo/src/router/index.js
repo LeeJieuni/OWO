@@ -13,7 +13,7 @@ import YoutubeChatView from '../views/Room/YoutubeChatView.vue';
 import YoutubeNoChatView from '../views/Room/YoutubeNoChatView.vue';
 import TestPage from '../views/Room/TestPage.vue';
 import login from '../views/accounts/loginView.vue';
-import register from '../views/accounts/registerView.vue';
+import register from '../components/MainPage/joinModal.vue';
 
 const routes = [
   {
@@ -97,7 +97,7 @@ const routes = [
 ];
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
+  history: createWebHistory(),
   routes,
 });
 

@@ -2,12 +2,13 @@
   <div>
     <div class="join">
       <div class="container">
-      <form @submit.prevent="join" class="joinForm">
+      <form @submit.prevent="" class="joinForm">
       <h2 class="mb-3">회원가입</h2>
       <div class="input">
         <label for="email">아이디<input
           class="form-control"
-          type="text"
+          v-model="joinData.email"
+          type="email"
           name="email"
           placeholder="email@adress.com"
         /></label>
@@ -15,6 +16,7 @@
       <div class="input">
         <label for="password"><span>비밀번호</span><input
           class="form-control"
+          v-model="joinData.password"
           type="password"
           name="password"
           placeholder="password123"
@@ -23,8 +25,9 @@
       <div class="input">
         <label for="password"><span>비밀번호 확인</span><input
           class="form-control"
+          v-model="joinData.passwordchk"
           type="password"
-          name="password"
+          name="passwordchk"
           placeholder="password123"
         /></label>
       </div>
@@ -41,8 +44,8 @@
         </div>
       </div>
       <b-button type="submit"
-      class="mt-3 btn-pers" id="login_button" variant="outline-primary">
-        Login
+      class="mt-3 btn-pers" id="join_btn" variant="outline-primary" @click="print">
+        회원가입
       </b-button>
     </form>
     </div>
@@ -54,13 +57,19 @@
 export default {
   data() {
     return {
-      email: '',
-      password: '',
+      joinData: {
+        email: null,
+        password: null,
+        passwordchk: null,
+      },
     };
   },
   methods: {
     moveToLogin() {
       this.$router.push('/login');
+    },
+    print() {
+      console.log(this.joinData);
     },
   },
 };

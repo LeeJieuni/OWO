@@ -42,19 +42,30 @@ export default createStore({
       state.userInfo.nick = payload.nick;
       state.userInfo.weight = payload.weight;
     },
+    SET_LOGIN_INFO(state, payload) {
+      state.loginInfo.accessToken = payload.accessToken;
+      state.loginInfo.refreshToken = payload.refreshToken;
+      state.loginInfo.status = payload.status;
+      state.loginInfo.message = payload.message;
+    },
     loginSuccess(state) {
       state.isLogin = true;
       state.isLoginError = false;
     },
     loginFail(state, payload) {
-      state.loginErrMsg = payload;
       state.isLogin = false;
       state.isLoginError = true;
+      state.loginErrMsg = payload.request.response.split(',')[1].substr(11, 21);
+      alert(state.loginErrMsg);
+      // eslint-disable-next-line
+      // {"status":"BAD_REQUEST","message":"이메일 혹은 비밀번호가 맞지 않습니다.","data":null} 11 32
+      // console.log(state.loginErrMsg[1].substr(11, 21));
     },
     logout(state) {
       state.isLogin = false;
       state.isLoginError = false;
       state.userInfo = null;
+      state.loginInfo = null;
     },
   },
   actions: {
@@ -66,7 +77,7 @@ export default createStore({
           this.dispatch('saveToken', requestToken);
           commit('loginSuccess');
           commit('SET_USER_INFO', data);
-          console.log(data);
+          commit('SET_LOGIN_INFO', data);
           router.push('/');
         })
         .catch((error) => {
@@ -78,7 +89,7 @@ export default createStore({
       localStorage.setItem('accessToken', token);
     },
     removeToken({ commit }) {
-      commit('SET_TOKEN', '');
+      commit('SET_LOGIN_INFO', '');
       localStorage.setItem('token', '');
     },
   },

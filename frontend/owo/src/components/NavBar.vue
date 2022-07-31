@@ -17,7 +17,7 @@
                 aria-expanded="false">
                 <span> Rooms</span>
               </a>
-              <ul class="dropdown-menu">s
+              <ul class="dropdown-menu">
                 <li>
                   <span></span>
                   <router-link class="dropdown-item" to="/competition">Competition</router-link>
@@ -36,15 +36,18 @@
                 </li>
               </ul>
             </li>
-            <router-link to="/login">
+            <!-- <router-link to="/login">
               <li class="menu1">login</li>
-            </router-link>
+            </router-link> -->
+            <loginModal></loginModal>
+            <joinModal></joinModal>
           </div>
           <div v-if="isLoggedIn()" class="d-flex">
             <div class="d-flex align-items-center">
               <div class="navbar-brand mb-0 h1">
-                <span>안녕하세요<router-link
-                to="/mypage"><span class="welcome">{{ userInfo.username }}</span></router-link>님,
+                <span>안녕하세요<router-link to="/mypage"><span
+                class="welcome">{{ userInfo.nick }}</span>
+                  </router-link> 님,
                   반갑습니다!</span>
               </div>
             </div>
@@ -69,25 +72,27 @@
   </div>
 </template>
 <script>
+import { mapState } from 'vuex';
+import loginModal from '@/components/MainPage/loginModal.vue';
+import joinModal from '@/components/MainPage/joinModal.vue';
+
 export default {
   name: 'NavBar',
-  components: {},
+  components: {
+    loginModal,
+    joinModal,
+  },
   data() {
     return {
-      sampleData: '',
-      userInfo: {
-        username: 'najangyeob',
-      },
     };
   },
-  setup() { },
-  created() { },
-  mounted() { },
-  unmounted() { },
   methods: {
     isLoggedIn() {
-      return true;
+      return false;
     },
+  },
+  computed: {
+    ...mapState(['userInfo']),
   },
 };
 </script>
