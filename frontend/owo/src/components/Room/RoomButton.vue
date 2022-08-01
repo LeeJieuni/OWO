@@ -33,7 +33,7 @@
             </b-dropdown>
             </div>
             <div>
-            <Emoji v-bind:style="{position: 'absolute', top: 100 +'px', left: 100 + 'px'}"
+            <Emoji v-bind:style="{position: 'absolute', top: 50 +'px', left: 0 + 'px'}"
             v-if="Emoji_ONOFF"/>
             <button id="emoji_btn" @click="open_emoji" class="btn btn-outline-secondary m-2">이모티콘
                 <img class="menu_icon" src="@/assets/icon/emoji.png" alt="emoji">
@@ -43,10 +43,7 @@
                 <img class="menu_icon" src="@/assets/icon/room_setting.png" alt="mic_off">
                 설정
             </button>
-            <button class="btn btn-outline-secondary m-2">
-                <img class="menu_icon2" src="@/assets/icon/room_end.png" alt="mic_off">
-                종료
-            </button>
+            <AfterExerciseModal/>
         </div>
         <div class="d-flex justify-content-center align-items-center text-white"
         v-if="is_take_photo" id="take_photo_background">
@@ -59,7 +56,7 @@
         {{ timer }}
         </div>
     </div>
-    <div>
+    <!-- <div>
       ex: {{ ex }}
     </div>
     <div>
@@ -67,9 +64,10 @@
     </div>
     <div>
       이모지 포지션 잡는 중
-    </div>
+    </div> -->
 </template>
 <script>
+import AfterExerciseModal from './AfterExerciseModal.vue';
 import Emoji from '../MyEmoji.vue';
 
 let emojiX;
@@ -93,6 +91,7 @@ window.onload = function () {
 export default {
   components: {
     Emoji,
+    AfterExerciseModal,
   },
   data() {
     return {
