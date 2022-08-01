@@ -88,7 +88,7 @@ export default {
   },
   methods: {
     isLoggedIn() {
-      return false;
+      return true;
     },
   },
   computed: {

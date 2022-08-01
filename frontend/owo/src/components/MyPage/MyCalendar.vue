@@ -3,7 +3,7 @@
     <div class="month-title">
       <h2>
         <a class="month-change-btn" href="#" v-on:click="onClickPrev(currentMonth)">◀</a>
-          {{currentYear}}년 {{currentMonth}}월
+        {{ currentYear }}년 {{ currentMonth }}월
         <a class="month-change-btn" href="#" v-on:click="onClickNext(currentMonth)">▶</a>
       </h2>
     </div>
@@ -12,19 +12,26 @@
         <thead>
           <tr>
             <td v-for="(weekName, index) in weekNames" v-bind:key="index">
-              {{weekName}}
+              {{ weekName }}
             </td>
           </tr>
         </thead>
         <tbody>
           <tr v-for="(row, index) in currentCalendarMatrix" :key="index">
-            <td v-for="(day, index2) in row" :key="index2" style="padding:20px;">
-              <a href="#" v-if="isToday(currentYear, currentMonth, day)" class="rounded"
-                @click="selectDay(currentMonth, day)" v-b-modal="'my-modal'">
-                {{day}}
+            <td v-for="(day, index2) in row" :key="index2" style="padding: 20px">
+              <a
+                href="#"
+                v-if="isToday(currentYear, currentMonth, day)"
+                class="rounded day-btn"
+                @click="selectDay(currentMonth, day)"
+                v-b-modal="'my-modal'"
+              >
+                {{ day }}
               </a>
               <span v-else>
-                <a href="#" @click="selectDay(currentMonth, day)" v-b-modal="'my-modal'">{{day}}</a>
+                <a class="day-btn" href="#"
+                  @click="selectDay(currentMonth, day)"
+                  v-b-modal="'my-modal'">{{ day }}</a>
               </span>
             </td>
           </tr>
@@ -33,30 +40,57 @@
 
       <router-link to="/slide">변화 한 눈에 보기</router-link>
 
-      <b-modal id="my-modal" size="lg" button-size="sm" scrollable
-        :title="`${currentYear}년 ${currentMonth}월 ${day}일`">
+      <b-modal
+        spinner-small
+        id="my-modal"
+        size="lg"
+        button-size="sm"
+        scrollable
+        :hide-footer="true"
+        :hide-title="true"
+        :title="`${currentYear}년 ${currentMonth}월 ${day}일`"
+      >
         <div class="carousel-box">
-
           <!--카로셀-->
           <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
               <div class="carousel-item active">
-                <img src="https://phantom-marca.unidadeditorial.es/746e69f29df0fa7da1f9df1cffc2af10/crop/0x20/1499x861/resize/1320/f/jpg/assets/multimedia/imagenes/2022/01/12/16419960151339.jpg" class="d-block w-100" alt="">
+                <img
+                  src="https://phantom-marca.unidadeditorial.es/746e69f29df0fa7da1f9df1cffc2af10/crop/0x20/1499x861/resize/1320/f/jpg/assets/multimedia/imagenes/2022/01/12/16419960151339.jpg"
+                  class="d-block w-100"
+                  alt=""
+                />
               </div>
               <div class="carousel-item">
-                <img src="https://cdn.pixabay.com/photo/2016/11/14/03/38/achieve-1822503__480.jpg" class="d-block w-100" alt="">
+                <img
+                  src="https://cdn.pixabay.com/photo/2016/11/14/03/38/achieve-1822503__480.jpg"
+                  class="d-block w-100"
+                  alt=""
+                />
               </div>
               <div class="carousel-item">
-                <img src="https://cdn.pixabay.com/photo/2018/02/06/14/07/ease-3134828__340.jpg" class="d-block w-100" alt="">
+                <img
+                  src="https://cdn.pixabay.com/photo/2018/02/06/14/07/ease-3134828__340.jpg"
+                  class="d-block w-100"
+                  alt=""
+                />
               </div>
             </div>
-            <button class="carousel-control-prev" type="button"
-              data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+            <button
+              class="carousel-control-prev"
+              type="button"
+              data-bs-target="#carouselExampleControls"
+              data-bs-slide="prev"
+            >
               <span class="carousel-control-prev-icon" aria-hidden="true"></span>
               <span class="visually-hidden">Previous</span>
             </button>
-            <button class="carousel-control-next" type="button"
-              data-bs-target="#carouselExampleControls" data-bs-slide="next">
+            <button
+              class="carousel-control-next"
+              type="button"
+              data-bs-target="#carouselExampleControls"
+              data-bs-slide="next"
+            >
               <span class="carousel-control-next-icon" aria-hidden="true"></span>
               <span class="visually-hidden">Next</span>
             </button>
@@ -64,12 +98,8 @@
 
           <!--태그-->
           <div class="tags row">
-            <button
-              v-for="(tag, tagI) in tags"
-              :key="tagI"
-              class="tag"
-            >
-              <p class="tag-name"># {{tag}}</p>
+            <button v-for="(tag, tagI) in tags" :key="tagI" class="tag">
+              <p class="tag-name"># {{ tag }}</p>
             </button>
           </div>
 
@@ -81,8 +111,8 @@
           <!--메모-->
           <div class="memo-box">
             <p class="memo">
-              사레레 10*20*3 , 밀리터리 프레스 10*20*3 , 프레 10*20*3 , 벤치프레스 10*20*3 , 스쿼트 40*20*3 ,
-              레그레이즈 20*3 함. 힘들다.. 그래도 친구들이랑 같이 해서 재밌었다!
+              사레레 10*20*3 , 밀리터리 프레스 10*20*3 , 프레 10*20*3 , 벤치프레스 10*20*3 , 스쿼트
+              40*20*3 , 레그레이즈 20*3 함. 힘들다.. 그래도 친구들이랑 같이 해서 재밌었다!
             </p>
           </div>
 
@@ -90,30 +120,18 @@
           <div class="people-list">
             <p class="people-title">함께 운동한 사람</p>
             <div class="d-flex container-fluid people-img-div justify-content-evenly">
-              <img v-for="(profile, recordI) in record.profiles"
-                :key="recordI" src="https://picsum.photos/50" alt="" class="people-img">
+              <img
+                v-for="(profile, recordI) in record.profiles"
+                :key="recordI"
+                src="https://picsum.photos/50"
+                alt=""
+                class="people-img"
+              />
             </div>
           </div>
         </div>
+        <b-button class="mt-3" variant="outline-danger" block @click="hideModal">Close Me</b-button>
 
-        <template #modal-footer="{}">
-
-          <!-- Emulate built in modal footer ok and cancel button actions -->
-          <!-- <b-button size="sm" variant="success" @click="ok()">
-            OK
-          </b-button>
-          <b-button size="sm" variant="danger" @click="cancel()">
-            Cancel
-          </b-button> -->
-          <b-button size="sm" variant="danger">
-            Cancel
-          </b-button>
-
-          <!-- Button with custom close trigger value -->
-          <!-- <b-button size="sm" variant="outline-secondary" @click="hide('forget')">
-            Forget it
-          </b-button> -->
-        </template>
       </b-modal>
     </div>
   </div>
@@ -139,7 +157,12 @@ export default {
       exerciseType: '헬스',
       record: {
         profiles: [
-          'https://picsum.photos/50', 'https://picsum.photos/50', 'https://picsum.photos/50', 'https://picsum.photos/50', 'https://picsum.photos/50', 'https://picsum.photos/50',
+          'https://picsum.photos/50',
+          'https://picsum.photos/50',
+          'https://picsum.photos/50',
+          'https://picsum.photos/50',
+          'https://picsum.photos/50',
+          'https://picsum.photos/50',
         ],
       },
       memo: '사레레 10*20*3 , 사레레 10*20*3 , 사레레 10*20*3 , 사레레 10*20*3 , 사레레 10*20*3 , 사레레 10*20*3 함. 개힘들었다 정말... 내일도 해야하는데 정말 미쳐버리겠다 운동을 좋아서 하는 사람들은 대체 어떤 사람',
@@ -149,6 +172,9 @@ export default {
     this.init();
   },
   methods: {
+    hideModal() {
+      this.$refs['my-modal'].hide();
+    },
     init() {
       this.currentMonthStartWeekIndex = this.getStartWeek(this.currentYear, this.currentMonth);
       this.endOfDay = this.getEndOfDay(this.currentYear, this.currentMonth);
@@ -182,23 +208,23 @@ export default {
         case 10:
         case 12:
           return 31;
-          // break;
+        // break;
         case 4:
         case 6:
         case 9:
         case 11:
           return 30;
-          // break;
+        // break;
         case 2:
-          if (((year % 4 === 0) && (year % 100 !== 0)) || (year % 400 === 0)) {
+          if ((year % 4 === 0 && year % 100 !== 0) || year % 400 === 0) {
             return 29;
           }
           return 28;
-          // break;
+        // break;
         default:
           console.log(`unknown month ${month}`);
           return 0;
-          // break;
+        // break;
       }
     },
     getStartWeek(targetYear, targetMonth) {
@@ -216,7 +242,7 @@ export default {
             sumOfDay += this.getEndOfDay(year, month);
             month += 1;
           } else if (targetMonth === month) {
-            return (sumOfDay) % 7;
+            return sumOfDay % 7;
           }
         }
       }
@@ -277,30 +303,30 @@ export default {
   color: gray;
 }
 .month-change-btn:hover {
-  color: #4E8AFF;
+  color: #4e8aff;
 }
 .rounded {
-  -moz-border-radius:20px 20px 20px 20px;
-  border-radius:20px 20px 20px 20px;
-  border:solid 1px #ffffff;
-  background-color:#4E8AFF;
-  padding:10px;
-  color:#ffffff;
+  -moz-border-radius: 20px 20px 20px 20px;
+  border-radius: 20px 20px 20px 20px;
+  border: solid 1px #ffffff;
+  background-color: #4e8aff;
+  padding: 10px;
+  color: #ffffff;
 }
 .carousel-box {
   margin: 50px;
 }
 /* 캐러셀(이미지슬라이드) 이미지 크기변경 */
-.carousel-inner{
-  width:auto;
-  height:400px; /* 이미지 높이 변경 */
-}
-.carousel-item{
+.carousel-inner {
   width: auto;
-  height:100%;
+  height: 400px; /* 이미지 높이 변경 */
+}
+.carousel-item {
+  width: auto;
+  height: 100%;
 }
 .d-block {
-  display:block;
+  display: block;
   width: auto;
   height: 100%;
 }
@@ -315,7 +341,7 @@ export default {
   display: flex;
   /* justify-content: center; */
   margin: 0 auto;
-  Background-size : cover;
+  background-size: cover;
 }
 .tags {
   padding: 10px;
@@ -325,13 +351,13 @@ export default {
   width: 80px;
   height: 26px;
   border: solid #828282 0px;
-  display:inline-block;
+  display: inline-block;
   border-radius: 10px;
   /* padding: 4px; */
   margin: 2px;
   font-size: 12px;
   font-weight: 700;
-  background-color:#4E8AFF;
+  background-color: #4e8aff;
   /* padding-left: 10px; */
   line-height: 25px;
   color: white;
@@ -342,11 +368,10 @@ export default {
   text-align: center;
 }
 .tag:hover {
-  background-color: #DE7474;
+  background-color: #de7474;
   color: white;
   transition: 0.2s;
   cursor: pointer;
-
 }
 .tag p {
   text-align: left;
@@ -354,7 +379,8 @@ export default {
 .table > a {
   text-decoration: none;
 }
-.people-title, .exercise-type-box {
+.people-title,
+.exercise-type-box {
   text-align: center;
   font-size: 18px;
   font-weight: 700;
@@ -371,10 +397,12 @@ export default {
 }
 .memo {
   text-align: justify;
-  font-family: 'Fairytale_ddobak';
+  font-family: "Fairytale_ddobak";
   font-weight: 600;
   font-size: 20px;
   /* letter-spacing: 2; */
-
+}
+.day-btn {
+  text-decoration: none;
 }
 </style>

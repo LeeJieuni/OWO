@@ -4,7 +4,7 @@
     <div class="title-box row">
       <div class="profile d-flex justify-content-center">
         <label for="formFile" class="form-label" >
-          <img class="profile-img " :src=user.profileImg alt="">
+          <img class="profile-img " :src=profileImg alt="">
           <input class="form-control form-control-sm profile-input"
             type="file" id="formFile"
             src=profileImg
@@ -24,7 +24,7 @@
               <th class="th-2">
               <label for="slogan">
                 <input class="form-input text-center slogan-input"
-                  type="text" name="slogan" v-model=user.slogan>
+                  type="text" name="slogan" v-model=slogan>
               </label>
             </th>
           </tr>
@@ -144,7 +144,7 @@
               <tr>
                 <div class="tags row">
                   <button
-                    v-for="(goal, goalI) in user.goals"
+                    v-for="(goal, goalI) in goals"
                     :key="goalI"
                     class="tag"
                     @click="tagDelete">
@@ -159,7 +159,7 @@
             <th class="th-1">내 정보 공개하기</th>
             <th class="th-2"><label for="secret">
               <select class="form-select form-select-sm form-input text-center"
-                name="radio" id="secret" v-model=user.secret>
+                name="radio" id="secret" v-model=secret>
                 <option value="1">공개</option>
                 <option value="2">비공개</option>
               </select></label>
@@ -169,7 +169,7 @@
         </tbody>
       </table>
       <div class="row buttons">
-        <button class="col btn btn-primary m-3" >변경</button>
+        <button class="col btn btn-primary m-3" @click="update()">변경</button>
         <button class="col btn btn-secondary m-3" >취소</button>
       </div>
     </form>
@@ -177,6 +177,8 @@
   </div>
 </template>
 <script>
+import { mapMutations, mapGetters } from 'vuex';
+
 export default {
   name: 'MyPageUpdateView',
   components: {},
@@ -185,18 +187,18 @@ export default {
       inputGoalType: '',
       inputGoalHour: 0,
       user: {
-        slogan: '8월 바프까지 화이팅!',
-        nick: '한나',
-        age: 27,
-        gender: 'female',
-        height: 156,
-        weight: 44,
-        activity: 4,
-        secret: 2,
-        goals: [],
-        profileImg: 'https://picsum.photos/150',
+        nick: this.user.nick,
+        age: this.user.age,
+        gender: this.user.gender,
+        height: this.user.height,
+        weight: this.user.weight,
+        activity: this.user.activityNum,
       },
+      profileImg: 'https://picsum.photos/150',
+      secret: 2,
+      goals: [],
       selected: '',
+      slogan: '',
       options: [
         { text: '없음', value: '1' },
         { text: '약간', value: '2' },
@@ -210,9 +212,26 @@ export default {
   created() {},
   mounted() {},
   unmounted() {},
+  computed: {
+    ...mapGetters({
+      userInfo: 'user',
+    }),
+  },
   methods: {
+    ...mapMutations(['updateUserInfo']),
+    update() {
+      const user = {
+        nick: this.user.nick,
+        gender: this.user.gender,
+        age: this.user.age,
+        height: this.user.height,
+        weight: this.user.weight,
+        activityLevel: this.user.activity,
+      };
+      this.$store.dispatch('updateUserIfo', user);
+    },
     addGoal(event) {
-      if (this.user.goals.length >= 3) {
+      if (this.goals.length >= 3) {
         /* eslint-disable */
         alert('주간 목표는 3개까지 추가 가능합니다.');
         event.preventDefault();
@@ -231,7 +250,7 @@ export default {
         return;
       }
       event.preventDefault();
-      this.user.goals.push({ goalType: this.inputGoalType, goalHour: this.inputGoalHour });
+      this.goals.push({ goalType: this.inputGoalType, goalHour: this.inputGoalHour });
     },
     tagDelete(event) {
       /* eslint-disable */
@@ -286,7 +305,7 @@ export default {
     font-weight: 700;
     background-color:#828282;
     /* padding-left: 10px; */
-    line-height: 18px; 
+    line-height: 18px;
     color: white;
     letter-spacing: -1.5;
   }

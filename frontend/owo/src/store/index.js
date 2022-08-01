@@ -26,7 +26,8 @@ export default createStore({
     },
   },
   getters: {
-
+    userInfo: (state) => state.userInfo,
+    isLogin: (state) => state.isLogin,
   },
   mutations: {
     SET_TOKEN(state, token) {
@@ -72,7 +73,7 @@ export default createStore({
     login({ commit }, credentials) { // eslint-disable-line no-unused-vars
       axios.post('https://i7c202.p.ssafy.io:8282/auth/login', credentials)
         .then((res) => {
-          const data = res.data.data; // eslint-disable-line 
+          const data = res.data.data; // eslint-disable-line
           const requestToken = data.accessToken;
           this.dispatch('saveToken', requestToken);
           commit('loginSuccess');
@@ -91,6 +92,15 @@ export default createStore({
     removeToken({ commit }) {
       commit('SET_LOGIN_INFO', '');
       localStorage.setItem('token', '');
+    },
+    updateUserInfo({ commit }, payload) {
+      axios.put('https://i7c202.p.ssafy.io:8282/api/user', payload)
+        .then((res) => {
+          commit('SET_USER_INFO', res.data);
+        })
+        .catch((err) => {
+          console.log(err.response.data);
+        });
     },
   },
 });
