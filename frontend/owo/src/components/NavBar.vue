@@ -10,11 +10,7 @@
               <img id="logo2" src="../assets/logo/logo2.png" alt="">
             </router-link>
           </div>
-          <p>
-            {{isLogin}}
-          </p>
           <div v-if="!isLogin" class="d-flex">
-          <p>eqeqwe</p>
             <!--dropdows1-rooms-->
             <li class="menu1 mypages nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
@@ -43,16 +39,16 @@
             <!-- <router-link to="/login">
               <li class="menu1">login</li>
             </router-link> -->
-            <loginModal></loginModal>
-            <joinModal></joinModal>
+            <!-- <loginModal></loginModal>
+            <joinModal></joinModal> -->
           </div>
           <div v-else class="d-flex">
             <div class="d-flex align-items-center">
               <div class="navbar-brand mb-0 h1">
-                <span>안녕하세요<router-link to="/mypage"><span class="welcome">asdasdasd</span>
-                  </router-link> 님,
+                <span>안녕하세요
+                <router-link to="/mypage"><span class="welcome">{{ userInfo.nick }}</span>
+                </router-link> 님,
                   반갑습니다!</span>
-                  <button @click="print">qweqwe</button>
               </div>
             </div>
             <div class="dropdown">
@@ -64,9 +60,7 @@
                 <router-link to="">
                   <li>환경설정</li>
                 </router-link>
-                <router-link to="">
-                  <li>로그아웃</li>
-                </router-link>
+                  <button @click="logout()">로그아웃</button>
               </div>
             </div>
           </div>
@@ -78,8 +72,9 @@
 <script>
 // import loginModal from '@/components/MainPage/loginModal.vue';
 // import joinModal from '@/components/MainPage/joinModal.vue';
-import { useStore } from 'vuex';
-import { computed } from 'vue';
+import { createNamespacedHelpers } from 'vuex';
+
+const { mapActions, mapGetters } = createNamespacedHelpers('accounts');
 
 export default {
   name: 'NavBar',
@@ -92,16 +87,12 @@ export default {
     };
   },
   methods: {
+    ...mapActions({
+      logout: 'logout',
+    }),
   },
   computed: {
-    // ...mapGetters(['userInfo', 'loginInfo', 'signalInfo']),
-  },
-  setup() {
-    const store = useStore();
-    const isLogin = computed(() => store.state.Account.isLogin);
-    const getLogin = computed(() => store.getters.Account.getLogin);
-    const test = () => store.dispatch('test');
-    return { isLogin, getLogin, test };
+    ...mapGetters(['isLogin', 'userInfo']),
   },
 };
 </script>

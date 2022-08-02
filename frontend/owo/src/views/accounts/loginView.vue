@@ -47,7 +47,9 @@
 </template>
 
 <script>
-import { useStore } from 'vuex';
+import { createNamespacedHelpers } from 'vuex';
+
+const { mapActions } = createNamespacedHelpers('accounts');
 
 export default {
   data() {
@@ -59,14 +61,12 @@ export default {
     };
   },
   methods: {
+    ...mapActions({
+      login: 'login',
+    }),
     moveToRegister() {
       this.$router.push('/join');
     },
-  },
-  setup() {
-    const store = useStore();
-    const login = () => store.dispatch('login');
-    return { login };
   },
 };
 </script>
