@@ -9,22 +9,24 @@
       </div>
       <div class="d-flex">
         <div>
-          <div class="d-flex align-items-start justify-content-start mb-5 m-2"
-          style="background-color:aqua; width:930px; height:585px">
+          <div class="d-flex align-items-start justify-content-start mx-1 mb-5"
+          style="background-color:aqua; width:911px; height:592px">
           <iframe width="100%" height="100%" src="https://www.youtube.com/embed/gTowV_F07uI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>              </div>
-          <RoomButton></RoomButton>
         </div>
-        <div style="width:30%; max-height:600px; overflow-y:auto;">
-          <WebRTCYoutubeNochat></WebRTCYoutubeNochat>
-          <WebRTCYoutubeNochat></WebRTCYoutubeNochat>
-          <WebRTCYoutubeNochat></WebRTCYoutubeNochat>
-          <WebRTCYoutubeNochat></WebRTCYoutubeNochat>
-          <WebRTCYoutubeNochat></WebRTCYoutubeNochat>
-          <WebRTCYoutubeNochat></WebRTCYoutubeNochat>
+        <div style="width:30%; max-height:592px; overflow-y:auto;">
+          <WebRTCYoutube></WebRTCYoutube>
+          <WebRTCYoutube></WebRTCYoutube>
+          <WebRTCYoutube></WebRTCYoutube>
+          <WebRTCYoutube></WebRTCYoutube>
+          <WebRTCYoutube></WebRTCYoutube>
+          <WebRTCYoutube></WebRTCYoutube>
         </div>
       </div>
+      <RoomButton></RoomButton>
     </div>
     <div>
+      <br>
+      <br>
       <button v-if="chatONOFF" @click="chatoff">채팅창 접어두기 >></button>
       <button v-if="!chatONOFF" @click="chaton">&lt;&lt; 채팅창 열기</button>
       <br>
@@ -38,13 +40,13 @@
 import Timer from '@/components/SetTimer.vue';
 import RoomButton from '@/components/Room/RoomButton.vue';
 import AChat from '@/components/Room/AChat.vue';
-import WebRTCYoutubeNochat from '../../components/Room/WebRTCYoutubeNochat.vue';
+import WebRTCYoutube from '../../components/Room/WebRTCYoutube.vue';
 
 export default {
-  name: 'FriendNoChatView',
+  name: 'YoutubeView',
   components: {
     Timer,
-    WebRTCYoutubeNochat,
+    WebRTCYoutube,
     RoomButton,
     AChat,
   },

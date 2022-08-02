@@ -8,7 +8,7 @@
           </button>
         </div>
         <div>
-            <p>개인 WebRTC 영상</p>
+            <p>개인 WebRTC 영상(Youtube)</p>
         </div>
         </div>
     </div>

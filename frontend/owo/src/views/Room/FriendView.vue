@@ -21,7 +21,7 @@
     <div>
       <br>
       <br>
-      <button class="text-right" v-if="chatONOFF" @click="chatoff" >채팅창 접어두기 >></button>
+      <button v-if="chatONOFF" @click="chatoff" >채팅창 접어두기 >></button>
       <button v-if="!chatONOFF" @click="chaton">&lt;&lt; 채팅창 열기</button>
       <br>
       <br>
@@ -36,7 +36,7 @@ import RoomButton from '@/components/Room/RoomButton.vue';
 import AChat from '@/components/Room/AChat.vue';
 
 export default {
-  name: 'CompetitionView',
+  name: 'FriendView',
   components: {
     Timer,
     WebRTC,
