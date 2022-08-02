@@ -2,11 +2,11 @@
   <div>
     <div class="login">
       <div class="container">
-      <form @submit.prevent="login(credential)" class="loginForm">
+      <form @submit.prevent="login(credentials)" class="loginForm">
       <h2 class="mb-3">Login</h2>
       <div class="input">
         <label for="email">아이디<input
-          v-model="credential.email"
+          v-model="credentials.email"
           class="form-control"
           type="email"
           name="email"
@@ -16,7 +16,7 @@
       </div>
       <div class="input">
         <label for="password"><span>비밀번호</span><input
-          v-model="credential.password"
+          v-model="credentials.password"
           class="form-control"
           type="password"
           name="password"
@@ -41,17 +41,18 @@
       </b-button>
     </form>
     </div>
+    <!-- <p>{{ userInfo }}</p> -->
   </div>
   </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { useStore } from 'vuex';
 
 export default {
   data() {
     return {
-      credential: {
+      credentials: {
         email: '',
         password: '',
       },
@@ -61,7 +62,11 @@ export default {
     moveToRegister() {
       this.$router.push('/join');
     },
-    ...mapActions(['login']),
+  },
+  setup() {
+    const store = useStore();
+    const login = () => store.dispatch('login');
+    return { login };
   },
 };
 </script>

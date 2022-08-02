@@ -52,7 +52,7 @@
                 <span>안녕하세요<router-link to="/mypage"><span class="welcome">asdasdasd</span>
                   </router-link> 님,
                   반갑습니다!</span>
-                  <button @onclick="print2()">qweqwe</button>
+                  <button @click="print">qweqwe</button>
               </div>
             </div>
             <div class="dropdown">
@@ -92,19 +92,16 @@ export default {
     };
   },
   methods: {
-    print2() {
-      console.log(this.isLogin);
-    },
   },
   computed: {
     // ...mapGetters(['userInfo', 'loginInfo', 'signalInfo']),
   },
   setup() {
-    const store = useStore(); // 이건 무조건.
+    const store = useStore();
     const isLogin = computed(() => store.state.Account.isLogin);
     const getLogin = computed(() => store.getters.Account.getLogin);
-    // const test = () => store.dispatch('test');
-    return { isLogin, getLogin };
+    const test = () => store.dispatch('test');
+    return { isLogin, getLogin, test };
   },
 };
 </script>
