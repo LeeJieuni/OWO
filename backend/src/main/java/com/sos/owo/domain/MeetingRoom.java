@@ -56,6 +56,8 @@ public class MeetingRoom {
     @OneToMany(mappedBy = "meetingId",cascade = CascadeType.ALL)
     private List<MeetingOauth> oauthList = new ArrayList<>();
 
-
+    @Column(name="meeting_room_status")
+    @Enumerated(EnumType.STRING)
+    private RoomStatus status;
 
 }
