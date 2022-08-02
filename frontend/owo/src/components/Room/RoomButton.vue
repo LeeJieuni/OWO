@@ -39,10 +39,7 @@
                 <img class="menu_icon" src="@/assets/icon/emoji.png" alt="emoji">
             </button>
             </div>
-            <button v-if="isMaster" class="btn btn-outline-secondary m-2">
-                <img class="menu_icon" src="@/assets/icon/room_setting.png" alt="mic_off">
-                설정
-            </button>
+            <RoomSetting></RoomSetting>
             <AfterExerciseModal/>
         </div>
         <div class="d-flex justify-content-center align-items-center text-white"
@@ -69,6 +66,7 @@
 <script>
 import AfterExerciseModal from './AfterExerciseModal.vue';
 import Emoji from '../MyEmoji.vue';
+import RoomSetting from './RoomSetting.vue';
 
 let emojiX;
 let emojiY;
@@ -76,29 +74,30 @@ let emojiY;
 window.onload = function () {
   emojiX = document.getElementById('emoji_btn').getClientRects()[0].x;
   emojiY = document.getElementById('emoji_btn').getClientRects()[0].bottom;
-  console.log(emojiX);
-  console.log(emojiY);
-  console.log('top :', document.getElementById('emoji_btn').getClientRects()[0].top);
-  console.log('bottom :', document.getElementById('emoji_btn').getClientRects()[0].bottom);
-  console.log('left :', document.getElementById('emoji_btn').getClientRects()[0].left);
-  console.log('right :', document.getElementById('emoji_btn').getClientRects()[0].right);
-  console.log('height :', document.getElementById('emoji_btn').getClientRects()[0].height);
-  console.log('width :', document.getElementById('emoji_btn').getClientRects()[0].width);
-  console.log('x :', document.getElementById('emoji_btn').getClientRects()[0].x);
-  console.log('y :', document.getElementById('emoji_btn').getClientRects()[0].y);
+  // console.log(emojiX);
+  // console.log(emojiY);
+  // console.log('top :', document.getElementById('emoji_btn').getClientRects()[0].top);
+  // console.log('bottom :', document.getElementById('emoji_btn').getClientRects()[0].bottom);
+  // console.log('left :', document.getElementById('emoji_btn').getClientRects()[0].left);
+  // console.log('right :', document.getElementById('emoji_btn').getClientRects()[0].right);
+  // console.log('height :', document.getElementById('emoji_btn').getClientRects()[0].height);
+  // console.log('width :', document.getElementById('emoji_btn').getClientRects()[0].width);
+  // console.log('x :', document.getElementById('emoji_btn').getClientRects()[0].x);
+  // console.log('y :', document.getElementById('emoji_btn').getClientRects()[0].y);
 };
 
 export default {
   components: {
     Emoji,
     AfterExerciseModal,
+    RoomSetting,
   },
   data() {
     return {
       // input: '',
       // search: '',
       Emoji_ONOFF: null,
-      isMaster: false,
+      isMaster: true,
       video: true,
       mic: true,
       timer: 3,
@@ -116,9 +115,6 @@ export default {
   },
   unmounted() {},
   methods: {
-    insert(emoji) {
-      this.input += emoji;
-    },
     mic_on_off() {
       this.mic = !this.mic;
     },
@@ -155,9 +151,6 @@ export default {
       this.Emoji_ONOFF = !this.Emoji_ONOFF;
       this.ex = emojiX;
       this.ey = emojiY;
-    },
-    onSelectEmoji(emoji) {
-      console.log(emoji);
     },
   },
 };

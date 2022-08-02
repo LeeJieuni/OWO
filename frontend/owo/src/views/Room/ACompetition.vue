@@ -19,13 +19,11 @@
         </div>
       </div>
     </div>
-    <AfterExerciseModal></AfterExerciseModal>
 </template>
 <script>
 import Timer from '@/components/SetTimer.vue';
 import WebRTC from '@/components/Room/WebRTC.vue';
 import RoomButton from '@/components/Room/RoomButton.vue';
-import AfterExerciseModal from '@/components/Room/AfterExerciseModal.vue';
 
 export default {
   name: 'CompetitionView',
@@ -33,7 +31,6 @@ export default {
     Timer,
     WebRTC,
     RoomButton,
-    AfterExerciseModal,
   },
   data() {
     return {

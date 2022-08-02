@@ -1,7 +1,9 @@
 <template>
+<div>
   <div class="row">
     <Picker :data="emojiIndex" set="google" @select="showEmoji" />
   </div>
+</div>
 </template>
 
 <script>
@@ -23,17 +25,15 @@ export default {
   components: {
     Picker,
   },
-
   data() {
     return {
       emojiIndex,
       emojisOutput: '',
     };
   },
-
   methods: {
     showEmoji(emoji) {
-      this.emojisOutput += emoji.native;
+      console.log(emoji.native);
     },
   },
 };
