@@ -1,7 +1,7 @@
 <template>
-    <div>
-        <div class="card me-2 d-flex justify-content-center align-items-center"
-        style="width: 18rem; height:18rem;">
+    <div class="mx-1">
+        <div class="card ms-2 me-2 mb-2 d-flex justify-content-center align-items-center"
+        style="width: 22rem; height:14rem;">
         <div>
           <button id="img" @click="get_out"><img style="width:25px;"
           src="@/assets/icon/get_out.png" alt="">

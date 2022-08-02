@@ -1,101 +1,74 @@
 <template>
-  <div class="container-fluid">
-    <div class="container">
-      <div class="d-flex">
-        <div style="width:80%;">
-          <div class="d-flex justify-content-between align-items-center" >
-            <h3 class="m-0">방 이름</h3>
-            <h3 class="m-0">타이머</h3>
-            <button class="btn btn-primary">Ready</button>
-          </div>
-
-          <div class="container d-flex justify-content-between mt-5">
-            <div class="card me-3" style="width: 18rem;">
-              <img src="" class="card-img-top" alt="...">
-              <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">Some quick example text to build onontent.</p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
-              </div>
-            </div>
-            <div class="card me-3" style="width: 18rem;">
-              <img src="" class="card-img-top" alt="...">
-              <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">Some quick example text to build onontent.</p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
-              </div>
-            </div>
-            <div class="card me-3" style="width: 18rem;">
-              <img src="" class="card-img-top" alt="...">
-              <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">Some quick example text to build onontent.</p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
-              </div>
-            </div>
-          </div>
-          <div class="container d-flex justify-content-between mt-5">
-            <div class="card me-3" style="width: 18rem;">
-              <img src="" class="card-img-top" alt="...">
-              <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">Some quick example text to build onontent.</p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
-              </div>
-            </div>
-            <div class="card me-3" style="width: 18rem;">
-              <img src="" class="card-img-top" alt="...">
-              <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">Some quick example text to build onontent.</p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
-              </div>
-            </div>
-            <div class="card me-3" style="width: 18rem;">
-              <img src="" class="card-img-top" alt="...">
-              <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">Some quick example text to build onontent.</p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-        <div style="width:20%">
-          <div style="text-align:right;">
-            채팅 접어두기 >>
-          </div>
-          <div style="height:100%" class="d-flex align-items-center justify-content-center">
-            <h1 class="m-0">채팅창</h1>
-          </div>
-        </div>
-
+  <div class="container-wrap d-flex justify-content-center">
+    <div>
+      <div class="d-flex justify-content-between align-items-center"
+      style="height:80px;">
+        <h3 class="m-0">팔굽혀펴기</h3>
+        <Timer/>
       </div>
+      <div class="container d-flex align-items-start justify-content-between">
+        <div class="row">
+          <WebRTC v-if="true" class="col-lg-4 mb-5"></WebRTC>
+          <WebRTC v-if="true" class="col-4 mb-5"></WebRTC>
+          <WebRTC v-if="true" class="col-4 mb-5"></WebRTC>
+          <WebRTC v-if="true" class="col-4 mb-5"></WebRTC>
+          <WebRTC v-if="true" class="col-4 mb-5"></WebRTC>
+          <WebRTC v-if="true" class="col-4 mb-5"></WebRTC>
+          <RoomButton></RoomButton>
+        </div>
+      </div>
+    </div>
+    <div>
+      <br>
+      <br>
+      <button class="text-right" v-if="chatONOFF" @click="chatoff" >채팅창 접어두기 >></button>
+      <button v-if="!chatONOFF" @click="chaton">&lt;&lt; 채팅창 열기</button>
+      <br>
+      <br>
+      <AChat v-if="chatONOFF"></AChat>
     </div>
   </div>
 </template>
 <script>
-export default {
-  name: 'FriendChatView',
-  components: {
+import Timer from '@/components/SetTimer.vue';
+import WebRTC from '@/components/Room/WebRTC.vue';
+import RoomButton from '@/components/Room/RoomButton.vue';
+import AChat from '@/components/Room/AChat.vue';
 
+export default {
+  name: 'CompetitionView',
+  components: {
+    Timer,
+    WebRTC,
+    RoomButton,
+    AChat,
   },
   data() {
     return {
+      chatONOFF: true,
     };
   },
   setup() {},
   created() {},
   moundted() {},
   unmounted() {},
-  methods: {},
+  methods: {
+    chatoff() {
+      this.chatONOFF = false;
+    },
+    chaton() {
+      this.chatONOFF = true;
+    },
+  },
 };
 </script>
 <style scoped>
 div {
   color:black;
 }
+.container {
+  width:100vw;
+  height:100vh;
+}
+
 </style>
