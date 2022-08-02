@@ -10,7 +10,11 @@
               <img id="logo2" src="../assets/logo/logo2.png" alt="">
             </router-link>
           </div>
-          <div v-if="!isLoggedIn()" class="d-flex">
+          <p>
+            {{isLogin}}
+          </p>
+          <div v-if="!isLogin" class="d-flex">
+          <p>eqeqwe</p>
             <!--dropdows1-rooms-->
             <li class="menu1 mypages nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
@@ -42,13 +46,13 @@
             <loginModal></loginModal>
             <joinModal></joinModal>
           </div>
-          <div v-if="isLoggedIn()" class="d-flex">
+          <div v-else class="d-flex">
             <div class="d-flex align-items-center">
               <div class="navbar-brand mb-0 h1">
-                <span>안녕하세요<router-link to="/mypage"><span
-                class="welcome">{{ userInfo.nick }}</span>
+                <span>안녕하세요<router-link to="/mypage"><span class="welcome">asdasdasd</span>
                   </router-link> 님,
                   반갑습니다!</span>
+                  <button @onclick="print2()">qweqwe</button>
               </div>
             </div>
             <div class="dropdown">
@@ -72,27 +76,35 @@
   </div>
 </template>
 <script>
-import { mapState } from 'vuex';
-import loginModal from '@/components/MainPage/loginModal.vue';
-import joinModal from '@/components/MainPage/joinModal.vue';
+// import loginModal from '@/components/MainPage/loginModal.vue';
+// import joinModal from '@/components/MainPage/joinModal.vue';
+import { useStore } from 'vuex';
+import { computed } from 'vue';
 
 export default {
   name: 'NavBar',
   components: {
-    loginModal,
-    joinModal,
+    // loginModal,
+    // joinModal,
   },
   data() {
     return {
     };
   },
   methods: {
-    isLoggedIn() {
-      return false;
+    print2() {
+      console.log(this.isLogin);
     },
   },
   computed: {
-    ...mapState(['userInfo']),
+    // ...mapGetters(['userInfo', 'loginInfo', 'signalInfo']),
+  },
+  setup() {
+    const store = useStore(); // 이건 무조건.
+    const isLogin = computed(() => store.state.Account.isLogin);
+    const getLogin = computed(() => store.getters.Account.getLogin);
+    // const test = () => store.dispatch('test');
+    return { isLogin, getLogin };
   },
 };
 </script>
