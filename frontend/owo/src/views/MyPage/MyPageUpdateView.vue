@@ -1,5 +1,6 @@
 <template>
   <div class="container-box p-5">
+    <button @click="getPhysicalInfo">bmi불러오기</button>
     <h3>{{ user.nick }}님의 정보 수정</h3><br>
     <div class="title-box row">
       <div class="profile d-flex justify-content-center">
@@ -54,8 +55,8 @@
               <label for="gender">
                 <select class="form-select form-select-sm form-input text-center"
                   name="radio" id="gender" v-model=user.gender>
-                  <option value="female">여자</option>
-                  <option value="male">남자</option>
+                  <option value="FEMALE">여자</option>
+                  <option value="MALE">남자</option>
                 </select>
               </label>
             </th>
@@ -165,7 +166,6 @@
               </select></label>
             </th>
           </tr>
-
         </tbody>
       </table>
       <div class="row buttons">
@@ -177,6 +177,10 @@
   </div>
 </template>
 <script>
+import { createNamespacedHelpers } from 'vuex';
+
+const { mapActions, mapGetters } = createNamespacedHelpers('accounts');
+
 export default {
   name: 'MyPageUpdateView',
   components: {},
@@ -186,15 +190,16 @@ export default {
       inputGoalHour: 0,
       user: {
         slogan: '8월 바프까지 화이팅!',
-        nick: '한나',
-        age: 27,
-        gender: 'female',
-        height: 156,
-        weight: 44,
-        activity: 4,
-        secret: 2,
+        nick: '',
+        age: '',
+        gender: '',
+        height: '',
+        weight: '',
+        activity: '',
+        secret: '',
         goals: [],
         profileImg: 'https://picsum.photos/150',
+        id: '',
       },
       selected: '',
       options: [
@@ -207,10 +212,27 @@ export default {
     };
   },
   setup() {},
-  created() {},
-  mounted() {},
+  computed: {
+    ...mapGetters(['isLogin', 'userInfo', 'physicalInfo']),
+  },
+  created() {
+    console.log(this.userInfo);
+    console.log(this.physicalInfo);
+    this.user.nick = this.userInfo.nick;
+    this.user.age = this.userInfo.age;
+    this.user.gender = this.userInfo.gender;
+    this.user.height = this.userInfo.height;
+    this.user.weight = this.userInfo.weight;
+    this.user.activity = this.userInfo.activityLevel;
+    this.user.id = this.userInfo.id;
+  },
+  mounted() {
+  },
   unmounted() {},
   methods: {
+    ...mapActions({
+      setPhysicalInfo: 'getPhysicalInfo',
+    }),
     addGoal(event) {
       if (this.user.goals.length >= 3) {
         /* eslint-disable */
