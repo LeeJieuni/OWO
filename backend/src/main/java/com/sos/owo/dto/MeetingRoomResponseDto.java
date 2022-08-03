@@ -1,12 +1,12 @@
 package com.sos.owo.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 
 @RequiredArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
 public class MeetingRoomResponseDto {
     int roomId;
 }

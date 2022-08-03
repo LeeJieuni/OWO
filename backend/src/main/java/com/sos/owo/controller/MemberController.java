@@ -411,7 +411,7 @@ public class MemberController {
         try {
             MemberSloganDto memberSloganDto = memberService.getMemberSlogan(memberId);
             message.setStatus(StatusEnum.OK);
-            message.setMessage("프로필 사진 불러오기 성공");
+            message.setMessage("슬로건 불러오기 성공");
             message.setData(memberSloganDto);
             return new ResponseEntity<>(message, headers, HttpStatus.OK);
         } catch (Exception e){

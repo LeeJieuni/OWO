@@ -44,7 +44,13 @@ public class MeetingRoomService {
         meetingRoomRepository.updateMeetingRoomEndStatus(roomId);
     }
 
+    @Transactional
+    public void startRoom(int roomID){
+        meetingRoomRepository.startRoom(roomID);
+    }
 
-
-
+    @Transactional
+    public void endRoom(int roomID){
+        meetingRoomRepository.endRoom(roomID);
+    }
 }
