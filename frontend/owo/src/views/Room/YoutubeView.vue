@@ -11,7 +11,12 @@
         <div>
           <div class="d-flex align-items-start justify-content-start mx-1 mb-5"
           style="background-color:aqua; width:911px; height:592px">
-          <iframe width="100%" height="100%" src="https://www.youtube.com/embed/gTowV_F07uI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>              </div>
+          <iframe width="100%" height="100%" :src="youtubeURL"
+          title="YouTube video player" frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media;
+          gyroscope; picture-in-picture"
+          allowfullscreen></iframe>
+          </div>
         </div>
         <div style="width:30%; max-height:592px; overflow-y:auto;">
           <WebRTCYoutube></WebRTCYoutube>
@@ -57,6 +62,7 @@ export default {
   data() {
     return {
       chatONOFF: false,
+      youtubeURL: 'https://www.youtube.com/embed/gTowV_F07uI',
     };
   },
   setup() {},

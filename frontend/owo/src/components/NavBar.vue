@@ -39,6 +39,25 @@
           </div>
           <div v-else class="d-flex">
             <div class="d-flex align-items-center">
+              <li class="menu1 mypages nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                  aria-expanded="false">
+                  <span> Rooms</span>
+                </a>
+                <ul class="dropdown-menu">
+                  <li>
+                    <span></span>
+                    <router-link class="dropdown-item"
+                    to="/room/competition">Competition</router-link>
+                  </li>
+                  <li>
+                    <router-link class="dropdown-item" to="/room/friend">FriendChat</router-link>
+                  </li>
+                  <li>
+                    <router-link class="dropdown-item" to="/room/youtube">Youtube</router-link>
+                  </li>
+                </ul>
+              </li>
               <div class="navbar-brand mb-0 h1">
                 <span>안녕하세요
                 <router-link to="/mypage"><span class="welcome">{{ userInfo.nick }}</span>

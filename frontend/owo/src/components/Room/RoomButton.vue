@@ -1,68 +1,52 @@
 <template>
+  <div>
     <div class="d-flex justify-content-center">
-        <div class="d-flex justify-content-start align-items-center">
-            <button class="btn btn-outline-secondary m-2 " style="width:145px;"
-            @click="mic_off" v-if="mic">
-                <img class="menu_icon" src="@/assets/icon/mic_off.png" alt="mic_on">
-                음소거 해제
-            </button>
-            <button class="btn btn-outline-secondary m-2 " style="width:145px;"
-            @click="mic_on" v-if="!mic">
-                <img class="menu_icon" src="@/assets/icon/mic_on.png" alt="mic_off">
-                음소거
-            </button>
-            <button class="btn btn-outline-secondary m-2" style="width:145px;"
-            @click="video_off" v-if="video">
-                <img class="menu_icon" src="@/assets/icon/video_off.png" alt="video_on">
-                비디오 시작
-            </button>
-            <button class="btn btn-outline-secondary m-2" style="width:145px;"
-            @click="video_on" v-if="!video">
-                <img class="menu_icon" src="@/assets/icon/video_on.png" alt="video_off">
-                비디오 중지
-            </button>
-            <div class="m-2">
-            <b-dropdown split @click="take_photo" variant="outline-secondary">
-                <template #button-content >
-                    <img class="menu_icon" src="@/assets/icon/photo.png" alt="photo">
-                    사진촬영
-                </template>
-                <b-dropdown-item :value="timer" @click="set_timer_3">3초</b-dropdown-item>
-                <b-dropdown-item :value="timer" @click="set_timer_5">5초</b-dropdown-item>
-                <b-dropdown-item :value="timer" @click="set_timer_10">10초</b-dropdown-item>
-            </b-dropdown>
-            </div>
-            <div>
-            <Emoji v-bind:style="{position: 'fixed', top: ey-480 +'px', left: ex + 'px'}"
-            v-if="Emoji_ONOFF"/>
+      <div class="d-flex justify-content-start align-items-center">
+        <button class="btn btn-outline-secondary m-2 " style="width:145px;"
+        @click="mic_off" v-if="mic">
+          <img class="menu_icon" src="@/assets/icon/mic_off.png" alt="mic_on">음소거 해제
+        </button>
+        <button class="btn btn-outline-secondary m-2 " style="width:145px;"
+        @click="mic_on" v-if="!mic">
+          <img class="menu_icon" src="@/assets/icon/mic_on.png" alt="mic_off">음소거
+        </button>
+        <button class="btn btn-outline-secondary m-2" style="width:145px;"
+        @click="video_off" v-if="video">
+          <img class="menu_icon" src="@/assets/icon/video_off.png" alt="video_on">비디오 시작
+        </button>
+        <button class="btn btn-outline-secondary m-2" style="width:145px;"
+          @click="video_on" v-if="!video">
+          <img class="menu_icon" src="@/assets/icon/video_on.png" alt="video_off">비디오 중지
+        </button>
+        <div class="m-2">
+          <b-dropdown split @click="take_photo" variant="outline-secondary">
+            <template #button-content >
+              <img class="menu_icon" src="@/assets/icon/photo.png" alt="photo">&ensp;사진촬영
+            </template>
+            <b-dropdown-item :value="timer" @click="set_timer_3">3초</b-dropdown-item>
+            <b-dropdown-item :value="timer" @click="set_timer_5">5초</b-dropdown-item>
+            <b-dropdown-item :value="timer" @click="set_timer_10">10초</b-dropdown-item>
+          </b-dropdown>
+        </div>
+        <div>
+          <Emoji v-bind:style="{position: 'fixed', top: ey-480 +'px', left: ex + 'px'}"
+          v-if="Emoji_ONOFF"/>
             <button id="emoji_btn" @click="open_emoji" class="btn btn-outline-secondary m-2">이모티콘
-                <img class="menu_icon" src="@/assets/icon/emoji.png" alt="emoji">
+              <img class="menu_icon" src="@/assets/icon/emoji.png" alt="emoji">
             </button>
-            </div>
-            <RoomSetting></RoomSetting>
-            <AfterExerciseModal/>
         </div>
-        <div class="d-flex justify-content-center align-items-center text-white"
-        v-if="is_take_photo" id="take_photo_background">
-        </div>
-        <div class="d-flex justify-content-center align-items-center text-white"
-        v-if="is_take_photo" id="take_photo_WebRTC">
-        </div>
-        <div class="d-flex justify-content-center align-items-center text-white mt-4"
-        v-if="is_take_photo" id="take_photo_timer">
-        {{ timer }}
-        </div>
-        <!-- <div v-for="(picture, index) in pictures" :key=index> {{ picture }} </div> -->
+        <RoomSetting></RoomSetting>
+        <AfterExerciseModal/>
+      </div>
+      <div class="d-flex justify-content-center align-items-center text-white"
+      v-if="is_take_photo" id="take_photo_background"></div>
+      <div class="d-flex justify-content-center align-items-center text-white"
+      v-if="is_take_photo" id="take_photo_WebRTC">안녕하세요?</div>
+      <div class="d-flex justify-content-center align-items-center text-white mt-4"
+      v-if="is_take_photo" id="take_photo_timer">{{ timer }}</div>
     </div>
-    <!-- <div>
-      ex: {{ ex }}
-    </div>
-    <div>
-      ey: {{ ey }}
-    </div>
-    <div>
-      이모지 포지션 잡는 중
-    </div> -->
+    <div v-for="(picture, index) in pictures" :key=index><img :src="picture" alt=""></div>
+  </div>
 </template>
 <script>
 import html2canvas from 'html2canvas';
@@ -76,6 +60,16 @@ let emojiY;
 window.onload = function () {
   emojiX = document.getElementById('emoji_btn').getClientRects()[0].x;
   emojiY = document.getElementById('emoji_btn').getClientRects()[0].bottom;
+  // console.log(emojiX);
+  // console.log(emojiY);
+  // console.log('top :', document.getElementById('emoji_btn').getClientRects()[0].top);
+  // console.log('bottom :', document.getElementById('emoji_btn').getClientRects()[0].bottom);
+  // console.log('left :', document.getElementById('emoji_btn').getClientRects()[0].left);
+  // console.log('right :', document.getElementById('emoji_btn').getClientRects()[0].right);
+  // console.log('height :', document.getElementById('emoji_btn').getClientRects()[0].height);
+  // console.log('width :', document.getElementById('emoji_btn').getClientRects()[0].width);
+  // console.log('x :', document.getElementById('emoji_btn').getClientRects()[0].x);
+  // console.log('y :', document.getElementById('emoji_btn').getClientRects()[0].y);
 };
 
 export default {
@@ -129,8 +123,9 @@ export default {
         if (this.timer === 0) {
           console.log('사진찍는 모션');
           html2canvas(document.querySelector('#take_photo_WebRTC')).then((canvas) => {
-            document.body.appendChild(canvas);
-            // afterexercisemodal에 이 값들을 보내야함, 또는 store에 얘들 사진을 하나씩 보내기
+            // document.body.appendChild(canvas);
+            console.log(canvas.toDataURL('image/jpeg'));
+            this.pictures.push(canvas.toDataURL('image/jpeg'));
           });
           clearInterval(this.take_photo_timer);
           this.is_take_photo = false;
