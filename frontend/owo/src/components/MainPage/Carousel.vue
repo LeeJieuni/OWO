@@ -42,10 +42,6 @@ export default defineComponent({
 </script>
 
 <style scope>
-.container-fluid2 {
-  background-color: rgb(42, 38, 38);
-  color: white;
-}
 .carousel__item {
   min-height: 400px;
   width: 100%;

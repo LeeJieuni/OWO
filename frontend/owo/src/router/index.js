@@ -10,7 +10,8 @@ import CompetitionView from '../views/Room/CompetitionView.vue';
 import FriendView from '../views/Room/FriendView.vue';
 import YoutubeView from '../views/Room/YoutubeView.vue';
 import login from '../views/accounts/loginView.vue';
-import register from '../components/MainPage/joinModal.vue';
+import register from '../views/accounts/registerView.vue';
+import emailVerify from '../views/accounts/emailVerify.vue';
 
 const routes = [
   {
@@ -24,9 +25,14 @@ const routes = [
     component: login,
   },
   {
-    path: '/join',
-    name: 'join',
+    path: '/register',
+    name: 'register',
     component: register,
+  },
+  {
+    path: '/emailVerify',
+    name: 'emailVerify',
+    component: emailVerify,
   },
   {
     path: '/mypage',

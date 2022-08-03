@@ -88,6 +88,14 @@ export const accounts = {
         })
         .catch((err) => {
           console.log(err);
+          if (err.response.status === 400) {
+            if (err.response.data.message === '회원가입 이메일 인증이 필요합니다.') {
+              router.push('/emailVerify');
+              console.loe(err.response);
+            } else if (err.response.data.message === '이메일 혹은 비밀번호가 맞지 않습니다.') {
+              alert(err.response.data.message);
+            }
+          }
         });
     },
     setPhysicalInfo({ commit }, payload) {
@@ -111,6 +119,23 @@ export const accounts = {
         })
         .catch((err) => {
           console.log(err);
+        });
+    },
+    register({ dispatch, state }, payload) {
+      axios.post('https://i7c202.p.ssafy.io:8282/auth/join', payload)
+        .then((res) => {
+          const response = res.data.data;
+          console.log(response);
+          dispatch('setUserInfo', response);
+          router.push('/');
+          console.log(state.userInfo);
+        })
+        .catch((err) => {
+          console.log(err.response.data);
+          if (err.response.data === 'OVERLAP') {
+            alert('회원가입한 이력이 있습니다.');
+          }
+          console.log(payload);
         });
     },
     physicalInfo({ dispatch, state }, { bmi, bmr, caloriePerDay }) {

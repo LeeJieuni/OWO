@@ -31,11 +31,12 @@
                 </li>
               </ul>
             </li>
-            <!-- <router-link to="/login">
+            <router-link to="/login">
               <li class="menu1">login</li>
-            </router-link> -->
-            <!-- <loginModal></loginModal>
-            <joinModal></joinModal> -->
+            </router-link>
+            <router-link to="/register">
+              <li class="menu1">Signup</li>
+            </router-link>
           </div>
           <div v-else class="d-flex">
             <div class="d-flex align-items-center">
