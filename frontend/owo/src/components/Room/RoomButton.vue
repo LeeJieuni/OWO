@@ -76,16 +76,6 @@ let emojiY;
 window.onload = function () {
   emojiX = document.getElementById('emoji_btn').getClientRects()[0].x;
   emojiY = document.getElementById('emoji_btn').getClientRects()[0].bottom;
-  console.log(emojiX);
-  console.log(emojiY);
-  console.log('top :', document.getElementById('emoji_btn').getClientRects()[0].top);
-  console.log('bottom :', document.getElementById('emoji_btn').getClientRects()[0].bottom);
-  console.log('left :', document.getElementById('emoji_btn').getClientRects()[0].left);
-  console.log('right :', document.getElementById('emoji_btn').getClientRects()[0].right);
-  console.log('height :', document.getElementById('emoji_btn').getClientRects()[0].height);
-  console.log('width :', document.getElementById('emoji_btn').getClientRects()[0].width);
-  console.log('x :', document.getElementById('emoji_btn').getClientRects()[0].x);
-  console.log('y :', document.getElementById('emoji_btn').getClientRects()[0].y);
 };
 
 export default {

@@ -90,7 +90,6 @@ export default {
   unmounted() {},
   methods: {
     lockroom() {
-      console.log('hello');
       this.lockroomcheck = !this.lockroomcheck;
     },
   },

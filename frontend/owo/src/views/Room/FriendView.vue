@@ -8,12 +8,12 @@
       </div>
       <div class="container d-flex align-items-start justify-content-between">
         <div class="row">
-          <WebRTC v-if="true" class="col-lg-4 mb-5"></WebRTC>
-          <WebRTC v-if="true" class="col-4 mb-5"></WebRTC>
-          <WebRTC v-if="true" class="col-4 mb-5"></WebRTC>
-          <WebRTC v-if="true" class="col-4 mb-5"></WebRTC>
-          <WebRTC v-if="true" class="col-4 mb-5"></WebRTC>
-          <WebRTC v-if="true" class="col-4 mb-5"></WebRTC>
+          <WebRTCFriend v-if="true" class="col-lg-4 mb-5"></WebRTCFriend>
+          <WebRTCFriend v-if="true" class="col-lg-4 mb-5"></WebRTCFriend>
+          <WebRTCFriend v-if="true" class="col-lg-4 mb-5"></WebRTCFriend>
+          <WebRTCFriend v-if="true" class="col-lg-4 mb-5"></WebRTCFriend>
+          <WebRTCFriend v-if="true" class="col-lg-4 mb-5"></WebRTCFriend>
+          <WebRTCFriend v-if="true" class="col-lg-4 mb-5"></WebRTCFriend>
           <RoomButton></RoomButton>
         </div>
       </div>
@@ -35,7 +35,7 @@
 </template>
 <script>
 import Timer from '@/components/SetTimer.vue';
-import WebRTC from '@/components/Room/WebRTC.vue';
+import WebRTCFriend from '@/components/Room/WebRTCFriend.vue';
 import RoomButton from '@/components/Room/RoomButton.vue';
 import AChat from '@/components/Room/AChat.vue';
 
@@ -43,7 +43,7 @@ export default {
   name: 'FriendView',
   components: {
     Timer,
-    WebRTC,
+    WebRTCFriend,
     RoomButton,
     AChat,
   },
