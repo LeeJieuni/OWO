@@ -18,42 +18,46 @@
           <div class="progress">
             <div class="progress-bar"
               role="progressbar" aria-label="Segment 1"
-              style="width: 25%; background-color: #00327c;"
+              :style="'width: 25%; background-color: #00327c; opacity:'
+                + opacityActive.underWeight + ';'"
               aria-valuenow="25"
               aria-valuemin="0" aria-valuemax="100" >저체중
             </div>
             <div class="progress-bar"
               role="progressbar" aria-label="Segment 2"
-              style="width: 20%; background-color: #007c00;"
+              :style="'width: 20%; background-color: #007c00; opacity:'
+                + opacityActive.normalWeight + ';'"
               aria-valuenow="20"
               aria-valuemin="0" aria-valuemax="100">정상
             </div>
             <div class="progress-bar"
               role="progressbar" aria-label="Segment 3"
-              style="width: 15%; background-color: #995100;"
+              :style="'width: 15%; background-color: #995100;opacity:'
+                + opacityActive.overWeight + ';'"
               aria-valuenow="15"
               aria-valuemin="0" aria-valuemax="100">과체중
             </div>
             <div class="progress-bar"
               role="progressbar" aria-label="Segment 4"
-              style="width: 40%; background-color: #820000;"
+              :style="'width: 40%; background-color: #820000; opacity:'
+                + opacityActive.obesity + ';'"
               aria-valuenow="40"
               aria-valuemin="0" aria-valuemax="100">비만
             </div>
           </div>
-          <div v-if="user.bmi > 0" class="yes-bmi">
+          <div v-if="bmi > 0" class="yes-bmi">
           <div class="bmi-solution pt-2 text-start">
-            bmi 지수 : {{user.bmi}}
-            <p class="bmiText" v-if="user.bmi < 18.5">
+            bmi 지수 : {{bmi}}
+            <p class="bmiText" v-if="bmi < 18.5">
               저체중입니다. 헬스로 근육을 찌워보시는 건 어떨까요?
             </p>
-            <p class="bmiText" v-if="user.bmi >= 18.5 && user.bmi < 23">
+            <p class="bmiText" v-if="bmi >= 18.5 && bmi < 23">
               Good! {{ user.name }}님은 정상 체중이네요!
             </p>
-            <p class="bmiText" v-if="user.bmi >= 23 && user.bmi < 25">
+            <p class="bmiText" v-if="bmi >= 23 && bmi < 25">
               과체중 솰라솔라
             </p>
-            <p class="bmiText" v-if="user.bmi >= 25">
+            <p class="bmiText" v-if="bmi >= 25">
               비만 어쩌구
             </p>
           </div>
@@ -61,7 +65,7 @@
         <div v-else class="no-bmi">
           <div class="bmi-solution pt-2 text-start">
             <p class="rg-font">
-              {{user.bmi}}
+              {{bmi}}
               정보가 부족합니다.
               <router-link to="/mypage/update" class="link">{{bmiNotEnoughInfo}} 추가하기</router-link>
             </p>
@@ -72,10 +76,10 @@
     </div>
 
     <!--칼로리1 기초대사량-->
-    <div class="row analy-div meta">
+    <div class="row analy-div bmr">
       <div class="sm-div">
-        <p class="md-title"><span id="metaDescription">기초대사량</span></p>
-        <b-popover target="metaDescription" triggers="hover" placement="bottom">
+        <p class="md-title"><span id="bmrDescription">기초대사량</span></p>
+        <b-popover target="bmrDescription" triggers="hover" placement="bottom">
           <template #title>BMR</template>
           숨만 쉬고 잠만 잘 때 사용되는 생명 유지를 위한 <b>최소한의 열량</b>
         </b-popover>
@@ -83,27 +87,27 @@
           <div class="progress">
             <div class="progress-bar"
               role="progressbar" aria-label="Segment 1"
-              :style="'width:' + metaPercent +'%; background-color:' + metaColor"
-              :aria-valuenow="meta"
-              :aria-valuemin="avgMinMeta" :aria-valuemax="avgMaxMeta">
+              :style="'width:' + bmrPercent +'%; background-color:' + bmrColor"
+              :aria-valuenow="bmr"
+              :aria-valuemin="avgMinBmr" :aria-valuemax="avgMaxBmr">
             </div>
           </div>
-          <div class="meta-bar-info d-flex">
-            <div class="me-auto">{{avgMinMeta}}</div>
-            <div class="">{{avgMaxMeta}}</div>
+          <div class="mmr-bar-info d-flex">
+            <div class="me-auto">{{avgMinBmr}}</div>
+            <div class="">{{avgMaxBmr}}</div>
           </div>
-          <p class="kcal" :style="'color:' + metaColor">{{ meta }} kcal</p>
-          <p>{{ metaText }}</p>
+          <p class="kcal" :style="'color:' + bmrColor">{{ bmr }} kcal</p>
+          <p>{{ bmrText }}</p>
         </div>
       </div>
     </div>
 
     <!--칼로리2 하루섭취-->
-    <div class="row analy-div meta mb-3">
+    <div class="row analy-div bmr mb-3">
       <div class="sm-div">
         <p class="md-title">하루 섭취 권장 칼로리</p>
         <div class="info">
-          <p class="kcal">{{ eat }} kcal</p>
+          <p class="kcal">{{ caloriePerDay }} kcal</p>
           <a href="https://www.fatsecret.kr/%EC%B9%BC%EB%A1%9C%EB%A6%AC-%EC%98%81%EC%96%91%EC%86%8C/">음식 칼로리 계산하러 가기</a>
         </div>
       </div>
@@ -120,103 +124,129 @@ export default {
   components: {},
   data() {
     return {
-      styleBarPercent: '"width: 30%"',
       user: {
-        name: '한나',
-        bmi: 0,
-        gender: 'female',
-        weight: 44,
-        height: 156,
-        age: 27,
-        activity: 4,
+        name: '',
+        bmi: '',
+        gender: '',
+        weight: '',
+        height: '',
+        age: '',
+        activityNum: '',
       },
-      meta: 0,
-      eat: 0,
+      opacityActive: {
+        underWeight: '50%',
+        normalWeight: '50%',
+        overWeight: '50%',
+        obesity: '50%',
+      },
+      bmi: 0,
+      bmr: 0,
+      caloriePerDay: 0,
       bmiNotEnoughInfo: '',
-      avgMinMeta: 0,
-      avgMaxMeta: 0,
-      metaText: '',
-      metaPercent: 0,
-      metaColor: '',
+      avgMinBmr: 0,
+      avgMaxBmr: 0,
+      bmrText: '',
+      bmrPercent: 0,
+      bmrColor: '',
     };
   },
   setup() {},
   created() {
-    if (this.user.gender === '' || this.user.weight === '' || this.user.weight === '' || this.user.height === '' || this.user.activity === '') {
-      this.meta = '신체정보를 추가해주세요!';
+    this.bmi = this.physicalInfo.bmi;
+    this.bmr = this.physicalInfo.bmr;
+    this.user.age = this.userInfo.age;
+    this.user.gender = this.userInfo.gender;
+    this.user.height = this.userInfo.height;
+    this.user.weight = this.userInfo.weight;
+    this.user.activity = this.userInfo.activityLevel;
+    this.user.id = this.userInfo.id;
+    this.user.nick = this.userInfo.nick;
+    if (this.userInfo.gender === '' || this.userInfo.weight === '' || this.userInfo.weight === '' || this.userInfo.height === '' || this.userInfo.activityNum === '') {
+      this.bmr = '신체정보를 추가해주세요!';
     }
     // 성별에 따른 기초대사량 계산 (미플린-지어(Mifflin-St.Jeor)공식)
-    if (this.user.gender === 'femail') {
-      this.meta = Math.round(
-        (10 * this.user.weight) + (6.25 * this.user.height) - (5 * this.user.age) - 161,
+    if (this.userInfo.gender === 'femail') {
+      this.bmr = Math.round(
+        (10 * this.userInfo.weight) + (6.25 * this.userInfo.height) - (5 * this.userInfo.age) - 161,
       );
     } else {
-      this.meta = Math.round(
-        (10 * this.user.weight) + (6.25 * this.user.height) - (5 * this.user.age) + 5,
+      this.bmr = Math.round(
+        (10 * this.userInfo.weight) + (6.25 * this.userInfo.height) - (5 * this.userInfo.age) + 5,
       );
     }
     const activityrule = [1.2, 1.375, 1.55, 1.725, 1.9];
 
     // BMI
-    this.eat = Math.round(activityrule[this.user.activity - 1] * this.meta);
-    // console.log(this.user);
-    this.user.bmi = Math.round(this.user.weight / ((this.user.height / 100) ** 2));
-    if (this.user.bmi === 0) {
-      if (this.user.weight === 0 && this.user.height > 0) {
+    this.caloriePerDay = Math.round(activityrule[this.userInfo.activityNum - 1] * this.bmr);
+    // console.log(this.userInfo);
+    this.bmi = Math.round(this.userInfo.weight / ((this.userInfo.height / 100) ** 2));
+    if (this.bmi === 0) {
+      if (this.userInfo.weight === 0 && this.userInfo.height > 0) {
         this.bmiNotEnoughInfo = '몸무게';
-      } else if (this.user.weight > 0 && this.user.height === 0) {
+      } else if (this.userInfo.weight > 0 && this.userInfo.height === 0) {
         this.bmiNotEnoughInfo = '키';
-      } else if (this.user.weight === 0 && this.user.height === 0) {
+      } else if (this.userInfo.weight === 0 && this.userInfo.height === 0) {
         this.bmiNotEnoughInfo = '몸무게, 키';
       }
     }
 
     // 성별, 나이별 평균 기초대사량
-    if (this.user.gender === 'male') {
-      if (this.user.age >= 50) {
-        this.avgMinMeta = Math.round(1498.3 - 228.6);
-        this.avgMaxMeta = Math.round(1498.3 + 315.3);
-      } else if (this.user.age >= 30 && this.user.age < 50) {
-        this.avgMinMeta = Math.round(1669.5 - 302.1);
-        this.avgMaxMeta = Math.round(1669.5 + 302.1);
-      } else if (this.user.age >= 20 ** this.user.age < 30) {
-        this.avgMinMeta = Math.round(1728 - 368.2);
-        this.avgMaxMeta = Math.round(1728 + 368.2);
+    if (this.userInfo.gender === 'male') {
+      if (this.userInfo.age >= 50) {
+        this.avgMinBmr = Math.round(1498.3 - 228.6);
+        this.avgMaxBmr = Math.round(1498.3 + 315.3);
+      } else if (this.userInfo.age >= 30 && this.userInfo.age < 50) {
+        this.avgMinBmr = Math.round(1669.5 - 302.1);
+        this.avgMaxBmr = Math.round(1669.5 + 302.1);
+      } else if (this.userInfo.age >= 20 ** this.userInfo.age < 30) {
+        this.avgMinBmr = Math.round(1728 - 368.2);
+        this.avgMaxBmr = Math.round(1728 + 368.2);
       }
-    } else if (this.user.gender === 'female') {
-      if (this.user.age >= 50) {
-        this.avgMinMeta = Math.round(1252.5 - 228.6);
-        this.avgMaxMeta = Math.round(1252.5 + 228.6);
-      } else if (this.user.age >= 30 && this.user.age < 50) {
-        this.avgMinMeta = Math.round(1316.8 - 225.9);
-        this.avgMaxMeta = Math.round(1316.8 + 225.9);
-      } else if (this.user.age >= 20 ** this.user.age < 30) {
-        this.avgMinMeta = Math.round(1311.5 - 233);
-        this.avgMaxMeta = Math.round(1311.5 + 233);
+    } else if (this.userInfo.gender === 'female') {
+      if (this.userInfo.age >= 50) {
+        this.avgMinBmr = Math.round(1252.5 - 228.6);
+        this.avgMaxBmr = Math.round(1252.5 + 228.6);
+      } else if (this.userInfo.age >= 30 && this.userInfo.age < 50) {
+        this.avgMinBmr = Math.round(1316.8 - 225.9);
+        this.avgMaxBmr = Math.round(1316.8 + 225.9);
+      } else if (this.userInfo.age >= 20 ** this.userInfo.age < 30) {
+        this.avgMinBmr = Math.round(1311.5 - 233);
+        this.avgMaxBmr = Math.round(1311.5 + 233);
       }
     }
     // 기초대사량이 평균에 속하면
-    if (this.meta >= this.avgMinMeta && this.meta <= this.avgMaxMeta) {
-      this.metaColor = '#198754';
-      this.metaText = '기초대사량이 평균에 속합니다.';
-      this.metaPercent = Math.round(
-        ((this.meta - this.avgMinMeta) / (this.avgMaxMeta - this.avgMinMeta)) * 100,
+    if (this.bmr >= this.avgMinBmr && this.bmr <= this.avgMaxBmr) {
+      this.bmrColor = '#198754';
+      this.bmrText = '기초대사량이 평균에 속합니다.';
+      this.bmrPercent = Math.round(
+        ((this.bmr - this.avgMinBmr) / (this.avgMaxBmr - this.avgMinBmr)) * 100,
       );
-    } else if (this.meta > this.avgMaxMeta) {
-      this.metaColor = '#820000';
-      this.metaText = '기초대사량이 평균보다 높네요!';
-      this.metaPercent = 100;
-    } else if (this.meta < this.avgMinMeta) {
-      this.metaColor = '#d7c100';
-      this.metaText = '기초대사량이 평균보다 낮군요.';
-      this.metaPercent = 0;
+    } else if (this.bmr > this.avgMaxBmr) {
+      this.bmrColor = '#820000';
+      this.bmrText = '기초대사량이 평균보다 높네요!';
+      this.bmrPercent = 100;
+    } else if (this.bmr < this.avgMinBmr) {
+      this.bmrColor = '#d7c100';
+      this.bmrText = '기초대사량이 평균보다 낮군요.';
+      this.bmrPercent = 0;
+    }
+    console.log(this.bmr);
+    // bmi 진단 -> 일단 그래프 색깔 활성화만
+    if (this.bmi < 18.5) {
+      this.opacityActive.underWeight = '';
+    } else if (this.bmi >= 18.5 && this.bmi < 23) {
+      this.opacityActive.normalWeight = '';
+    } else if (this.bmi >= 23 && this.bmi < 25) {
+      this.opacityActive.overWeight = '';
+    } else {
+      this.opacityActive.obesity = '';
     }
   },
   moundted() {},
   unmounted() {},
   methods: {},
   computed: {
-    ...mapGetters(['physicalInfo']),
+    ...mapGetters(['userInfo', 'physicalInfo']),
   },
 };
 </script>

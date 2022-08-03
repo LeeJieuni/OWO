@@ -1,7 +1,7 @@
 <template>
   <div class="container-box p-5">
     <button @click="getPhysicalInfo">bmi불러오기</button>
-    <h3>{{ user.nick }}님의 정보 수정</h3><br>
+    <h3 v-once>{{ user.nick }}님의 정보 수정</h3><br>
     <div class="title-box row">
       <div class="profile d-flex justify-content-center">
         <label for="formFile" class="form-label" >

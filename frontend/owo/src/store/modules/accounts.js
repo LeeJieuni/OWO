@@ -113,8 +113,18 @@ export const accounts = {
           console.log(err);
         });
     },
-    physicalInfo({ dispatch, state }, physicalInfo) {
-      axios.get(`https://i7c202.p.ssafy.io:8282/api/user/bmi/${state.userInfo.id}`, physicalInfo)
+    physicalInfo({ dispatch, state }, { bmi, bmr, caloriePerDay }) {
+      axios({
+        url: `https://i7c202.p.ssafy.io:8282/api/user/bmi/${state.userInfo.id}`,
+        method: 'get',
+        headers: {
+          'X-AUTH-TOKEN': state.accessToken,
+          'REFRESH-TOKEN': state.refreshToken,
+        },
+        data: {
+          bmi, bmr, caloriePerDay,
+        },
+      })
         .then((res) => {
           console.log(res);
           dispatch('setPhysicalInfo', res.data);

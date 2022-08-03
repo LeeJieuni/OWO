@@ -11,26 +11,10 @@ export default {
   components: { PhysicalInfo },
   data() {
     return {
-      styleBarPercent: '"width: 30%"',
-      user: {
-        name: '한나',
-        bmi: 20,
-        gender: 'femail',
-        weight: 44,
-        height: 156,
-        age: 27,
-      },
-      meta: 0,
-      eat: 0,
     };
   },
   setup() {},
   created() {
-    if (this.user.gender === 'femail') {
-      this.meta = (10 * this.user.weight) + (6.25 * this.user.height) - (5 * this.user.age) - 161;
-    } else {
-      this.meta = (10 * this.user.weight) + (6.25 * this.user.height) - (5 * this.user.age) + 5;
-    }
   },
   moundted() {},
   unmounted() {},
