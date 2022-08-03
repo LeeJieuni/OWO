@@ -218,13 +218,13 @@ export default {
   created() {
     console.log(this.userInfo);
     console.log(this.physicalInfo);
-    this.user.nick = this.userInfo.nick;
     this.user.age = this.userInfo.age;
     this.user.gender = this.userInfo.gender;
     this.user.height = this.userInfo.height;
     this.user.weight = this.userInfo.weight;
     this.user.activity = this.userInfo.activityLevel;
     this.user.id = this.userInfo.id;
+    this.user.nick = this.userInfo.nick;
   },
   mounted() {
   },

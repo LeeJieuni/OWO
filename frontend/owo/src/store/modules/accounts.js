@@ -16,6 +16,7 @@ export const accounts = {
       activityHour: '',
       activityLevel: '',
       id: '',
+      email: '',
     },
     physicalInfo: {
       bmi: null,
@@ -32,6 +33,7 @@ export const accounts = {
     },
     SET_USER_INFO: (state, payload) => {
       state.userInfo.id = payload.id;
+      state.userInfo.email = payload.email;
       state.userInfo.nick = payload.nick;
       state.userInfo.gender = payload.gender;
       state.userInfo.age = payload.age;
@@ -41,6 +43,12 @@ export const accounts = {
       state.userInfo.activityHour = payload.activityHour;
       state.userInfo.activityLevel = payload.activityLevel;
       console.log(state.userInfo);
+      if (state.userInfo.nick === '' || !state.userInfo.nick) {
+        const { email } = state.userInfo;
+        const atSignIndex = email.indexOf('@');
+        const emailNick = email.substr(0, atSignIndex);
+        state.userInfo.nick = emailNick;
+      }
     },
     SET_PHYSICAL_INFO: (state, payload) => {
       state.physicalInfo.bmi = payload.bmi;
