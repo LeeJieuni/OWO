@@ -20,7 +20,8 @@
     "vue-router": "^4.0.13",
     "vue3-carousel": "^0.1.40",
     "vue3-circle-progress": "^1.0.7",
-    "vuex": "^4.0.0"
+    "vuex": "^4.0.0",
+    "vuex-persistedstate": "^4.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",

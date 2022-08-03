@@ -83,6 +83,7 @@ export const accounts = {
           dispatch('saveAccessToken', access);
           dispatch('saveRefreshToken', refresh);
           dispatch('setUserInfo', response);
+          console.log(response);
           router.push('/');
         })
         .catch((err) => {
