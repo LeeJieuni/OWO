@@ -3,7 +3,7 @@
     <button
     v-b-modal.after-exercise-modal class="btn btn-outline-secondary m-2">
       <img class="menu_icon2" src="@/assets/icon/room_end.png" alt="mic_off">
-      종료
+      운동 종료
     </button>
     <b-modal id="after-exercise-modal" title="#오운완" size="lg" hide-footer>
       <div>
@@ -126,6 +126,6 @@ button {
 }
 
 .menu_icon2 {
-  width: 25px;
+  width: 30px;
 }
 </style>

@@ -7,27 +7,30 @@
         </button>
         <b-modal id="room-setting-modal" title="#오운완" size="lg" hide-footer>
             <div class="after-exercise">
-                <div class="d-flex justify-content-start">
+                <div class="d-flex justify-content-start align-items-center">
                     <img class="menu_icon2" src="@/assets/icon/room_setting.png"
                     alt="mic_off">
-                    <div class="d-flex justify-content-center align-items-end">
+                    <div class="d-flex justify-content-center align-items-center">
                         <h1>운동설정&ensp;&ensp;&ensp;</h1>
-                        <div v-if="lockroom" class="d-flex">
+                        <div v-if="lockroomcheck" class="d-flex">
                             <img class="menu_icon" src="@/assets/icon/unlock.png" alt="lock">
                             <div class="text-center">&ensp;비밀 방&ensp;</div>
                             <label class="form-check-label" for="flexCheckDefault">
                             <input class="form-check-input" type="checkbox" value=""
-                            @click="!this.lockroom" id="flexCheckDefault"></label>
+                            @click="lockroom" id="flexCheckDefault"></label>
                             &ensp;&ensp;&ensp;&ensp;비밀번호&ensp;
                             <label for="form-password-label"><input class="form-password-input"
                             type="password" maxlength="4" size="10" disabled></label>
                         </div>
-                        <div v-if="!lockroom">
+                        <div v-if="!lockroomcheck" class="d-flex">
                             <img class="menu_icon" src="@/assets/icon/lock.png" alt="lock">
-                            <div class="text-center"> 비밀 방 체크</div>
+                            <div class="text-center">&ensp;비밀 방&ensp;</div>
                             <label class="form-check-label" for="flexCheckDefault">
                             <input class="form-check-input" type="checkbox" value=""
-                            id="flexCheckDefault"></label>
+                            @click="lockroom" id="flexCheckDefault"></label>
+                            &ensp;&ensp;&ensp;&ensp;비밀번호&ensp;
+                            <label for="form-password-label"><input class="form-password-input"
+                            type="password" maxlength="4" size="10"></label>
                         </div>
                     </div>
                 </div>
@@ -78,7 +81,7 @@ export default {
   components: {},
   data() {
     return {
-      lockroom: true,
+      lockroomcheck: false,
     };
   },
   setup() {},
@@ -86,16 +89,16 @@ export default {
   moundted() {},
   unmounted() {},
   methods: {
-    private() {
-      alert('hello');
-      this.lockroom = !this.lockroom;
+    lockroom() {
+      console.log('hello');
+      this.lockroomcheck = !this.lockroomcheck;
     },
   },
 };
 </script>
 <style scoped>
 .menu_icon {
-    height:20px;
+    height:30px;
 }
 .after-exercise {
     width:600px;

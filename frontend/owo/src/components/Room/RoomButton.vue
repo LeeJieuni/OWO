@@ -33,7 +33,7 @@
             </b-dropdown>
             </div>
             <div>
-            <Emoji v-bind:style="{position: 'absolute', top: 50 +'px', left: 0 + 'px'}"
+            <Emoji v-bind:style="{position: 'fixed', top: ey-480 +'px', left: ex + 'px'}"
             v-if="Emoji_ONOFF"/>
             <button id="emoji_btn" @click="open_emoji" class="btn btn-outline-secondary m-2">이모티콘
                 <img class="menu_icon" src="@/assets/icon/emoji.png" alt="emoji">
@@ -76,16 +76,16 @@ let emojiY;
 window.onload = function () {
   emojiX = document.getElementById('emoji_btn').getClientRects()[0].x;
   emojiY = document.getElementById('emoji_btn').getClientRects()[0].bottom;
-  // console.log(emojiX);
-  // console.log(emojiY);
-  // console.log('top :', document.getElementById('emoji_btn').getClientRects()[0].top);
-  // console.log('bottom :', document.getElementById('emoji_btn').getClientRects()[0].bottom);
-  // console.log('left :', document.getElementById('emoji_btn').getClientRects()[0].left);
-  // console.log('right :', document.getElementById('emoji_btn').getClientRects()[0].right);
-  // console.log('height :', document.getElementById('emoji_btn').getClientRects()[0].height);
-  // console.log('width :', document.getElementById('emoji_btn').getClientRects()[0].width);
-  // console.log('x :', document.getElementById('emoji_btn').getClientRects()[0].x);
-  // console.log('y :', document.getElementById('emoji_btn').getClientRects()[0].y);
+  console.log(emojiX);
+  console.log(emojiY);
+  console.log('top :', document.getElementById('emoji_btn').getClientRects()[0].top);
+  console.log('bottom :', document.getElementById('emoji_btn').getClientRects()[0].bottom);
+  console.log('left :', document.getElementById('emoji_btn').getClientRects()[0].left);
+  console.log('right :', document.getElementById('emoji_btn').getClientRects()[0].right);
+  console.log('height :', document.getElementById('emoji_btn').getClientRects()[0].height);
+  console.log('width :', document.getElementById('emoji_btn').getClientRects()[0].width);
+  console.log('x :', document.getElementById('emoji_btn').getClientRects()[0].x);
+  console.log('y :', document.getElementById('emoji_btn').getClientRects()[0].y);
 };
 
 export default {

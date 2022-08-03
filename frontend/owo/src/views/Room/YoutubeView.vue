@@ -24,16 +24,20 @@
       </div>
       <RoomButton></RoomButton>
     </div>
+  </div>
     <div>
       <br>
       <br>
-      <button v-if="chatONOFF" @click="chatoff">채팅창 접어두기 >></button>
-      <button v-if="!chatONOFF" @click="chaton">&lt;&lt; 채팅창 열기</button>
+      <button v-if="chatONOFF" @click="chatoff" class="chat">
+        <img class="chatimg" src="@/assets/icon/commentoff.png" alt="">
+      </button>
+      <button v-if="!chatONOFF" @click="chaton" class="chat">
+        <img class="chatimg" src="@/assets/icon/commenton.png" alt="">
+      </button>
       <br>
       <br>
       <AChat v-if="chatONOFF"></AChat>
     </div>
-  </div>
 </div>
 </template>
 <script>
@@ -52,7 +56,7 @@ export default {
   },
   data() {
     return {
-      chatONOFF: true,
+      chatONOFF: false,
     };
   },
   setup() {},
@@ -75,5 +79,15 @@ export default {
 }
 div {
   color:black;
+}
+
+.chat {
+  position:fixed;
+  bottom: 30px;
+  right: 30px;
+}
+
+.chatimg {
+  width:50px;
 }
 </style>

@@ -3,7 +3,7 @@
       <div>
         <div class="d-flex justify-content-between align-items-center"
         style="height:80px;">
-          <h3 class="m-0">팔굽혀펴기</h3>
+          <h3 class="m-0">#ROUND 1 : 런지</h3>
           <Timer/>
         </div>
         <div class="container d-flex align-items-start justify-content-between">

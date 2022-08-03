@@ -3,7 +3,7 @@
     <div>
       <div class="d-flex justify-content-between align-items-center"
       style="height:80px;">
-        <h3 class="m-0">팔굽혀펴기</h3>
+        <h3 class="m-0">여기에 방 이름 들어갑니다.</h3>
         <Timer/>
       </div>
       <div class="container d-flex align-items-start justify-content-between">
@@ -21,8 +21,12 @@
     <div>
       <br>
       <br>
-      <button v-if="chatONOFF" @click="chatoff" >채팅창 접어두기 >></button>
-      <button v-if="!chatONOFF" @click="chaton">&lt;&lt; 채팅창 열기</button>
+      <button v-if="chatONOFF" @click="chatoff" class="chat">
+        <img class="chatimg" src="@/assets/icon/commentoff.png" alt="">
+      </button>
+      <button v-if="!chatONOFF" @click="chaton" class="chat">
+        <img class="chatimg" src="@/assets/icon/commenton.png" alt="">
+      </button>
       <br>
       <br>
       <AChat v-if="chatONOFF"></AChat>
@@ -45,7 +49,7 @@ export default {
   },
   data() {
     return {
-      chatONOFF: true,
+      chatONOFF: false,
     };
   },
   setup() {},
@@ -69,6 +73,15 @@ div {
 .container {
   width:100vw;
   height:100vh;
+}
+.chat {
+  position:fixed;
+  bottom: 30px;
+  right: 30px;
+}
+
+.chatimg {
+  width:50px;
 }
 
 </style>

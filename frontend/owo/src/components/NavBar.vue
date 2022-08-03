@@ -20,19 +20,14 @@
               <ul class="dropdown-menu">
                 <li>
                   <span></span>
-                  <router-link class="dropdown-item" to="/competition">Competition</router-link>
+                  <router-link class="dropdown-item"
+                  to="/room/competition">Competition</router-link>
                 </li>
                 <li>
-                  <router-link class="dropdown-item" to="/friendchat">FriendChat</router-link>
+                  <router-link class="dropdown-item" to="/room/friend">FriendChat</router-link>
                 </li>
                 <li>
-                  <router-link class="dropdown-item" to="/friendnochat">FriendNoChat</router-link>
-                </li>
-                <li>
-                  <router-link class="dropdown-item" to="/youtubechat">YoutubeChat</router-link>
-                </li>
-                <li>
-                  <router-link class="dropdown-item" to="/youtubenochat">YoutubeNoChat</router-link>
+                  <router-link class="dropdown-item" to="/room/youtube">Youtube</router-link>
                 </li>
               </ul>
             </li>
