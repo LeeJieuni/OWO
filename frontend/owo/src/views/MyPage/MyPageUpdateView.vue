@@ -25,7 +25,7 @@
               <th class="th-2">
               <label for="slogan">
                 <input class="form-input text-center slogan-input"
-                  type="text" name="slogan" v-model=user.slogan>
+                  type="text" name="slogan" v-model.trim=user.slogan>
               </label>
             </th>
           </tr>
@@ -34,7 +34,8 @@
             <th class="th-1">닉네임</th>
               <th class="th-2">
               <label for="nick">
-                <input class="form-input text-center" type="text" name="nick" v-model=user.nick>
+                <input class="form-input text-center"
+                  type="text" name="nick" v-model.trim=user.nick>
               </label>
             </th>
           </tr>
@@ -43,7 +44,8 @@
             <th class="th-1">나이</th>
             <th class="th-2">
               <label for="age">
-                <input class="form-input text-center" type="number" name="age" v-model=user.age>
+                <input class="form-input text-center"
+                  type="number" name="age" v-model.number=user.age>
                 <span class="th-2-text"> 세</span>
               </label>
             </th>
@@ -67,7 +69,7 @@
             <th class="th-2">
               <label for="height">
                 <input class="form-input text-center text-center"
-                  type="number" name="height" v-model=user.height> cm
+                  type="number" name="height" v-model.number=user.height> cm
               </label>
             </th>
           </tr>
@@ -77,7 +79,7 @@
             <th class="th-2">
               <label for="secret">
                 <input class="form-input text-center"
-                  type="number" name="weight" v-model=user.weight> kg
+                  type="number" name="weight" v-model.number=user.weight> kg
               </label>
             </th>
           </tr>
@@ -169,7 +171,7 @@
         </tbody>
       </table>
       <div class="row buttons">
-        <button class="col btn btn-primary m-3" >변경</button>
+        <button class="col btn btn-primary m-3" @click='updateUserInfo' >변경</button>
         <button class="col btn btn-secondary m-3" >취소</button>
       </div>
     </form>
@@ -232,6 +234,7 @@ export default {
   methods: {
     ...mapActions({
       setPhysicalInfo: 'getPhysicalInfo',
+      updateUserInfo: 'updateUserInfo',
     }),
     addGoal(event) {
       if (this.user.goals.length >= 3) {
@@ -271,6 +274,9 @@ export default {
       this.createImage(files[0]);
     }
   },
+  updateUserInfo() {
+    console.log(this.user)
+  }
 };
 </script>
 

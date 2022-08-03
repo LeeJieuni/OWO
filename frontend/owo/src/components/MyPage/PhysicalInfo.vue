@@ -111,7 +111,9 @@
   </div>
 </template>
 <script>
-import { mapState } from 'vuex';
+import { createNamespacedHelpers } from 'vuex';
+
+const { mapGetters } = createNamespacedHelpers('accounts');
 
 export default {
   name: 'PhysicalInfo',
@@ -214,7 +216,7 @@ export default {
   unmounted() {},
   methods: {},
   computed: {
-    ...mapState(['userInfo']),
+    ...mapGetters(['physicalInfo']),
   },
 };
 </script>

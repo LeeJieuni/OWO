@@ -122,6 +122,24 @@ export const accounts = {
           console.log(err);
         });
     },
+    updateUserInfo({ state, dispatch }, payload) {
+      axios({
+        url: 'https://i7c202.p.ssafy.io:8282/api/user',
+        method: 'put',
+        headers: {
+          'X-AUTH-TOKEN': state.accessToken,
+          'REFRESH-TOKEN': state.refreshToken,
+        },
+        data: payload,
+      })
+        .then((res) => {
+          console.log(res.data);
+          dispatch('setUserInfo', res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
   },
   getters: {
     isLogin: (state) => !!state.accessToken,
