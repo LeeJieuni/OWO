@@ -24,7 +24,7 @@ public class OAuthAttributes {
     // 구글인지 네이버인지 카카오인지 구분하기 위한 메소드
     public static OAuthAttributes of(String registrationId, String userNameAttributesName, Map<String, Object> attributes){
         if("naver".equals(registrationId)) {
-            return ofNaver("id", attributes);
+            //return ofNaver("id", attributes);
         }
         return ofGoogle(userNameAttributesName, attributes);
     }
@@ -38,16 +38,16 @@ public class OAuthAttributes {
                 .build();
     }
 
-    private static OAuthAttributes ofNaver(String userNameAttributeName, Map<String, Object> attributes){
-        Map<String, Object> response = (Map<String, Object>)attributes.get("response");
-        return OAuthAttributes.builder()
-                .name((String) response.get("name"))
-                .email((String) response.get("email"))
-                .attributes(response)
-                .nameAttributeKey(userNameAttributeName)
-                .build();
-
-    }
+//    private static OAuthAttributes ofNaver(String userNameAttributeName, Map<String, Object> attributes){
+//        Map<String, Object> response = (Map<String, Object>)attributes.get("response");
+//        return OAuthAttributes.builder()
+//                .name((String) response.get("name"))
+//                .email((String) response.get("email"))
+//                .attributes(response)
+//                .nameAttributeKey(userNameAttributeName)
+//                .build();
+//
+//    }
 
     public Member toEntity(){
         return Member.builder()

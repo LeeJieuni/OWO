@@ -1,5 +1,6 @@
 package com.sos.owo.domain;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,6 +12,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@Builder
 @Table(name = "record")
 public class Record {
 
@@ -44,5 +46,9 @@ public class Record {
     private LocalDateTime recordDatetime;
 
     @Column(name="record_secret")
-    private int record_secret;
+    private boolean record_secret;
+
+    public void updateRecordImg(RecordImg recordImg){
+        this.recordImg = recordImg;
+    }
 }

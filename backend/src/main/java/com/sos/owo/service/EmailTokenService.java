@@ -31,8 +31,7 @@ public class EmailTokenService {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(receiverEmail);
         mailMessage.setSubject("[#오운완] 회원가입 이메일 인증");
-//        mailMessage.setText("http://localhost:8080/confirm-email?token="+emailToken.getId());
-        mailMessage.setText("https://i7c202.p.ssafy.io:8080/confirm-email?token="+emailToken.getId());
+        mailMessage.setText("https://i7c202.p.ssafy.io:8282/confirm-email?token="+emailToken.getId());
         emailSenderService.sendEmail(mailMessage);
 
         // 인증메일 전송 시 토큰 변환
