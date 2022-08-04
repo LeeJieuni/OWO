@@ -3,6 +3,7 @@ package com.sos.owo.service;
 import com.sos.owo.domain.Exercise;
 import com.sos.owo.domain.Goal;
 import com.sos.owo.domain.repository.GoalRepository;
+import com.sos.owo.dto.GoalResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
@@ -33,7 +34,7 @@ public class GoalService {
     }
 
     @Transactional
-    public List<Goal> findGoal(int memberId){
+    public List<GoalResponseDto> findGoal(int memberId){
         return goalRepository.findGoal(memberId);
     }
 }

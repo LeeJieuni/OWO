@@ -3,6 +3,7 @@ package com.sos.owo.domain.repository;
 import com.sos.owo.domain.Exercise;
 import com.sos.owo.domain.Goal;
 import com.sos.owo.domain.Member;
+import com.sos.owo.dto.GoalResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Repository;
@@ -57,9 +58,14 @@ public class GoalRepository {
 
     }
 
-    public List<Goal> findGoal(int memberId){
+    public List<GoalResponseDto> findGoal(int memberId){
         Member findMember = em.find(Member.class,memberId);
+        List<Goal> list = findMember.getGoalList();
+        List<GoalResponseDto> responseList = new ArrayList<>();
+        for (Goal item:list) {
+            responseList.add(new GoalResponseDto(item.getId(),item.getExercise().name(),item.getMember().getId(),item.getHour()));
+        }
 
-        return findMember.getGoalList();
+        return responseList;
     }
 }
