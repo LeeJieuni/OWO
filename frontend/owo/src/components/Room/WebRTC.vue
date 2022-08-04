@@ -1,21 +1,16 @@
 <template>
-  <div>
-    <div
-      class="card me-2 d-flex justify-content-center align-items-center"
-      style="width: 25rem; height: 15rem"
-    >
+  <div class="col col-4">
+    <div class="me-2 mb-5" style="width: 30rem; height: 20rem">
       <div>
         <button id="img" @click="get_out">
           <img style="width: 25px" src="@/assets/icon/get_out.png" alt="" />
         </button>
       </div>
-      <div>
-        <!-- <p>개인 WebRTC 영상</p> -->
-        <div v-if="streamManager">
-          <ov-video :stream-manager="streamManager" />
-          <div>
-            <p>{{ clientData }}</p>
-          </div>
+      <!-- <p>개인 WebRTC 영상</p> -->
+      <div v-if="streamManager">
+        <ov-video style="width:100%; height:100%;" :stream-manager="streamManager" />
+        <div>
+          <p>{{ clientData }}</p>
         </div>
       </div>
     </div>
@@ -69,8 +64,8 @@ export default {
   left: 88%;
   border: 0;
   outline: 0;
-  background-color: #ffffff;
   opacity: 0;
+  z-index:100;
 }
 
 #img:hover {

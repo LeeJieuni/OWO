@@ -1,5 +1,5 @@
 <template>
-  <div class="container-wrap d-flex justify-content-center">
+  <div class="d-flex justify-content-center">
     <div>
       <div class="d-flex justify-content-between align-items-center" style="height: 80px">
         <h3 class="m-0">팔굽혀펴기</h3>
@@ -19,83 +19,63 @@
       <p class="text-center">
         <button class="btn btn-lg btn-success" @click="getRoomList(mode[2])">게임방 목록</button>
       </p>
-      <div class="container d-flex align-items-start justify-content-between">
-        <div class="row">
-          <!-- <WebRTC v-if="true" class="col-lg-4 mb-5"></WebRTC>
-          <WebRTC v-if="true" class="col-4 mb-5"></WebRTC>
-          <WebRTC v-if="true" class="col-4 mb-5"></WebRTC>
-          <WebRTC v-if="true" class="col-4 mb-5"></WebRTC>
-          <WebRTC v-if="true" class="col-4 mb-5"></WebRTC>
-          <WebRTC v-if="true" class="col-4 mb-5"></WebRTC> -->
-          <div id="join" v-if="!session">
-            <div id="img-div">
-              <img src="resources/images/openvidu_grey_bg_transp_cropped.png" />
-            </div>
-            <div id="join-dialog" class="jumbotron vertical-center">
-              <h1>Join a video session</h1>
-              <div class="form-group">
-                <p>
-                  <label>Participant</label>
-                  <input v-model="myUserName" class="form-control" type="text" required />
-                </p>
-                <p>
-                  <label>Session</label>
-                  <input v-model="sessionId" class="form-control" type="text" required />
-                </p>
-                <p class="text-center">
-                  <button class="btn btn-lg btn-success" @click="joinSession(sessionId)">
-                    Join!
-                  </button>
-                </p>
-              </div>
-            </div>
-          </div>
-          <div id="session" v-if="session">
-            <div id="session-header">
-              <h1 id="session-title">{{ mySessionId }}</h1>
-              <input
-                class="btn btn-large btn-danger"
-                type="button"
-                id="buttonLeaveSession"
-                @click="leaveSession"
-                value="Leave session"
-              />
-            </div>
-            <div id="main-video" class="col-md-6">
-              <WebRTC :stream-manager="mainStreamManager" />
-            </div>
-            <div id="video-container" class="col-md-6">
-              <!-- <WebRTC
-                :stream-manager="publisher"
-                @click="updateMainVideoStreamManager(publisher)"
-              /> -->
-              <WebRTC
-                v-for="sub in subscribers"
-                :key="sub.stream.connection.connectionId"
-                :stream-manager="sub"
-                @click="updateMainVideoStreamManager(sub)"
-              />
-            </div>
-          </div>
-          <RoomButton></RoomButton>
+      <div id="join" v-if="!session">
+        <div id="img-div">
+          <img src="resources/images/openvidu_grey_bg_transp_cropped.png" />
         </div>
-        <div>
-          <div>채팅</div>
-
-          <input type="text" v-model="myChat" placeholder="채팅 입력" />
-          <button @click="sendMassage">보내기</button>
-
-          <div>
-            <ul>
-              <!-- <li> {{ allChat }}</li> -->
-              <li v-for="(item, i) in recvList" :key="i">{{ item.m }}</li>
-            </ul>
+        <div id="join-dialog" class="jumbotron vertical-center">
+          <h1>Join a video session</h1>
+          <div class="form-group">
+            <p>
+              <label>Participant</label>
+              <input v-model="myUserName" class="form-control" type="text" required />
+            </p>
+            <p>
+              <label>Session</label>
+              <input v-model="sessionId" class="form-control" type="text" required />
+            </p>
+            <p class="text-center">
+              <button class="btn btn-lg btn-success" @click="joinSession(sessionId)">
+                Join!
+              </button>
+            </p>
           </div>
         </div>
       </div>
+      <div id="session" v-if="session">
+        <div id="session-header">
+          <h1 id="session-title">{{ mySessionId }}</h1>
+          <input
+            class="btn btn-large btn-danger"
+            type="button"
+            id="buttonLeaveSession"
+            @click="leaveSession"
+            value="Leave session"
+          />
+        </div>
+        <div class="d-flex align-items-start justify-content-between">
+          <div class="row">
+          <!-- <div id="main-video"></div> -->
+            <!-- <div> -->
+            <WebRTC :stream-manager="mainStreamManager"/>
+            <!-- </div> -->
+          <!-- </div> -->
+          <!-- <div id="video-container" class="row"> -->
+            <!-- <WebRTC
+              :stream-manager="publisher"
+              @click="updateMainVideoStreamManager(publisher)"
+            /> -->
+            <WebRTC
+            v-for="sub in subscribers"
+            :key="sub.stream.connection.connectionId"
+            :stream-manager="sub"
+            @click="updateMainVideoStreamManager(sub)"/>
+            </div>
+          </div>
+        </div>
+        <RoomButton></RoomButton>
+      </div>
     </div>
-  </div>
-  <AfterExerciseModal></AfterExerciseModal>
 </template>
 <script>
 import Timer from "@/components/SetTimer.vue";
@@ -125,15 +105,11 @@ export default {
       mainStreamManager: undefined,
       publisher: undefined,
       subscribers: [],
-
-      myChat: "",
-      recvList: [],
-
       mode: ["FREE", "STREAMING", "GAME"],
       // mySessionId: "SessionA",
       // myUserName: `Participant${Math.floor(Math.random() * 100)}`,
       myUserName: "",
-      sessionId: 0,
+      sessionId: 'SessionA',
     };
   },
   watch: {
@@ -254,35 +230,7 @@ export default {
           });
       });
 
-      // Receiver of the message (usually before calling 'session.connect')
-      this.session.on("signal:my-chat", (event) => {
-        console.log(event.data); // Message
-        // console.log(event.from); // Connection object of the sender //누가 보냈는지가 아니네..?
-        // console.log(event.type); // The type of message ("my-chat")
-        // this.allChat = event.data;
-        // this.who = event.from; //누가 보냈는지
-        let obj = { m: event.data, p: event.from };
-        this.recvList.push(obj);
-        // console.log(this.recvList[0].m);
-      });
-
       window.addEventListener("beforeunload", this.leaveSession);
-    },
-
-    sendMassage() {
-      // Sender of the message (after 'session.connect')
-      this.session
-        .signal({
-          data: this.myChat, // Any string (optional)
-          to: [], // Array of Connection objects (optional. Broadcast to everyone if empty)
-          type: "my-chat", // The type of message (optional)
-        })
-        .then(() => {
-          console.log("Message successfully sent");
-        })
-        .catch((error) => {
-          console.error(error);
-        });
     },
 
     async leaveSession() {
