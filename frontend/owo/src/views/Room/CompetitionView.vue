@@ -1,57 +1,387 @@
 <template>
-  <div class="container-wrap d-flex justify-content-center">
+  <div class="d-flex justify-content-center">
     <div>
-      <div class="d-flex justify-content-between align-items-center"
-      style="height:80px;">
-        <h3 class="m-0">#ROUND 1 : 런지</h3>
-        <Timer/>
+      <div class="d-flex justify-content-between align-items-center" style="height: 80px">
+        <h3 class="m-0">팔굽혀펴기</h3>
+        <Timer />
       </div>
-      <div class="container d-flex align-items-start justify-content-between">
-        <div class="row">
-          <WebRTCCompetition v-if="true" class="col-lg-4 mb-5"></WebRTCCompetition>
-          <WebRTCCompetition v-if="true" class="col-lg-4 mb-5"></WebRTCCompetition>
-          <WebRTCCompetition v-if="true" class="col-lg-4 mb-5"></WebRTCCompetition>
-          <WebRTCCompetition v-if="true" class="col-lg-4 mb-5"></WebRTCCompetition>
-          <WebRTCCompetition v-if="true" class="col-lg-4 mb-5"></WebRTCCompetition>
-          <WebRTCCompetition v-if="true" class="col-lg-4 mb-5"></WebRTCCompetition>
-          <RoomButton></RoomButton>
+      <p class="text-center">
+        <button class="btn btn-lg btn-success" @click="makeRoom()">세션열기</button>
+      </p>
+      <p class="text-center">
+        <button class="btn btn-lg btn-success" @click="getRoomList(mode[0])">자유방 목록</button>
+      </p>
+      <p class="text-center">
+        <button class="btn btn-lg btn-success" @click="getRoomList(mode[1])">
+          스트리밍방 목록
+        </button>
+      </p>
+      <p class="text-center">
+        <button class="btn btn-lg btn-success" @click="getRoomList(mode[2])">게임방 목록</button>
+      </p>
+      <div id="join" v-if="!session">
+        <div id="img-div">
+          <img src="resources/images/openvidu_grey_bg_transp_cropped.png" alt="">
+        </div>
+        <div id="join-dialog" class="jumbotron vertical-center">
+          <h1>Join a video session</h1>
+          <div class="form-group">
+            <p>
+              <label for="participant">Participant
+              <input for="participant" v-model="myUserName"
+              class="form-control" type="text" required /></label>
+            </p>
+            <p>
+              <label for="session">Session
+              <input for="session" v-model="sessionId"
+              class="form-control" type="text" required /></label>
+            </p>
+            <p class="text-center">
+              <button class="btn btn-lg btn-success" @click="joinSession(sessionId)">
+                Join!
+              </button>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div id="session" v-if="session">
+        <div id="session-header">
+          <h1 id="session-title">{{ mySessionId }}</h1>
+          <input
+            class="btn btn-large btn-danger"
+            type="button"
+            id="buttonLeaveSession"
+            @click="leaveSession"
+            value="Leave session"
+          />
+        </div>
+        <div class="d-flex align-items-start justify-content-between">
+          <div class="row">
+          <!-- <div id="main-video"></div> -->
+            <!-- <div> -->
+            <WebRTC :stream-manager="mainStreamManager"/>
+            <!-- </div> -->
+          <!-- </div> -->
+          <!-- <div id="video-container" class="row"> -->
+            <!-- <WebRTC
+              :stream-manager="publisher"
+              @click="updateMainVideoStreamManager(publisher)"
+            /> -->
+            <WebRTC
+            v-for="sub in subscribers"
+            :key="sub.stream.connection.connectionId"
+            :stream-manager="sub"
+            @click="updateMainVideoStreamManager(sub)"/>
+            </div>
+          </div>
+        </div>
+        <RoomButton></RoomButton>
+        <div>
+          <div>채팅</div>
+          <label for="chat">
+          <input for="chat" type="text" v-model="myChat" placeholder="채팅 입력"></label>
+          <button @click="sendMassage">보내기</button>
+          <div>
+            <ul>
+              <!-- <li> {{ allChat }}</li> -->
+              <li v-for="(item, i) in recvList" :key="i">{{ item.m }}</li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 </template>
 <script>
 import Timer from '@/components/SetTimer.vue';
-import WebRTCCompetition from '@/components/Room/WebRTCCompetition.vue';
+import WebRTC from '@/components/Room/WebRTC.vue';
 import RoomButton from '@/components/Room/RoomButton.vue';
+import axios from 'axios';
+import { OpenVidu } from 'openvidu-browser';
+import {
+  mapState, mapActions, mapMutations,
+} from 'vuex';
 
+axios.defaults.headers.post['Content-Type'] = 'application/json';
+
+const openvidu = 'openvidu';
+const accounts = 'accounts';
+const meetingroom = 'meetingroom';
 export default {
   name: 'CompetitionView',
   components: {
     Timer,
-    WebRTCCompetition,
+    WebRTC,
     RoomButton,
   },
   data() {
     return {
-      exercise: {
-      },
+      OV: undefined,
+      session: undefined,
+      mainStreamManager: undefined,
+      publisher: undefined,
+      subscribers: [],
+      mode: ['FREE', 'STREAMING', 'GAME'],
+      // mySessionId: "SessionA",
+      // myUserName: `Participant${Math.floor(Math.random() * 100)}`,
+      myUserName: '',
+      sessionId: 'SessionA',
+      myChat: '',
+      recvList: [],
     };
   },
   setup() {},
   created() {},
   moundted() {},
   unmounted() {},
-  methods: {},
+  watch: {
+    mySessionId() {},
+  },
+
+  computed: {
+    ...mapState(accounts, ['accessToken', 'userInfo']),
+    ...mapState(openvidu, ['OPENVIDU_SERVER_URL', 'OPENVIDU_SERVER_SECRET']),
+    ...mapState(meetingroom, ['mySessionId', 'meetingRoomList']),
+    // ...openviduHelper.mapState(["OPENVIDU_SERVER_URL", "OPENVIDU_SERVER_SECRET"]),
+    // ...meetingRoomHelper.mapState(["sessionID", "meetingRoomList"]),
+  },
+  methods: {
+    ...mapMutations(meetingroom, ['SET_SESSION_ID']),
+    ...mapActions(meetingroom, [
+      'makeSession',
+      'getMeetingRoomList',
+      'enterMeetingRoom',
+      'leaveMeetingRoom',
+    ]),
+    async makeRoom() {
+      const requestDto = {
+        accesstoken: this.accessToken,
+        memberId: '2',
+        secret: false,
+        password: '',
+        mode: 'GAME',
+        roomName: '방1',
+        type: 'GAME',
+        link: '',
+      };
+      await this.makeSession(requestDto);
+      console.log('=========================');
+      console.log(this.mySessionId);
+      this.joinSession(this.mySessionId);
+    },
+    getRoomList(m) {
+      const requestDto = {
+        accesstoken: this.accessToken,
+        mode: m,
+      };
+      this.getMeetingRoomList(requestDto);
+    },
+    joinSession(sessionNum) {
+      this.SET_SESSION_ID(sessionNum);
+      console.log(`sessionID = ${sessionNum}`);
+      const requestDto = {
+        accesstoken: this.accessToken,
+        roomId: String(sessionNum),
+      };
+      console.log(sessionNum);
+      this.enterMeetingRoom(requestDto);
+      // --- Get an OpenVidu object ---
+      this.OV = new OpenVidu();
+
+      // --- Init a session ---
+      this.session = this.OV.initSession();
+
+      // --- Specify the actions when events take place in the session ---
+
+      // On every new Stream received...
+      this.session.on('streamCreated', ({ stream }) => {
+        const subscriber = this.session.subscribe(stream);
+        this.subscribers.push(subscriber);
+      });
+
+      // On every Stream destroyed...
+      this.session.on('streamDestroyed', ({ stream }) => {
+        const index = this.subscribers.indexOf(stream.streamManager, 0);
+        if (index >= 0) {
+          this.subscribers.splice(index, 1);
+        }
+      });
+
+      // On every asynchronous exception...
+      this.session.on('exception', ({ exception }) => {
+        console.warn(exception);
+      });
+
+      // --- Connect to the session with a valid user token ---
+
+      // 'getToken' method is simulating what your server-side should do.
+      // 'token' parameter should be retrieved and returned by your own backend
+      this.getToken(this.mySessionId).then((token) => {
+        this.session
+          .connect(token, { clientData: this.userInfo.nick })
+          .then(() => {
+            // --- Get your own camera stream with the desired properties ---
+
+            const publisher = this.OV.initPublisher(undefined, {
+              audioSource: undefined, // The source of audio. If undefined default microphone
+              videoSource: undefined, // The source of video. If undefined default webcam
+              publishAudio: true,
+              // Whether you want to start publishing with your audio unmuted or not
+              publishVideo: true,
+              // Whether you want to start publishing with your video enabled or not
+              resolution: '250x150', // The resolution of your video
+              frameRate: 30, // The frame rate of your video
+              insertMode: 'APPEND',
+              // How the video is inserted in the target element 'video-container'
+              mirror: false, // Whether to mirror your local video or not
+            });
+
+            this.mainStreamManager = publisher;
+            this.publisher = publisher;
+
+            // --- Publish your stream ---
+
+            this.session.publish(this.publisher);
+          })
+          .catch((error) => {
+            console.log('There was an error connecting to the session:', error.code, error.message);
+          });
+      });
+      // Receiver of the message (usually before calling 'session.connect')
+      this.session.on('signal:my-chat', (event) => {
+        console.log(event.data); // Message
+        // console.log(event.from); // Connection object of the sender //누가 보냈는지가 아니네..?
+        // console.log(event.type); // The type of message ("my-chat")
+        // this.allChat = event.data;
+        // this.who = event.from; //누가 보냈는지
+        const obj = { m: event.data, p: event.from };
+        this.recvList.push(obj);
+        // console.log(this.recvList[0].m);
+      });
+
+      window.addEventListener('beforeunload', this.leaveSession);
+    },
+
+    sendMassage() {
+      // Sender of the message (after 'session.connect')
+      this.session
+        .signal({
+          data: this.myChat, // Any string (optional)
+          to: [], // Array of Connection objects (optional. Broadcast to everyone if empty)
+          type: 'my-chat', // The type of message (optional)
+        })
+        .then(() => {
+          console.log('Message successfully sent');
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    },
+
+    async leaveSession() {
+      // --- Leave the session by calling 'disconnect' method over the Session object ---
+      if (this.session) this.session.disconnect();
+      const requestDto = {
+        accesstoken: this.accessToken,
+        roomId: this.mySessionId,
+      };
+      await this.leaveMeetingRoom(requestDto);
+      this.session = undefined;
+      this.mainStreamManager = undefined;
+      this.publisher = undefined;
+      this.subscribers = [];
+      this.OV = undefined;
+
+      window.removeEventListener('beforeunload', this.leaveSession);
+    },
+
+    updateMainVideoStreamManager(stream) {
+      if (this.mainStreamManager === stream) return;
+      this.mainStreamManager = stream;
+    },
+
+    /**
+     * --------------------------
+     * SERVER-SIDE RESPONSIBILITY
+     * --------------------------
+     * These methods retrieve the mandatory user token from OpenVidu Server.
+     * This behavior MUST BE IN YOUR SERVER-SIDE IN PRODUCTION (by using
+     * the API REST, openvidu-java-client or openvidu-node-client):
+     *   1) Initialize a Session in OpenVidu Server(POST /openvidu/api/sessions)
+     *   2) Create a Connection in OpenVidu Server
+     * (POST /openvidu/api/sessions/<SESSION_ID>/connection)
+     *   3) The Connection.token must be consumed in Session.connect() method
+     */
+
+    getToken(mySessionId) {
+      return this.createSession(mySessionId).then((sessionId) => this.createToken(sessionId));
+    },
+    // See https://docs.openvidu.io/en/stable/reference-docs/REST-API/#post-session
+    createSession(sessionId) {
+      return new Promise((resolve, reject) => {
+        axios
+          .post(
+            `${this.OPENVIDU_SERVER_URL}/openvidu/api/sessions`,
+            JSON.stringify({
+              customSessionId: sessionId,
+            }),
+            {
+              auth: {
+                username: 'OPENVIDUAPP',
+                password: this.OPENVIDU_SERVER_SECRET,
+              },
+            },
+          )
+          .then((response) => response.data)
+          .then((data) => resolve(data.id))
+          .catch((error) => {
+            if (error.response.status === 409) {
+              resolve(sessionId);
+            } else {
+              console.warn(
+                `No connection to OpenVidu Server. This may be a certificate error at ${this.OPENVIDU_SERVER_URL}`,
+              );
+              if (
+                window.confirm(
+                  `No connection to OpenVidu Server. This may be a certificate error at ${this.OPENVIDU_SERVER_URL}\n\nClick OK to navigate and accept it. If no certificate warning is shown, then check that your OpenVidu Server is up and running at "${this.OPENVIDU_SERVER_URL}"`,
+                )
+              ) {
+                window.location.assign(`${this.OPENVIDU_SERVER_URL}/accept-certificate`);
+              }
+              reject(error.response);
+            }
+          });
+      });
+    },
+
+    // See https://docs.openvidu.io/en/stable/reference-docs/REST-API/#post-connection
+    createToken(sessionId) {
+      return new Promise((resolve, reject) => {
+        axios
+          .post(
+            `${this.OPENVIDU_SERVER_URL}/openvidu/api/sessions/${sessionId}/connection`,
+            {},
+            {
+              auth: {
+                username: 'OPENVIDUAPP',
+                password: this.OPENVIDU_SERVER_SECRET,
+              },
+            },
+          )
+          .then((response) => response.data)
+          .then((data) => resolve(data.token))
+          .catch((error) => reject(error.response));
+      });
+    },
+  },
 };
 </script>
 <style scoped>
 div {
-  color:black;
+  color: black;
 }
 .container {
-  width:100vw;
-  height:100vh;
+  width: 100vw;
+  height: 100vh;
 }
 
 </style>
