@@ -47,13 +47,8 @@
       <div id="session" v-if="session">
         <div id="session-header">
           <h1 id="session-title">{{ mySessionId }}</h1>
-          <input
-            class="btn btn-large btn-danger"
-            type="button"
-            id="buttonLeaveSession"
-            @click="leaveSession"
-            value="Leave session"
-          />
+          <input class="btn btn-large btn-danger" type="button"
+            id="buttonLeaveSession" @click="leaveSession" value="Leave session"/>
         </div>
         <div class="d-flex align-items-start justify-content-between">
           <div class="row">
@@ -72,24 +67,57 @@
             :key="sub.stream.connection.connectionId"
             :stream-manager="sub"
             @click="updateMainVideoStreamManager(sub)"/>
-            </div>
           </div>
         </div>
-        <RoomButton></RoomButton>
-        <div>
-          <div>채팅</div>
-          <label for="chat">
-          <input for="chat" type="text" v-model="myChat" placeholder="채팅 입력"></label>
-          <button @click="sendMassage">보내기</button>
-          <div>
-            <ul>
-              <!-- <li> {{ allChat }}</li> -->
-              <li v-for="(item, i) in recvList" :key="i">{{item.p}} - {{ item.m }}</li>
-            </ul>
+      </div>
+      <RoomButton></RoomButton>
+      <button v-if="chatONOFF" @click="chatoff" class="chat">
+        <img class="chatimg" src="@/assets/icon/commentoff.png" alt="">
+      </button>
+      <button v-if="!chatONOFF" @click="chaton" class="chat">
+        <img class="chatimg" src="@/assets/icon/commenton.png" alt="">
+      </button>
+      <div v-if="chatONOFF" class="achat d-flex justify-content-center align-items-center">
+        <div class="d-flex align-items-center achat-submit">
+          <label class="m-0" for="chatting">
+            <!-- @keyup="checkmychatlength(this)" -->
+            <textarea id="mychat" name="chatting" type="text"
+            v-model="myChat" style="resize:none; border-radius:5px;" placeholder=" 채팅 입력"
+            rows="2" cols="25"></textarea>
+          </label>
+          <button @click="sendMassage" class="btn btn-light achat-submit2">
+          Send</button>
+        </div>
+        <div class="fluid achat-content" style="overflow:auto; height:490px;">
+          <div v-for="(item, i) in recvList" :key="i">
+            <div class="mychatting p-0" style="margin-top:0px; margin-bottom:10px;
+            margin-left:auto; margin-right:30px; width:220px; height:90px;"
+            v-if="item.p === this.myUserName">
+              <div style="text-align:left; margin-top:5px; margin-left:5px; font-size:large;">
+                <strong>{{item.p}}</strong>
+              </div>
+              <div style="word-wrap:break-word; text-align:left; margin-top:5px;
+              margin-left:5px; font-size:medium;">
+                {{item.m}}
+              </div>
+            </div>
+            <div class="yourchatting p-0" style="margin-top:0px; margin-bottom:10px;
+            margin-right:auto; margin-left:30px; width:220px; height:90px;"
+            v-if="item.p !== this.myUserName">
+              <div style="text-align:left; margin-top:5px; margin-left:5px; font-size:large;">
+                <strong>{{item.p}}</strong>
+              </div>
+              <div style="text-align:left; margin-top:5px; margin-left:5px; font-size:medium;">
+                {{item.m}}
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
+    안녕하세요?
+    (<span id="nowByte">0</span>/100bytes)
+  </div>
 </template>
 <script>
 import Timer from '@/components/SetTimer.vue';
@@ -107,6 +135,7 @@ axios.defaults.headers.post['Content-Type'] = 'application/json';
 const openvidu = 'openvidu';
 const accounts = 'accounts';
 const meetingroom = 'meetingroom';
+
 export default {
   name: 'CompetitionView',
   components: {
@@ -126,6 +155,7 @@ export default {
       sessionId: 'SessionA',
       myChat: '',
       recvList: [],
+      chatONOFF: false,
     };
   },
   setup() {},
@@ -374,6 +404,36 @@ export default {
           .catch((error) => reject(error.response));
       });
     },
+    chatoff() {
+      this.chatONOFF = false;
+    },
+    chaton() {
+      this.chatONOFF = true;
+    },
+    // checkmychatlength() {
+    //   const obj = document.getElementById('#mychat').innerText;
+    //   console.log('전데요?', obj.value);
+    //   const maxByte = 100;
+    //   const textval = obj.value;
+    //   const textlen = textval.length;
+    //   let totalByte = 0;
+    //   for (let i = 0; i < textlen; i += 1) {
+    //     const eachchar = textval.charAt(i);
+    //     const unichar = escape(eachchar);
+    //     if (unichar.length > 4) {
+    //       totalByte += 2;
+    //     } else {
+    //       totalByte += 1;
+    //     }
+    //   }
+    //   if (totalByte > maxByte) {
+    //     document.getElementById('nowByte').innerText = totalByte;
+    //     document.getElementById('nowByte').style.color = 'red';
+    //   } else {
+    //     document.getElementById('nowByte').innerText = totalByte;
+    //     document.getElementById('nowByte').style.color = 'green';
+    //   }
+    // },
   },
 };
 </script>
@@ -381,9 +441,65 @@ export default {
 div {
   color: black;
 }
+
 .container {
   width: 100vw;
   height: 100vh;
 }
+
+.chat {
+  position:fixed;
+  bottom: 30px;
+  right: 30px;
+}
+
+.chatimg {
+  width:50px;
+}
+
+.achat {
+  position:fixed;
+  border: 2px solid #4e8aff;
+  border-radius: 30px;
+  width:320px;
+  height:600px;
+  background-color: #4e8aff;
+  bottom: 100px;
+  right: 20px;
+}
+
+.achat-content {
+  position:fixed;
+  border: 2px solid #4e8aff;
+  width:320px;
+  height:490px;
+  background-color: white;
+  bottom: 180px;
+  right: 20px;
+}
+
+.achat-submit {
+  position:fixed;
+  width:300px;
+  height:70px;
+  bottom: 105px;
+  right: 19px;
+}
+
+.achat-submit2 {
+  position: fixed;
+  bottom: 124px;
+  right: 40px;
+}
+
+.mychatting {position:relative; margin: 50px; padding: 20px; width:180px; height:90px;
+border:1px solid #C5a180; border-radius: 10px; background-color:  #C5a180;}
+.mychatting:after {content:""; position: absolute; top: 21px; right: -30px; border-left: 30px
+solid  #C5a180; border-top: 10px solid transparent; border-bottom: 10px solid transparent;}
+
+.yourchatting {position:relative; margin: 50px; padding: 20px; width:180px; height:90px;
+border:1px solid #ccb9a8; border-radius: 10px; background-color: #ccb9a8;}
+.yourchatting:after {content:""; position: absolute; top: 21px; left: -30px; border-right: 30px
+solid #ccb9a8; border-top: 10px solid transparent; border-bottom: 10px solid transparent;}
 
 </style>

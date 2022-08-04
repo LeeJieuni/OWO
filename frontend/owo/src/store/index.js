@@ -6,12 +6,14 @@ import createPersistedState from 'vuex-persistedstate';
 import { accounts } from '@/store/modules/accounts';
 import { openvidu } from '@/store/modules/openvidu';
 import { meetingroom } from '@/store/modules/meetingroom';
+import { room } from '@/store/modules/room';
 
 const store = new Vuex.Store({
   modules: {
     accounts,
     openvidu,
     meetingroom,
+    room,
   },
   plugins: [
     createPersistedState({
