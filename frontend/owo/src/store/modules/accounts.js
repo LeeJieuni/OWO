@@ -159,6 +159,8 @@ export const accounts = {
         });
     },
     updateUserInfo({ state, dispatch }, payload) {
+      console.log(payload);
+      console.log('액시오스하기전');
       axios({
         url: 'https://i7c202.p.ssafy.io:8282/api/user',
         method: 'put',
@@ -169,11 +171,12 @@ export const accounts = {
         data: payload,
       })
         .then((res) => {
-          console.log(res.data);
-          dispatch('setUserInfo', res.data);
+          // console.log(res.data.data);
+          dispatch('setUserInfo', res.data.data);
+          router.push({ name: 'MyPageMainView' });
         })
         .catch((err) => {
-          console.log(err);
+          console.log(err.toJSON());
         });
     },
   },

@@ -41,7 +41,7 @@ const routes = [
     children: [
       {
         path: 'main',
-        // name: 'MyPageMainView',
+        name: 'MyPageMainView',
         component: MyPageMainView,
       },
       {

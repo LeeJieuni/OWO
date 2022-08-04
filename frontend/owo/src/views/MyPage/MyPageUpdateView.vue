@@ -1,41 +1,16 @@
 <template>
   <div class="container-box p-5">
-    <button @click="getPhysicalInfo">bmi불러오기</button>
-    <h3 v-once>{{ user.nick }}님의 정보 수정</h3><br>
-    <div class="title-box row">
-      <div class="profile d-flex justify-content-center">
-        <label for="formFile" class="form-label" >
-          <img class="profile-img " :src=user.profileImg alt="">
-          <input class="form-control form-control-sm profile-input"
-            type="file" id="formFile"
-            src=profileImg
-            v-on:change="profileImg($event)"
-            >
-        </label>
-      </div>
-    </div>
-
     <div class="row profile-form p-1">
-      <form action="">
+      <form>
       <table>
         <tbody>
-
-          <tr>
-            <th class="th-1">슬로건</th>
-              <th class="th-2">
-              <label for="slogan">
-                <input class="form-input text-center slogan-input"
-                  type="text" name="slogan" v-model.trim=user.slogan>
-              </label>
-            </th>
-          </tr>
-
           <tr>
             <th class="th-1">닉네임</th>
               <th class="th-2">
               <label for="nick">
                 <input class="form-input text-center"
-                  type="text" name="nick" v-model.trim=user.nick>
+                  type="text"
+                  v-model.number="user.nick">
               </label>
             </th>
           </tr>
@@ -45,7 +20,8 @@
             <th class="th-2">
               <label for="age">
                 <input class="form-input text-center"
-                  type="number" name="age" v-model.number=user.age>
+                  type="number" name="age"
+                  v-model.number="user.age">
                 <span class="th-2-text"> 세</span>
               </label>
             </th>
@@ -56,7 +32,8 @@
             <th class="th-2">
               <label for="gender">
                 <select class="form-select form-select-sm form-input text-center"
-                  name="radio" id="gender" v-model=user.gender>
+                  name="radio" id="gender"
+                  v-model="user.gender">
                   <option value="FEMALE">여자</option>
                   <option value="MALE">남자</option>
                 </select>
@@ -69,7 +46,8 @@
             <th class="th-2">
               <label for="height">
                 <input class="form-input text-center text-center"
-                  type="number" name="height" v-model.number=user.height> cm
+                  type="number" name="height"
+                  v-model.number="user.height"> cm
               </label>
             </th>
           </tr>
@@ -77,9 +55,10 @@
           <tr>
             <th class="th-1">몸무게</th>
             <th class="th-2">
-              <label for="secret">
+              <label for="weight">
                 <input class="form-input text-center"
-                  type="number" name="weight" v-model.number=user.weight> kg
+                  type="number" name="weight"
+                  v-model.number="user.weight"> kg
               </label>
             </th>
           </tr>
@@ -87,25 +66,10 @@
           <tr>
             <th class="th-1">활동량</th>
             <th class="th-2">
-              <!-- <b-form-group>
-                <b-form-radio-group
-                  id="radio-group-1"
-                  v-model="selected"
-                  :options="options"
-                  :aria-describedby="ariaDescribedby"
-                  name="radio-options"
-                  v-b-tooltip.hover title="
-                    1) 주로 앉아서 보냄<br>
-                    2) 주 1-3일<br>
-                    3) 주 3-5일<br>
-                    4) 주 6-7일<br>
-                    5) 하루 2회 등 격렬한 운동"
-                ></b-form-radio-group>
-              </b-form-group> -->
-
               <label for="activity-num">
                 <select class="form-select form-select-sm form-input text-center"
-                  name="radio" id="activity" v-model=user.activity>
+                  name="radio" id="activity"
+                  v-model.number="user.activityLevel">
                   <option value="1">주로 앉아서 보냄</option>
                   <option value="2">약간 활동적</option>
                   <option value="3">중간 활동적</option>
@@ -115,63 +79,10 @@
               </label>
             </th>
           </tr>
-
-          <tr>
-            <th class="th-1">주간 목표</th>
-            <th class="th-2">
-              <form action="">
-                <label for="goal-type">
-                  <select v-model="inputGoalType"
-                    class="form-select form-select-sm goal-type-select"
-                    name="radio" id="goal_type">
-                    <option value="유산소">유산소</option>
-                    <option value="헬스">헬스</option>
-                    <option value="스트레칭">스트레칭</option>
-                    <option value="맨몸운동">맨몸운동</option>
-                    <option value="요가">요가</option>
-                    <option value="필라테스">필라테스</option>
-                    <option value="기타">기타</option>
-                  </select></label>&nbsp;
-                <input
-                  class="form-input text-center"
-                  type="number"
-                  name="goalHour"
-                  style="width: 70px;"
-                  v-model="inputGoalHour"
-                  min='1'> 시간
-                <button @click="addGoal($event)"
-                  class="top-btns btn btn-outline-secondary ms-2">추가</button>
-                <!-- <button @click="registGoal($event)"
-                  class="top-btns btn btn-outline-warning">등록</button> -->
-              </form>
-              <tr>
-                <div class="tags row">
-                  <button
-                    v-for="(goal, goalI) in user.goals"
-                    :key="goalI"
-                    class="tag"
-                    @click="tagDelete">
-                    <p>{{goal.goalType}} {{goal.goalHour}}H</p>
-                  </button>
-                </div>
-              </tr>
-              </th>
-          </tr>
-
-          <tr>
-            <th class="th-1">내 정보 공개하기</th>
-            <th class="th-2"><label for="secret">
-              <select class="form-select form-select-sm form-input text-center"
-                name="radio" id="secret" v-model=user.secret>
-                <option value="1">공개</option>
-                <option value="2">비공개</option>
-              </select></label>
-            </th>
-          </tr>
         </tbody>
       </table>
       <div class="row buttons">
-        <button class="col btn btn-primary m-3" @click='updateUserInfo' >변경</button>
+        <button class="col btn btn-primary m-3" @click.prevent="update(user)">변경</button>
         <button class="col btn btn-secondary m-3" >취소</button>
       </div>
     </form>
@@ -179,30 +90,19 @@
   </div>
 </template>
 <script>
-import { createNamespacedHelpers } from 'vuex';
-
-const { mapActions, mapGetters } = createNamespacedHelpers('accounts');
+import { useStore } from 'vuex';
+import { reactive, computed } from 'vue';
+// import { createNamespacedHelpers } from 'vuex';
+// import { useStore } from 'vuex';
+// const { mapActions, mapGetters } = createNamespacedHelpers('accounts');
 
 export default {
   name: 'MyPageUpdateView',
-  components: {},
-  data() {
-    return {
-      inputGoalType: '',
-      inputGoalHour: 0,
-      user: {
-        slogan: '8월 바프까지 화이팅!',
-        nick: '',
-        age: '',
-        gender: '',
-        height: '',
-        weight: '',
-        activity: '',
-        secret: '',
-        goals: [],
-        profileImg: 'https://picsum.photos/150',
-        id: '',
-      },
+  setup() {
+    const store = useStore();
+    // const user = store.getters.userInfo;
+    const user = computed(() => store.getters['accounts/userInfo']);
+    const state = reactive({
       selected: '',
       options: [
         { text: '없음', value: '1' },
@@ -211,73 +111,25 @@ export default {
         { text: '많음', value: '4' },
         { text: '매우 많음', value: '5' },
       ],
+    });
+    console.log(user);
+    const update = function (userInfo) {
+      console.log(userInfo);
+
+      store.dispatch('accounts/updateUserInfo', userInfo);
+    };
+    return {
+      state,
+      user,
+      // updateUserInfo,
+      update,
     };
   },
-  setup() {},
-  computed: {
-    ...mapGetters(['isLogin', 'userInfo', 'physicalInfo']),
-  },
+  components: {},
   created() {
-    console.log(this.userInfo);
-    console.log(this.physicalInfo);
-    this.user.age = this.userInfo.age;
-    this.user.gender = this.userInfo.gender;
-    this.user.height = this.userInfo.height;
-    this.user.weight = this.userInfo.weight;
-    this.user.activity = this.userInfo.activityLevel;
-    this.user.id = this.userInfo.id;
-    this.user.nick = this.userInfo.nick;
   },
-  mounted() {
-  },
-  unmounted() {},
-  methods: {
-    ...mapActions({
-      setPhysicalInfo: 'getPhysicalInfo',
-      updateUserInfo: 'updateUserInfo',
-    }),
-    addGoal(event) {
-      if (this.user.goals.length >= 3) {
-        /* eslint-disable */
-        alert('주간 목표는 3개까지 추가 가능합니다.');
-        event.preventDefault();
-        return;
-      }
-      else if (this.inputGoalType === '') {
-        /* eslint-disable */
-        alert('목표를 설정해 주세요!');
-        event.preventDefault();
-        return;
-      }
-      else if (this.inputGoalHour < 1) {
-        /* eslint-disable */
-        alert('시간을 설정해 주세요!');
-        event.preventDefault();
-        return;
-      }
-      event.preventDefault();
-      this.user.goals.push({ goalType: this.inputGoalType, goalHour: this.inputGoalHour });
-    },
-    tagDelete(event) {
-      /* eslint-disable */
-      // alert('해당 주간 목표를 삭제하시겠습니까?');
-      event.preventDefault();
-      console.log(event)
-    },
-    // registGoal() {
-    //   // 솰라솰라
-    // },
-    profileImg(e) {
-      let files = e.target.files || e.dataTransfer.files;
-      if (!files.length)
-        return;
-      this.createImage(files[0]);
-    }
-  },
-  updateUserInfo() {
-    console.log(this.user)
-  }
 };
+
 </script>
 
 <style scoped>
@@ -314,7 +166,7 @@ export default {
     font-weight: 700;
     background-color:#828282;
     /* padding-left: 10px; */
-    line-height: 18px; 
+    line-height: 18px;
     color: white;
     letter-spacing: -1.5;
   }
