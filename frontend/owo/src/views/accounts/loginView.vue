@@ -14,6 +14,7 @@
             <input v-model="credentials.password" class="form-control"
                 type="password" placeholder="password123" required /></label>
           </div>
+          <small v-if="isLoginErr">{{LoginErr}}</small>
           <div class="alternative-option mt-4">
             오운완 회원이 아니신가요?
             <b-button Style="font-size: 15px" variant="link" @click="moveToRegister">회원가입</b-button>
@@ -36,7 +37,7 @@
 <script>
 import { createNamespacedHelpers } from 'vuex';
 
-const { mapActions } = createNamespacedHelpers('accounts');
+const { mapActions, mapState } = createNamespacedHelpers('accounts');
 
 export default {
   data() {
@@ -54,6 +55,12 @@ export default {
     moveToRegister() {
       this.$router.push('/register');
     },
+  },
+  computed: {
+    ...mapState({
+      isLoginErr: 'isLoginErr',
+      LoginErr: 'LoginErr',
+    }),
   },
 };
 </script>

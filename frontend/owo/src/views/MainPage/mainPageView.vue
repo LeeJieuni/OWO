@@ -2,17 +2,20 @@
   <div>
     <Carousel></Carousel>
     <rankingList/>
+    <roomTab></roomTab>
   </div>
 </template>>
 
 <script>
 import Carousel from '@/components/MainPage/Carousel.vue';
 import rankingList from '@/components/MainPage/rankingList.vue';
+import roomTab from '@/components/MainPage/roomTab.vue';
 
 export default {
   components: {
     Carousel,
     rankingList,
+    roomTab,
   },
 };
 </script>

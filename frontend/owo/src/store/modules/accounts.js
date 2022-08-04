@@ -4,6 +4,8 @@ import axios from 'axios';
 export const accounts = {
   namespaced: true,
   state: () => ({
+    LoginErr: '',
+    isLoginErr: false,
     accessToken: null,
     refreshToken: null,
     userInfo: {
@@ -25,6 +27,10 @@ export const accounts = {
     },
   }),
   mutations: {
+    SET_LOGIN_ERR: (state, message) => {
+      state.LoginErr = message;
+      state.isLoginErr = true;
+    },
     SET_ACCESS_TOKEN: (state, token) => {
       state.accessToken = token;
     },
@@ -68,13 +74,14 @@ export const accounts = {
     removeToken({ commit }) {
       commit('SET_ACCESS_TOKEN', null);
       commit('SET_REFRESH_TOKEN', null);
-      localStorage.setItem('accessToken', null);
-      localStorage.setItem('refreshToken', null);
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+      localStorage.removeItem('vuex');
     },
     setUserInfo({ commit }, payload) {
       commit('SET_USER_INFO', payload);
     },
-    login({ dispatch }, credentials) {
+    login({ dispatch, commit }, credentials) {
       axios.post('https://i7c202.p.ssafy.io:8282/auth/login', credentials)
         .then((res) => {
           const response = res.data.data;
@@ -83,17 +90,18 @@ export const accounts = {
           dispatch('saveAccessToken', access);
           dispatch('saveRefreshToken', refresh);
           dispatch('setUserInfo', response);
-          console.log(response);
           router.push('/');
         })
         .catch((err) => {
-          console.log(err);
           if (err.response.status === 400) {
             if (err.response.data.message === '회원가입 이메일 인증이 필요합니다.') {
-              router.push('/emailVerify');
-              console.loe(err.response);
+              commit('SET_LOGIN_ERR', err.response.data.message);
+              localStorage.removeItem('vuex');
+              // router.push('/emailVerify');
             } else if (err.response.data.message === '이메일 혹은 비밀번호가 맞지 않습니다.') {
-              alert(err.response.data.message);
+              // alert(err.response.data.message);
+              commit('SET_LOGIN_ERR', err.response.data.message);
+              localStorage.removeItem('vuex');
             }
           }
         });
