@@ -79,6 +79,19 @@
           </div>
           <RoomButton></RoomButton>
         </div>
+        <div>
+          <div>채팅</div>
+
+          <input type="text" v-model="myChat" placeholder="채팅 입력" />
+          <button @click="sendMassage">보내기</button>
+
+          <div>
+            <ul>
+              <!-- <li> {{ allChat }}</li> -->
+              <li v-for="(item, i) in recvList" :key="i">{{ item.m }}</li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -112,6 +125,10 @@ export default {
       mainStreamManager: undefined,
       publisher: undefined,
       subscribers: [],
+
+      myChat: "",
+      recvList: [],
+
       mode: ["FREE", "STREAMING", "GAME"],
       // mySessionId: "SessionA",
       // myUserName: `Participant${Math.floor(Math.random() * 100)}`,
@@ -237,7 +254,35 @@ export default {
           });
       });
 
+      // Receiver of the message (usually before calling 'session.connect')
+      this.session.on("signal:my-chat", (event) => {
+        console.log(event.data); // Message
+        // console.log(event.from); // Connection object of the sender //누가 보냈는지가 아니네..?
+        // console.log(event.type); // The type of message ("my-chat")
+        // this.allChat = event.data;
+        // this.who = event.from; //누가 보냈는지
+        let obj = { m: event.data, p: event.from };
+        this.recvList.push(obj);
+        // console.log(this.recvList[0].m);
+      });
+
       window.addEventListener("beforeunload", this.leaveSession);
+    },
+
+    sendMassage() {
+      // Sender of the message (after 'session.connect')
+      this.session
+        .signal({
+          data: this.myChat, // Any string (optional)
+          to: [], // Array of Connection objects (optional. Broadcast to everyone if empty)
+          type: "my-chat", // The type of message (optional)
+        })
+        .then(() => {
+          console.log("Message successfully sent");
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     },
 
     async leaveSession() {
