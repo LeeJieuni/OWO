@@ -96,6 +96,7 @@ import Timer from '@/components/SetTimer.vue';
 import WebRTC from '@/components/Room/WebRTC.vue';
 import RoomButton from '@/components/Room/RoomButton.vue';
 import axios from 'axios';
+// eslint--disable-next-line
 import { OpenVidu } from 'openvidu-browser';
 import {
   mapState, mapActions, mapMutations,

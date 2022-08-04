@@ -18,21 +18,25 @@ const routes = [
     path: '/',
     name: 'mainpage',
     component: mainPageView,
+    meta: { unauthorized: true },
   },
   {
     path: '/login',
     name: 'login',
     component: login,
+    meta: { unauthorized: true },
   },
   {
     path: '/register',
     name: 'register',
     component: register,
+    meta: { unauthorized: true },
   },
   {
     path: '/emailVerify',
     name: 'emailVerify',
     component: emailVerify,
+    meta: { unauthorized: true },
   },
   {
     path: '/mypage',
@@ -88,4 +92,16 @@ const router = createRouter({
   routes,
 });
 
+router.beforeEach((to, from, next) => {
+  const token = localStorage.getItem('accessToken');
+  const refresh = localStorage.getItem('refreshToken');
+  if (token === null && refresh !== null) { // accesstoken은 없는데 refresh값이 있을 경우, => 토큰 재발급함수 실행.
+    console.log('로그인 세션이 만료 되었습니다 다시 로그인 해주세요!');
+  }
+  if (to.matched.some((record) => record.meta.unauthorized || token)) {
+    return next();
+  }
+  alert('로그인이 필요한 서비스입니다.');
+  return next('/login');
+});
 export default router;
