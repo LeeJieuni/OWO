@@ -1,36 +1,79 @@
-<template>
-  <div id="tabs">
-    <ul class="tab-menu">
-      <li v-for="(tab, index) in tabs" :key="index" v-bind:class="{ active: currentTab === index }">
-        <button href="" v-on:click="currentTab = index">{{ tab }}</button>
-      </li>
-    </ul>
-    <div class="tab-content d-flex row">
+ <template>
+  <div class="tabs">
+    <div class="tab-menu d-flex">
+        <b-button-group class="mx-1" v-for="(tab, index) in tabs" :key="index"
+          v-bind:class="{ active: currentTab === index }">
+          <b-button lg="4" size="lg" href="" v-on:click="currentTab = index"
+          variant="outline-primary">{{ tab }}</b-button>
+        </b-button-group>
+    </div>
+    <div class="tab-content">
       <div v-show="currentTab == 0">
-        <div id="tab-1" class="tab-content current">
-          <b-card header="featured" header-tag="header" footer="Card Footer"
-          footer-tag="footer" title="Title">
-            <b-card-text>Header and footers using props.</b-card-text>
-            <b-button href="#" variant="primary">Go somewhere</b-button>
+        <b-card-group deck>
+          <b-card header="방제목" class="rounded-5" footer-tag="footer">
+            <b-card-img src="https://picsum.photos/600/200/?image=25" style="height: 300px">썸네일</b-card-img>
+            <template #footer>
+              <b-button href="#" variant="outline">들어가기</b-button>
+            </template>
           </b-card>
-          <div id="tab-1" class="tab-content current">
-            <b-card header="featured" header-tag="header" footer="Card Footer"
-            footer-tag="footer" title="Title">
-              <b-card-text>Header and footers using props.</b-card-text>
-              <b-button href="#" variant="primary">Go somewhere</b-button>
-            </b-card>
-          </div>
-          <div id="tab-1" class="tab-content current">
-            <b-card header="featured" header-tag="header" footer="Card Footer"
-            footer-tag="footer" title="Title">
-              <b-card-text>Header and footers using props.</b-card-text>
-              <b-button href="#" variant="primary">Go somewhere</b-button>
-            </b-card>
-          </div>
-        </div>
+          <b-card header="방제목" class="rounded-5" footer-tag="footer">
+            <b-card-img src="https://picsum.photos/600/200/?image=25" style="height: 300px">썸네일</b-card-img>
+            <template #footer>
+              <b-button href="#" variant="outline">들어가기</b-button>
+            </template>
+          </b-card>
+          <b-card header="방제목" class="rounded-5" footer-tag="footer">
+            <b-card-img src="https://picsum.photos/600/200/?image=21" style="height: 300px">썸네일</b-card-img>
+            <template #footer>
+              <b-button variant="outline">들어가기</b-button>
+            </template>
+          </b-card>
+        </b-card-group>
       </div>
-      <div v-show="currentTab == 1"> 1</div>
-      <div v-show="currentTab == 2"> 2</div>
+    </div>
+    <div v-show="currentTab == 1">
+      <b-card-group deck>
+        <b-card header="방제목" class="rounded-5" footer-tag="footer">
+          <b-card-text>썸네일</b-card-text>
+          <template #footer>
+            <b-button href="#" variant="outline">들어가기</b-button>
+          </template>
+        </b-card>
+        <b-card header="방제목" class="rounded-5" footer-tag="footer">
+          <b-card-text>썸네일</b-card-text>
+          <template #footer>
+            <b-button href="#" variant="outline">들어가기</b-button>
+          </template>
+        </b-card>
+        <b-card header="방제목" class="rounded-5" footer-tag="footer">
+          <b-card-text>썸네일</b-card-text>
+          <template #footer>
+            <b-button variant="outline">들어가기</b-button>
+          </template>
+        </b-card>
+      </b-card-group>
+    </div>
+    <div v-show="currentTab == 2">
+      <b-card-group deck>
+        <b-card header="방제목" class="rounded-5" footer-tag="footer">
+          <b-card-text>썸네일</b-card-text>
+          <template #footer>
+            <b-button href="#" variant="outline">들어가기</b-button>
+          </template>
+        </b-card>
+        <b-card header="방제목" class="rounded-5" footer-tag="footer">
+          <b-card-text>썸네일</b-card-text>
+          <template #footer>
+            <b-button href="#" variant="outline">들어가기</b-button>
+          </template>
+        </b-card>
+        <b-card header="방제목" class="rounded-5" footer-tag="footer">
+          <b-card-text>썸네일</b-card-text>
+          <template #footer>
+            <b-button variant="outline">들어가기</b-button>
+          </template>
+        </b-card>
+      </b-card-group>
     </div>
   </div>
 </template>
@@ -46,3 +89,10 @@ export default {
   },
 };
 </script>
+
+<style>
+.tab-menu {
+  margin-top: 10px;
+  margin-bottom: 15px;
+}
+</style>
