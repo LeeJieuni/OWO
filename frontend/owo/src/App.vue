@@ -4,15 +4,18 @@
     <div class="main-container">
       <router-view/>
     </div>
+    <!-- <TeleportExample/> -->
   </div>
 </template>
 
 <script>
+// import TeleportExample from '@/components/MyPage/teleport/TeleportExample.vue';
 import NavBar from './components/NavBar.vue';
 
 export default {
   components: {
     NavBar,
+    // TeleportExample,
   },
 };
 </script>

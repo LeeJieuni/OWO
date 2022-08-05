@@ -25,6 +25,8 @@ export const accounts = {
       bmr: null,
       caloriePerDay: null,
     },
+    slogan: '',
+    image: '',
   }),
   mutations: {
     SET_LOGIN_ERR: (state, message) => {
@@ -61,6 +63,12 @@ export const accounts = {
       state.physicalInfo.bmr = payload.bmr;
       state.physicalInfo.caloriePerDay = payload.caloriePerDay;
     },
+    SET_SLOGAN: (state, payload) => {
+      state.slogan = payload.slogan;
+    },
+    SET_PROFILE_IMG: (state, payload) => {
+      state.image = payload.image;
+    },
   },
   actions: {
     saveAccessToken({ commit }, token) {
@@ -91,6 +99,8 @@ export const accounts = {
           dispatch('saveRefreshToken', refresh);
           dispatch('setUserInfo', response);
           router.push('/'); // main 페이지로 이동
+          dispatch('fetchPhysicalInfo');
+          dispatch('fetchSlogan');
         })
         .catch((err) => {
           if (err.response.status === 400) {
@@ -107,9 +117,6 @@ export const accounts = {
             }
           }
         });
-    },
-    setPhysicalInfo({ commit }, payload) {
-      commit('SET_PHYSICAL_INFO', payload);
     },
     logout({ state, dispatch }) {
       // eslint-disable-next-line
@@ -148,7 +155,7 @@ export const accounts = {
           console.log(payload);
         });
     },
-    physicalInfo({ dispatch, state }, { bmi, bmr, caloriePerDay }) {
+    fetchPhysicalInfo({ state, commit }) {
       axios({
         url: `https://i7c202.p.ssafy.io:8282/api/user/bmi/${state.userInfo.id}`,
         method: 'get',
@@ -156,21 +163,57 @@ export const accounts = {
           'X-AUTH-TOKEN': state.accessToken,
           'REFRESH-TOKEN': state.refreshToken,
         },
-        data: {
-          bmi, bmr, caloriePerDay,
-        },
       })
         .then((res) => {
-          console.log(res);
-          dispatch('setPhysicalInfo', res.data);
+          commit('SET_PHYSICAL_INFO', res.data.data);
         })
         .catch((err) => {
           console.log(err);
         });
     },
+    setSlogan({ commit }, payload) {
+      commit('SET_SLOGAN', payload);
+    },
+    fetchSlogan({ state, commit }) {
+      axios({
+        url: `https://i7c202.p.ssafy.io:8282/api/user/slogan/${state.userInfo.id}`,
+        method: 'get',
+        headers: {
+          'X-AUTH-TOKEN': state.accessToken,
+          'REFRESH-TOKEN': state.refreshToken,
+        },
+      })
+        .then((res) => {
+          // console.log(res);
+          commit('SET_SLOGAN', res.data.data);
+          // dispatch('setSlogan', res.data.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    updateSlogan({ state, dispatch }, payload) {
+      console.log('axios 하기 전');
+      axios({
+        url: 'https://i7c202.p.ssafy.io:8282/api/user',
+        method: 'put',
+        headers: {
+          'X-AUTH-TOKEN': state.accessToken,
+          'REFRESH-TOKEN': state.refreshToken,
+        },
+        data: payload,
+      })
+        .then((res) => {
+          console.log('res');
+          console.log(res.data.data);
+          dispatch('setSlogan', res.data.data);
+          // router.push({ name: 'MyPageMainView' });
+        })
+        .catch((err) => {
+          console.log(err.toJSON());
+        });
+    },
     updateUserInfo({ state, dispatch }, payload) {
-      console.log(payload);
-      console.log('액시오스하기전');
       axios({
         url: 'https://i7c202.p.ssafy.io:8282/api/user',
         method: 'put',
@@ -183,10 +226,29 @@ export const accounts = {
         .then((res) => {
           // console.log(res.data.data);
           dispatch('setUserInfo', res.data.data);
-          router.push({ name: 'MyPageMainView' });
+          // router.push({ name: 'MyPageMainView' });
         })
         .catch((err) => {
           console.log(err.toJSON());
+        });
+    },
+    setProfileImg({ commit }, payload) {
+      commit('SET_PROFILE_IMG', payload);
+    },
+    fetchProfileImg({ state, commit }) {
+      axios({
+        url: `https://i7c202.p.ssafy.io:8282/api/user/bmi/${state.userInfo.id}`,
+        method: 'get',
+        headers: {
+          'X-AUTH-TOKEN': state.accessToken,
+          'REFRESH-TOKEN': state.refreshToken,
+        },
+      })
+        .then((res) => {
+          commit('SET_PHYSICAL_INFO', res.data.data);
+        })
+        .catch((err) => {
+          console.log(err);
         });
     },
   },
@@ -194,5 +256,6 @@ export const accounts = {
     isLogin: (state) => !!state.accessToken,
     userInfo: (state) => state.userInfo,
     physicalInfo: (state) => state.physicalInfo,
+    slogan: (state) => state.slogan,
   },
 };

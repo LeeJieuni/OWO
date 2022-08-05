@@ -10,7 +10,9 @@
               <label for="nick">
                 <input class="form-input text-center"
                   type="text"
-                  v-model.number="user.nick">
+                  v-model.number="user.nick"
+                  maxlength="9"
+                >
               </label>
             </th>
           </tr>
@@ -85,6 +87,7 @@
         <button class="col btn btn-primary m-3" @click.prevent="update(user)">변경</button>
         <button class="col btn btn-secondary m-3" >취소</button>
       </div>
+      <!-- {{ state.options[0] }} -->
     </form>
     </div>
   </div>
@@ -110,7 +113,7 @@ export default {
     });
     console.log(user);
     const update = function (userInfo) {
-      console.log(userInfo);
+      // console.log(userInfo);
       store.dispatch('accounts/updateUserInfo', userInfo);
     };
     return {
@@ -121,6 +124,7 @@ export default {
   },
   components: {},
   created() {
+    // console.log(this.user);
   },
 };
 </script>

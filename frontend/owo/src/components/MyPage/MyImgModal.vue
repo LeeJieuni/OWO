@@ -1,11 +1,5 @@
 <template>
   <div>
-    <Carousel></Carousel>
-    <rankingList/>
-    <roomTab></roomTab>
-    <hr>
-    <!--TEST -->
-    <br><br><br><br>
     <button type="button" class="btn btn-primary"
       data-bs-toggle="modal" data-bs-target="#exampleModal">
         Launch demo modal
@@ -43,54 +37,47 @@
     </div>
   </div>
 </template>
-
 <script>
-// import { useStore } from 'vuex';
-// import { reactive, computed } from 'vue';
-import Carousel from '@/components/MainPage/Carousel.vue';
-import rankingList from '@/components/MainPage/rankingList.vue';
-import roomTab from '@/components/MainPage/roomTab.vue';
+import { useStore } from 'vuex';
+import { reactive, computed } from 'vue';
 
 export default {
+  name: 'MyImgModal',
   components: {
-    Carousel,
-    rankingList,
-    roomTab,
+    // TeleportExample,
+    // MyImgModal,
   },
   setup() {
+    const store = useStore(); // 필수
+    // Getters
+    const user = computed(() => store.getters['accounts/userInfo']);
+
+    // State (vue3의 data 선언 방식. state라는 이름으로 접근)
+    const state = reactive({
+      selected: '',
+      options: [
+        { text: '없음', value: '1' },
+        { text: '약간', value: '2' },
+        { text: '중간', value: '3' },
+        { text: '많음', value: '4' },
+        { text: '매우 많음', value: '5' },
+      ],
+      input: {
+        image: '',
+      },
+      testText: '할수있다',
+    });
+    // Methods
     const onInputImage = () => {
-      const input = document.querySelector('.input-image');
-      console.log(input.files[0].type);
+      const inputImg = document.querySelector('.input-image');
+      console.log(inputImg.files[0]);
+      // console.log(input.e.target);
     };
     return {
+      state,
+      user,
       onInputImage,
     };
   },
 };
 </script>
-
-<style scoped>
-.start-btn {
-    margin-right: 30px;
-}
-
-.btn-lg {
-  height: 40px;
-  text-align: center;
-  line-height: 10px;
-  font-size: 18px;
-}
-.owo {
-  font-weight: 600;
-  text-shadow: #7b7b7b 1px 1px;
-}
-
-.first-intro-text {
-  font-size: 18px;
-  line-height: 15px;
-}
-.btns {
-  padding-top: 5px;
-  padding-bottom: 20px;
-}
-</style>

@@ -1,6 +1,32 @@
 <template>
   <div class="mypageview">
-    <div class="background-box">
+    <div class="modal fade" id="exampleModal" tabindex="-1"
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+            <button type="button" class="btn-close"
+            data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form enctype="multipart/form-data">
+              <label for="profileImag">이미지
+                <input class="input-image" accept="image/*" type="file"
+                  ref="profileImg" @change.prevent="onInputImage($event)" id="profileImg">
+              </label>
+              <button class="send-btn" @click="onClickImgButton">이미지버튼</button>
+            </form>
+          </div>
+          <!-- <div class="modal-footer">
+            <button type="button" class="btn btn-secondary"
+              data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div> -->
+        </div>
+      </div>
+    </div>
+    <!-- <div class="background-box"> -->
       <div class="front-box row">
         <div class="mypageContainer row">
           <div class="col-3 sidebar m-0 p-0">
@@ -9,6 +35,12 @@
           <div class="col-9 m-0 p-0">
             <div class="title text-center">
               <h4>{{slogan}}</h4>
+              <form action="">
+                <label for="slogan">
+                  <input type="text" id="slogan" v-model="slogan">
+                </label>
+                <button @click.prevent="update(slogan)">변경</button>
+              </form>
             </div>
             <div>
               <router-view></router-view>
@@ -16,33 +48,67 @@
           </div>
         </div>
       </div>
-    </div>
+    <!-- </div> -->
   </div>
 </template>
 
 <script>
 import MySidebar from '@/components/MyPage/MySidebar.vue';
+import { useStore } from 'vuex';
+import { computed, reactive } from 'vue';
 
 export default {
   name: 'MyPage',
   components: { MySidebar },
-  data() {
+  setup() {
+    const store = useStore();
+    const slogan = computed(() => store.getters['accounts/slogan']);
+    const state = reactive({
+      // slogan: 'dd',
+      imagePath: '',
+      test: 'test',
+    });
+    // action
+    const update = function (sloganInput) {
+      // console.log(slogan);
+      store.dispatch('accounts/updateSlogan', sloganInput);
+    };
+    // Methods
+    const onInputImage = (e) => {
+      e.preventDefault();
+      // const inputImg = document.querySelector('.input-image');
+      // const img = inputImg.files[0];
+      const img = e.target.files[0];
+      console.log(img);
+      // console.log(e.target.files[0]);
+      // const formData = new FormData();
+      // const _data = { content: 'asdf'};
+      // formData.append("board", _data);
+      // formData.append("file", data.image);
+      // formData.append('file', this.)
+      // formData.append('file', uploadFile);
+      // state.imagePath = img;
+      // this.data.push({ imgpath: img });
+    };
     return {
-      slogan: '👧 8월 바프까지 화이팅!',
+      slogan,
+      state,
+      onInputImage,
+      update,
     };
   },
-  setup() {},
-  created() {},
+  created() {
+    console.log(this.state.test);
+    console.log(this.slogan);
+    console.log('gg');
+  },
   mounted() {},
   unmounted() {},
-  methods: {
-    changeSlogan() {
-
-    },
-    sloganInput(e) {
-      this.slogan = e.target.value;
-    },
-  },
+  // methods: {
+  // sloganput(e) {
+  //   this.slogan = e.target.value;
+  // },
+  // },
 };
 </script>
 
@@ -81,14 +147,14 @@ export default {
     height: 100px;
     padding: 30px;
   }
+/*
   .background-box {
     width: 100vw;
     height: 500px;
-    /* background: linear-gradient(lightCyan, skyBlue, deepSkyBlue); */
     background-image: url("https://i.pinimg.com/originals/07/7e/a6/077ea6de7db29b564b4335dfd2ba7c15.jpg");
     background-size: 100vh;
     position: relative;
-  }
+} */
   .front-box {
     position: relative;
     padding-top: 100px;

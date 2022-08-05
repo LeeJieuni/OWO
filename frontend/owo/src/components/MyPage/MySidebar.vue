@@ -2,39 +2,15 @@
   <div class="row">
     <div class="profile">
         <img class="profile-img" src="https://picsum.photos/150" alt="">
-        <p class="name">
+        <p class="name" v-once>
           {{ user.nick }} <span class="sm-name">님</span>
         </p>
+    </div>
+    <div>
       <button type="button" class="btn btn-primary"
-      data-bs-toggle="modal" data-bs-target="#exampleModal">
-        Launch demo modal
+        data-bs-toggle="modal" data-bs-target="#exampleModal">
+          ImgBtn
       </button>
-
-      <div class="modal fade" id="exampleModal" tabindex="-1"
-      aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-              <button type="button" class="btn-close"
-              data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              <form action="">
-                <label for="profileImag">이미지
-                  <input class="input-image" accept="image/*" type="file"
-                    ref="profileImg" @change="onInputImage()" id="profileImg">
-                </label>
-                <button class="send-btn" @click="onClickImgButton">이미지버튼</button>
-              </form>
-            </div>
-            <!-- <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Save changes</button>
-            </div> -->
-          </div>
-        </div>
-      </div>
     </div>
 
     <div class="sidebar-menus text-center justify-content-center;">
@@ -51,7 +27,6 @@
         <router-link to="/mypage/update">👧 내 정보 수정</router-link>
       </button>
     </div>
-
   </div>
 </template>
 <script>
@@ -80,21 +55,17 @@ export default {
       },
       testText: '할수있다',
     });
-    console.log(user);
-    const update = function (userInfo) {
-      console.log(userInfo);
-      store.dispatch('accounts/updateUserInfo', userInfo);
-    };
+
     // Methods
-    const onInputImage = () => {
-      const input = document.querySelector('.input-image');
-      console.log(input.files[0].type);
-    };
+    // const onInputImage = () => {
+    //   const input = document.querySelector('.input-image');
+    //   console.log(input.files);
+    // };
+
     return {
       state,
       user,
-      update,
-      onInputImage,
+      // onInputImage,
     };
   },
   components: {},
