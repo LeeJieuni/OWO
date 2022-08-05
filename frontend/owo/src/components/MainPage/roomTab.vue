@@ -1,88 +1,49 @@
  <template>
   <div class="tabs">
     <div class="tab-menu d-flex">
-        <b-button-group class="mx-1" v-for="(tab, index) in tabs" :key="index"
-          v-bind:class="{ active: currentTab === index }">
-          <b-button lg="4" size="lg" href="" v-on:click="currentTab = index"
-          variant="outline-primary">{{ tab }}</b-button>
-        </b-button-group>
+      <b-button-group class="mx-1" v-for="(tab, index) in tabs" :key="index"
+        v-bind:class="{ active: currentTab === index }">
+        <b-button lg="4" size="lg" v-on:click="currentTab = index"
+        variant="outline-primary">{{ tab }}
+        </b-button>
+      </b-button-group>
     </div>
-    <div class="tab-content">
-      <div v-show="currentTab == 0">
-        <b-card-group deck>
-          <b-card header="방제목" class="rounded-5" footer-tag="footer">
-            <b-card-img src="https://picsum.photos/600/200/?image=25" style="height: 300px">썸네일</b-card-img>
-            <template #footer>
-              <b-button href="#" variant="outline">들어가기</b-button>
-            </template>
-          </b-card>
-          <b-card header="방제목" class="rounded-5" footer-tag="footer">
-            <b-card-img src="https://picsum.photos/600/200/?image=25" style="height: 300px">썸네일</b-card-img>
-            <template #footer>
-              <b-button href="#" variant="outline">들어가기</b-button>
-            </template>
-          </b-card>
-          <b-card header="방제목" class="rounded-5" footer-tag="footer">
-            <b-card-img src="https://picsum.photos/600/200/?image=21" style="height: 300px">썸네일</b-card-img>
-            <template #footer>
-              <b-button variant="outline">들어가기</b-button>
-            </template>
-          </b-card>
-        </b-card-group>
+    <div class="tab-content wrap">
+      <div v-show="currentTab == 0" class="scroll__wrap">
+        <div v-for="(room, i) in roomList" :key="i" class="scroll--element">
+            <b-card :header="room" footer-tag="footer">
+                <b-card-img src="https://placekitten.com/380/200"></b-card-img>
+                <template #footer>
+                  <b-button variant="outline" @click="joinMeeting(room)">들어가기</b-button>
+                </template>
+            </b-card>
+        </div>
       </div>
     </div>
-    <div v-show="currentTab == 1">
-      <b-card-group deck>
-        <b-card header="방제목" class="rounded-5" footer-tag="footer">
-          <b-card-text>썸네일</b-card-text>
-          <template #footer>
-            <b-button href="#" variant="outline">들어가기</b-button>
-          </template>
-        </b-card>
-        <b-card header="방제목" class="rounded-5" footer-tag="footer">
-          <b-card-text>썸네일</b-card-text>
-          <template #footer>
-            <b-button href="#" variant="outline">들어가기</b-button>
-          </template>
-        </b-card>
-        <b-card header="방제목" class="rounded-5" footer-tag="footer">
-          <b-card-text>썸네일</b-card-text>
-          <template #footer>
-            <b-button variant="outline">들어가기</b-button>
-          </template>
-        </b-card>
-      </b-card-group>
+    <div class="tab-content wrap">
+      <div v-show="currentTab == 1" class="scroll__wrap">
+        <div v-for="(room, i) in roomList" :key="i" class="scroll--element">
+            <b-card :header="room" footer-tag="footer">
+                <b-card-img src="https://placekitten.com/380/200"></b-card-img>
+                <template #footer>
+                  <b-button variant="outline" @click="joinMeeting(room)">들어가기</b-button>
+                </template>
+            </b-card>
+        </div>
+      </div>
     </div>
-    <div v-show="currentTab == 2">
-      <b-card-group deck>
-        <b-card header="방제목" class="rounded-5" footer-tag="footer">
-          <b-card-text>썸네일</b-card-text>
-          <template #footer>
-            <b-button href="#" variant="outline">들어가기</b-button>
-          </template>
-        </b-card>
-        <b-card header="방제목" class="rounded-5" footer-tag="footer">
-          <b-card-text>썸네일</b-card-text>
-          <template #footer>
-            <b-button href="#" variant="outline">들어가기</b-button>
-          </template>
-        </b-card>
-        <b-card header="방제목" class="rounded-5" footer-tag="footer">
-          <b-card-text>썸네일</b-card-text>
-          <template #footer>
-            <b-button variant="outline">들어가기</b-button>
-          </template>
-        </b-card>
-      </b-card-group>
+    <div class="tab-content wrap">
+      <div v-show="currentTab == 2" class="scroll__wrap">
+        <div v-for="(room, i) in roomList" :key="i" class="scroll--element">
+            <b-card :header="room" footer-tag="footer">
+                <b-card-img src="https://placekitten.com/380/200"></b-card-img>
+                <template #footer>
+                  <b-button variant="outline" @click="joinMeeting(room)">들어가기</b-button>
+                </template>
+            </b-card>
+        </div>
+      </div>
     </div>
-  <button v-for="(room, i) in roomList" :key="i" @click="joinMeeting(room)">
-    <div>
-      {{ room }}
-    </div>
-    <div>
-      이 방에 들어가시겠습니까?
-    </div>
-  </button>
   </div>
 </template>
 
@@ -94,6 +55,8 @@ export default {
   },
   data() {
     return {
+      currentTab: 0,
+      tabs: ['운동방', '자유방', '경쟁방'],
       roomList: [1, 2, 3, 4, 5],
     };
   },
@@ -108,9 +71,18 @@ export default {
 };
 </script>
 
-<style>
+<style scope>
 .tab-menu {
-  margin-top: 10px;
-  margin-bottom: 15px;
+  margin-top: 50px;
 }
+/* 기본 구조 */
+/* 기본 구조 */
+.wrap {
+  max-width:100%;
+  margin:50px auto;
+  background:#f8f8f8;}
+/* 가로 스크롤 적용 */
+.scroll__wrap {overflow:auto; white-space:nowrap; font-size:15px; margin-top: -30px;}
+.scroll--element {display: inline-block; line-height: 15px; width:33%; height:100%;}
+.scroll--element + .scroll--element {margin-left:10px;}
 </style>

@@ -4,7 +4,7 @@
     <rankingList/>
     <roomTab></roomTab>
   </div>
-</template>>
+</template>
 
 <script>
 import Carousel from '@/components/MainPage/Carousel.vue';

@@ -74,9 +74,9 @@ export const accounts = {
     removeToken({ commit }) {
       commit('SET_ACCESS_TOKEN', null);
       commit('SET_REFRESH_TOKEN', null);
-      sessionStorage.removeItem('accessToken');
-      sessionStorage.removeItem('refreshToken');
-      sessionStorage.removeItem('vuex');
+      sessionStorage.removeItem('accessToken'); // accessToken 제거
+      sessionStorage.removeItem('refreshToken'); // refreshToken 제거
+      sessionStorage.removeItem('vuex'); // 사용자 정보 제거
     },
     setUserInfo({ commit }, payload) {
       commit('SET_USER_INFO', payload);
@@ -90,7 +90,7 @@ export const accounts = {
           dispatch('saveAccessToken', access);
           dispatch('saveRefreshToken', refresh);
           dispatch('setUserInfo', response);
-          router.push('/');
+          router.push('/'); // main 페이지로 이동
         })
         .catch((err) => {
           if (err.response.status === 400) {
@@ -102,6 +102,8 @@ export const accounts = {
               // alert(err.response.data.message);
               commit('SET_LOGIN_ERR', err.response.data.message);
               sessionStorage.removeItem('vuex');
+            } else {
+              commit('SET_LOGIN_ERR', err.response.data.message); // 서버 error
             }
           }
         });
