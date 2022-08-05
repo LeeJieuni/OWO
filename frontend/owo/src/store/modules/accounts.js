@@ -64,19 +64,19 @@ export const accounts = {
   },
   actions: {
     saveAccessToken({ commit }, token) {
-      localStorage.setItem('accessToken', token);
+      sessionStorage.setItem('accessToken', token);
       commit('SET_ACCESS_TOKEN', token);
     },
     saveRefreshToken({ commit }, token) {
-      localStorage.setItem('refreshToken', token);
+      sessionStorage.setItem('refreshToken', token);
       commit('SET_REFRESH_TOKEN', token);
     },
     removeToken({ commit }) {
       commit('SET_ACCESS_TOKEN', null);
       commit('SET_REFRESH_TOKEN', null);
-      localStorage.removeItem('accessToken');
-      localStorage.removeItem('refreshToken');
-      localStorage.removeItem('vuex');
+      sessionStorage.removeItem('accessToken');
+      sessionStorage.removeItem('refreshToken');
+      sessionStorage.removeItem('vuex');
     },
     setUserInfo({ commit }, payload) {
       commit('SET_USER_INFO', payload);
@@ -96,12 +96,12 @@ export const accounts = {
           if (err.response.status === 400) {
             if (err.response.data.message === '회원가입 이메일 인증이 필요합니다.') {
               commit('SET_LOGIN_ERR', err.response.data.message);
-              localStorage.removeItem('vuex');
+              sessionStorage.removeItem('vuex');
               // router.push('/emailVerify');
             } else if (err.response.data.message === '이메일 혹은 비밀번호가 맞지 않습니다.') {
               // alert(err.response.data.message);
               commit('SET_LOGIN_ERR', err.response.data.message);
-              localStorage.removeItem('vuex');
+              sessionStorage.removeItem('vuex');
             }
           }
         });

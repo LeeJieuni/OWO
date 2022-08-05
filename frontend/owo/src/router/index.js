@@ -93,8 +93,8 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  const token = localStorage.getItem('accessToken');
-  const refresh = localStorage.getItem('refreshToken');
+  const token = sessionStorage.getItem('accessToken');
+  const refresh = sessionStorage.getItem('refreshToken');
   if (token === null && refresh !== null) { // accesstoken은 없는데 refresh값이 있을 경우, => 토큰 재발급함수 실행.
     console.log('로그인 세션이 만료 되었습니다 다시 로그인 해주세요!');
   }

@@ -5,7 +5,7 @@
         <h3 class="m-0">팔굽혀펴기</h3>
         <Timer />
       </div>
-      <!-- <p class="text-center">
+      <p class="text-center">
         <button class="btn btn-lg btn-success" @click="makeRoom()">세션열기</button>
       </p>
       <p class="text-center">
