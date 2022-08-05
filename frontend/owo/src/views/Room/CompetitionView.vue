@@ -1,11 +1,11 @@
 <template>
-  <div class="d-flex justify-content-center">
-    <div>
+  <div class="d-flex justify-content-center" style="width: 100%;">
+    <div style="width:1800px;">
       <div class="d-flex justify-content-between align-items-center" style="height: 80px">
         <h3 class="m-0">팔굽혀펴기</h3>
         <Timer />
       </div>
-      <p class="text-center">
+      <!-- <p class="text-center">
         <button class="btn btn-lg btn-success" @click="makeRoom()">세션열기</button>
       </p>
       <p class="text-center">
@@ -18,7 +18,7 @@
       </p>
       <p class="text-center">
         <button class="btn btn-lg btn-success" @click="getRoomList(mode[2])">게임방 목록</button>
-      </p>
+      </p> -->
       <div id="join" v-if="!session">
         <div id="img-div">
           <img src="resources/images/openvidu_grey_bg_transp_cropped.png" alt="">
@@ -50,7 +50,7 @@
           <input class="btn btn-large btn-danger" type="button"
             id="buttonLeaveSession" @click="leaveSession" value="Leave session"/>
         </div>
-        <div class="d-flex align-items-start justify-content-between">
+        <div class="align-items-start justify-content-start">
           <div class="row">
             <WebRTC :stream-manager="mainStreamManager"/>
             <WebRTC
@@ -58,6 +58,11 @@
             :key="sub.stream.connection.connectionId"
             :stream-manager="sub"
             @click="updateMainVideoStreamManager(sub)"/>
+            <div v-if="subscribers.length <= 1" class="webrtcetc col-4"></div>
+            <div v-if="subscribers.length <= 2" class="webrtcetc col-4"></div>
+            <div v-if="subscribers.length <= 3" class="webrtcetc col-4"></div>
+            <div v-if="subscribers.length <= 4" class="webrtcetc col-4"></div>
+            <div v-if="subscribers.length <= 5" class="webrtcetc col-4"></div>
           </div>
         </div>
       </div>
@@ -471,5 +476,14 @@ solid  #C5a180; border-top: 10px solid transparent; border-bottom: 10px solid tr
 border:1px solid #ccb9a8; border-radius: 10px; background-color: #ccb9a8;}
 .yourchatting:after {content:""; position: absolute; top: 21px; left: -30px; border-right: 30px
 solid #ccb9a8; border-top: 10px solid transparent; border-bottom: 10px solid transparent;}
+
+.webrtcetc {
+  width: 600px;
+  height: 362px;
+  background-image: url('../../assets/icon/Loading2.gif');
+  background-position: center;
+  background-size: 150px 150px;
+  background-repeat: no-repeat;
+}
 
 </style>

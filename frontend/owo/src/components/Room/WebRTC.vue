@@ -1,19 +1,17 @@
 <template>
-  <div class="col col-4">
-    <div class="me-2 mb-5" style="width: 30rem; height: 20rem">
-      <div>
+  <div class="webrtctag col-4 m0p0 mb-2 mx-1">
+      <div class="m0p0">
         <button id="img" @click="get_out">
           <img style="width: 25px" src="@/assets/icon/get_out.png" alt="" />
         </button>
       </div>
       <!-- <p>개인 WebRTC 영상</p> -->
-      <div v-if="streamManager">
+      <div v-if="streamManager" class="m0p0">
         <ov-video style="width:100%; height:100%;" :stream-manager="streamManager" />
         <div>
           <p>{{ clientData }}</p>
         </div>
       </div>
-    </div>
   </div>
 </template>
 <script>
@@ -68,7 +66,17 @@ export default {
   z-index:100;
 }
 
+.m0p0 {
+  margin:0;
+  padding:0;
+}
+
 #img:hover {
   opacity: 1;
+}
+
+.webrtctag {
+  width: 600px;
+  height:100%;
 }
 </style>
