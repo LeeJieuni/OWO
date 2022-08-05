@@ -79,9 +79,7 @@ public class MemberRepository {
 
     public void updatePassword(String email, String password) {
         Member findMember = findByEmail(email);
-        findMember.setPw(password);
-        em.persist(findMember);
-        em.flush();
+        findMember.updatePassword(password);
     }
 
     public void updateMember(MemberUpdateDto memberUpdateDto){

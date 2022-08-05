@@ -27,7 +27,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin("*")
 public class MeetingRoomController {
 
     private final int LIMIT = 6;
@@ -88,6 +87,7 @@ public class MeetingRoomController {
             List<MeetingListRoomResponse> meetingRooomDtoList = new ArrayList<>();
 
             for(MeetingRoom meetingRoom:meetingRoomList){
+                if(!roomSession.containsKey(meetingRoom.getId())) continue;
                 meetingRooomDtoList.add(MeetingListRoomResponse.builder()
                         .roomId(meetingRoom.getId())
                         .memberId(meetingRoom.getManager())
@@ -100,6 +100,7 @@ public class MeetingRoomController {
                         .link(meetingRoom.getLink()).build());
             }
             message.setData(meetingRooomDtoList);
+            message.setStatus(StatusEnum.OK);
             return new ResponseEntity<>(message, headers, HttpStatus.OK);
         }
     }

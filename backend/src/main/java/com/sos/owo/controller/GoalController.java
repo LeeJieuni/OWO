@@ -25,7 +25,6 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin("*")
 public class GoalController {
 
     private final GoalService goalService;

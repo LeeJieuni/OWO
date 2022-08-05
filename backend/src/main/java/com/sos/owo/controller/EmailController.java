@@ -14,7 +14,6 @@ import javax.validation.Valid;
 @Validated
 @RequiredArgsConstructor
 @RestController
-@CrossOrigin("*")
 public class EmailController {
     private final EmailService emailService;
 

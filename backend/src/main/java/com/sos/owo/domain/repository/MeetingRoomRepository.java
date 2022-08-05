@@ -45,6 +45,7 @@ public class MeetingRoomRepository {
         MeetingRoom meetingRoom = findOne(roomId);
         meetingRoom.updateMeetingRoomStatus(RoomStatus.END);
         em.persist(meetingRoom);
+        em.flush();
     }
 
     public void startRoom(int roomID){

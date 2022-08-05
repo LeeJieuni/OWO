@@ -39,7 +39,6 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin("*")
 public class MemberController {
 
     private final MemberService memberService;

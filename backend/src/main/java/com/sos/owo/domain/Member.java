@@ -146,6 +146,10 @@ public class Member implements UserDetails {
         this.profileImg = profileImg;
     }
 
+    public void updatePassword(String password){
+        this.pw = password;
+    }
+
     public void updateMemberSlogan(String slogan){
         this.slogan = slogan;
     }

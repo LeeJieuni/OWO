@@ -13,7 +13,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.cors.CorsUtils;
+
+import java.util.*;
 
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -54,6 +56,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
         http
                 .httpBasic().disable()   // rest api만을 고려해 기본 설정은 해제
                 .csrf().disable()  // csrf 보안 토큰 disable 처리
@@ -64,6 +67,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)  // 토큰 기반 인증이므로 세션 역시 사용하지 않음
                 .and()
                 .authorizeRequests()  // 요청에 대한 사용 권한 체크
+                .requestMatchers(CorsUtils::isPreFlightRequest).permitAll() // 추가
                 .antMatchers(AUTH_WHITELIST).permitAll()
                 .antMatchers("/api/**").authenticated()
                 .antMatchers("/user/**").hasRole("USER")
@@ -71,6 +75,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .cors()
                 .and() /* OAuth */
+                .cors()
+                .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
                 UsernamePasswordAuthenticationFilter.class)
                 .oauth2Login()
@@ -82,5 +88,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         UsernamePasswordAuthenticationFilter.class);
 
     }
+
+
+
 
 }
