@@ -61,7 +61,7 @@
               </li>
               <div class="navbar-brand mb-0 h1">
                 <span>안녕하세요
-                <router-link to="/mypage"><span class="welcome">{{ userInfo.nick }}</span>
+                <router-link to="/mypage"><span v-once class="welcome">{{ userInfo.nick }}</span>
                 </router-link> 님,
                   반갑습니다!</span>
               </div>

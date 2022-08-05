@@ -92,15 +92,11 @@
 <script>
 import { useStore } from 'vuex';
 import { reactive, computed } from 'vue';
-// import { createNamespacedHelpers } from 'vuex';
-// import { useStore } from 'vuex';
-// const { mapActions, mapGetters } = createNamespacedHelpers('accounts');
 
 export default {
   name: 'MyPageUpdateView',
   setup() {
     const store = useStore();
-    // const user = store.getters.userInfo;
     const user = computed(() => store.getters['accounts/userInfo']);
     const state = reactive({
       selected: '',
@@ -115,13 +111,11 @@ export default {
     console.log(user);
     const update = function (userInfo) {
       console.log(userInfo);
-
       store.dispatch('accounts/updateUserInfo', userInfo);
     };
     return {
       state,
       user,
-      // updateUserInfo,
       update,
     };
   },
@@ -129,28 +123,26 @@ export default {
   created() {
   },
 };
-
 </script>
 
 <style scoped>
-.container-box {
-  margin: 0 auto;
-}
-.profile {
-  max-width: 150px;
-  display: flex;
-}
-.title-box {
-  margin: 0 auto;
-  max-width: 550px;
-  justify-content: center;
-
-}
-.top-btns {
-  width: 60px;
-  height: 25px;
-  font-size: 13px;
-}
+  .container-box {
+    margin: 0 auto;
+  }
+  .profile {
+    max-width: 150px;
+    display: flex;
+  }
+  .title-box {
+    margin: 0 auto;
+    max-width: 550px;
+    justify-content: center;
+  }
+  .top-btns {
+    width: 60px;
+    height: 25px;
+    font-size: 13px;
+  }
   .tags {
     padding: 0 10px;
   }
@@ -175,7 +167,6 @@ export default {
     color: white;
     transition: 0.2s;
     cursor: pointer;
-
   }
   .tag p {
     text-align: center;
@@ -192,15 +183,12 @@ export default {
   .profile-form {
     margin: 0 auto;
   }
-
   .title {
     text-align: left;
   }
-
   .goal-type-select {
     width: 120px;
   }
-
   table {
     margin: auto;
     border-spacing: 6px;

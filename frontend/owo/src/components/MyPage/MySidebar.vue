@@ -1,18 +1,40 @@
 <template>
   <div class="row">
-    <label for="hi">
-      <input v-if="slogan === ''" type="text" name="hi"
-        class="slogan" placeholder="슬로건을 입력해 주세요!"
-        v-model="slogan" @input="sloganInput">
-        <input v-else type="text" name="hi"
-        class="slogan" :placeholder=slogan
-        v-model="slogan" @keyup.enter="changeSlogan()">
-      </label>
-    <div class="profile ">
-      <img class="profile-img" src="https://picsum.photos/150" alt="">
-      <p class="name">
-        {{ name }} <span class="sm-name">님</span>
-      </p>
+    <div class="profile">
+        <img class="profile-img" src="https://picsum.photos/150" alt="">
+        <p class="name">
+          {{ user.nick }} <span class="sm-name">님</span>
+        </p>
+      <button type="button" class="btn btn-primary"
+      data-bs-toggle="modal" data-bs-target="#exampleModal">
+        Launch demo modal
+      </button>
+
+      <div class="modal fade" id="exampleModal" tabindex="-1"
+      aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+              <button type="button" class="btn-close"
+              data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form action="">
+                <label for="profileImag">이미지
+                  <input class="input-image" accept="image/*" type="file"
+                    ref="profileImg" @change="onInputImage()" id="profileImg">
+                </label>
+                <button class="send-btn" @click="onClickImgButton">이미지버튼</button>
+              </form>
+            </div>
+            <!-- <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Save changes</button>
+            </div> -->
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="sidebar-menus text-center justify-content-center;">
@@ -33,53 +55,50 @@
   </div>
 </template>
 <script>
+import { useStore } from 'vuex';
+import { reactive, computed } from 'vue';
+
 export default {
-  name: 'MySidebar',
-  components: {},
-  data() {
+  name: 'MyPageUpdateView',
+  setup() {
+    const store = useStore(); // 필수
+    // Getters
+    const user = computed(() => store.getters['accounts/userInfo']);
+
+    // State (vue3의 data 선언 방식. state라는 이름으로 접근)
+    const state = reactive({
+      selected: '',
+      options: [
+        { text: '없음', value: '1' },
+        { text: '약간', value: '2' },
+        { text: '중간', value: '3' },
+        { text: '많음', value: '4' },
+        { text: '매우 많음', value: '5' },
+      ],
+      input: {
+        image: '',
+      },
+      testText: '할수있다',
+    });
+    console.log(user);
+    const update = function (userInfo) {
+      console.log(userInfo);
+      store.dispatch('accounts/updateUserInfo', userInfo);
+    };
+    // Methods
+    const onInputImage = () => {
+      const input = document.querySelector('.input-image');
+      console.log(input.files[0].type);
+    };
     return {
-      name: '한나',
-      inputGoalType: '',
-      inputGoalHour: 0,
-      goals: [],
+      state,
+      user,
+      update,
+      onInputImage,
     };
   },
-  setup() {},
-  created() {},
-  moundted() {},
-  unmounted() {},
-  methods: {
-    addGoal(event) {
-      if (this.user.goals.length >= 3) {
-        /* eslint-disable */
-        alert('주간 목표는 3개까지 추가 가능합니다.');
-        event.preventDefault();
-        return;
-      }
-      else if (this.inputGoalType === '') {
-        /* eslint-disable */
-        alert('목표를 설정해 주세요!');
-        event.preventDefault();
-        return;
-      }
-      else if (this.inputGoalHour < 1) {
-        /* eslint-disable */
-        alert('시간을 설정해 주세요!');
-        event.preventDefault();
-        return;
-      }
-      event.preventDefault();
-      this.user.goals.push({ goalType: this.inputGoalType, goalHour: this.inputGoalHour });
-    },
-    tagDelete(event) {
-      /* eslint-disable */
-      // alert('해당 주간 목표를 삭제하시겠습니까?');
-      event.preventDefault();
-      console.log(event)
-    },
-    registGoal() {
-      // 솰라솰라
-    },
+  components: {},
+  created() {
   },
 };
 </script>
