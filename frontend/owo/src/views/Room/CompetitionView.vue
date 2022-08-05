@@ -19,7 +19,7 @@
       <p class="text-center">
         <button class="btn btn-lg btn-success" @click="getRoomList(mode[2])">게임방 목록</button>
       </p> -->
-      <div id="join" v-if="!session">
+      <!-- <div id="join" v-if="!session">
         <div id="img-div">
           <img src="resources/images/openvidu_grey_bg_transp_cropped.png" alt="">
         </div>
@@ -37,13 +37,13 @@
               class="form-control" type="text" required /></label>
             </p>
             <p class="text-center">
-              <button class="btn btn-lg btn-success" @click="joinSession(sessionId)">
+              <button class="btn btn-lg btn-success" @click="joinSession('sessionId')">
                 Join!
               </button>
             </p>
           </div>
         </div>
-      </div>
+      </div> -->
       <div id="session" v-if="session">
         <div id="session-header">
           <h1 id="session-title">{{ mySessionId }}</h1>
@@ -144,19 +144,22 @@ export default {
     return {
       OV: undefined,
       session: undefined,
-      mainStreamManager: undefined,
+      mainStreamManage: undefined,
       publisher: undefined,
       subscribers: [],
       mode: ['FREE', 'STREAMING', 'GAME'],
       myUserName: '',
-      sessionId: 'SessionA',
+      sessionId: 'hi',
       myChat: '',
       recvList: [],
       chatONOFF: false,
     };
   },
   setup() {},
-  created() {},
+  created() {
+    this.sessionId = this.$route.params.sessionId;
+    this.joinSession(this.sessionId);
+  },
   moundted() {},
   unmounted() {},
   watch: {
@@ -482,7 +485,7 @@ solid #ccb9a8; border-top: 10px solid transparent; border-bottom: 10px solid tra
   height: 362px;
   background-image: url('../../assets/icon/Loading2.gif');
   background-position: center;
-  background-size: 150px 150px;
+  background-size: 30px 30px;
   background-repeat: no-repeat;
 }
 

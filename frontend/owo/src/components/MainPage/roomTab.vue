@@ -76,16 +76,34 @@
       </b-card-group>
     </div>
   </div>
+  <button v-for="(room, i) in roomList" :key="i" @click="joinMeeting(room)">
+    <div>
+      {{ room }}
+    </div>
+    <div>
+      이 방에 들어가시겠습니까?
+    </div>
+  </button>
 </template>
 
 <script>
+// eslint--disable-next-line
 export default {
   name: 'myTabs',
+  components: {
+  },
   data() {
     return {
-      currentTab: 0,
-      tabs: ['운동방', '자유방', '경쟁방'],
+      roomList: ['hello1', 'hello2', 'hello3'],
     };
+  },
+  computed: {
+  },
+  methods: {
+    joinMeeting(sessionNum) {
+      console.log(sessionNum);
+      this.$router.push(`/room/competition/${sessionNum}`);
+    },
   },
 };
 </script>
