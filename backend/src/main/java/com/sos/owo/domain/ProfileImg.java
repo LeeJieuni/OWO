@@ -12,7 +12,7 @@ import javax.persistence.*;
 public class ProfileImg {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "profile_img_id")
     private int id;
 

@@ -18,7 +18,6 @@ public class Goal {
     @Column(name = "goal_id")
     private int id;
 
-    
     @Column(name = "goal_type")
     @Enumerated(EnumType.STRING)
     private Exercise exercise;

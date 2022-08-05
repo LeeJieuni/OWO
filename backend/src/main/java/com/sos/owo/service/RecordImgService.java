@@ -15,44 +15,44 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class RecordImgService {
 
-    @Autowired
-    private RecordImgRepository recordImgRepository;
-
-    @Autowired
-    private RecordRepository recordRepository;
-
-    @Transactional
-    public RecordFileDto saveFile(int recordId, String fileOriName, String fileName, String fileUrl) throws IllegalStateException{
-        Record findRecord = recordRepository.findOne(recordId);
-        RecordFileDto fileDto = new RecordFileDto();
-        fileDto.setFileName(fileOriName);
-        fileDto.setFileOriName(fileName);
-        fileDto.setFileUrl(fileUrl);
-        RecordImg recordImg = fileDto.toEntity();
-        if(findRecord.getRecordImg() == null){
-            recordImgRepository.save(recordImg);
-        } else{
-            RecordImg findRecordImg = findRecord.getRecordImg();
-            findRecordImg.updateRecordImg(recordImg);
-        }
-        findRecord.updateRecordImg(recordImg);
-
-        return fileDto;
-    }
-
-    @Transactional
-    public RecordFileDto getFile(int recordId){
-        Record findRecord = recordRepository.findOne(recordId);
-        RecordImg recordImg = findRecord.getRecordImg();
-        if(recordImg == null) return null;
-        RecordFileDto fileDto = RecordFileDto.builder()
-                .id(recordImg.getId())
-                .fileOriName(recordImg.getFileOriName())
-                .fileName(recordImg.getFileName())
-                .fileUrl(recordImg.getFileUrl())
-                .build();
-        return fileDto;
-    }
+//    @Autowired
+//    private RecordImgRepository recordImgRepository;
+//
+//    @Autowired
+//    private RecordRepository recordRepository;
+//
+//    @Transactional
+//    public RecordFileDto saveFile(int recordId, String fileOriName, String fileName, String fileUrl) throws IllegalStateException{
+//        Record findRecord = recordRepository.findOne(recordId);
+//        RecordFileDto fileDto = new RecordFileDto();
+//        fileDto.setFileName(fileOriName);
+//        fileDto.setFileOriName(fileName);
+//        fileDto.setFileUrl(fileUrl);
+//        RecordImg recordImg = fileDto.toEntity();
+//        if(findRecord.getRecordImg() == null){
+//            recordImgRepository.save(recordImg);
+//        } else{
+//            RecordImg findRecordImg = findRecord.getRecordImg();
+//            findRecordImg.updateRecordImg(recordImg);
+//        }
+//        findRecord.updateRecordImg(recordImg);
+//
+//        return fileDto;
+//    }
+//
+//    @Transactional
+//    public RecordFileDto getFile(int recordId){
+//        Record findRecord = recordRepository.findOne(recordId);
+//        RecordImg recordImg = findRecord.getRecordImg();
+//        if(recordImg == null) return null;
+//        RecordFileDto fileDto = RecordFileDto.builder()
+//                .id(recordImg.getId())
+//                .fileOriName(recordImg.getFileOriName())
+//                .fileName(recordImg.getFileName())
+//                .fileUrl(recordImg.getFileUrl())
+//                .build();
+//        return fileDto;
+//    }
 
 
 

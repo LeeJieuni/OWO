@@ -29,8 +29,8 @@ public class GoalService {
     }
 
     @Transactional
-    public void deleteGoal(int memberId, int goal_id){
-        goalRepository.deleteGoal(memberId,goal_id);
+    public int deleteGoal(int memberId, int goalId){
+        return goalRepository.deleteGoal(memberId,goalId);
     }
 
     @Transactional

@@ -12,7 +12,7 @@ import javax.persistence.*;
 public class RecordImg {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "record_img_id")
     private int id;
 

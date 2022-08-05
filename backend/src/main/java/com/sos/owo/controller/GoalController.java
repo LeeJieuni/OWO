@@ -108,7 +108,11 @@ public class GoalController {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(new MediaType("application","json", Charset.forName("UTF-8")));
         try {
-            goalService.deleteGoal(memberId,goalId);
+            int result = goalService.deleteGoal(memberId,goalId);
+            if(result==0){
+                message.setMessage("잘못된 요청. memberId나 goalId가 존재하는 값인지 잘 맞는지 확인");
+                return new ResponseEntity<>(message,httpHeaders,HttpStatus.BAD_REQUEST);
+            }
             message.setStatus(StatusEnum.OK);
             message.setMessage("운동 목표 삭제 성공");
             return new ResponseEntity<>(message,httpHeaders,HttpStatus.OK);
