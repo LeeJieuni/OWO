@@ -8,7 +8,7 @@
     <!-- <p>개인 WebRTC 영상</p> -->
     <div v-if="streamManager" class="m0p0">
       <p class="myname">{{ clientData }}</p>
-      <ov-video style="width:100%; height:100%;" :stream-manager="streamManager" />
+      <ov-video class="ov-video" :stream-manager="streamManager" />
     </div>
   </div>
 </template>
@@ -67,6 +67,7 @@ export default {
 .m0p0 {
   margin:0;
   padding:0;
+  border: solid 1px black;
 }
 
 #img:hover {
@@ -87,4 +88,8 @@ export default {
   font-size:24px;
   padding: 10px;
 }
+/* .ov-video {
+  width: 100%;
+  height: 100%;
+} */
 </style>

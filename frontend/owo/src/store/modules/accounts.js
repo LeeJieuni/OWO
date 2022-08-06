@@ -25,8 +25,12 @@ export const accounts = {
       bmr: null,
       caloriePerDay: null,
     },
-    slogan: '',
+    slogandata: '',
     image: '',
+    record: {
+      point: '', // 경쟁
+      exp: '', // 자유, 영상 경험치
+    },
   }),
   mutations: {
     SET_LOGIN_ERR: (state, message) => {
@@ -68,6 +72,9 @@ export const accounts = {
     },
     SET_PROFILE_IMG: (state, payload) => {
       state.image = payload.image;
+    },
+    SET_POINT: (state, payload) => {
+      state.record.point = payload.point;
     },
   },
   actions: {
@@ -200,17 +207,19 @@ export const accounts = {
         headers: {
           'X-AUTH-TOKEN': state.accessToken,
           'REFRESH-TOKEN': state.refreshToken,
+          'Content-Type': 'application/json',
         },
         data: payload,
       })
         .then((res) => {
           console.log('res');
           console.log(res.data.data);
-          dispatch('setSlogan', res.data.data);
+          console.log(payload);
+          dispatch('setSlogan', payload.slogan);
           // router.push({ name: 'MyPageMainView' });
         })
         .catch((err) => {
-          console.log(err.toJSON());
+          console.log(err);
         });
     },
     updateUserInfo({ state, dispatch }, payload) {
@@ -242,10 +251,28 @@ export const accounts = {
         headers: {
           'X-AUTH-TOKEN': state.accessToken,
           'REFRESH-TOKEN': state.refreshToken,
+          'Content-Type': 'pultipart/form-data',
         },
       })
         .then((res) => {
           commit('SET_PHYSICAL_INFO', res.data.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    fetchPoint({ state, commit }) {
+      axios({
+        url: `https://i7c202.p.ssafy.io:8282/api/user/compete/${state.userInfo.id}`,
+        method: 'get',
+        headers: {
+          'X-AUTH-TOKEN': state.accessToken,
+          'REFRESH-TOKEN': state.refreshToken,
+        },
+      })
+        .then((res) => {
+          console.log(res.data.message);
+          commit('SET_POINT', res.data.data);
         })
         .catch((err) => {
           console.log(err);
@@ -257,5 +284,6 @@ export const accounts = {
     userInfo: (state) => state.userInfo,
     physicalInfo: (state) => state.physicalInfo,
     slogan: (state) => state.slogan,
+    point: (state) => state.point,
   },
 };

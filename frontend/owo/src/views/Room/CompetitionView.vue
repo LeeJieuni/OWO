@@ -2,23 +2,26 @@
   <div class="d-flex justify-content-center" style="width: 100%;">
     <div style="width:1800px;">
       <div class="d-flex justify-content-between align-items-center" style="height: 80px">
-        <h3 class="m-0">팔굽혀펴기</h3>
+        <h3 class="game-name m-0">{{ gameName }}</h3>
         <Timer />
       </div>
-      <p class="text-center">
-        <button class="btn btn-lg btn-success" @click="makeRoom()">세션열기</button>
-      </p>
-      <p class="text-center">
-        <button class="btn btn-lg btn-success" @click="getRoomList(mode[0])">자유방 목록</button>
-      </p>
-      <p class="text-center">
-        <button class="btn btn-lg btn-success" @click="getRoomList(mode[1])">
-          스트리밍방 목록
-        </button>
-      </p>
-      <p class="text-center">
-        <button class="btn btn-lg btn-success" @click="getRoomList(mode[2])">게임방 목록</button>
-      </p>
+      <div class="row">
+        <p class="text-center">
+          <button class="btn btn-lg btn-success" @click="makeRoom()">세션열기</button>
+        </p>
+        <p class="text-center">
+          <button class="btn btn-lg btn-success" @click="getRoomList(mode[0])">자유방 목록</button>
+        </p>
+        <p class="text-center">
+          <button class="btn btn-lg btn-success" @click="getRoomList(mode[1])">
+            스트리밍방 목록
+          </button>
+        </p>
+        <p class="text-center">
+          <button class="btn btn-lg btn-success" @click="getRoomList(mode[2])">게임방 목록</button>
+        </p>
+      </div>
+
       <div id="join" v-if="!session">
         <div id="img-div">
           <img src="resources/images/openvidu_grey_bg_transp_cropped.png" alt="" />
@@ -50,7 +53,7 @@
           <input class="btn btn-large btn-danger" type="button"
             id="buttonLeaveSession" @click="leaveSession" value="Leave session"/>
         </div>
-        <div class="align-items-start justify-content-start">
+        <div class="container align-items-start justify-content-start">
           <div class="row">
             <WebRTC :stream-manager="mainStreamManager" />
             <WebRTC :stream-manager="sub"
@@ -156,6 +159,8 @@ export default {
       myChat: '',
       recvList: [],
       chatONOFF: false,
+      roomName: '붙어보자!',
+      gameName: '팔굽혀펴기',
     };
   },
   setup() {},
@@ -521,10 +526,10 @@ export default {
 div {
   color: black;
 }
-.container {
+/* .container {
   width: 100vw;
   height: 100vh;
-}
+} */
 
 .chat {
   position:fixed;

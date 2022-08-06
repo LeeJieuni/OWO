@@ -1,7 +1,13 @@
 <template>
   <div class="row">
     <div class="profile">
-        <img class="profile-img" src="https://picsum.photos/150" alt="">
+      <div class="img-wrapper">
+        <img
+          class="profile-img"
+          src="https://picsum.photos/150"
+          alt="프로필이미지"
+        >
+      </div>
         <p class="name" v-once>
           {{ user.nick }} <span class="sm-name">님</span>
         </p>
@@ -75,9 +81,22 @@ export default {
 </script>
 
 <style scoped>
-  .profile-img {
+  .img-wrapper {
+    position: relative;
+    width: 150px;
+    height: 150px;
+  }
+  .img-wrapper img {
     border-radius: 50%;
-    margin: 0 auto;
+    /* margin: 0 auto; */
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translate(50, 50);
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    margin: auto;
   }
   .name {
     font-weight: 900;

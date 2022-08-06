@@ -13,9 +13,9 @@
             <form enctype="multipart/form-data">
               <label for="profileImag">이미지
                 <input class="input-image" accept="image/*" type="file"
-                  ref="profileImg" @change.prevent="onInputImage($event)" id="profileImg">
+                  ref="profileImg" @change.prevent="updateProfileImg($event)" id="profileImg">
               </label>
-              <button class="send-btn" @click="onClickImgButton">이미지버튼</button>
+              <button class="send-btn" @click.prevent="updateProfileImg($event)">이미지버튼</button>
             </form>
           </div>
           <!-- <div class="modal-footer">
@@ -39,7 +39,7 @@
                 <label for="slogan">
                   <input type="text" id="slogan" v-model="slogan">
                 </label>
-                <button @click.prevent="update(slogan)">변경</button>
+                <button @click.prevent="updateSlogan(slogan)">변경</button>
               </form>
             </div>
             <div>
@@ -63,44 +63,77 @@ export default {
   setup() {
     const store = useStore();
     const slogan = computed(() => store.getters['accounts/slogan']);
+    const user = computed(() => store.getters['accounts/userInfo']);
+    // console.log('dd');
+    // console.log(slogan.value);
     const state = reactive({
-      // slogan: 'dd',
       imagePath: '',
-      test: 'test',
+      // sloganData: 'ss',
+      sloganData: {
+        id: user.value.id,
+        slogan: slogan.value,
+      },
+      data: {
+        id: user.value.id,
+        slogan: slogan.value,
+      },
     });
     // action
-    const update = function (sloganInput) {
+    const updateSlogan = function (sloganData) {
       // console.log(slogan);
-      store.dispatch('accounts/updateSlogan', sloganInput);
+      store.dispatch('accounts/updateSlogan', sloganData);
     };
     // Methods
-    const onInputImage = (e) => {
-      e.preventDefault();
-      // const inputImg = document.querySelector('.input-image');
-      // const img = inputImg.files[0];
+    const updateProfileImg = (e) => {
+      const img2 = document.querySelector('.input-image');
+      const modal = document.querySelector('.modal');
+      // e.preventDefault();
+      console.log('이미지 불러오기');
       const img = e.target.files[0];
       console.log(img);
-      // console.log(e.target.files[0]);
+      console.log(img2.files[0]);
+      console.log('파일사이즈 검사');
+      if (img.size > (2 * 1024 * 1024)) {
+        alert('파일 사이즈가 20mb를 넘습니다.');
+        this.$refs.profileImg.value = null;
+        img[0].select();
+        document.selection.clear();
+      }
+      modal.style.display = 'none';
+      img2.files[0] = null;
+      console.log('처리 후');
+      console.log(img);
+      console.log(img2);
+      if (img.size > (2 * 1024 * 1024)) {
+        alert('파일 사이즈가 20mb를 넘습니다.');
+        this.$refs.profileImg.value = null;
+      }
+      // console.log('처리 후');
+      // console.log(this.$refs.profileImg);
       // const formData = new FormData();
-      // const _data = { content: 'asdf'};
-      // formData.append("board", _data);
-      // formData.append("file", data.image);
-      // formData.append('file', this.)
-      // formData.append('file', uploadFile);
-      // state.imagePath = img;
-      // this.data.push({ imgpath: img });
+      // formData.append('file', img);
+      // eslint-disable-next-line
+      // formData.append('request', new Blob([JSON.stringify(state.data)], { type: 'application/json' }));
+      // // store.dispatch('profileUpdate', formData);
+      // console.log('폼데이타');
+      // console.log(formData);
+      // // eslint-disable-next-line
+      // for (const pair of formData.entries()) {
+      //   console.log(pair[0], pair[1]);
+      // }
+      // store.dispatch('accounts/updateProfileImg', formData);
     };
     return {
       slogan,
       state,
-      onInputImage,
-      update,
+      updateSlogan,
+      updateProfileImg,
+      user,
     };
   },
   created() {
-    console.log(this.state.test);
-    console.log(this.slogan);
-    console.log('gg');
+    // console.log('dd');
+    // console.log(this.state.sloganData);
   },
   mounted() {},
   unmounted() {},
