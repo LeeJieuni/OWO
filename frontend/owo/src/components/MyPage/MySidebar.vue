@@ -1,4 +1,5 @@
 <template>
+<div class="container p-0 justify-content-center">
   <div class="row">
     <div class="profile">
       <div class="img-wrapper">
@@ -19,21 +20,22 @@
       </button>
     </div>
 
-    <div class="sidebar-menus text-center justify-content-center;">
+    <div class="sidebar-menus text-center justify-content-center pe-0">
       <button class="row sidebar-menu">
-        <router-link to="/mypage/main">⚒ 운동 기록</router-link>
+        <router-link class="sidebar-menu" to="/mypage/main">운동 기록</router-link>
       </button>
       <button class="row sidebar-menu">
-        <router-link to="/mypage/schedule">📆 운동 일지</router-link>
+        <router-link class="sidebar-menu" to="/mypage/schedule">운동 일지</router-link>
       </button>
       <button class="row sidebar-menu">
-        <router-link to="/mypage/analys">⚒ 운동 분석</router-link>
+        <router-link class="sidebar-menu" to="/mypage/analys">운동 분석</router-link>
       </button>
       <button class="row sidebar-menu">
-        <router-link to="/mypage/update">👧 내 정보 수정</router-link>
+        <router-link class="sidebar-menu" to="/mypage/update">내 정보 수정</router-link>
       </button>
     </div>
   </div>
+</div>
 </template>
 <script>
 import { useStore } from 'vuex';
@@ -124,7 +126,7 @@ export default {
   .tag:hover {
     background-color: #DE7474;
     color: white;
-    transition: 0.2s;
+    transition: 0.9s;
     cursor: pointer;
 
   }
@@ -137,26 +139,37 @@ export default {
     margin: 0;
   }
   .sidebar-menu {
-    border: solid black 1px;
-    margin: 5px;
-    width: 200px;
+    /* border: solid black 1px; */
+    /* border-radius: 5px; */
+    /* margin: 5px; */
+    /* padding: 10px; */
+    width: 100%;
     height: 40px;
-    padding: 10px;
-    border-radius: 5px;
     background-color: #2E2E2E;
     box-shadow: 3px 3px 5px gray;
+    /* display: table; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   .sidebar-menu > a {
     color: white;
     font-weight: 700;
     text-decoration: none;
+    /* display: table-cell;
+    vertical-align: middle;
+    text-align: center; */
   }
   .sidebar-menu:hover {
     background-color: #F6F7F9;
     color: black;
+    transition: 0.3s;
   }
-  .sidbar-menu > a:hover {
+  .sidebar-menu > a:hover {
     color: black;
+    transition: 0.1s;
+    font-weight: 900;
+    font-size: 16px;
   }
   .goal-type-select {
     width: 120px;

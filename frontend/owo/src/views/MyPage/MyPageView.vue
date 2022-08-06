@@ -131,10 +131,7 @@ export default {
       user,
     };
   },
-  created() {
-    // console.log('dd');
-    // console.log(this.state.sloganData);
-  },
+  created() {},
   mounted() {},
   unmounted() {},
   // methods: {
