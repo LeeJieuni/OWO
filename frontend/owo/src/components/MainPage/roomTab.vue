@@ -35,7 +35,7 @@
     <div class="tab-content wrap">
       <div v-show="currentTab == 2" class="scroll__wrap">
         <div v-for="(room, i) in roomList" :key="i" class="scroll--element">
-            <b-card :header="room" footer-tag="footer">
+            <b-card :header="room" footer-tag="footer" class="scroll--element_sub">
                 <b-card-img src="https://placekitten.com/380/200"></b-card-img>
                 <template #footer>
                   <b-button variant="outline" @click="joinMeeting(room)">들어가기</b-button>
@@ -76,13 +76,17 @@ export default {
   margin-top: 50px;
 }
 /* 기본 구조 */
-/* 기본 구조 */
 .wrap {
   max-width:100%;
   margin:50px auto;
   background:#f8f8f8;}
 /* 가로 스크롤 적용 */
 .scroll__wrap {overflow:auto; white-space:nowrap; font-size:15px; margin-top: -30px;}
-.scroll--element {display: inline-block; line-height: 15px; width:33%; height:100%;}
-.scroll--element + .scroll--element {margin-left:10px;}
+.scroll--element {
+  display: inline-block;
+  line-height: 15px;
+  width:33%;
+  height:100%;
+}
+.scroll--element + scroll--element {margin-left:10px;}
 </style>
