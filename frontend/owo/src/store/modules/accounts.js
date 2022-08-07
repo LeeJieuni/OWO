@@ -50,7 +50,7 @@ export const accounts = {
     SET_REFRESH_TOKEN: (state, token) => {
       state.refreshToken = token;
     },
-    SET_USER_INFO: (state, payload) => {//로그인 시 반환되는 유저정보 state에 할당
+    SET_USER_INFO: (state, payload) => { // 로그인 시 반환되는 유저정보 state에 할당
       state.userInfo.id = payload.id;
       state.userInfo.email = payload.email;
       state.userInfo.nick = payload.nick;
@@ -98,8 +98,8 @@ export const accounts = {
       commit('SET_ACCESS_TOKEN', token);
     },
     saveRefreshToken({ commit }, token) {
-      sessionStorage.setItem('refreshToken', token);// 세션스토리지에 리프레시 토큰 저장
-      commit('SET_REFRESH_TOKEN', token);//state 할당
+      sessionStorage.setItem('refreshToken', token); // 세션스토리지에 리프레시 토큰 저장
+      commit('SET_REFRESH_TOKEN', token); // state 할당
     },
     removeToken({ commit }) {
       commit('SET_ACCESS_TOKEN', null);
@@ -111,7 +111,7 @@ export const accounts = {
     setUserInfo({ commit }, payload) {
       commit('SET_USER_INFO', payload);
     },
-    login({ dispatch, commit }, credentials) {//로그인
+    login({ dispatch, commit }, credentials) { // 로그인
       axios.post('https://i7c202.p.ssafy.io:8282/auth/login', credentials)
         .then((res) => {
           const response = res.data.data;
@@ -144,7 +144,7 @@ export const accounts = {
           }
         });
     },
-    logout({ state, dispatch }) {//로그아웃
+    logout({ state, dispatch }) { // 로그아웃
       // eslint-disable-next-line
       axios({
         url: 'https://i7c202.p.ssafy.io:8282/api/logout',
@@ -164,7 +164,7 @@ export const accounts = {
           console.log(err);
         });
     },
-    register({ dispatch, state }, payload) {//회원가입
+    register({ dispatch, state }, payload) { // 회원가입
       axios.post('https://i7c202.p.ssafy.io:8282/auth/join', payload)
         .then((res) => {
           const response = res.data.data;
@@ -181,26 +181,26 @@ export const accounts = {
           console.log(payload);
         });
     },
-    fidPassword({ state }, payload) {//비밀번호 찾기
+    fidPassword({ state }) { // 비밀번호 찾기
       axios({
-        url:'https://i7c202.p.ssafy.io:8282/api/authpassword',
+        url: 'https://i7c202.p.ssafy.io:8282/api/authpassword',
         method: 'get',
         header: {
           'X-AUTH-TOKEN': state.accessToken,
           'REFRESH-TOKEN': state.refreshToken,
         },
-        data: state.userInfo.email, //사용자 이메일 데이터를 이용해서 password 찾기
+        data: state.userInfo.email, // 사용자 이메일 데이터를 이용해서 password 찾기
       })
         .then((res) => {
-          console.log(res); 
+          console.log(res);
         })
-        .catch((err => {
+        .catch((err) => {
           console.log(err);
-        }))
+        });
     },
-    passwordChg({ state, dispatch }, payload) {//비밀번호 변경
+    passwordChg({ state }, payload) { // 비밀번호 변경
       axios({
-        url:'',
+        url: '',
         method: '',
         header: {
           'X-AUTH-TOKEN': state.accessToken,
@@ -213,7 +213,7 @@ export const accounts = {
         })
         .catch((err) => {
           console.log(err);
-        })
+        });
     },
     physicalInfo({ state, commit }) {
       axios({
