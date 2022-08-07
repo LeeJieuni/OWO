@@ -1,6 +1,30 @@
 <template>
   <div class="mypageview">
-    <div class="modal fade" id="exampleModal" tabindex="-1"
+    <b-modal id="image-upload" size="lg" hide-footer hide-header>
+      <div>
+        <h1 class="modal-title text-center mt-4">프로필 이미지</h1>
+        <div class="wrapper">
+          <div class="md-title text-center">업로드📷</div>
+          <div class="container">
+            <div class="row row-cols-3">
+              <form enctype="multipart/form-data" id="imageUploadForm">
+              <label for="profileImag">이미지
+                <input class="input-image" accept="image/*" type="file"
+                  ref="profileImg" @change.prevent="updateProfileImg($event)" id="profileImg">
+              </label>
+            </form>
+            </div>
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-center">
+          <button on @click="updateProfileImg($event)"
+            class="btn btn-primary" form="imageUploadForm">작성</button>
+        </div>
+      </div>
+    </b-modal>
+
+    <!-- <div class="modal fade" id="exampleModal" tabindex="-1"
     aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -18,14 +42,10 @@
               <button class="send-btn" @click.prevent="updateProfileImg($event)">이미지버튼</button>
             </form>
           </div>
-          <!-- <div class="modal-footer">
-            <button type="button" class="btn btn-secondary"
-              data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save changes</button>
-          </div> -->
         </div>
       </div>
-    </div>
+    </div> -->
+
     <!-- <div class="background-box"> -->
       <div class="front-box row">
         <div class="mypageContainer row">
@@ -64,65 +84,54 @@ export default {
     const store = useStore();
     const slogan = computed(() => store.getters['accounts/slogan']);
     const user = computed(() => store.getters['accounts/userInfo']);
-    // console.log('dd');
-    // console.log(slogan.value);
+
     const state = reactive({
-      imagePath: '',
-      // sloganData: 'ss',
       sloganData: {
         id: user.value.id,
         slogan: slogan.value,
       },
-      data: {
-        id: user.value.id,
-        slogan: slogan.value,
-      },
     });
+
     // action
     const updateSlogan = function (sloganData) {
       // console.log(slogan);
       store.dispatch('accounts/updateSlogan', sloganData);
     };
+
     // Methods
     const updateProfileImg = (e) => {
-      const img2 = document.querySelector('.input-image');
-      const modal = document.querySelector('.modal');
-      // e.preventDefault();
+      // const img2 = document.querySelector('.input-image');
+      // const modal = document.querySelector('.modal');
+      e.preventDefault();
       console.log('이미지 불러오기');
-      const img = e.target.files[0];
-      console.log(img);
-      console.log(img2.files[0]);
+      let img = e.target.files[0];
+      // console.log(img);
+      // console.log(img2.files[0]);
       console.log('파일사이즈 검사');
       if (img.size > (2 * 1024 * 1024)) {
         alert('파일 사이즈가 20mb를 넘습니다.');
-        this.$refs.profileImg.value = null;
-        img[0].select();
-        document.selection.clear();
+        img = null;
       }
-      modal.style.display = 'none';
-      img2.files[0] = null;
       console.log('처리 후');
-      console.log(img);
-      console.log(img2);
-      if (img.size > (2 * 1024 * 1024)) {
-        alert('파일 사이즈가 20mb를 넘습니다.');
-        this.$refs.profileImg.value = null;
-      }
-      // console.log('처리 후');
-      // console.log(this.$refs.profileImg);
-      // const formData = new FormData();
-      // formData.append('file', img);
+      const formData = new FormData();
+      // formData.append('name', img.name);
+      formData.append('file', img);
+      // formData.append('user_id', user.value.id);
+      // formData.append('date', new Date());
+      // console.log(formData);
       // eslint-disable-next-line
-      // formData.append('request', new Blob([JSON.stringify(state.data)], { type: 'application/json' }));
-      // // store.dispatch('profileUpdate', formData);
-      // console.log('폼데이타');
+      // formData.append('file', new Blob([JSON.stringify(state.data)], { type: 'application/json' }));
+      // formData.append('file', new Blob([img], { type: 'application/octet-stream' });, img.name);
+      // formData.append('file', new Blob([img], { type: `${img.type}` }), img.name);
+      // for (let i; i < formData.length; i += 1) {
+      // // console.log(formData[i]);
+      // }
       // console.log(formData);
       // // eslint-disable-next-line
-      // for (const pair of formData.entries()) {
-      //   console.log(pair[0], pair[1]);
-      // }
-      // store.dispatch('accounts/updateProfileImg', formData);
+
+      store.dispatch('accounts/updateProfileImg', formData);
     };
+
     return {
       slogan,
       state,
@@ -192,5 +201,9 @@ export default {
   }
   .sidebar {
     border-right: solid 1px #DFDFDF;
+  }
+
+  .container {
+    height: 100%;
   }
 </style>

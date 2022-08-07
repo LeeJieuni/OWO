@@ -3,21 +3,65 @@
   <div class="row">
     <div class="profile">
       <div class="img-wrapper">
-        <img
+        <!-- <img
           class="profile-img"
-          src="https://picsum.photos/150"
+          :src="profileImg"
           alt="프로필이미지"
-        >
+        > -->
       </div>
         <p class="name" v-once>
           {{ user.nick }} <span class="sm-name">님</span>
         </p>
     </div>
     <div>
-      <button type="button" class="btn btn-primary"
+      <!-- <button type="button" class="btn btn-primary"
         data-bs-toggle="modal" data-bs-target="#exampleModal">
           ImgBtn
+      </button> -->
+      <button
+        v-b-modal.image-upload class="btn btn-outline-secondary m-2">
+        <!-- <img class="menu_icon2" src="@/assets/icon/room_end.png" alt="mic_off"> -->
+        이미지 변경
       </button>
+    </div>
+
+    <div>
+      <p>이번주 운동 목표</p>
+          <form action="">
+            <label for="goal-type">
+              <select v-model="state.inputGoalType"
+                class="form-select form-select-sm goal-type-select"
+                name="radio" id="goal_type">
+                <option value="CARDIOVASCULAR">유산소</option>
+                <option value="HEALTH">헬스</option>
+                <option value="STRETCHING">스트레칭</option>
+                <option value="CALISTHENICS">맨몸운동</option>
+                <option value="YOGA">요가</option>
+                <option value="PILATES">필라테스</option>
+                <option value="ETC">기타</option>
+              </select></label><br>
+            <input
+              type="number"
+              name="goalHour"
+              style="width: 70px;"
+              v-model="state.inputGoalHour"
+              min='1'> 시간 <br>
+            <button @click="addGoal($event)" class="top-btns btn btn-outline-secondary">추가</button>
+            <button @click="registGoal($event)"
+              class="top-btns btn btn-outline-warning">등록</button>
+          </form>
+        <div class="tags row">
+          <button
+            v-for="(goal, i) in goals"
+            :key="i"
+            class="tag"
+            @click="tagDelete">
+            <p>{{goal.exercise}} {{goal.hour}}H</p>
+          </button>
+        </div>
+    </div>
+    <div>
+      <img src="" alt="">
     </div>
 
     <div class="sidebar-menus text-center justify-content-center pe-0">
@@ -47,7 +91,8 @@ export default {
     const store = useStore(); // 필수
     // Getters
     const user = computed(() => store.getters['accounts/userInfo']);
-
+    const goals = computed(() => store.getters['accounts/goals']);
+    const profileImg = computed(() => store.getters['accounts/profileImg']);
     // State (vue3의 data 선언 방식. state라는 이름으로 접근)
     const state = reactive({
       selected: '',
@@ -61,23 +106,56 @@ export default {
       input: {
         image: '',
       },
-      testText: '할수있다',
+      inputGoalHour: 0,
+      inputGoalType: '',
     });
 
-    // Methods
-    // const onInputImage = () => {
-    //   const input = document.querySelector('.input-image');
-    //   console.log(input.files);
-    // };
+    const addGoal = () => {
+      if (this.goals.length >= 3) {
+        /* eslint-disable */
+        alert('주간 목표는 3개까지 추가 가능합니다.');
+        e.preventDefault();
+      }
+      else if (this.inputGoalType === '') {
+        /* eslint-disable */
+        alert('목표를 설정해 주세요!');
+        e.preventDefault();
+      }
+      else if (this.inputGoalHour < 1) {
+        /* eslint-disable */
+        alert('시간을 설정해 주세요!');
+        e.preventDefault();
+      }
+      e.preventDefault();
+      store.dispatch('accounts/updateUserInfo', userInfo);
+    };
+    const tagDelete = () => {
+      /* eslint-disable */
+      // alert('해당 주간 목표를 삭제하시겠습니까?');
+      e.preventDefault();
+      console.log(e)
+    };
+    console.log('이미지시작')
+    console.log(profileImg);
+    console.log('이미지끝')
+    Methods
+    const onInputImage = () => {
+      const input = document.querySelector('.input-image');
+      console.log(input.files);
+    };
 
     return {
       state,
       user,
-      // onInputImage,
+      addGoal,
+      // tagDelete,
+      goals,
+      profileImg,
     };
   },
   components: {},
   created() {
+    console.log(this.user.id);
   },
 };
 </script>
@@ -167,6 +245,12 @@ export default {
   }
   .sidebar-menu > a:hover {
     color: black;
+    transition: 0.1s;
+    font-weight: 900;
+    font-size: 16px;
+  }
+  .sidebar-menu > a:active {
+    color: #4E8AFF;
     transition: 0.1s;
     font-weight: 900;
     font-size: 16px;

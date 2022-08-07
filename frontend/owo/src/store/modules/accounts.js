@@ -36,6 +36,8 @@ export const accounts = {
       workout2: '', // 운동2 최고기록
       workout3: '', // 운동3 최고기록
     },
+    goals: '',
+    profileImg: '',
   }),
   mutations: {
     SET_LOGIN_ERR: (state, message) => {
@@ -76,7 +78,7 @@ export const accounts = {
       state.slogan = payload.slogan;
     },
     SET_PROFILE_IMG: (state, payload) => {
-      state.image = payload.image;
+      state.image = payload;
     },
     SET_POINT: (state, payload) => {
       state.record.point = payload;
@@ -85,6 +87,9 @@ export const accounts = {
       state.compete.workout1 = payload.workout1;
       state.compete.workout2 = payload.workout2;
       state.compete.workout3 = payload.workout3;
+    },
+    SET_GOAL: (state, payload) => {
+      state.goals = payload;
     },
   },
   actions: {
@@ -119,6 +124,8 @@ export const accounts = {
           dispatch('fetchSlogan'); // 슬로건 조회
           dispatch('fetchPoint'); // 포인트 조회
           dispatch('fetchCompete'); // 경쟁모드 최고기록 조회
+          dispatch('fetchGoal'); // 경쟁모드 최고기록 조회
+          dispatch('fetchProfileImg'); // 경쟁모드 최고기록 조회
           router.push('/'); // main 페이지로 이동
         })
         .catch((err) => {
@@ -245,8 +252,9 @@ export const accounts = {
         data: payload,
       })
         .then((res) => {
-          // console.log(res.data.data);
           dispatch('setUserInfo', res.data.data);
+          dispatch('fetchPhysicalInfo');
+          alert('정보가 수정되었습니다.');
           // router.push({ name: 'MyPageMainView' });
         })
         .catch((err) => {
@@ -256,18 +264,43 @@ export const accounts = {
     setProfileImg({ commit }, payload) {
       commit('SET_PROFILE_IMG', payload);
     },
-    fetchProfileImg({ state, commit }) {
+    fetchProfileImg({ state, dispatch }) {
       axios({
-        url: `https://i7c202.p.ssafy.io:8282/api/user/bmi/${state.userInfo.id}`,
+        url: `https://i7c202.p.ssafy.io:8282/api/user/${state.userInfo.id}`,
         method: 'get',
         headers: {
           'X-AUTH-TOKEN': state.accessToken,
           'REFRESH-TOKEN': state.refreshToken,
-          'Content-Type': 'pultipart/form-data',
+          // 'Content-Type': 'pultipart/form-data',
         },
       })
         .then((res) => {
-          commit('SET_PHYSICAL_INFO', res.data.data);
+          console.log('이미지axios응답');
+          dispatch('setProfileImg', res.data.data);
+          // commit('SET_PROFILE_IMG', res.data.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    updateProfileImg({ state, dispatch }, payload) {
+      console.log('axios 하기 전');
+      axios({
+        url: `https://i7c202.p.ssafy.io:8282/api/user/img/${state.userInfo.id}`,
+        method: 'put',
+        headers: {
+          'X-AUTH-TOKEN': state.accessToken,
+          'REFRESH-TOKEN': state.refreshToken,
+          // 'Content-Type': 'application/json',
+        },
+        data: payload,
+      })
+        .then((res) => {
+          // console.log('res');
+          console.log(res.data.data);
+          // console.log(payload);
+          dispatch('setProfileImg', res.data.data);
+          // router.push({ name: 'MyPageMainView' });
         })
         .catch((err) => {
           console.log(err);
@@ -309,6 +342,24 @@ export const accounts = {
           console.log(err);
         });
     },
+    fetchGoal({ state, commit }) {
+      axios({
+        url: `https://i7c202.p.ssafy.io:8282/api/user/compete/${state.userInfo.id}`,
+        method: 'get',
+        headers: {
+          'X-AUTH-TOKEN': state.accessToken,
+          'REFRESH-TOKEN': state.refreshToken,
+        },
+      })
+        .then((res) => {
+          // console.log(res.data.message);
+          console.log(res.data.data);
+          commit('SET_GOAL', res.data.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
   },
   getters: {
     isLogin: (state) => !!state.accessToken,
@@ -317,5 +368,7 @@ export const accounts = {
     slogan: (state) => state.slogan,
     record: (state) => state.record,
     workout: (state) => state.workout,
+    goals: (state) => state.goals,
+    profileImg: (state) => state.profileImg,
   },
 };

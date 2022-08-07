@@ -4,7 +4,6 @@
       <p class="my-physical-info-title text-center">신체 정보 분석</p>
     </div>
 
-    <!--체질량지수(bmi)-->
     <div class="row analy-div bmi">
       <div class="sm-div align-items-center">
         <p class="md-title"><span id="bmiDescription">체질량지수</span></p>
@@ -48,18 +47,6 @@
           <div v-if="physical.bmi > 0" class="yes-bmi">
           <div class="bmi-solution pt-2 text-start">
             bmi 지수 : {{physical.bmi}}
-            <!-- <p class="bmiText" v-if="bmi < 18.5">
-              저체중입니다. 헬스로 근육을 찌워보시는 건 어떨까요?
-            </p>
-            <p class="bmiText" v-if="bmi >= 18.5 && bmi < 23">
-              Good! {{ state.user.nick }}님은 정상 체중이네요!
-            </p>
-            <p class="bmiText" v-if="bmi >= 23 && bmi < 25">
-              과체중 솰라솔라
-            </p>
-            <p class="bmiText" v-if="bmi >= 25">
-              비만 어쩌구
-            </p> -->
           </div>
         </div>
         <div v-else class="no-bmi">
@@ -77,7 +64,6 @@
       </div>
     </div>
 
-    <!--칼로리1 기초대사량-->
     <div class="row analy-div bmr">
       <div class="sm-div">
         <p class="md-title"><span id="bmrDescription">기초대사량</span></p>
@@ -98,18 +84,17 @@
             <div class="me-auto">{{state.avgMinBmr}}</div>
             <div class="">{{state.avgMaxBmr}}</div>
           </div>
-          <p class="kcal" :style="'color:' + state.bmrColor">{{ physical.bmr }} kcal</p>
+          <p class="kcal" :style="'color:' + state.bmrColor">{{ state.bmr }} kcal</p>
           <p>{{ state.bmrText }}</p>
         </div>
       </div>
     </div>
 
-    <!--칼로리2 하루섭취-->
     <div class="row analy-div bmr mb-3">
       <div class="sm-div">
         <p class="md-title">하루 섭취 권장 칼로리</p>
         <div class="info">
-          <p class="kcal">{{ state.physical.caloriePerDay }} kcal</p>
+          <p class="kcal">{{ physical.caloriePerDay }} kcal</p>
           <a href="https://www.fatsecret.kr/%EC%B9%BC%EB%A1%9C%EB%A6%AC-%EC%98%81%EC%96%91%EC%86%8C/">음식 칼로리 계산하러 가기</a>
         </div>
       </div>
@@ -137,9 +122,9 @@ export default {
         overWeight: '50%',
         obesity: '50%',
       },
-      // bmi: 0,
-      // bmr: 0,
-      // caloriePerDay: 0,
+      bmi: 0,
+      bmr: 0,
+      caloriePerDay: 0,
       bmiNotEnoughInfo: '',
       avgMinBmr: 0,
       avgMaxBmr: 0,
@@ -154,6 +139,7 @@ export default {
     };
   },
   created() {
+    this.state.bmr = Math.round(this.physical.bmr);
     // eslint-disable-next-line
     if (this.user.gender === '' || this.user.weight === '' || this.user.weight === '' || this.user.height === '' || this.user.activityLevel === '') {
       this.physical.bmr = '신체정보를 추가해주세요!';
