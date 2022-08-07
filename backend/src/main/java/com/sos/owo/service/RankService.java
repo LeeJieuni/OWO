@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,6 +50,15 @@ public class RankService {
         Set<ZSetOperations.TypedTuple<String>> typedTuples = stringStringZSetOperations.reverseRangeWithScores(key, 0, 2);
 
         List<ResponseRankingDto> rankingList = typedTuples.stream().map(ResponseRankingDto::convertToResponseRankingDto).collect(Collectors.toList());
+        for(ResponseRankingDto dto:rankingList){
+            Member findMember = memberRepository.findOne(dto.getMember_id());
+            if(findMember.getNick() == null){
+                String email = findMember.getEmail();
+                dto.setName(email.split("@")[0]);
+            } else {
+                dto.setName(findMember.getNick());
+            }
+        }
         return rankingList;
     }
 

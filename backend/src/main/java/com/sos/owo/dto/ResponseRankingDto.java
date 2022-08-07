@@ -11,6 +11,7 @@ import java.util.*;
 @NoArgsConstructor
 @Data
 public class ResponseRankingDto {
+    private String name;
     private int member_id;
     private int score;
     public static ResponseRankingDto convertToResponseRankingDto(ZSetOperations.TypedTuple typedTuple){
