@@ -102,5 +102,12 @@ public class MemberRepository {
         member.changeRefreshToken(refresh);
     }
 
+    public List<Member> findAll(){
+        List<Member> memberIdList = em.createQuery("select m from Member m", Member.class)
+                .getResultList();
+
+        return memberIdList;
+    }
+
 
 }

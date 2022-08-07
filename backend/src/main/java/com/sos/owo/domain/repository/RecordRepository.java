@@ -187,10 +187,15 @@ public class RecordRepository {
         LocalDate today = LocalDate.now();
         LocalDate yesterday = today.minusDays(1);
 
-        Query query = em.createQuery("SELECT sum(r.recordTime) FROM Record as r WHERE (r.member.id = :memberId) AND (r.recordDatetime =:yesterday)")
+        List<Long> score = em.createQuery("SELECT sum(r.recordTime) FROM Record as r WHERE (r.member.id = :memberId) AND (r.recordDatetime =:yesterday)")
                 .setParameter("memberId",memberId)
-                .setParameter("yesterday",yesterday);
-        int yesterdaySum = Integer.parseInt(query.getSingleResult().toString());
+                .setParameter("yesterday",yesterday)
+                .getResultList();
+        int yesterdaySum = 0;
+
+        if(score.get(0) == null || score == null || score.size() == 0) return yesterdaySum;
+        System.out.println(score.get(0));
+        yesterdaySum = score.get(0).intValue();
         return yesterdaySum;
     }
 

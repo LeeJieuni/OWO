@@ -324,7 +324,7 @@ public class MemberController {
                     @ApiImplicitParam(name = "file",value = "사용자 이미지 파일"),
                     @ApiImplicitParam(name = "memberId",value = "사용자 memberId"),
             })
-    @PutMapping("/api/user/{memberId}")
+    @PostMapping("/api/user/img/{memberId}")
     public ResponseEntity<?> updateProfileImg(@RequestParam("file") MultipartFile file, @PathVariable("memberId") int memberId) {
         Message message = new Message();
         HttpHeaders headers= new HttpHeaders();
@@ -332,7 +332,8 @@ public class MemberController {
         try {
             if (file != null) {
                 String fileOriName = file.getOriginalFilename();
-                String fileName = new MD5Generator(fileOriName).toString();
+//                String fileName = new MD5Generator(fileOriName).toString() + "."+file.getOriginalFilename().split(".")[1];
+                String fileName = memberId+"_"+fileOriName;
                 String savePath = System.getProperty("user.dir") +"\\src\\main\\resources\\static\\img\\profile";
                 if (!new File(savePath).exists()) {
                     try {
@@ -376,7 +377,10 @@ public class MemberController {
         }
         Path path = Paths.get(fileDto.getFileUrl());
         Resource resource = new InputStreamResource(Files.newInputStream(path));
-        return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/octet-stream"))
+
+
+        //return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/octet-stream"))
+        return ResponseEntity.ok().contentType(MediaType.parseMediaType("image/png"))
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileDto.getFileOriName() + "\"")
                 .body(resource);
     }

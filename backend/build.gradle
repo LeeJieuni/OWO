@@ -43,6 +43,8 @@ dependencies {
 	implementation 'io.springfox:springfox-boot-starter:3.0.0'
 	// Openvidu 의존성
 	implementation group: 'io.openvidu', name: 'openvidu-java-client', version: '2.22.0'
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+	implementation 'io.lettuce:lettuce-core:6.1.5.RELEASE'
 }
 
 tasks.named('test') {
