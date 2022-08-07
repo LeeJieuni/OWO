@@ -58,7 +58,6 @@ export default {
     return {
       // input: '',
       // search: '',
-
       isMaster: true,
       video: false,
       mic: false,

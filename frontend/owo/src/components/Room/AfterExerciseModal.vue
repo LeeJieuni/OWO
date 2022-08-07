@@ -71,7 +71,6 @@
 </template>
 
 <script>
-
 export default {
   data() {
     return {
@@ -90,10 +89,6 @@ export default {
     };
   },
   methods: {
-    // addMyTag(event) {
-    //   event.preventDefault();
-    //   this.roomexercise.myTag.push(this.inputMyTag);
-    // },
     exerciseJournalSubmit(event) {
       event.preventDefault();
     },

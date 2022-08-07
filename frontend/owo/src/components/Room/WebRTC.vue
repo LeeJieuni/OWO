@@ -1,15 +1,14 @@
 <template>
   <div class="webrtctag col-4 m0p0 mb-2 mx-1">
-    <div class="m0p0">
+    <!-- <div class="m0p0">
       <button id="img" @click="get_out">
         <img style="width: 25px" src="@/assets/icon/get_out.png" alt="" />
       </button>
-    </div>
+    </div> -->
     <!-- <p>개인 WebRTC 영상</p> -->
     <div v-if="streamManager" class="position-relative m0p0">
       <div class="myreaction">{{newAllEMojiList[0]}}</div>
-      <div class="myreaction">{{allreactions}}</div>
-      <p class="myname">{{ clientData }}</p>
+      <p class="myname">&ensp;{{ clientData }}&ensp;</p>
       <ov-video class="ov-video" :stream-manager="streamManager" />
     </div>
   </div>
@@ -83,7 +82,7 @@ export default {
 .m0p0 {
   margin:0;
   padding:0;
-  border: solid 1px black;
+  border-radius: 10px;
 }
 
 #img:hover {
@@ -91,8 +90,8 @@ export default {
 }
 
 .webrtctag {
-  width: 600px;
-  height:100%;
+  width:500px;
+  height:360px;
 }
 
 .myname {
@@ -101,6 +100,7 @@ export default {
   left:0px;
   background-color:white;
   font-size:24px;
+  border-radius: 0px 0px 10px 0px;
 }
 
 .myreaction {
@@ -115,5 +115,6 @@ export default {
 .ov-video {
   width: 100%;
   height: 100%;
+  border-radius: 20px;
 }
 </style>

@@ -1,11 +1,12 @@
 <template>
-  <div class="d-flex justify-content-center" style="width: 100%;">
-    <div style="width:1800px;">
+  <div class="d-flex justify-content-center" style="width: 100%; height:100vh">
+    <div style="width:1600px;">
+    <!-- <div style="width:90%;"> -->
       <div class="d-flex justify-content-between align-items-center" style="height: 80px">
         <h3 class="game-name m-0">{{ gameName }}</h3>
         <Timer />
       </div>
-      <div class="row">
+      <!-- <div>
         <p class="text-center">
           <button class="btn btn-lg btn-success" @click="makeRoom()">세션열기</button>
         </p>
@@ -20,7 +21,7 @@
         <p class="text-center">
           <button class="btn btn-lg btn-success" @click="getRoomList(mode[2])">게임방 목록</button>
         </p>
-      </div>
+      </div> -->
       <!-- 세션 없다면 이동 -->
       <div id="join" v-if="!session">
         <div id="img-div">
@@ -49,34 +50,34 @@
       </div>
       <!-- 세션 열리는 동안 -->
       <div id="session" v-if="session">
-        <div id="session-header">
+        <div id="session-header" class="d-flex">
           <h1 id="session-title">{{ mySessionId }}</h1>
           <input class="btn btn-large btn-danger" type="button"
             id="buttonLeaveSession" @click="leaveSession" value="Leave session"/>
         </div>
         <!-- WebRTC 목록 -->
-        <div class="container align-items-start justify-content-start">
-          <div class="row">
+        <div>
+          <div class="row d-flex align-items-start justify-content-center">
             <WebRTC :stream-manager="mainStreamManager"/>
             <WebRTC :stream-manager="sub"
               v-for="sub in subscribers"
               :key="sub.stream.connection.connectionId"
               @click="updateMainVideoStreamManager(sub)"
             />
-            <div v-if="this.subscribers.length <= 0" class="webrtcetc col-4"></div>
-            <div v-if="this.subscribers.length <= 1" class="webrtcetc col-4"></div>
-            <div v-if="this.subscribers.length <= 2" class="webrtcetc col-4"></div>
-            <div v-if="this.subscribers.length <= 3" class="webrtcetc col-4"></div>
-            <div v-if="this.subscribers.length <= 4" class="webrtcetc col-4"></div>
+            <div v-if="this.subscribers.length <= 0" class="webrtcetc col-4 m0p0 mb-2 mx-1"></div>
+            <div v-if="this.subscribers.length <= 1" class="webrtcetc col-4 m0p0 mb-2 mx-1"></div>
+            <div v-if="this.subscribers.length <= 2" class="webrtcetc col-4 m0p0 mb-2 mx-1"></div>
+            <div v-if="this.subscribers.length <= 3" class="webrtcetc col-4 m0p0 mb-2 mx-1"></div>
+            <div v-if="this.subscribers.length <= 4" class="webrtcetc col-4 m0p0 mb-2 mx-1"></div>
           </div>
         </div>
       </div>
-      <p class="text-center">
+      <!-- <p class="text-center">
         <button class="btn btn-lg btn-success" @click="start()">게임시작</button>
       </p>
       <p class="text-center">
         <button class="btn btn-lg btn-success" @click="end()">게임종료</button>
-      </p>
+      </p> -->
       <!-- Rooom 버튼 -->
       <RoomButton></RoomButton>
       <!-- 이모티콘 영역 -->
@@ -113,7 +114,7 @@
             <div v-for="(item, i) in recvList" :key="i">
               <div class="mychatting p-0" style="margin-top:0px; margin-bottom:10px;
               margin-left:auto; margin-right:30px; width:220px; height:90px;"
-              v-if="item.p === this.myUserName">
+              v-if="item.p === this.userInfo.nick">
                 <div style="text-align:left; margin-top:5px; margin-left:5px; font-size:large;">
                   <strong>{{item.p}}</strong>
                 </div>
@@ -124,7 +125,7 @@
               </div>
               <div class="yourchatting p-0" style="margin-top:0px; margin-bottom:10px;
               margin-right:auto; margin-left:30px; width:220px; height:90px;"
-              v-if="item.p !== this.myUserName">
+              v-if="item.p !== this.userInfo.nick">
                 <div style="text-align:left; margin-top:5px; margin-left:5px; font-size:large;">
                   <strong>{{item.p}}</strong>
                 </div>
@@ -385,7 +386,7 @@ export default {
       // Sender of the message (after 'session.connect')
       this.session
         .signal({
-          data: `${this.myChat},${this.myUserName}`, // Any string (optional)
+          data: `${this.myChat},${this.userInfo.nick}`, // Any string (optional)
           to: [], // Array of Connection objects (optional. Broadcast to everyone if empty)
           type: 'my-chat', // The type of message (optional)
         })
@@ -483,6 +484,7 @@ export default {
       this.subscribers = [];
       this.OV = undefined;
       window.removeEventListener('beforeunload', this.leaveSession);
+      this.$router.push('/');
     },
 
     updateMainVideoStreamManager(stream) {
@@ -663,8 +665,12 @@ border:1px solid #ccb9a8; border-radius: 10px; background-color: #ccb9a8;}
 solid #ccb9a8; border-top: 10px solid transparent; border-bottom: 10px solid transparent;}
 
 .webrtcetc {
-  width: 600px;
-  height: 362px;
+  /* width: 30%;
+  height:100%; */
+  width:500px;
+  height:360px;
+  text-align:center;
+  vertical-align: middle;
   background-image: url('../../assets/icon/Loading2.gif');
   background-position: center;
   background-size: 30px 30px;
@@ -676,6 +682,11 @@ solid #ccb9a8; border-top: 10px solid transparent; border-bottom: 10px solid tra
   top:100px;
   left:100px;
   z-index: 103;
+}
+
+.m0p0 {
+  margin:0;
+  padding:0;
 }
 
 .row { display: flex; }
