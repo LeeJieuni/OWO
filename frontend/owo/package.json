@@ -21,6 +21,7 @@
     "v-calendar": "^3.0.0-alpha.8",
     "vue": "^3.2.37",
     "vue-router": "^4.0.13",
+    "vue-sweetalert2": "^5.0.5",
     "vue3-carousel": "^0.1.40",
     "vue3-circle-progress": "^1.0.7",
     "vuex": "^4.0.0",

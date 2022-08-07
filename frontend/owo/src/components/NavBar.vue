@@ -72,9 +72,6 @@
                 <router-link to="/mypage/main">
                   <li>마이페이지</li>
                 </router-link>
-                <router-link to="">
-                  <li>환경설정</li>
-                </router-link>
                   <button @click="logout()">로그아웃</button>
               </div>
             </div>
@@ -85,18 +82,12 @@
   </div>
 </template>
 <script>
-// import loginModal from '@/components/MainPage/loginModal.vue';
-// import joinModal from '@/components/MainPage/joinModal.vue';
 import { createNamespacedHelpers } from 'vuex';
 
 const { mapActions, mapGetters } = createNamespacedHelpers('accounts');
 
 export default {
   name: 'NavBar',
-  components: {
-    // loginModal,
-    // joinModal,
-  },
   data() {
     return {
     };

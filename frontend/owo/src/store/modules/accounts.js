@@ -9,7 +9,7 @@ export const accounts = {
     accessToken: null,
     refreshToken: null,
     userInfo: {
-      nick: '안녕하세요?',
+      nick: '',
       gender: '',
       age: '',
       height: '',
@@ -50,7 +50,7 @@ export const accounts = {
     SET_REFRESH_TOKEN: (state, token) => {
       state.refreshToken = token;
     },
-    SET_USER_INFO: (state, payload) => {
+    SET_USER_INFO: (state, payload) => {//로그인 시 반환되는 유저정보 state에 할당
       state.userInfo.id = payload.id;
       state.userInfo.email = payload.email;
       state.userInfo.nick = payload.nick;
@@ -98,8 +98,8 @@ export const accounts = {
       commit('SET_ACCESS_TOKEN', token);
     },
     saveRefreshToken({ commit }, token) {
-      sessionStorage.setItem('refreshToken', token);
-      commit('SET_REFRESH_TOKEN', token);
+      sessionStorage.setItem('refreshToken', token);// 세션스토리지에 리프레시 토큰 저장
+      commit('SET_REFRESH_TOKEN', token);//state 할당
     },
     removeToken({ commit }) {
       commit('SET_ACCESS_TOKEN', null);
@@ -111,7 +111,7 @@ export const accounts = {
     setUserInfo({ commit }, payload) {
       commit('SET_USER_INFO', payload);
     },
-    login({ dispatch, commit }, credentials) {
+    login({ dispatch, commit }, credentials) {//로그인
       axios.post('https://i7c202.p.ssafy.io:8282/auth/login', credentials)
         .then((res) => {
           const response = res.data.data;
@@ -144,7 +144,7 @@ export const accounts = {
           }
         });
     },
-    logout({ state, dispatch }) {
+    logout({ state, dispatch }) {//로그아웃
       // eslint-disable-next-line
       axios({
         url: 'https://i7c202.p.ssafy.io:8282/api/logout',
@@ -164,7 +164,7 @@ export const accounts = {
           console.log(err);
         });
     },
-    register({ dispatch, state }, payload) {
+    register({ dispatch, state }, payload) {//회원가입
       axios.post('https://i7c202.p.ssafy.io:8282/auth/join', payload)
         .then((res) => {
           const response = res.data.data;
@@ -181,7 +181,41 @@ export const accounts = {
           console.log(payload);
         });
     },
-    fetchPhysicalInfo({ state, commit }) {
+    fidPassword({ state }, payload) {//비밀번호 찾기
+      axios({
+        url:'https://i7c202.p.ssafy.io:8282/api/authpassword',
+        method: 'get',
+        header: {
+          'X-AUTH-TOKEN': state.accessToken,
+          'REFRESH-TOKEN': state.refreshToken,
+        },
+        data: state.userInfo.email, //사용자 이메일 데이터를 이용해서 password 찾기
+      })
+        .then((res) => {
+          console.log(res); 
+        })
+        .catch((err => {
+          console.log(err);
+        }))
+    },
+    passwordChg({ state, dispatch }, payload) {//비밀번호 변경
+      axios({
+        url:'',
+        method: '',
+        header: {
+          'X-AUTH-TOKEN': state.accessToken,
+          'REFRESH-TOKEN': state.refreshToken,
+        },
+        data: payload,
+      })
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+    },
+    physicalInfo({ state, commit }) {
       axios({
         url: `https://i7c202.p.ssafy.io:8282/api/user/bmi/${state.userInfo.id}`,
         method: 'get',
@@ -197,51 +231,9 @@ export const accounts = {
           console.log(err);
         });
     },
-    setSlogan({ commit }, payload) {
-      commit('SET_SLOGAN', payload);
-    },
-    fetchSlogan({ state, commit }) {
-      axios({
-        url: `https://i7c202.p.ssafy.io:8282/api/user/slogan/${state.userInfo.id}`,
-        method: 'get',
-        headers: {
-          'X-AUTH-TOKEN': state.accessToken,
-          'REFRESH-TOKEN': state.refreshToken,
-        },
-      })
-        .then((res) => {
-          // console.log(res);
-          commit('SET_SLOGAN', res.data.data);
-          // dispatch('setSlogan', res.data.data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
-    updateSlogan({ state, dispatch }, payload) {
-      console.log('axios 하기 전');
-      axios({
-        url: 'https://i7c202.p.ssafy.io:8282/api/user',
-        method: 'put',
-        headers: {
-          'X-AUTH-TOKEN': state.accessToken,
-          'REFRESH-TOKEN': state.refreshToken,
-          'Content-Type': 'application/json',
-        },
-        data: payload,
-      })
-        .then((res) => {
-          console.log('res');
-          console.log(res.data.data);
-          console.log(payload);
-          dispatch('setSlogan', payload.slogan);
-          // router.push({ name: 'MyPageMainView' });
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
     updateUserInfo({ state, dispatch }, payload) {
+      console.log(payload);
+      console.log('액시오스하기전');
       axios({
         url: 'https://i7c202.p.ssafy.io:8282/api/user',
         method: 'put',
