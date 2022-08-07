@@ -7,6 +7,7 @@ import { accounts } from '@/store/modules/accounts';
 import { openvidu } from '@/store/modules/openvidu';
 import { meetingroom } from '@/store/modules/meetingroom';
 import { room } from '@/store/modules/room';
+import { emoji } from '@/store/modules/emoji';
 
 const store = new Vuex.Store({
   modules: {
@@ -14,6 +15,7 @@ const store = new Vuex.Store({
     openvidu,
     meetingroom,
     room,
+    emoji,
   },
   plugins: [
     createPersistedState({

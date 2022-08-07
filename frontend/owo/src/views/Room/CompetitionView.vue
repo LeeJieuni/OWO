@@ -21,7 +21,7 @@
           <button class="btn btn-lg btn-success" @click="getRoomList(mode[2])">게임방 목록</button>
         </p>
       </div>
-
+      <!-- 세션 없다면 이동 -->
       <div id="join" v-if="!session">
         <div id="img-div">
           <img src="resources/images/openvidu_grey_bg_transp_cropped.png" alt="" />
@@ -47,15 +47,17 @@
           </div>
         </div>
       </div>
+      <!-- 세션 열리는 동안 -->
       <div id="session" v-if="session">
         <div id="session-header">
           <h1 id="session-title">{{ mySessionId }}</h1>
           <input class="btn btn-large btn-danger" type="button"
             id="buttonLeaveSession" @click="leaveSession" value="Leave session"/>
         </div>
+        <!-- WebRTC 목록 -->
         <div class="container align-items-start justify-content-start">
           <div class="row">
-            <WebRTC :stream-manager="mainStreamManager" />
+            <WebRTC :stream-manager="mainStreamManager"/>
             <WebRTC :stream-manager="sub"
               v-for="sub in subscribers"
               :key="sub.stream.connection.connectionId"
@@ -75,7 +77,19 @@
       <p class="text-center">
         <button class="btn btn-lg btn-success" @click="end()">게임종료</button>
       </p>
+      <!-- Rooom 버튼 -->
       <RoomButton></RoomButton>
+      <!-- 이모티콘 영역 -->
+      <div class="emoji_position" v-if="Emoji_ONOFF">
+        <div class="row">
+          <!-- apple, google, twitter, facebook -->
+          <Picker :data="emojiIndex" set="twitter" @select="showEmoji" />
+        </div>
+      </div>
+      <button @click="open_emoji" class="open_emoji">
+        <img class="menu_icon" src="@/assets/icon/emoji.png" alt="emoji">
+      </button>
+      <!-- 채팅 영역 -->
       <div v-if="this.session">
         <button v-if="chatONOFF" @click="chatoff" class="chat">
           <img class="chatimg" src="@/assets/icon/commentoff.png" alt="">
@@ -123,6 +137,7 @@
           </div>
         </div>
       </div>
+      <!-- 채팅영역 끝 -->
     </div>
   </div>
 </template>
@@ -132,6 +147,9 @@ import WebRTC from '@/components/Room/WebRTC.vue';
 import RoomButton from '@/components/Room/RoomButton.vue';
 import axios from 'axios';
 import { OpenVidu } from 'openvidu-browser';
+import emojidata from 'emoji-mart-vue-fast/data/all.json';
+import 'emoji-mart-vue-fast/css/emoji-mart.css';
+import { Picker, EmojiIndex } from 'emoji-mart-vue-fast/src';
 import { mapState, mapActions, mapMutations } from 'vuex';
 
 axios.defaults.headers.post['Content-Type'] = 'application/json';
@@ -139,15 +157,21 @@ axios.defaults.headers.post['Content-Type'] = 'application/json';
 const openvidu = 'openvidu';
 const accounts = 'accounts';
 const meetingroom = 'meetingroom';
+const emojiIndex = new EmojiIndex(emojidata);
+const emoji = 'emoji';
+
 export default {
   name: 'CompetitionView',
   components: {
     Timer,
     WebRTC,
     RoomButton,
+    Picker,
   },
   data() {
     return {
+      emojiIndex,
+      emojisOutput: '',
       OV: undefined,
       session: undefined,
       mainStreamManager: undefined,
@@ -159,8 +183,11 @@ export default {
       myChat: '',
       recvList: [],
       chatONOFF: false,
+      Emoji_ONOFF: null,
       roomName: '붙어보자!',
       gameName: '팔굽혀펴기',
+      myemoji: '',
+      emojiList: [],
     };
   },
   setup() {},
@@ -168,7 +195,8 @@ export default {
     this.sessionId = this.$route.params.sessionId;
     this.joinSession(this.sessionId);
   },
-  moundted() {},
+  moundted() {
+  },
   unmounted() {},
   watch: {
     mySessionId() {},
@@ -193,6 +221,7 @@ export default {
   },
 
   computed: {
+    ...mapState(emoji, ['allEmojiList']),
     ...mapState(accounts, ['accessToken', 'userInfo']),
     ...mapState(openvidu, ['OPENVIDU_SERVER_URL', 'OPENVIDU_SERVER_SECRET']),
     ...mapState(meetingroom, ['mySessionId', 'meetingRoomList', 'camera', 'mic']),
@@ -200,6 +229,7 @@ export default {
     // ...meetingRoomHelper.mapState(["sessionID", "meetingRoomList"]),
   },
   methods: {
+    ...mapActions(emoji, ['changeEmojiList', 'removeEmojiList']),
     ...mapMutations(meetingroom, ['SET_SESSION_ID']),
     ...mapActions(meetingroom, [
       'makeSession',
@@ -317,6 +347,13 @@ export default {
         // console.log(this.recvList[0].m);
       });
 
+      this.session.on('signal:my-emoji', (event) => {
+        const chatdata2 = event.data.split(',');
+        const obj = [chatdata2[1], chatdata2[0]];
+        this.emojiList.push(obj);
+        this.changeEmojiList(this.emojiList);
+      });
+
       // Receiver of the message (usually before calling 'session.connect')
       this.session.on('signal:start', (event) => {
         console.log(event);
@@ -330,6 +367,18 @@ export default {
       });
 
       window.addEventListener('beforeunload', this.leaveSession);
+    },
+
+    sendEmoji() {
+      this.session
+        .signal({
+          data: `${this.myemoji},${this.userInfo.nick}`,
+          to: [],
+          type: 'my-emoji',
+        })
+        .then(() => {
+        })
+        .catch(() => {});
     },
 
     sendMassage() {
@@ -419,6 +468,8 @@ export default {
     },
 
     async leaveSession() {
+      this.removeEmojiList();
+      this.removeEmoji();
       // --- Leave the session by calling 'disconnect' method over the Session object ---
       if (this.session) this.session.disconnect();
       const requestDto = {
@@ -431,7 +482,6 @@ export default {
       this.publisher = undefined;
       this.subscribers = [];
       this.OV = undefined;
-
       window.removeEventListener('beforeunload', this.leaveSession);
     },
 
@@ -519,6 +569,16 @@ export default {
     chaton() {
       this.chatONOFF = true;
     },
+    open_emoji() {
+      this.Emoji_ONOFF = !this.Emoji_ONOFF;
+    },
+    showEmoji(e) {
+      this.myemoji = e.native;
+      this.sendEmoji();
+    },
+    removeEmoji() {
+      this.emojiList = [];
+    },
   },
 };
 </script>
@@ -530,6 +590,22 @@ div {
   width: 100vw;
   height: 100vh;
 } */
+
+.menu_icon {
+  width:50px;
+}
+
+.emoji_position {
+  position:fixed;
+  bottom: 100px;
+  left: 20px;
+}
+
+.open_emoji {
+  position:fixed;
+  bottom: 30px;
+  left: 30px;
+}
 
 .chat {
   position:fixed;
@@ -594,4 +670,14 @@ solid #ccb9a8; border-top: 10px solid transparent; border-bottom: 10px solid tra
   background-size: 30px 30px;
   background-repeat: no-repeat;
 }
+
+.Emoji {
+  position:fixed;
+  top:100px;
+  left:100px;
+  z-index: 103;
+}
+
+.row { display: flex; }
+.row > * { margin: auto; }
 </style>

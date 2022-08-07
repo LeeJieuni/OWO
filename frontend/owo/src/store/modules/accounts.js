@@ -9,7 +9,7 @@ export const accounts = {
     accessToken: null,
     refreshToken: null,
     userInfo: {
-      nick: '',
+      nick: '안녕하세요?',
       gender: '',
       age: '',
       height: '',
