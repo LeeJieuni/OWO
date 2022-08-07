@@ -360,7 +360,7 @@ public class RecordController {
 
     @ApiOperation(value = "사용자의 운동 지속 날짜 조회",notes = "사용자가 오늘 혹은 어제로부터 지속적으로 운동한 날짜 일 수를 조회한다.")
     @ApiImplicitParam(name = "memberId",value = "사용자 id",dataType = "int",paramType = "path")
-    @GetMapping("/record/lastingDay/{memberId}")
+    @GetMapping("/api/record/lastingDay/{memberId}")
     public ResponseEntity<?> findLastingDay(@PathVariable("memberId") int memberId){
         Message message = new Message();
         HttpHeaders headers= new HttpHeaders();

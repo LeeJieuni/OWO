@@ -19,7 +19,7 @@ public class EmailController {
 
 
     // 인증 URL이 담긴 이메일을 전송받은 사용자가 URL을 클릭 시 해당 URI로 매핑됨
-    @GetMapping("/confirm-email")
+    @GetMapping("/api/confirm-email")
     public ResponseEntity<String> viewConfirmEmail(@Valid @RequestParam String token){
         try {
             boolean result = emailService.verifyEmail(token);
@@ -32,7 +32,7 @@ public class EmailController {
 
     }
 
-    @GetMapping("/confirm-email-password")
+    @GetMapping("/api/confirm-email-password")
     public ResponseEntity<String> viewConfirmPassword(@Valid @RequestParam String token){
         try {
             emailService.verifyPasswordToken(token);

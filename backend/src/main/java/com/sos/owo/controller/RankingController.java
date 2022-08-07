@@ -25,7 +25,7 @@ public class RankingController {
     private final RankService rankService;
 
     @ApiOperation(value = "랭킹 조회(1~3위)",notes = "랭킹(1위~3위)의 리스트를 불러온다.")
-    @GetMapping("/rankingList")
+    @GetMapping("/api/rankingList")
     public ResponseEntity<?> getRankingList(){
         Message message = new Message();
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -78,7 +78,7 @@ public class RankingController {
     }
 
     @ApiOperation(value = "랭킹 리셋관련 api(크론탭사용)",notes = "어제의 운동왕을 조회하는 부분입니다.")
-    @GetMapping("/rank/reset")
+    @GetMapping("/api/rank/reset")
     public ResponseEntity<?> reset(){
         Message message = new Message();
         HttpHeaders httpHeaders = new HttpHeaders();

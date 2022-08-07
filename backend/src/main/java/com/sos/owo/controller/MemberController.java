@@ -54,7 +54,7 @@ public class MemberController {
     private String uploadPath;
 
     @ApiOperation(value = "회원가입",notes = "email과 password를 받아서 회원가입을 한다.")
-    @PostMapping("/auth/join")
+    @PostMapping("/api/auth/join")
     public ResponseEntity<?> signUp(@RequestBody MemberSaveRequestDto requestDto){
         Message message = new Message();
         HttpHeaders headers= new HttpHeaders();
@@ -214,7 +214,7 @@ public class MemberController {
     }
 
     @ApiOperation(value = "로그인 요청",notes = "email과 password로 로그인을 요청한다.")
-    @PostMapping("/auth/login")
+    @PostMapping("/api/auth/login")
     public ResponseEntity<?> login(@RequestBody MemberRequestLoginDto memberRequestLoginDto){
         System.out.println(memberRequestLoginDto.getEmail());
         Message message = new Message();
