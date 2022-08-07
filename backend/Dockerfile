@@ -1,4 +1,5 @@
 FROM openjdk:11-jdk
+EXPOSE 8282
 CMD ["./mvnw", "clean", "package"]
 VOLUME /tmp
 ARG JAR_FILE=build/libs/demo-0.0.1-SNAPSHOT.jar
