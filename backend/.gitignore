@@ -1,6 +1,6 @@
 HELP.md
 .gradle
-#build/
+build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
@@ -33,12 +33,5 @@ out/
 /nbdist/
 /.nb-gradle/
 
-
 ### VS Code ###
 .vscode/
-
-#application-oauth.properties
-#application.properties
-#keystore.p12
-
-
