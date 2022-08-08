@@ -138,7 +138,7 @@ export default {
     console.log('이미지시작')
     console.log(profileImg);
     console.log('이미지끝')
-    Methods
+    // Methods
     const onInputImage = () => {
       const input = document.querySelector('.input-image');
       console.log(input.files);
