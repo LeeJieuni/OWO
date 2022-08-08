@@ -14,7 +14,7 @@ export const ranking = {
     },
     SET_MY_RANKING: (state, payload) => {
       state.myranking = payload;
-    } 
+    },
   },
   actions: {
     getRankingList({ commit }) {
@@ -26,13 +26,13 @@ export const ranking = {
           'REFRESH-TOKEN': state.refreshToken,
         },
       })
-      .then((res) => {
-        console.log(res);
-        commit('SET_RANKIGN_LIST', res)
-      })
-      .catch((err) => {
-        console.log(err);
-      })
+        .then((res) => {
+          console.log(res);
+          commit('SET_RANKIGN_LIST', res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
     getMyRanking({ commit }) {
       axios({
@@ -43,14 +43,14 @@ export const ranking = {
           'REFRESH-TOKEN': state.refreshToken,
         },
       })
-      .then((res) => {
-        console.log(res);
-        commit('SET_MY_RANKING', res);
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-    }
+        .then((res) => {
+          console.log(res);
+          commit('SET_MY_RANKING', res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
   },
   getters: {
     rankingList: (state) => state.rankingList,
