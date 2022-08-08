@@ -3,7 +3,6 @@
     <Carousel></Carousel>
     <rankingList/>
     <roomTab></roomTab>
-    <hr>
     <!--TEST -->
     <br><br><br><br>
     <button type="button" class="btn btn-primary"

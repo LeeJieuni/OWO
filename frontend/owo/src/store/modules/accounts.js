@@ -44,7 +44,7 @@ export const accounts = {
       workout2: '', // 운동2 최고기록
       workout3: '', // 운동3 최고기록
     },
-    goals: '',
+    goals: [],
     profileImg: '',
   }),
   mutations: {
@@ -82,9 +82,9 @@ export const accounts = {
       }
     },
     SET_PHYSICAL_INFO: (state, payload) => {
-      state.bmi = payload.bmi;
-      state.bmr = payload.bmr;
-      state.caloriePerDay = payload.caloriePerDay;
+      state.physicalInfo.bmi = payload.bmi;
+      state.physicalInfo.bmr = payload.bmr;
+      state.physicalInfo.caloriePerDay = payload.caloriePerDay;
     },
     SET_SLOGAN: (state, payload) => {
       state.slogan = payload.slogan;
@@ -100,7 +100,7 @@ export const accounts = {
       state.compete.workout2 = payload.workout2;
       state.compete.workout3 = payload.workout3;
     },
-    SET_GOAL: (state, payload) => {
+    SET_GOALS: (state, payload) => {
       state.goals = payload;
     },
   },
@@ -136,7 +136,7 @@ export const accounts = {
           dispatch('fetchSlogan'); // 슬로건 조회
           dispatch('fetchPoint'); // 포인트 조회
           dispatch('fetchCompete'); // 경쟁모드 최고기록 조회
-          dispatch('fetchGoal'); // 경쟁모드 최고기록 조회
+          dispatch('fetchGoals'); // 경쟁모드 최고기록 조회
           dispatch('fetchProfileImg'); // 경쟁모드 최고기록 조회
           router.push('/'); // main 페이지로 이동
         })
@@ -255,16 +255,13 @@ export const accounts = {
           console.log(err);
         });
     },
-    fetchPhysicalInfo({ state, commit }, payload) {
+    fetchPhysicalInfo({ state, commit }) {
       axios({
         url: `https://i7c202.p.ssafy.io:8282/api/user/bmi/${state.userInfo.id}`,
         method: 'get',
         headers: {
           'X-AUTH-TOKEN': state.accessToken,
           'REFRESH-TOKEN': state.refreshToken,
-        },
-        data: {
-          payload,
         },
       })
         .then((res) => {
@@ -383,7 +380,10 @@ export const accounts = {
           console.log(err);
         });
     },
-    fetchPoint({ state, commit }) {
+    setPoint({ commit }, payload) {
+      commit('SET_POINT', payload);
+    },
+    fetchPoint({ state, dispatch }) {
       axios({
         url: `https://i7c202.p.ssafy.io:8282/api/user/point/${state.userInfo.id}`,
         method: 'get',
@@ -395,13 +395,16 @@ export const accounts = {
         .then((res) => {
           // console.log(res.data.message);
           console.log(res.data.data);
-          commit('SET_POINT', res.data.data);
+          dispatch('setPoint', res.data.data);
         })
         .catch((err) => {
           console.log(err);
         });
     },
-    fetchCompete({ state, commit }) {
+    setCompete({ commit }, payload) {
+      commit('SET_POINT', payload);
+    },
+    fetchCompete({ state, dispatch }) {
       axios({
         url: `https://i7c202.p.ssafy.io:8282/api/user/compete/${state.userInfo.id}`,
         method: 'get',
@@ -413,7 +416,7 @@ export const accounts = {
         .then((res) => {
           // console.log(res.data.message);
           console.log(res.data.data);
-          commit('SET_COMPETE', res.data.data);
+          dispatch('setCompete', res.data.data);
         })
         .catch((err) => {
           console.log(err);
@@ -424,7 +427,7 @@ export const accounts = {
     },
     fetchGoals({ state, dispatch }) {
       axios({
-        url: `https://i7c202.p.ssafy.io:8282/api/user/compete/${state.userInfo.id}`,
+        url: `https://i7c202.p.ssafy.io:8282/api/user/goal/${state.userInfo.id}`,
         method: 'get',
         headers: {
           'X-AUTH-TOKEN': state.accessToken,
@@ -439,9 +442,26 @@ export const accounts = {
           console.log(err);
         });
     },
+    addGoals({ state, dispatch }, payload) {
+      axios({
+        url: `https://i7c202.p.ssafy.io:8282/api/user/goal/${state.userInfo.id}`,
+        method: 'post',
+        headers: {
+          'X-AUTH-TOKEN': state.accessToken,
+          'REFRESH-TOKEN': state.refreshToken,
+        },
+        data: payload,
+      })
+        .then((res) => {
+          dispatch('setGoals', res.data.data);
+        })
+        .catch((err) => {
+          console.log(err.toJSON());
+        });
+    },
     updateGoals({ state, dispatch }, payload) {
       axios({
-        url: 'https://i7c202.p.ssafy.io:8282/api/user',
+        url: `https://i7c202.p.ssafy.io:8282/api/user/goal/${state.userInfo.id}`,
         method: 'put',
         headers: {
           'X-AUTH-TOKEN': state.accessToken,

@@ -13,9 +13,10 @@
           <div v-if="!isLogin" class="d-flex">
             <!--dropdows1-rooms-->
             <li class="menu1 mypages nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+              <a class="nav-link dropdown-toggle pe-3"
+                href="#" role="button" data-bs-toggle="dropdown"
                 aria-expanded="false">
-                <span> Rooms</span>
+                <span>Rooms</span>
               </a>
               <ul class="dropdown-menu">
                 <li>
@@ -61,7 +62,7 @@
               </li>
               <div class="navbar-brand mb-0 h1">
                 <span>안녕하세요
-                <router-link to="/mypage/main"><span class="welcome">{{ userInfo.nick }}</span>
+                <router-link to="/mypage/main"><span class="nickToMypage">{{ userInfo.nick }}</span>
                 </router-link> 님,
                   반갑습니다!</span>
               </div>
@@ -72,7 +73,7 @@
                 <router-link to="/mypage/main">
                   <li>마이페이지</li>
                 </router-link>
-                  <button @click="logout(), alert()">로그아웃</button>
+                  <button class="logout-btn" @click="logout(), alert()">로그아웃</button>
               </div>
             </div>
           </div>
@@ -159,8 +160,7 @@ li {
 }
 
 .navbar-brand {
-  font-size: 1.2rem;
-  font-weight: 900;
+  font-size: 1rem;
 }
 
 .global-nav-links,
@@ -182,7 +182,7 @@ li {
 
 .menu1 {
   margin-left: 2em;
-  font-size: 0.8rem;
+  font-size: 1rem;
 }
 
 .navli {
@@ -195,12 +195,11 @@ li {
 
 .local-nav-links .product-name {
   margin-right: auto;
-  font-size: 1.2rem;
-  font-weight: 900;
+  font-size: 1rem;
 }
 
 .local-nav-links a {
-  font-size: 0.8rem;
+  /* font-size: 0.5rem; */
 }
 
 .local-nav-links a:not(.product-name) {
@@ -213,18 +212,16 @@ li {
 
 .dropdown-menu {
   min-width: 5rem;
-  font-size: 14px;
+  font-size: 0.8rem;
   line-height: 1.4rem;
   padding: 10px;
 }
 
-.welcome {
+/* .nickToMypage {
   font-size: 20px;
-  font-weight: lighter;
-  color: black;
+  color: rgb(73, 73, 73);
   text-decoration: underline;
-}
-
+} */
 .dropdown {
   position: relative;
   display: inline-block;
@@ -252,5 +249,11 @@ li {
 
 .dropdown-content li {
   padding: 5px;
+}
+.logout-btn {
+  border: none;
+  background-color: #F9F9F9
+}
+li, router-link {
 }
 </style>

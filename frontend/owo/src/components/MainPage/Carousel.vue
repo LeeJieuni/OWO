@@ -18,19 +18,26 @@
         <h1><span class="owo"># 오운완</span>과 함께 시작해볼까요?</h1>
         <p class="first-intro-text"><span class="owo"># 오운완</span>과 함께 하신 회원님들입니다!</p>
         <p class="first-intro-text">여러분들도 재미있게 운동을 즐기실 수 있습니다!</p>
-        <div class="btns">
-          <router-link to="/login"><b-button pill variant="outline-light"
-          class="btn-lg start-btn">Start with us!</b-button></router-link>
-          <!-- <b-button pill class="btn-lg">What is <span class="owo"># 오운완</span>?</b-button> -->
-        </div>
+        <!-- <div class="btns"> -->
+        <router-link v-if="!isLogin" to="/login">
+          <b-button pill variant="outline-secondary" class="btn-lg start-btn">
+            Start with us!
+          </b-button>
+        </router-link>
+        <a v-else to="">
+          <b-button pill variant="outline-secondary" class="btn-lg start-btn">
+            Start with us!
+          </b-button>
+        </a>
+        <!-- </div> -->
       </div>
-      <hr/>
 </div>
 </template>
 
 <script>
-import { defineComponent } from 'vue';
+import { defineComponent, reactive, computed } from 'vue';
 import { Carousel, Slide } from 'vue3-carousel';
+import { useStore } from 'vuex';
 
 import 'vue3-carousel/dist/carousel.css';
 
@@ -40,13 +47,36 @@ export default defineComponent({
     Carousel,
     Slide,
   },
+  setup() {
+    const store = useStore();
+    const isLogin = computed(() => store.getters['accounts/isLogin']);
+    const state = reactive({
+      selected: '',
+      options: [
+        { text: '없음', value: '1' },
+        { text: '약간', value: '2' },
+        { text: '중간', value: '3' },
+        { text: '많음', value: '4' },
+        { text: '매우 많음', value: '5' },
+      ],
+    });
+    return {
+      state,
+      isLogin,
+    };
+  },
 });
 </script>
 
 <style scope>
 .owo-text {
-  color: #4E8AFF;
+  /* color: #4E8AFF; */
   font-size: 32px;
+}
+.owo {
+  /* color: #4E8AFF; */
+  font-weight: 600;
+  text-shadow: #7b7b7b 1px 1px;
 }
 .container-fluid {
   padding-top: 30px;
@@ -67,12 +97,13 @@ export default defineComponent({
   justify-content: center;
   align-items: center;
 }
-.start-btn {
-
-}
 .lg-title {
   font-weight: 800;
-  font-size:
+  font-size: 28px;
+}
+.start-btn {
+  border-radius: 30%;
+  margin-bottom: 30px;
 }
 
 .carousel__slide {
@@ -87,9 +118,5 @@ export default defineComponent({
 .first-intro-text {
   font-size: 18px;
   line-height: 15px;
-}
-.owo {
-  font-weight: 600;
-  text-shadow: #7b7b7b 1px 1px;
 }
 </style>

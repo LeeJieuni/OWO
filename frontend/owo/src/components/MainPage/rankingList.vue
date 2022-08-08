@@ -3,7 +3,7 @@
     <h1 class="title">오늘의 운동왕은 누구?</h1>
     <b-card-group deck class="d-flex justify-content-evenly">
       <b-card class="rounded-5 cards">
-        <h4 class="card-title">어제 운동왕</h4>
+        <h5 class="card-title">어제 운동왕</h5>
         <div class="ranking1">
           <b-button block pill size='lg' variant="primary">
             1위 {{userrank.username}}님  {{userrank.workoutTime}}분</b-button>
@@ -22,26 +22,26 @@
             {{userrank.rate}}위 {{userrank.username}}님 {{userrank.workoutTime}}분</b-button>
         </div>
       </b-card>
-
-    <b-card title='"운동왕의 Record"' class="rounded-5">
-      <h2>{{userrank.username}}</h2>
-      <div class="d-flex justify-content-center" sytle="margin-bottom: 10px">
-        <circle-progress
-          class="progress-bar"
-          :percent="80"
-          :show-percent="true"
-          :viewport="true"
-          :size="200"/>
-      </div>
-      <h3 style="margin-top:10px">연속 3일동안 운동하고 있어요!</h3>
-    </b-card>
-    <b-card title="나의 운동분석" class="rounded-5">
-     <!-- <v-calendar ></v-calendar> -->
-     <v-date-picker is-range v-model="date" is-expanded></v-date-picker>
-    </b-card>
-  </b-card-group>
-  <div></div>
-  <hr/>
+      <b-card class="rounded-5 cards">
+        <h5 class="card-title">운동왕의 record</h5>
+        <h2>{{userrank.username}}</h2>
+        <div class="d-flex justify-content-center" sytle="margin-bottom: 10px">
+          <circle-progress
+            class="progress-bar"
+            :percent="80"
+            :show-percent="true"
+            :viewport="true"
+            :size="100"/>
+        </div>
+        <h5>연속 3일동안 운동하고 있어요!</h5>
+      </b-card>
+      <b-card class="rounded-5 cards">
+        <h5 class="card-title">나의 운동 기록</h5>
+        <MySmCalendar/>
+      <!-- <v-calendar ></v-calendar> -->
+      <!-- <v-date-picker is-range v-model="date" is-expanded></v-date-picker> -->
+      </b-card>
+    </b-card-group>
   </div>
 </template>
 
@@ -81,12 +81,16 @@ export default {
 <style scoped>
 .body {
   background-color: #CEDFFF;
-  height: 100%;
+  height: 700px;
 }
 /* .b-card-group {
   display: flex;
   justify-content: center;
 } */
+.card-title {
+  font-size: 24px;
+  font-weight: 700;
+}
 .cards {
   max-width: 400px;
   max-height: 400px;

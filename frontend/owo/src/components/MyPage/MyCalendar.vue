@@ -4,7 +4,7 @@
       <h2>
         <a class="month-change-btn" href="#"
           @click.prevent="onClickPrev(currentMonth)">◀</a>
-          {{currentYear}}년 {{currentMonth}}월
+          <span class="date-title">{{currentYear}}년 {{currentMonth}}월</span>
         <a class="month-change-btn" href="#" v-on:click.prevent="onClickNext(currentMonth)">▶</a>
       </h2>
     </div>
@@ -20,13 +20,15 @@
         <tbody>
           <tr v-for="(row, index) in currentCalendarMatrix" :key="index">
             <td class="day-td" v-for="(day, index2) in row" :key="index2">
-              <a href="#" v-if="isToday(currentYear, currentMonth, day)"
-                class="rounded days"
+              <a v-if="isToday(currentYear, currentMonth, day)" class="today day-a" href="#"
                 @click="selectDay(currentMonth, day)" v-b-modal="'myModal'">
                 {{day}}
               </a>
+              <!-- <a>
+                <img class="stamp" src="@/assets/icon/stamps/evaluate1.png" alt=""></img>
+              </a> -->
               <span v-else>
-                <a class="days" href="#" @click="selectDay(currentMonth, day)"
+                <a class="days day-a" href="#" @click="selectDay(currentMonth, day)"
                   v-b-modal="'myModal'">{{day}}</a>
               </span>
             </td>
@@ -271,6 +273,9 @@ export default {
   padding-bottom: 20px;
   padding-left: 50px;
 }
+.date-title {
+  font-family: 'Black Han Sans', sans-serif;
+}
 .calendar {
   max-width: 600px;
 }
@@ -291,12 +296,16 @@ export default {
   color: black;
   padding: 5px;
 }
+.today {
+  color: #4E8AFF;
+  text-decoration: none;
+}
 .rounded {
   -moz-border-radius:20px 20px 20px 20px;
   border-radius:20px 20px 20px 20px;
-  border:solid 1px #ffffff;
+  /* border:solid 1px #ffffff; */
   background-color:#4E8AFF;
-  padding: 5px 8px;
+  padding: 3px 6px;
   color:#ffffff;
 }
 .carousel-box {
@@ -351,6 +360,19 @@ export default {
   letter-spacing: -1.5;
   text-align: center;
 }
+.stamp-div {
+}
+.stamp{
+  /* margin: 0 auto; */
+  /* margin-top: -5px; */
+  width: 40px;
+}
+.day-a {
+  font-size: 20px;
+  font-weight: 900;
+  font-family: 'Righteous', cursive;
+}
+
 .tag-name {
   text-align: center;
 }
@@ -362,7 +384,7 @@ export default {
 
 }
 .tag p {
-  text-align: left;
+  /* text-align: left; */
 }
 .table {
   /* --bs-table-hover-bg: rgba(75, 172, 237, 0.08); */
@@ -371,15 +393,27 @@ export default {
   --bs-table-hover-bg: rgba(0, 6, 10, 0.08);
   padding: 20px;
 }
-th, td {
-  border: 1px solid #444444;
+td {
+  border: 0.5px solid #c5c5c5;
+  /* text-align: left; */
+  height: 70px;
+  width: 70px;
+  /* padding: 20px; */
 }
 .table > a {
   text-decoration: none;
+  font-size: 20px;
+  /* padding: 20px; */
+  /* text-align: left; */
 }
 .weekNames {
-  font-size: 18px;
+  font-size: 24px;
   font-weight: 900;
+  text-align: center;
+  align-items: center;
+  line-height: 40px;
+  height: 10px;
+  font-family: 'Black Han Sans', sans-serif;
 }
 
 /* 모달 스타일링 */

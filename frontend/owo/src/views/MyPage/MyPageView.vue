@@ -185,4 +185,8 @@ export default {
   .container {
     height: 100%;
   }
+  button {
+    border: none;
+    background-color: white;
+  }
 </style>
