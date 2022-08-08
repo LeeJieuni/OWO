@@ -50,12 +50,12 @@ import { useStore } from 'vuex';
 import { reactive, computed } from 'vue';
 import 'vue3-circle-progress/dist/circle-progress.css';
 import CircleProgress from 'vue3-circle-progress';
-import MySmCalendar from '../MyPage/MySmCalendar.vue';
+// import MySmCalendar from '../MyPage/MySmCalendar.vue';
 
 export default {
   components: {
     CircleProgress,
-    MySmCalendar,
+    // MySmCalendar,
   },
   setup() {
     const store = useStore();

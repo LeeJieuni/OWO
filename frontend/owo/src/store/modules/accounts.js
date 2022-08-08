@@ -255,7 +255,7 @@ export const accounts = {
           console.log(err);
         });
     },
-    fetchPhysicalInfo({ state, commit }) {
+    fetchPhysicalInfo({ state, commit }, payload) {
       axios({
         url: `https://i7c202.p.ssafy.io:8282/api/user/bmi/${state.userInfo.id}`,
         method: 'get',
@@ -264,7 +264,7 @@ export const accounts = {
           'REFRESH-TOKEN': state.refreshToken,
         },
         data: {
-          payload
+          payload,
         },
       })
         .then((res) => {

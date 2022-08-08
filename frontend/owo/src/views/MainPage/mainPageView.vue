@@ -3,7 +3,6 @@
     <Carousel></Carousel>
     <rankingList/>
     <roomTab></roomTab>
-    <button @click="isNull">콘솔찍기</button>
     <hr>
     <!--TEST -->
     <br><br><br><br>
