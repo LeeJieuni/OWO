@@ -111,9 +111,9 @@ export const accounts = {
     setUserInfo({ commit }, payload) {
       commit('SET_USER_INFO', payload);
     },
-    login({ dispatch, commit }, credentials) { // 로그인
-      axios
-        .post('https://i7c202.p.ssafy.io:8282/auth/login', credentials).then((res) => {
+    login({ dispatch, commit }, credentials) {
+      axios.post('https://i7c202.p.ssafy.io:8282/api/auth/login', credentials)
+        .then((res) => {
           const response = res.data.data;
           const access = response.accessToken;
           const refresh = response.refreshToken;
@@ -164,9 +164,8 @@ export const accounts = {
           console.log(err);
         });
     },
-    register({ dispatch, state }, payload) { // 회원가입
-      axios
-        .post('https://i7c202.p.ssafy.io:8282/auth/join', payload)
+    register({ dispatch, state }, payload) {
+      axios.post('https://i7c202.p.ssafy.io:8282/api/auth/join', payload)
         .then((res) => {
           const response = res.data.data;
           console.log(response);

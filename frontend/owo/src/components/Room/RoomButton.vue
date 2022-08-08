@@ -143,10 +143,6 @@ export default {
     width:30px;
 }
 
-.menu_icon2 {
-    width:25px;
-}
-
 .menu_icon3 {
     width:15px;
 }

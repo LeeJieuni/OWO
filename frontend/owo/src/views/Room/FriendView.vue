@@ -29,7 +29,7 @@
       </button>
       <br>
       <br>
-      <AChat v-if="chatONOFF"></AChat>
+      <!-- <AChat v-if="chatONOFF"></AChat> -->
     </div>
   </div>
 </template>
@@ -37,7 +37,7 @@
 import Timer from '@/components/SetTimer.vue';
 import WebRTCFriend from '@/components/Room/WebRTCFriend.vue';
 import RoomButton from '@/components/Room/RoomButton.vue';
-import AChat from '@/components/Room/AChat.vue';
+// import AChat from '@/components/Room/AChat.vue';
 
 export default {
   name: 'FriendView',
@@ -45,7 +45,7 @@ export default {
     Timer,
     WebRTCFriend,
     RoomButton,
-    AChat,
+    // AChat,
   },
   data() {
     return {

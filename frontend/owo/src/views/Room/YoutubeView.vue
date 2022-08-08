@@ -41,14 +41,14 @@
       </button>
       <br>
       <br>
-      <AChat v-if="chatONOFF"></AChat>
+      <!-- <AChat v-if="chatONOFF"></AChat> -->
     </div>
 </div>
 </template>
 <script>
 import Timer from '@/components/SetTimer.vue';
 import RoomButton from '@/components/Room/RoomButton.vue';
-import AChat from '@/components/Room/AChat.vue';
+// import AChat from '@/components/Room/AChat.vue';
 import WebRTCYoutube from '../../components/Room/WebRTCYoutube.vue';
 
 export default {
@@ -57,7 +57,7 @@ export default {
     Timer,
     WebRTCYoutube,
     RoomButton,
-    AChat,
+    // AChat,
   },
   data() {
     return {

@@ -1,25 +1,11 @@
 <template>
-  <div class="webrtctag col-4 m0p0 mb-2 mx-1">
-    <!-- <div class="m0p0">
-      <button id="img" @click="get_out">
-        <img style="width: 25px" src="@/assets/icon/get_out.png" alt="" />
-      </button>
-    </div> -->
-    <!-- <p>개인 WebRTC 영상</p> -->
-    <div v-if="streamManager" class="position-relative m0p0">
-      <div class="myreaction">{{newAllEMojiList[0]}}</div>
-      <p class="myname">&ensp;{{ clientData }}&ensp;</p>
-      <!-- <img class="mymic" v-if="!mic" src="@/assets/icon/micmute.png" alt=""> -->
-      <ov-video class="ov-video" :stream-manager="streamManager" />
-    </div>
-  </div>
+  <ov-video class="ov-video" :stream-manager="streamManager" />
 </template>
 <script>
 import { mapState } from 'vuex';
 import OvVideo from './OvVideo.vue';
 
 const emoji = 'emoji';
-// const meetingroom = 'meetingroom';
 
 export default {
   components: {
@@ -50,7 +36,6 @@ export default {
 
   computed: {
     ...mapState(emoji, ['allEmojiList']),
-    // ...mapState(meetingroom, ['mic']),
     newAllEMojiList() {
       const newList = [];
       for (let i = this.allEmojiList.length - 1; i >= 0; i -= 1) {
@@ -85,7 +70,6 @@ export default {
 .m0p0 {
   margin:0;
   padding:0;
-  border-radius: 10px;
 }
 
 #img:hover {
@@ -93,8 +77,8 @@ export default {
 }
 
 .webrtctag {
-  width:500px;
-  height:300px;
+  width:80%;
+  height:80%;
 }
 
 .myname {
@@ -116,16 +100,7 @@ export default {
 }
 
 .ov-video {
-  width: 100%;
-  height: 100%;
+  width: 50%;
   border-radius: 20px;
-}
-
-.mymic {
-  position:absolute;
-  bottom:20px;
-  right:10px;
-  font-size:15px;
-  width:50px;
 }
 </style>
