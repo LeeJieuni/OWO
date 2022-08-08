@@ -1,70 +1,63 @@
 <template>
-<div class="container p-0 justify-content-center">
-  <div class="row">
-    <div class="profile">
+<div>
+  <div class="d-flex justify-content-center">
+    <div class="row sidebar-row d-flex justify-content-center pt-4">
       <div class="img-wrapper">
-        <!-- <img
+        <img
           class="profile-img"
-          :src="profileImg"
+          :src="state.profileSrc"
           alt="프로필이미지"
-        > -->
+        >
       </div>
         <p class="name" v-once>
           {{ user.nick }} <span class="sm-name">님</span>
         </p>
+      </div>
     </div>
-    <div>
-      <!-- <button type="button" class="btn btn-primary"
-        data-bs-toggle="modal" data-bs-target="#exampleModal">
-          ImgBtn
-      </button> -->
+    <div class="row sidebar-row">
       <button
-        v-b-modal.image-upload class="btn btn-outline-secondary m-2">
-        <!-- <img class="menu_icon2" src="@/assets/icon/room_end.png" alt="mic_off"> -->
+        v-b-modal.image-upload class="btn btn-outline-secondary">
         이미지 변경
       </button>
     </div>
-
-    <div>
+    <div class="row sidebar-row">
       <p>이번주 운동 목표</p>
-          <form action="">
-            <label for="goal-type">
-              <select v-model="state.inputGoalType"
-                class="form-select form-select-sm goal-type-select"
-                name="radio" id="goal_type">
-                <option value="CARDIOVASCULAR">유산소</option>
-                <option value="HEALTH">헬스</option>
-                <option value="STRETCHING">스트레칭</option>
-                <option value="CALISTHENICS">맨몸운동</option>
-                <option value="YOGA">요가</option>
-                <option value="PILATES">필라테스</option>
-                <option value="ETC">기타</option>
-              </select></label><br>
-            <input
-              type="number"
-              name="goalHour"
-              style="width: 70px;"
-              v-model="state.inputGoalHour"
-              min='1'> 시간 <br>
-            <button @click="addGoal($event)" class="top-btns btn btn-outline-secondary">추가</button>
-            <button @click="registGoal($event)"
-              class="top-btns btn btn-outline-warning">등록</button>
-          </form>
-        <div class="tags row">
-          <button
-            v-for="(goal, i) in goals"
-            :key="i"
-            class="tag"
-            @click="tagDelete">
-            <p>{{goal.exercise}} {{goal.hour}}H</p>
-          </button>
-        </div>
+      <form action="">
+        <label for="goal-type">
+          <select v-model="state.inputGoalType"
+            class="form-select form-select-sm goal-type-select"
+            name="radio" id="goal_type">
+            <option value="CARDIOVASCULAR">유산소</option>
+            <option value="HEALTH">헬스</option>
+            <option value="STRETCHING">스트레칭</option>
+            <option value="CALISTHENICS">맨몸운동</option>
+            <option value="YOGA">요가</option>
+            <option value="PILATES">필라테스</option>
+            <option value="ETC">기타</option>
+          </select>
+        </label>
+        <input
+          type="number"
+          name="goalHour"
+          style="width: 70px;"
+          v-model="state.inputGoalHour"
+          min='1'> 시간 <br>
+        <button @click="addGoal($event)" class="top-btns btn btn-outline-secondary">추가</button>
+        <button @click="registGoal($event)"
+          class="top-btns btn btn-outline-warning">등록</button>
+      </form>
     </div>
-    <div>
-      <img src="" alt="">
+    <div class="tags row sidebar-row">
+      <button
+        v-for="(goal, i) in goals"
+        :key="i"
+        class="tag"
+        @click="tagDelete">
+        <p>{{goal.exercise}} {{goal.hour}}H</p>
+      </button>
     </div>
 
-    <div class="sidebar-menus text-center justify-content-center pe-0">
+    <div class="sidebar-row sidebar-menus text-center justify-content-center">
       <button class="row sidebar-menu">
         <router-link class="sidebar-menu" to="/mypage/main">운동 기록</router-link>
       </button>
@@ -79,7 +72,6 @@
       </button>
     </div>
   </div>
-</div>
 </template>
 <script>
 import { useStore } from 'vuex';
@@ -87,6 +79,11 @@ import { reactive, computed } from 'vue';
 
 export default {
   name: 'MyPageUpdateView',
+  data() {
+    return {
+      // profileSrc: require('https://src.hidoc.co.kr/image/lib/2021/4/28/1619598179113_0.jpg'),
+    };
+  },
   setup() {
     const store = useStore(); // 필수
     // Getters
@@ -108,6 +105,7 @@ export default {
       },
       inputGoalHour: 0,
       inputGoalType: '',
+      profileSrc: 'https://src.hidoc.co.kr/image/lib/2021/4/28/1619598179113_0.jpg',
     });
 
     const addGoal = () => {
@@ -139,16 +137,15 @@ export default {
     console.log(profileImg);
     console.log('이미지끝')
     // Methods
-    const onInputImage = () => {
-      const input = document.querySelector('.input-image');
-      console.log(input.files);
-    };
+    // const onInputImage = () => {
+    //   const input = document.querySelector('.input-image');
+    //   console.log(input.files);
+    // };
 
     return {
       state,
       user,
       addGoal,
-      // tagDelete,
       goals,
       profileImg,
     };
@@ -178,6 +175,11 @@ export default {
     object-fit: cover;
     margin: auto;
   }
+
+  .sidebar-row {
+    padding: 0;
+    margin: 0;
+  }
   .name {
     font-weight: 900;
     font-size: 25px;
@@ -194,7 +196,7 @@ export default {
     height: 26px;
     border: solid #828282 1px;
     display:inline-block;
-    border-radius: 20px;
+    border-radius: 10px;
     padding: 4px;
     margin: 2px;
     font-size: 12px;
@@ -220,37 +222,38 @@ export default {
     /* border: solid black 1px; */
     /* border-radius: 5px; */
     /* margin: 5px; */
-    /* padding: 10px; */
+    padding: 0;
+    margin: 0;
     width: 100%;
     height: 40px;
-    background-color: #2E2E2E;
-    box-shadow: 3px 3px 5px gray;
+
+    /* box-shadow: 3px 3px 5px gray; */
     /* display: table; */
     display: flex;
     justify-content: center;
     align-items: center;
   }
   .sidebar-menu > a {
-    color: white;
     font-weight: 700;
     text-decoration: none;
+    color: black;
     /* display: table-cell;
     vertical-align: middle;
     text-align: center; */
   }
   .sidebar-menu:hover {
-    background-color: #F6F7F9;
-    color: black;
+    background-color: #2E2E2E;
+    color: white;
     transition: 0.3s;
+    width: 100%;
   }
   .sidebar-menu > a:hover {
-    color: black;
+    color: white;
     transition: 0.1s;
     font-weight: 900;
     font-size: 16px;
   }
   .sidebar-menu > a:active {
-    color: #4E8AFF;
     transition: 0.1s;
     font-weight: 900;
     font-size: 16px;

@@ -24,28 +24,6 @@
       </div>
     </b-modal>
 
-    <!-- <div class="modal fade" id="exampleModal" tabindex="-1"
-    aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-            <button type="button" class="btn-close"
-            data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <form enctype="multipart/form-data">
-              <label for="profileImag">이미지
-                <input class="input-image" accept="image/*" type="file"
-                  ref="profileImg" @change.prevent="updateProfileImg($event)" id="profileImg">
-              </label>
-              <button class="send-btn" @click.prevent="updateProfileImg($event)">이미지버튼</button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div> -->
-
     <!-- <div class="background-box"> -->
       <div class="front-box row">
         <div class="mypageContainer row">
@@ -178,6 +156,7 @@ export default {
     opacity: 93%;
     /* padding: 35px; */
     margin-bottom: 100px;
+    padding: 0;
   }
   .title {
     border-bottom: solid #DFDFDF 1px;

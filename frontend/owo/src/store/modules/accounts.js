@@ -21,9 +21,9 @@ export const accounts = {
       email: '',
     },
     physicalInfo: {
-      bmi: null,
-      bmr: null,
-      caloriePerDay: null,
+      bmi: '',
+      bmr: '',
+      caloriePerDay: '',
     },
     slogandata: '',
     image: '',
@@ -70,9 +70,9 @@ export const accounts = {
       }
     },
     SET_PHYSICAL_INFO: (state, payload) => {
-      state.physicalInfo.bmi = payload.bmi;
-      state.physicalInfo.bmr = payload.bmr;
-      state.physicalInfo.caloriePerDay = payload.caloriePerDay;
+      state.bmi = payload.bmi;
+      state.bmr = payload.bmr;
+      state.caloriePerDay = payload.caloriePerDay;
     },
     SET_SLOGAN: (state, payload) => {
       state.slogan = payload.slogan;
@@ -215,7 +215,7 @@ export const accounts = {
           console.log(err);
         });
     },
-    physicalInfo({ state, commit }) {
+    fetchPhysicalInfo({ state, commit }) {
       axios({
         url: `https://i7c202.p.ssafy.io:8282/api/user/bmi/${state.userInfo.id}`,
         method: 'get',
@@ -236,9 +236,51 @@ export const accounts = {
           console.log(err);
         });
     },
+    setSlogan({ commit }, payload) {
+      commit('SET_SLOGAN', payload);
+    },
+    fetchSlogan({ state, commit }) {
+      axios({
+        url: `https://i7c202.p.ssafy.io:8282/api/user/slogan/${state.userInfo.id}`,
+        method: 'get',
+        headers: {
+          'X-AUTH-TOKEN': state.accessToken,
+          'REFRESH-TOKEN': state.refreshToken,
+        },
+      })
+        .then((res) => {
+          // console.log(res);
+          commit('SET_SLOGAN', res.data.data);
+          // dispatch('setSlogan', res.data.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    updateSlogan({ state, dispatch }, payload) {
+      console.log('axios 하기 전');
+      axios({
+        url: 'https://i7c202.p.ssafy.io:8282/api/user',
+        method: 'put',
+        headers: {
+          'X-AUTH-TOKEN': state.accessToken,
+          'REFRESH-TOKEN': state.refreshToken,
+          'Content-Type': 'application/json',
+        },
+        data: payload,
+      })
+        .then((res) => {
+          console.log('res');
+          console.log(res.data.data);
+          console.log(payload);
+          dispatch('setSlogan', payload.slogan);
+          // router.push({ name: 'MyPageMainView' });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
     updateUserInfo({ state, dispatch }, payload) {
-      console.log(payload);
-      console.log('액시오스하기전');
       axios({
         url: 'https://i7c202.p.ssafy.io:8282/api/user',
         method: 'put',
@@ -339,7 +381,10 @@ export const accounts = {
           console.log(err);
         });
     },
-    fetchGoal({ state, commit }) {
+    setGoals({ commit }, payload) {
+      commit('SET_GOALS', payload);
+    },
+    fetchGoals({ state, dispatch }) {
       axios({
         url: `https://i7c202.p.ssafy.io:8282/api/user/compete/${state.userInfo.id}`,
         method: 'get',
@@ -349,12 +394,28 @@ export const accounts = {
         },
       })
         .then((res) => {
-          // console.log(res.data.message);
           console.log(res.data.data);
-          commit('SET_GOAL', res.data.data);
+          dispatch('setGoals', res.data.data);
         })
         .catch((err) => {
           console.log(err);
+        });
+    },
+    updateGoals({ state, dispatch }, payload) {
+      axios({
+        url: 'https://i7c202.p.ssafy.io:8282/api/user',
+        method: 'put',
+        headers: {
+          'X-AUTH-TOKEN': state.accessToken,
+          'REFRESH-TOKEN': state.refreshToken,
+        },
+        data: payload,
+      })
+        .then((res) => {
+          dispatch('setGoals', res.data.data);
+        })
+        .catch((err) => {
+          console.log(err.toJSON());
         });
     },
   },
