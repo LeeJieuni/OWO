@@ -52,8 +52,7 @@
         <div v-else class="no-bmi">
           <div class="bmi-solution pt-2 text-start">
             <p class="rg-font">
-              {{physical.bmi}}
-              정보가 부족합니다.
+              {{bmiText}}
               <router-link
                 to="/mypage/update"
                 class="link">{{state.bmiNotEnoughInfo}} 추가하기</router-link>
@@ -71,7 +70,7 @@
           <template #title>BMR</template>
           숨만 쉬고 잠만 잘 때 사용되는 생명 유지를 위한 <b>최소한의 열량</b>
         </b-popover>
-        <div class="info">
+        <div v-if="physical.bmr > 0" class="info yes-bmr">
           <div class="progress">
             <div class="progress-bar"
               role="progressbar" aria-label="Segment 1"
@@ -86,6 +85,9 @@
           </div>
           <p class="kcal" :style="'color:' + state.bmrColor">{{ state.bmr }} kcal</p>
           <p>{{ state.bmrText }}</p>
+        </div>
+        <div v-else class="no-bmr">
+          정보가 부족합니다.
         </div>
       </div>
     </div>
@@ -128,7 +130,9 @@ export default {
       bmiNotEnoughInfo: '',
       avgMinBmr: 0,
       avgMaxBmr: 0,
+      bmiText: '',
       bmrText: '',
+      caloriePerDayText: '',
       bmrPercent: 0,
       bmrColor: '',
     });
@@ -139,11 +143,38 @@ export default {
     };
   },
   created() {
-    this.state.bmr = Math.round(this.physical.bmr);
+    console.log('test');
+    console.log(this.physical.bmi);
+
+    // physical info 반올림
+    this.state.bmi = this.physical.bmi;
+    this.state.bmr = this.physical.bmr;
+    this.state.caloriePerDay = this.physical.caloriePerDay;
+
+    // user 정보 부족 시 bmi, bmr, calorie 초기화
     // eslint-disable-next-line
     if (this.user.gender === '' || this.user.weight === '' || this.user.weight === '' || this.user.height === '' || this.user.activityLevel === '') {
-      this.physical.bmr = '신체정보를 추가해주세요!';
+      this.state.bmrText = '신체정보를 추가해주세요!';
     }
+
+    // bmr
+    // if (this.physical.bmr == null || this.physical.bmr <= 0) {
+    //   this.state.bmr = 0;
+    // } else {
+    //   this.state.bmr = Math.round(this.physical.bmr);
+    // }
+
+    // BMI를 계산하기에 부족한 정보 분류
+    if (!this.physical.bmi || this.physical.bmi === 0) {
+      if (!this.user.weight && this.user.height > 0) {
+        this.state.bmiNotEnoughInfo = '몸무게';
+      } else if (this.user.weight > 0 && !this.user.height) {
+        this.state.bmiNotEnoughInfo = '키';
+      } else if (!this.user.weight && !this.user.height) {
+        this.state.bmiNotEnoughInfo = '몸무게, 키';
+      }
+    }
+
     // 성별에 따른 기초대사량 계산 (미플린-지어(Mifflin-St.Jeor)공식)
     // if (this.user.gender === 'femail') {
     //   this.physical.bmr = Math.round(
@@ -154,22 +185,12 @@ export default {
     //     (10 * this.user.weight) + (6.25 * this.user.height) - (5 * this.user.age) + 5,
     //   );
     // }
-    const activityrule = [1.2, 1.375, 1.55, 1.725, 1.9];
+    // const activityrule = [1.2, 1.375, 1.55, 1.725, 1.9];
 
     // // BMI
+    // this.physical.bmi = Math.round(this.user.weight / ((this.user.height / 100) ** 2));
     // eslint-disable-next-line
-    this.physical.caloriePerDay = Math.round(activityrule[this.user.activityLevel - 1] * this.physical.bmr);
-    // console.log(this.user);
-    this.physical.bmi = Math.round(this.user.weight / ((this.user.height / 100) ** 2));
-    if (!this.physical.bmi || this.physical.bmi === 0) {
-      if (!this.user.weight && this.user.height > 0) {
-        this.state.bmiNotEnoughInfo = '몸무게';
-      } else if (this.user.weight > 0 && !this.user.height) {
-        this.state.bmiNotEnoughInfo = '키';
-      } else if (!this.user.weight && !this.user.height) {
-        this.state.bmiNotEnoughInfo = '몸무게, 키';
-      }
-    }
+    // this.physical.caloriePerDay = Math.round(activityrule[this.user.activityLevel - 1] * this.physical.bmr);
 
     // // 성별, 나이별 평균 기초대사량
     if (this.user.gender === 'male') {

@@ -3,16 +3,16 @@
     <div class="month-title">
       <h2>
         <a class="month-change-btn" href="#"
-          @click.prevent="onClickPrev(currentMonth)">◀</a>
-          {{currentYear}}년 {{currentMonth}}월
-        <a class="month-change-btn" href="#" v-on:click.prevent="onClickNext(currentMonth)">▶</a>
+          @click.prevent="onClickPrev(currentMonth)"
+        >◀</a><span class="calendar-title">{{currentYear}}년 {{currentMonth}}월</span><a
+          class="month-change-btn" href="#" v-on:click.prevent="onClickNext(currentMonth)">▶</a>
       </h2>
     </div>
     <div class="calendar-table">
       <table class="table table-hover">
         <thead>
           <tr>
-            <td class="weekNames" v-for="(weekName, index) in weekNames" v-bind:key="index">
+            <td v-for="(weekName, index) in weekNames" v-bind:key="index">
               {{weekName}}
             </td>
           </tr>
@@ -33,9 +33,6 @@
           </tr>
         </tbody>
       </table>
-
-      <router-link to="/slide">변화 한 눈에 보기</router-link>
-
       <b-modal id="myModal" size="lg" button-size="sm" scrollable ref="myModal"
       class="myModal"
         :title="`${currentYear}년 ${currentMonth}월 ${day}일`" hide-header>
@@ -124,7 +121,7 @@
 
 <script>
 export default {
-  name: 'MyCalendar',
+  name: 'MySmCalendar',
   data() {
     return {
       weekNames: ['월', '화', '수', '목', '금', '토', '일'],
@@ -264,19 +261,13 @@ export default {
 </script>
 
 <style scoped>
-.my-calendar-title {
-  text-align: left;
-  padding-top: 50px;
-  font-size: 22px;
-  padding-bottom: 20px;
-  padding-left: 50px;
-}
 .calendar {
-  max-width: 600px;
+  width: 100%;
+  margin: 0 auto;
 }
 .calendar-table {
-  margin-left: 50px;
-  margin-right: 50px;
+  /* margin-left: 10px;
+  margin-right: 10px; */
 }
 .month-change-btn {
   text-decoration: none;
@@ -289,14 +280,14 @@ export default {
 .days {
   text-decoration: none;
   color: black;
-  padding: 5px;
+  padding: 3px;
 }
 .rounded {
   -moz-border-radius:20px 20px 20px 20px;
   border-radius:20px 20px 20px 20px;
   border:solid 1px #ffffff;
   background-color:#4E8AFF;
-  padding: 5px 8px;
+  padding: 5px 7px;
   color:#ffffff;
 }
 .carousel-box {
@@ -319,14 +310,12 @@ export default {
 }
 .carousel {
   display: flex;
-  /* padding: 50px; */
 }
 .exercise-type-box {
   margin-bottom: 10px;
 }
 .modalImg {
   display: flex;
-  /* justify-content: center; */
   margin: 0 auto;
   Background-size : cover;
 }
@@ -340,12 +329,10 @@ export default {
   border: solid #828282 0px;
   display:inline-block;
   border-radius: 10px;
-  /* padding: 4px; */
   margin: 2px;
   font-size: 12px;
   font-weight: 700;
   background-color:#4E8AFF;
-  /* padding-left: 10px; */
   line-height: 25px;
   color: white;
   letter-spacing: -1.5;
@@ -364,55 +351,23 @@ export default {
 .tag p {
   text-align: left;
 }
-.table {
+table {
   /* --bs-table-hover-bg: rgba(75, 172, 237, 0.08); */
+  width: 300px;
+  margin: 0 auto;
+}
+td, th {
+  padding: 0;
 }
 .day-td  {
+  padding: 7px;
   --bs-table-hover-bg: rgba(0, 6, 10, 0.08);
-  padding: 20px;
-}
-th, td {
-  border: 1px solid #444444;
+  border-bottom: 0;
 }
 .table > a {
   text-decoration: none;
 }
-.weekNames {
+.calendar-title {
   font-size: 18px;
-  font-weight: 900;
-}
-
-/* 모달 스타일링 */
-.myModal a, .myModal p:not(.memo) {
-  font-family: 'NanumSquareRound';
-}
-.lg-title {
-  font-weight: 900;
-  font-size: 30px;
-  text-align: center;
-  padding-bottom: 20px;
-}
-
-.people-title, .exercise-type-box {
-  text-align: center;
-  font-size: 18px;
-  font-weight: 700;
-}
-.people-img {
-  border-radius: 50%;
-}
-.memo-box {
-  border: solid black 1px;
-  margin: 20px;
-  padding: 20px;
-  margin-bottom: 50px;
-  border-radius: 10px;
-}
-.memo {
-  text-align: justify;
-  font-family: 'Fairytale_ddobak';
-  font-weight: 600;
-  font-size: 20px;
-  /* letter-spacing: 2; */
 }
 </style>

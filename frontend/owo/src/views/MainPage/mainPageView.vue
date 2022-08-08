@@ -50,12 +50,21 @@
 import Carousel from '@/components/MainPage/Carousel.vue';
 import rankingList from '@/components/MainPage/rankingList.vue';
 import roomTab from '@/components/MainPage/roomTab.vue';
+import { createNamespacedHelpers } from 'vuex';
+import swal from 'sweetalert2';
+
+window.Swal = swal;
+
+const { mapGetters } = createNamespacedHelpers('accounts');
 
 export default {
   components: {
     Carousel,
     rankingList,
     roomTab,
+  },
+  computed: {
+    ...mapGetters(['userInfo', 'isLogin']),
   },
   setup() {
     const onInputImage = () => {
@@ -65,6 +74,17 @@ export default {
     return {
       onInputImage,
     };
+  },
+  created() {
+    if (this.userInfo.weight === null && this.isLogin === true) {
+      this.$swal({
+        title: '#오운완',
+        html:
+          '추가 정보를 입력하시면, 더 많은 서비스를 이용하실 수 있습니다. <a href="mypage/update"><strong>마이페이지</strong></a>로 이동하기',
+        icon: 'info',
+        showCloseButton: true,
+      });
+    }
   },
 };
 </script>

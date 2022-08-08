@@ -29,6 +29,18 @@ const routes = [
     meta: { unauthorized: true },
   },
   {
+    path: '/social',
+    name: 'TestPage',
+    component: TestView,
+    meta: { unauthorized: true },
+  },
+  {
+    path: '/oauth/redirect',
+    name: 'OauthRedrect',
+    component: OauthRedirect,
+    meta: { unauthorized: true },
+  },
+  {
     path: '/register',
     name: 'register',
     component: register,
@@ -44,6 +56,7 @@ const routes = [
     path: '/mypage',
     name: 'MyPage',
     component: MyPageView,
+    meta: { unauthorized: true },
     children: [
       {
         path: 'main',

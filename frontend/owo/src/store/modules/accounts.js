@@ -1,5 +1,9 @@
 import router from '@/router';
 import axios from 'axios';
+import swal from 'sweetalert2';
+
+window.Swal = swal;
+
 // eslint-disable-next-line
 export const accounts = {
   namespaced: true,
@@ -8,6 +12,10 @@ export const accounts = {
     isLoginErr: false,
     accessToken: null,
     refreshToken: null,
+    signupInfo: {
+      signupErr: false,
+      message: '',
+    },
     userInfo: {
       nick: '',
       gender: '',
@@ -21,9 +29,9 @@ export const accounts = {
       email: '',
     },
     physicalInfo: {
-      bmi: null,
-      bmr: null,
-      caloriePerDay: null,
+      bmi: '',
+      bmr: '',
+      caloriePerDay: '',
     },
     slogandata: '',
     image: '',
@@ -40,6 +48,10 @@ export const accounts = {
     profileImg: '',
   }),
   mutations: {
+    SET_SIGNUP_MSG: (state, message) => {
+      state.signupInfo.message = message;
+      state.signupInfo.singupErr = true;
+    },
     SET_LOGIN_ERR: (state, message) => {
       state.LoginErr = message;
       state.isLoginErr = true;
@@ -70,9 +82,9 @@ export const accounts = {
       }
     },
     SET_PHYSICAL_INFO: (state, payload) => {
-      state.physicalInfo.bmi = payload.bmi;
-      state.physicalInfo.bmr = payload.bmr;
-      state.physicalInfo.caloriePerDay = payload.caloriePerDay;
+      state.bmi = payload.bmi;
+      state.bmr = payload.bmr;
+      state.caloriePerDay = payload.caloriePerDay;
     },
     SET_SLOGAN: (state, payload) => {
       state.slogan = payload.slogan;
@@ -133,11 +145,21 @@ export const accounts = {
             if (err.response.data.message === '회원가입 이메일 인증이 필요합니다.') {
               commit('SET_LOGIN_ERR', err.response.data.message);
               sessionStorage.removeItem('vuex');
+              swal.fire(
+                '#오운완',
+                '회원가입 이메일 인증이 필요합니다.',
+                'warning',
+              );
               // router.push('/emailVerify');
             } else if (err.response.data.message === '이메일 혹은 비밀번호가 맞지 않습니다.') {
               // alert(err.response.data.message);
               commit('SET_LOGIN_ERR', err.response.data.message);
               sessionStorage.removeItem('vuex');
+              swal.fire(
+                '#오운완',
+                '이메일 혹은 비밀번호가 맞지 않습니다.',
+                'warning',
+              );
             } else {
               commit('SET_LOGIN_ERR', err.response.data.message); // 서버 error
             }
@@ -155,7 +177,6 @@ export const accounts = {
         },
       })
         .then(() => {
-          alert('로그아웃');
           dispatch('removeToken');
           dispatch('setUserInfo', null);
           router.push('/');
@@ -164,24 +185,43 @@ export const accounts = {
           console.log(err);
         });
     },
-    register({ dispatch, state }, payload) {
-      axios.post('https://i7c202.p.ssafy.io:8282/api/auth/join', payload)
+    register({ commit }, credentials) {
+      axios({
+        url: 'https://i7c202.p.ssafy.io:8282/api/auth/join',
+        method: 'post',
+        data: credentials,
+      })
         .then((res) => {
-          const response = res.data.data;
-          console.log(response);
-          dispatch('setUserInfo', response);
-          router.push('/');
-          console.log(state.userInfo);
+          commit('SET_SIGNUP_MSG', res.data.message);
+          swal.fire(
+            '#오운완',
+            '회원가입 성공! 이메일 인증 후 로그인 해주세요!',
+            'success',
+          );
+          router.push('/login');
         })
         .catch((err) => {
-          console.log(err.response.data);
           if (err.response.data === 'OVERLAP') {
-            alert('회원가입한 이력이 있습니다.');
+            commit('SET_SIGNUP_MSG', '이미 회원가입 된 이메일입니다.');
+            swal.fire(
+              '#오운완',
+              '이미 회원가입 된 이메일입니다.',
+              'warning',
+            );
+            // alert(state.signupInfo.message);
+            // router.push('/login');
+          } else {
+            commit('SET_SIGNUP_MSG', '회원가입에 실패했습니다. 다시 시도해 주세요.');
+            swal.fire(
+              '#오운완',
+              '회원가입에 실패했습니다. 다시 시도해 주세요.',
+              'warning',
+            );
+            // alert(state.signupInfo.message);
           }
-          console.log(payload);
         });
     },
-    fidPassword({ state }) { // 비밀번호 찾기
+    findPassword({ state }) { // 비밀번호 찾기
       axios({
         url: 'https://i7c202.p.ssafy.io:8282/api/authpassword',
         method: 'get',
@@ -215,7 +255,7 @@ export const accounts = {
           console.log(err);
         });
     },
-    physicalInfo({ state, commit }) {
+    fetchPhysicalInfo({ state, commit }, payload) {
       axios({
         url: `https://i7c202.p.ssafy.io:8282/api/user/bmi/${state.userInfo.id}`,
         method: 'get',
@@ -224,9 +264,7 @@ export const accounts = {
           'REFRESH-TOKEN': state.refreshToken,
         },
         data: {
-          // bmi,
-          // bmr,
-          // caloriePerDay,
+          payload,
         },
       })
         .then((res) => {
@@ -236,9 +274,51 @@ export const accounts = {
           console.log(err);
         });
     },
+    setSlogan({ commit }, payload) {
+      commit('SET_SLOGAN', payload);
+    },
+    fetchSlogan({ state, commit }) {
+      axios({
+        url: `https://i7c202.p.ssafy.io:8282/api/user/slogan/${state.userInfo.id}`,
+        method: 'get',
+        headers: {
+          'X-AUTH-TOKEN': state.accessToken,
+          'REFRESH-TOKEN': state.refreshToken,
+        },
+      })
+        .then((res) => {
+          // console.log(res);
+          commit('SET_SLOGAN', res.data.data);
+          // dispatch('setSlogan', res.data.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    updateSlogan({ state, dispatch }, payload) {
+      console.log('axios 하기 전');
+      axios({
+        url: 'https://i7c202.p.ssafy.io:8282/api/user',
+        method: 'put',
+        headers: {
+          'X-AUTH-TOKEN': state.accessToken,
+          'REFRESH-TOKEN': state.refreshToken,
+          'Content-Type': 'application/json',
+        },
+        data: payload,
+      })
+        .then((res) => {
+          console.log('res');
+          console.log(res.data.data);
+          console.log(payload);
+          dispatch('setSlogan', payload.slogan);
+          // router.push({ name: 'MyPageMainView' });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
     updateUserInfo({ state, dispatch }, payload) {
-      console.log(payload);
-      console.log('액시오스하기전');
       axios({
         url: 'https://i7c202.p.ssafy.io:8282/api/user',
         method: 'put',
@@ -339,7 +419,10 @@ export const accounts = {
           console.log(err);
         });
     },
-    fetchGoal({ state, commit }) {
+    setGoals({ commit }, payload) {
+      commit('SET_GOALS', payload);
+    },
+    fetchGoals({ state, dispatch }) {
       axios({
         url: `https://i7c202.p.ssafy.io:8282/api/user/compete/${state.userInfo.id}`,
         method: 'get',
@@ -349,17 +432,34 @@ export const accounts = {
         },
       })
         .then((res) => {
-          // console.log(res.data.message);
           console.log(res.data.data);
-          commit('SET_GOAL', res.data.data);
+          dispatch('setGoals', res.data.data);
         })
         .catch((err) => {
           console.log(err);
         });
     },
+    updateGoals({ state, dispatch }, payload) {
+      axios({
+        url: 'https://i7c202.p.ssafy.io:8282/api/user',
+        method: 'put',
+        headers: {
+          'X-AUTH-TOKEN': state.accessToken,
+          'REFRESH-TOKEN': state.refreshToken,
+        },
+        data: payload,
+      })
+        .then((res) => {
+          dispatch('setGoals', res.data.data);
+        })
+        .catch((err) => {
+          console.log(err.toJSON());
+        });
+    },
   },
   getters: {
     isLogin: (state) => !!state.accessToken,
+
     userInfo: (state) => state.userInfo,
     physicalInfo: (state) => state.physicalInfo,
     slogan: (state) => state.slogan,

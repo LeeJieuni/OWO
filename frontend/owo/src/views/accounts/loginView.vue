@@ -18,7 +18,7 @@
           <!-- <div class="findpassword"> -->
             <!-- <b-button variant="link" style="text-align-right" @click="">비밀번호 찾기</b-button> -->
           <!-- </div> -->
-          <small v-if="isLoginErr">{{ LoginErr }}</small>
+          <!-- <small v-if="isLoginErr">{{ LoginErr }}</small> -->
           <div class="alternative-option mt-0">
             오운완 회원이 아니신가요?
             <b-button Style="font-size: 15px" variant="link" @click="moveToRegister">회원가입</b-button>
