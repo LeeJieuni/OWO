@@ -1,6 +1,6 @@
 <template>
-    <div>
-      <div class="d-flex justify-content-center align-items-center">
+    <div style="width:700px;">
+      <div class="d-flex justify-content-between align-items-center">
         <div class="d-flex align-items-center m-0">
             <h3 v-if="timer" class="m-0">
                 {{timerHour}} : {{ timerMinute }} : {{ timerSecond }}
@@ -83,7 +83,7 @@ button {
 }
 button:hover{
     cursor:pointer;
-    background-color: #65c7f7;
+    background-color: #4e8aff;
     color:#fff;
     transition: 0.4s;
     border: none;

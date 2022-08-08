@@ -4,15 +4,18 @@
     <div class="main-container">
       <router-view/>
     </div>
+    <!-- <TeleportExample/> -->
   </div>
 </template>
 
 <script>
-import NavBar from '@/components/NavBar.vue';
+// import TeleportExample from '@/components/MyPage/teleport/TeleportExample.vue';
+import NavBar from './components/NavBar.vue';
 
 export default {
   components: {
     NavBar,
+    // TeleportExample,
   },
 };
 </script>
@@ -62,6 +65,14 @@ font-family: 'NanumSquareRoundExtraBold';
     src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/LeferiPoint-BlackObliqueA.woff') format('woff');
     font-weight: normal;
     font-style: normal;
+}
+
+/* 동화또박 */
+@font-face {
+  font-family: 'Fairytale_ddobak';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/naverfont_03@1.0/Fairytale_ddobak.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
 }
 
 /* Color Palette */

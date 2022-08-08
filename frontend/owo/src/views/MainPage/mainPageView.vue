@@ -1,33 +1,70 @@
 <template>
   <div>
-    <Carousel></Carousel> <br>
-    <div class="intro_text">
-      <h1><span class="owo"># 오운완</span>과 함께 시작해볼까요?</h1><br><br>
-      <p class="first-intro-text"><span class="owo"># 오운완</span>과 함께 하신 회원님들입니다!</p>
-      <p class="first-intro-text">여러분들도 재미있게 운동을 즐기실 수 있습니다!</p> <br>
-      <div class="btns">
-        <router-link to="/login"><b-button pill variant="primary"
-        class="btn-lg start-btn">Start with us!</b-button></router-link>
-        <!-- <b-button pill class="btn-lg">What is <span class="owo"># 오운완</span>?</b-button> -->
+    <Carousel></Carousel>
+    <rankingList/>
+    <roomTab></roomTab>
+    <hr>
+    <!--TEST -->
+    <br><br><br><br>
+    <button type="button" class="btn btn-primary"
+      data-bs-toggle="modal" data-bs-target="#exampleModal">
+        Launch demo modal
+    </button>
+    <div class="modal fade" id="exampleModal" tabindex="-1"
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+            <button type="button" class="btn-close"
+            data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form action="">
+              <label for="profileImag">이미지
+                <input
+                  id="profileImg"
+                  class="input-image"
+                  accept="image/*"
+                  type="file"
+                  ref="profileImg"
+                  @change="onInputImage()"
+                >
+              </label>
+              <button class="send-btn" @click="onClickImgButton">이미지버튼</button>
+            </form>
+          </div>
+          <!-- <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div> -->
+        </div>
       </div>
     </div>
-    <SecondIntro/>
-    <TodayKing/>
-    <transition name="bounce" mode="out-in">
-    </transition>
   </div>
-</template>>
+</template>
 
 <script>
+// import { useStore } from 'vuex';
+// import { reactive, computed } from 'vue';
 import Carousel from '@/components/MainPage/Carousel.vue';
-import SecondIntro from '@/components/MainPage/SecondIntro.vue';
-import TodayKing from '@/components/MainPage/TodayKing.vue';
+import rankingList from '@/components/MainPage/rankingList.vue';
+import roomTab from '@/components/MainPage/roomTab.vue';
 
 export default {
   components: {
     Carousel,
-    TodayKing,
-    SecondIntro,
+    rankingList,
+    roomTab,
+  },
+  setup() {
+    const onInputImage = () => {
+      const input = document.querySelector('.input-image');
+      console.log(input.files[0].type);
+    };
+    return {
+      onInputImage,
+    };
   },
 };
 </script>

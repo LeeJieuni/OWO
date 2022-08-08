@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="title">
-      <h3>{{ user.nick }}님의 캘린더</h3>
+      <p>{{ user.nick }}님의 캘린더 </p>
     </div>
     <div class="calendar">
       <MyCalendar/>
@@ -36,8 +36,13 @@ export default {
 </script>
 
 <style scoped>
+  p {
+    font-weight: 700;
+    font-size: 24px;
+  }
   .title {
-    padding: 50px;
+    padding-top: 40px;
+    padding-bottom: 20px;
   }
   .calendar {
     margin: 0 auto;

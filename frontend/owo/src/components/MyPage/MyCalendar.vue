@@ -1,6 +1,5 @@
 <template>
   <div class="calendar">
-    <p class="my-calendar-title">운동일지</p>
     <div class="month-title">
       <h2>
         <a class="month-change-btn" href="#" v-on:click="onClickPrev(currentMonth)">◀</a>
@@ -20,16 +19,102 @@
         <tbody>
           <tr v-for="(row, index) in currentCalendarMatrix" :key="index">
             <td v-for="(day, index2) in row" :key="index2" style="padding:20px;">
-              <span v-if="isToday(currentYear, currentMonth, day)" class="rounded">
+              <a href="#" v-if="isToday(currentYear, currentMonth, day)" class="rounded"
+                @click="selectDay(currentMonth, day)" v-b-modal="'my-modal'">
                 {{day}}
-              </span>
+              </a>
               <span v-else>
-                {{day}}
+                <a href="#" @click="selectDay(currentMonth, day)" v-b-modal="'my-modal'">{{day}}</a>
               </span>
             </td>
           </tr>
         </tbody>
       </table>
+
+      <router-link to="/slide">변화 한 눈에 보기</router-link>
+
+      <b-modal id="my-modal" size="lg" button-size="sm" scrollable
+        :title="`${currentYear}년 ${currentMonth}월 ${day}일`">
+        <div class="carousel-box">
+
+          <!--카로셀-->
+          <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+              <div class="carousel-item active">
+                <img src="https://phantom-marca.unidadeditorial.es/746e69f29df0fa7da1f9df1cffc2af10/crop/0x20/1499x861/resize/1320/f/jpg/assets/multimedia/imagenes/2022/01/12/16419960151339.jpg" class="d-block w-100" alt="">
+              </div>
+              <div class="carousel-item">
+                <img src="https://cdn.pixabay.com/photo/2016/11/14/03/38/achieve-1822503__480.jpg" class="d-block w-100" alt="">
+              </div>
+              <div class="carousel-item">
+                <img src="https://cdn.pixabay.com/photo/2018/02/06/14/07/ease-3134828__340.jpg" class="d-block w-100" alt="">
+              </div>
+            </div>
+            <button class="carousel-control-prev" type="button"
+              data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button"
+              data-bs-target="#carouselExampleControls" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+          </div>
+
+          <!--태그-->
+          <div class="tags row">
+            <button
+              v-for="(tag, tagI) in tags"
+              :key="tagI"
+              class="tag"
+            >
+              <p class="tag-name"># {{tag}}</p>
+            </button>
+          </div>
+
+          <!--운동 종류-->
+          <div class="exercise-type-box">
+            <p>{{ exerciseType }}</p>
+          </div>
+
+          <!--메모-->
+          <div class="memo-box">
+            <p class="memo">
+              사레레 10*20*3 , 밀리터리 프레스 10*20*3 , 프레 10*20*3 , 벤치프레스 10*20*3 , 스쿼트 40*20*3 ,
+              레그레이즈 20*3 함. 힘들다.. 그래도 친구들이랑 같이 해서 재밌었다!
+            </p>
+          </div>
+
+          <!--함께 운동한 사람-->
+          <div class="people-list">
+            <p class="people-title">함께 운동한 사람</p>
+            <div class="d-flex container-fluid people-img-div justify-content-evenly">
+              <img v-for="(profile, recordI) in record.profiles"
+                :key="recordI" src="https://picsum.photos/50" alt="" class="people-img">
+            </div>
+          </div>
+        </div>
+
+        <template #modal-footer="{}">
+
+          <!-- Emulate built in modal footer ok and cancel button actions -->
+          <!-- <b-button size="sm" variant="success" @click="ok()">
+            OK
+          </b-button>
+          <b-button size="sm" variant="danger" @click="cancel()">
+            Cancel
+          </b-button> -->
+          <b-button size="sm" variant="danger">
+            Cancel
+          </b-button>
+
+          <!-- Button with custom close trigger value -->
+          <!-- <b-button size="sm" variant="outline-secondary" @click="hide('forget')">
+            Forget it
+          </b-button> -->
+        </template>
+      </b-modal>
     </div>
   </div>
 </template>
@@ -49,6 +134,15 @@ export default {
       currentCalendarMatrix: [],
       endOfDay: null,
       memoDatas: [],
+      day: null,
+      tags: ['오운완', '상체', '등', '어깨', '복근'],
+      exerciseType: '헬스',
+      record: {
+        profiles: [
+          'https://picsum.photos/50', 'https://picsum.photos/50', 'https://picsum.photos/50', 'https://picsum.photos/50', 'https://picsum.photos/50', 'https://picsum.photos/50',
+        ],
+      },
+      memo: '사레레 10*20*3 , 사레레 10*20*3 , 사레레 10*20*3 , 사레레 10*20*3 , 사레레 10*20*3 , 사레레 10*20*3 함. 개힘들었다 정말... 내일도 해야하는데 정말 미쳐버리겠다 운동을 좋아서 하는 사람들은 대체 어떤 사람',
     };
   },
   mounted() {
@@ -151,6 +245,13 @@ export default {
       const date = new Date();
       return year === date.getFullYear() && month === date.getMonth() + 1 && day === date.getDate();
     },
+    selectDay(currentMonth, day) {
+      this.day = day;
+    },
+    cancle() {
+      const modal = document.querySelector('.modal');
+      modal('hide');
+    },
   },
 };
 </script>
@@ -172,13 +273,108 @@ export default {
 }
 .month-change-btn {
   text-decoration: none;
+  font-size: 18px;
+  color: gray;
+}
+.month-change-btn:hover {
+  color: #4E8AFF;
 }
 .rounded {
   -moz-border-radius:20px 20px 20px 20px;
   border-radius:20px 20px 20px 20px;
   border:solid 1px #ffffff;
-  background-color:#2b6bd1;
+  background-color:#4E8AFF;
   padding:10px;
   color:#ffffff;
+}
+.carousel-box {
+  margin: 50px;
+}
+/* 캐러셀(이미지슬라이드) 이미지 크기변경 */
+.carousel-inner{
+  width:auto;
+  height:400px; /* 이미지 높이 변경 */
+}
+.carousel-item{
+  width: auto;
+  height:100%;
+}
+.d-block {
+  display:block;
+  width: auto;
+  height: 100%;
+}
+.carousel {
+  display: flex;
+  /* padding: 50px; */
+}
+.exercise-type-box {
+  margin-bottom: 10px;
+}
+.modalImg {
+  display: flex;
+  /* justify-content: center; */
+  margin: 0 auto;
+  Background-size : cover;
+}
+.tags {
+  padding: 10px;
+  margin-bottom: 50px;
+}
+.tag {
+  width: 80px;
+  height: 26px;
+  border: solid #828282 0px;
+  display:inline-block;
+  border-radius: 10px;
+  /* padding: 4px; */
+  margin: 2px;
+  font-size: 12px;
+  font-weight: 700;
+  background-color:#4E8AFF;
+  /* padding-left: 10px; */
+  line-height: 25px;
+  color: white;
+  letter-spacing: -1.5;
+  text-align: center;
+}
+.tag-name {
+  text-align: center;
+}
+.tag:hover {
+  background-color: #DE7474;
+  color: white;
+  transition: 0.2s;
+  cursor: pointer;
+
+}
+.tag p {
+  text-align: left;
+}
+.table > a {
+  text-decoration: none;
+}
+.people-title, .exercise-type-box {
+  text-align: center;
+  font-size: 18px;
+  font-weight: 700;
+}
+.people-img {
+  border-radius: 50%;
+}
+.memo-box {
+  border: solid black 1px;
+  margin: 20px;
+  padding: 20px;
+  margin-bottom: 50px;
+  border-radius: 10px;
+}
+.memo {
+  text-align: justify;
+  font-family: 'Fairytale_ddobak';
+  font-weight: 600;
+  font-size: 20px;
+  /* letter-spacing: 2; */
+
 }
 </style>
