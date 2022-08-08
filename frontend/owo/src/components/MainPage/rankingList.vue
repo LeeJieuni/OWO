@@ -23,26 +23,25 @@
         </div>
       </b-card>
 
-      <b-card class="rounded-5 cards">
-        <h4 class="card-title">운동왕의 record</h4>
-        <h2>{{userrank.username}}</h2>
-        <div class="d-flex justify-content-center" sytle="margin-bottom: 10px">
-          <circle-progress
-            class="progress-bar"
-            :percent="80"
-            :show-percent="true"
-            :viewport="true"
-            :size="100"/>
-        </div>
-        <h3 style="margin-top:10px">연속 3일동안 운동하고 있어요!</h3>
-      </b-card>
-      <b-card class="rounded-5 cards">
-        <h4 class="card-title">나의 운동 기록</h4>
-        <MySmCalendar/>
-      <!-- <v-calendar ></v-calendar> -->
-      <!-- <v-date-picker is-range v-model="date" is-expanded></v-date-picker> -->
-      </b-card>
-    </b-card-group>
+    <b-card title='"운동왕의 Record"' class="rounded-5">
+      <h2>{{userrank.username}}</h2>
+      <div class="d-flex justify-content-center" sytle="margin-bottom: 10px">
+        <circle-progress
+          class="progress-bar"
+          :percent="80"
+          :show-percent="true"
+          :viewport="true"
+          :size="200"/>
+      </div>
+      <h3 style="margin-top:10px">연속 3일동안 운동하고 있어요!</h3>
+    </b-card>
+    <b-card title="나의 운동분석" class="rounded-5">
+     <!-- <v-calendar ></v-calendar> -->
+     <v-date-picker is-range v-model="date" is-expanded></v-date-picker>
+    </b-card>
+  </b-card-group>
+  <div></div>
+  <hr/>
   </div>
 </template>
 

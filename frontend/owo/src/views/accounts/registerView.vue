@@ -2,7 +2,8 @@
   <div>
     <div class="register">
       <div class="container">
-      <form @submit.prevent="register(credentials)" class="registerForm">
+      <form @submit.prevent="register(credentials)"
+      class="registerForm">
       <h2 class="mb-3">회원가입</h2>
       <div class="input">
         <label for="email">아이디<input
@@ -61,7 +62,7 @@
 
 import { createNamespacedHelpers } from 'vuex';
 
-const { mapActions } = createNamespacedHelpers('accounts');
+const { mapActions, mapGetters } = createNamespacedHelpers('accounts');
 
 export default {
   data() {
@@ -73,6 +74,9 @@ export default {
       },
       confirm: '',
     };
+  },
+  computed: {
+    ...mapGetters(['signupInfo']),
   },
   methods: {
     ...mapActions({

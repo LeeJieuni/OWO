@@ -1,13 +1,13 @@
 import axios from 'axios';
-import { mapGetters } from 'vuex';
 
 // eslint-disable-next-line
-export const ranking = {
-  namespaced: true,
-  state: {
+export const mainpage = {
+  state: () => ({
+    userImg: '',
     rankingList: null,
     myranking: null,
-  },
+    achievement: null,
+  }),
   mutations: {
     SET_RANKING_LIST: (state, payload) => {
       state.rankingList = payload;
@@ -15,11 +15,17 @@ export const ranking = {
     SET_MY_RANKING: (state, payload) => {
       state.myranking = payload;
     },
+    SET_USER_IMG: (state, payload) => {
+      state.userImg = payload;
+    },
+    SET_ACHIEVEMENT: (state, payload) => {
+      state.achievement = payload;
+    },
   },
   actions: {
-    getRankingList({ commit }) {
+    getRankingList({ state, commit }) {
       axios({
-        url: `https://i7c202.p.ssafy.io:8282/api/ranking/${sessionStorage.getItem('userInfo.id')}`,
+        url: `https://i7c202.p.ssafy.io:8282/api/ranking/api/${sessionStorage.getItem('userInfo.id')}`,
         method: '',
         headers: {
           'X-AUTH-TOKEN': state.accessToken,
@@ -34,9 +40,9 @@ export const ranking = {
           console.log(err);
         });
     },
-    getMyRanking({ commit }) {
+    getMyRanking({ state, commit }) {
       axios({
-        url: 'https://i7c202.p.ssafy.io:8282/rankingList',
+        url: 'https://i7c202.p.ssafy.io:8282/api/rankingList',
         method: 'get',
         headers: {
           'X-AUTH-TOKEN': state.accessToken,
