@@ -14,6 +14,7 @@ import register from '../views/accounts/registerView.vue';
 import emailVerify from '../views/accounts/emailVerify.vue';
 import TestView from '../views/Room/TestView.vue';
 import OauthRedirect from '../views/Room/RedirectView.vue';
+import Test from '../views/Room/ATest.vue';
 
 const routes = [
   {
@@ -114,6 +115,11 @@ const routes = [
     path: '/oauth/redirect',
     name: 'OauthRedrect',
     component: OauthRedirect,
+  },
+  {
+    path: '/test',
+    name: 'ATest',
+    component: Test,
   },
 ];
 
