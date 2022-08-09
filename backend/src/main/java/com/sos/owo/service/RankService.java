@@ -35,6 +35,7 @@ public class RankService {
         // 모든 유저 -> 기록들 합 저장
         List<Member> memberList = memberRepository.findAll();
         for(Member m:memberList){
+            if(!m.isEnable()) continue;
             int sum = recordRepository.findYesterdaySum(m.getId());
             System.out.println(m.getId() +" "+sum);
             redisTemplate.opsForZSet().add("ranking", String.valueOf(m.getId()), sum);
@@ -52,6 +53,7 @@ public class RankService {
         List<ResponseRankingDto> rankingList = typedTuples.stream().map(ResponseRankingDto::convertToResponseRankingDto).collect(Collectors.toList());
         for(ResponseRankingDto dto:rankingList){
             Member findMember = memberRepository.findOne(dto.getMember_id());
+            if(!findMember.isEnable()) continue;
             if(findMember.getNick() == null){
                 String email = findMember.getEmail();
                 dto.setName(email.split("@")[0]);

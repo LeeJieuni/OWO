@@ -34,7 +34,7 @@ public class RecordResponseDto {
     @ApiParam(value = "운동한 시간(분 단위)", type = "int")
     private int recordHour; // 운동 시간(분단위)
 
-//    private int imgId;
+    private int imgId;
 
     @ApiModelProperty(example="오늘의 운동 완료")
     @ApiParam(value = "기록에 남길 메모",type = "String")

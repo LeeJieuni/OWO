@@ -195,15 +195,17 @@ public class MemberService {
         } else {
             bmr = 665.1 + (9.05*findMember.getWeight()) + (1.85*findMember.getHeight()) - (4.68*findMember.getAge());
         }
-        memberBodyDto.setBmr(bmr);
+        memberBodyDto.setBmr(Math.round(bmr));
         if(findMember.getActivityLevel() == 1){
            caloriePerDay = bmr * 1.2;
         } else if(findMember.getActivityLevel() == 2){
             caloriePerDay = bmr * 1.375;
         } else if(findMember.getActivityLevel() == 3){
             caloriePerDay = bmr * 1.55;
-        } else {
+        } else if(findMember.getActivityLevel() == 4){
             caloriePerDay = bmr * 1.725;
+        } else {
+            caloriePerDay = bmr * 1.9;
         }
         memberBodyDto.setCaloriePerDay(caloriePerDay);
         return memberBodyDto;

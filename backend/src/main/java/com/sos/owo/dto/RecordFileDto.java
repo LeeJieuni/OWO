@@ -20,7 +20,7 @@ public class RecordFileDto {
     public RecordImg toEntity(){
         RecordImg build = RecordImg.builder()
                 .id(id)
-                .fileName(fileOriName)
+                .fileOriName(fileOriName)
                 .fileName(fileName)
                 .fileUrl(fileUrl)
                 .build();
