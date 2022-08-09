@@ -99,7 +99,7 @@ export default {
       }
     }
     if (check === null) { // 쿠키가 없는 경우
-      if (this.userInfo.weight === null && this.isLogin === true) {
+      if (this.userInfo.weight !== null && this.isLogin === true) {
         this.$swal({
           title: '#오운완',
           input: 'checkbox',

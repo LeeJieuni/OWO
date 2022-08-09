@@ -73,7 +73,7 @@
                 <router-link to="/mypage/main">
                   <li>마이페이지</li>
                 </router-link>
-                  <button class="logout-btn" @click="logout(), alert()">로그아웃</button>
+                  <button class="logout-btn" @click="logout()">로그아웃</button>
               </div>
             </div>
           </div>
@@ -97,9 +97,6 @@ export default {
     ...mapActions({
       logout: 'logout',
     }),
-    alert() {
-      this.$swal('#오운완', '로그아웃 완료', 'success');
-    },
   },
   computed: {
     ...mapGetters(['isLogin', 'userInfo']),

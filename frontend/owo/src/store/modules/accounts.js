@@ -73,7 +73,6 @@ export const accounts = {
       state.userInfo.activityNum = payload.activityNum;
       state.userInfo.activityHour = payload.activityHour;
       state.userInfo.activityLevel = payload.activityLevel;
-      console.log(state.userInfo);
       if (state.userInfo.nick === '' || !state.userInfo.nick) {
         const { email } = state.userInfo;
         const atSignIndex = email.indexOf('@');
@@ -177,7 +176,11 @@ export const accounts = {
       })
         .then(() => {
           dispatch('removeToken');
-          dispatch('setUserInfo', null);
+          swal.fire(
+            '#오운완',
+            '로그아웃 성공!',
+            'success',
+          );
           router.push('/');
         })
         .catch((err) => {
@@ -200,7 +203,6 @@ export const accounts = {
           router.push('/login');
         })
         .catch((err) => {
-          console.log(err.response.data);
           if (err.response.data === 'OVERLAP') {
             commit('SET_SIGNUP_MSG', err.response.data);
             swal.fire(
