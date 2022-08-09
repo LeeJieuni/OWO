@@ -106,8 +106,8 @@ const routes = [
     meta: { unauthorized: true },
   },
   {
-    path: '/oauth/redirect',
-    name: 'OauthRedrect',
+    path: '/auth/redirect',
+    name: 'authRedrect',
     component: redirectView,
     meta: { unauthorized: true },
   },

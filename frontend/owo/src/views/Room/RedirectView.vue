@@ -1,5 +1,5 @@
 <template>
-  <div></div>
+  <div>redirect View</div>
 </template>
 
 <script>
