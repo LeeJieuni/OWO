@@ -30,13 +30,19 @@ public class RecordRepository {
     private final EntityManager em;
     private final TagRepository tagRepository;
     private final GoalRepository goalRepository;
+
+
+    public Record findOneRecord(int recordId){
+        Record record = em.find(Record.class,recordId);
+        return record;
+    }
     //운동 기록 조회
     public RecordResponseDto findOne(int recordId){
         Record f = em.find(Record.class, recordId);
 
         List<TagResponseDto> tagList = tagRepository.findTagList(recordId);
         RecordResponseDto recordResponse = new RecordResponseDto(recordId, f.getMember().getId(),f.getMeetingRoom().getId(),tagList,
-                f.getRecordTime(),// f.getRecordImg().getId(),
+                f.getRecordTime(), f.getRecordImg().getId(),
                 f.getRecordMemo() ,f.getRecordDatetime(),f.isRecordSecret(),f.getRecordExercise().toString());
 
         return recordResponse;
@@ -80,7 +86,8 @@ public class RecordRepository {
         for(Record r:recordList){
             List<TagResponseDto> tagList = tagRepository.findTagList(r.getRecordId());
             recordResponseDtoList.add(new RecordResponseDto(r.getRecordId(), r.getMember().getId(),r.getMeetingRoom().getId(),tagList,
-                    r.getRecordTime(),// f.getRecordImg().getId(),
+                    r.getRecordTime(),
+                    r.getRecordImg().getId(),
                     r.getRecordMemo() ,r.getRecordDatetime(),r.isRecordSecret(),r.getRecordExercise().toString()));
         }
 
@@ -104,7 +111,8 @@ public class RecordRepository {
                     && r.getRecordDatetime().getMonthValue() == month){
                 List<TagResponseDto> tagList = tagRepository.findTagList(r.getRecordId());
                 monthList.add(new RecordResponseDto(r.getRecordId(), r.getMember().getId(),r.getMeetingRoom().getId(),tagList,
-                        r.getRecordTime(),// f.getRecordImg().getId(),
+                        r.getRecordTime(),
+                        r.getRecordImg().getId(),
                         r.getRecordMemo() ,r.getRecordDatetime(),r.isRecordSecret(),r.getRecordExercise().toString()));
             }
         }
