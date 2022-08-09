@@ -31,6 +31,9 @@ export default {
   height: 100%;
   letter-spacing : -0.05em;
   padding-bottom: 100px;
+  line-height: 1.6;
+  padding: 0;
+  margin: 0;
 }
 * {
   margin: 0;
@@ -74,6 +77,13 @@ font-family: 'NanumSquareRoundExtraBold';
   font-weight: normal;
   font-style: normal;
 }
+
+/* 숫자용 google RIGHTEOUS */
+@import url('https://fonts.googleapis.com/css2?family=Righteous&display=swap');
+
+/* 캘린더 두꺼운글자용 BLACK Han Sans */
+@import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap');
+/* font-family: 'Black Han Sans', sans-serif; */
 
 /* Color Palette */
 /*

@@ -58,7 +58,11 @@ export default {
   padding-top: 30px;
   font-size: 18px;
   padding-left: 40px;
-  padding-bottom: 20px;
+  padding-bottom: 10px;
+}
+.my-weekly-goal-info {
+  padding: 0;
+  margin: 0;
 }
 .progress-bar {
   padding: 20px;

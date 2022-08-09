@@ -65,7 +65,9 @@ export default {
 /* 나의 운동 레벨 */
 
 /* 운동 비율 */
-
+.wrap {
+  margin: 0;
+}
 .my-level {
   height: 170px;
   border-bottom: solid #DFDFDF 1px;

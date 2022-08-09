@@ -2,6 +2,7 @@
 <div>
   <div class="d-flex justify-content-center">
     <div class="row sidebar-row d-flex justify-content-center pt-4">
+      <!-- {{ profileImg }} -->
       <div class="img-wrapper">
         <img
           class="profile-img"
@@ -10,7 +11,7 @@
         >
       </div>
         <p class="name" v-once>
-          {{ user.nick }} <span class="sm-name">님</span>
+          {{ user.nick }}
         </p>
       </div>
     </div>
@@ -27,10 +28,10 @@
           <select v-model="state.inputGoalType"
             class="form-select form-select-sm goal-type-select"
             name="radio" id="goal_type">
-            <option value="CARDIOVASCULAR">유산소</option>
+            <option value="AEROBIC">유산소</option>
             <option value="HEALTH">헬스</option>
             <option value="STRETCHING">스트레칭</option>
-            <option value="CALISTHENICS">맨몸운동</option>
+            <option value="HOME">맨몸운동</option>
             <option value="YOGA">요가</option>
             <option value="PILATES">필라테스</option>
             <option value="ETC">기타</option>
@@ -52,8 +53,10 @@
         v-for="(goal, i) in goals"
         :key="i"
         class="tag"
-        @click="tagDelete">
+        @click="tagModal">
         <p>{{goal.exercise}} {{goal.hour}}H</p>
+        <button @click.prevent="updateGoal()">수정</button>
+        <button @click.prevent="deleteGoal()">삭제</button>
       </button>
     </div>
 
@@ -76,6 +79,7 @@
 <script>
 import { useStore } from 'vuex';
 import { reactive, computed } from 'vue';
+// import Swal from 'sweetalert2';
 
 export default {
   name: 'MyPageUpdateView',
@@ -90,6 +94,11 @@ export default {
     const user = computed(() => store.getters['accounts/userInfo']);
     const goals = computed(() => store.getters['accounts/goals']);
     const profileImg = computed(() => store.getters['accounts/profileImg']);
+
+    // for (let i = 0; i < this.goals.length; i += 1) {
+    //   console.log(this.goals[i].value.exercise);
+    // }
+    // console.log(this.goals);
     // State (vue3의 data 선언 방식. state라는 이름으로 접근)
     const state = reactive({
       selected: '',
@@ -103,12 +112,20 @@ export default {
       input: {
         image: '',
       },
-      inputGoalHour: 0,
-      inputGoalType: '',
+      inputGoals: {
+        inputGoalExercise: '',
+        inputGoalHour: 0,
+      },
       profileSrc: 'https://src.hidoc.co.kr/image/lib/2021/4/28/1619598179113_0.jpg',
     });
 
     const addGoal = () => {
+      for (let i = 0; i < this.goals.length; i += 1) {
+        if (this.goals[i] === this.inputGoalExercise) {
+          alert('이미 추가한 운동입니다.');
+          return;
+        }
+      }
       if (this.goals.length >= 3) {
         /* eslint-disable */
         alert('주간 목표는 3개까지 추가 가능합니다.');
@@ -125,16 +142,29 @@ export default {
         e.preventDefault();
       }
       e.preventDefault();
-      store.dispatch('accounts/updateUserInfo', userInfo);
+      store.dispatch('accounts/addGoals', inputgoals);
     };
-    const tagDelete = () => {
+    // const updateGoal = () => {
+    //   for (let i = 0; i < this.goals.length; i += 1) {
+    //     if (this.goals[i] === this.inputGoalExercise) {
+
+    //     }
+    //   }
+    // }
+    const tagModal = () => {
       /* eslint-disable */
       // alert('해당 주간 목표를 삭제하시겠습니까?');
+      // Swal.fire({
+      //   icon: 'question',
+      //   title: '주간 목표',
+      //   text: '변경하시겠어요?',
+      //   footer: '<a href="">Why do I have this issue?</a>'
+      // })
       e.preventDefault();
       console.log(e)
     };
     console.log('이미지시작')
-    console.log(profileImg);
+    console.log(typeof(profileImg));
     console.log('이미지끝')
     // Methods
     // const onInputImage = () => {
@@ -152,7 +182,8 @@ export default {
   },
   components: {},
   created() {
-    console.log(this.user.id);
+    // console.log(this.user.id);
+    console.log(this.goals);
   },
 };
 </script>
@@ -184,9 +215,6 @@ export default {
     font-weight: 900;
     font-size: 25px;
     margin-top: 10px;
-  }
-  .sm-name {
-    font-size: 22px;
   }
    .tags {
     padding: 0 10px;
@@ -232,6 +260,7 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
+    /* background-color: white; */
   }
   .sidebar-menu > a {
     font-weight: 700;
@@ -285,5 +314,8 @@ export default {
     cursor: pointer;
     transition: 0.4s;
     border: solid #6f6f6f 1px;
+  }
+  button {
+    border: none;
   }
 </style>

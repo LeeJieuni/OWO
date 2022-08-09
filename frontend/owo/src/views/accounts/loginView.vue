@@ -27,15 +27,15 @@
             <div class="socialbtn d-flex justify-content-around">
               <b-button pill variant="secondary"
               href="https://i7c202.p.ssafy.io:8282/oauth2/authorization/
-              google?redirect_uri=https://i7c202.p.ssafy.io:3443/oauth/redirect"
+              google?redirect_uri=https://i7c202.p.ssafy.io:443/oauth/redirect"
               role="button">Google</b-button>
               <b-button pill variant="success"
               href="https://i7c202.p.ssafy.io:8282/oauth2/authorization/
-              naver?redirect_uri=https://i7c202.p.ssafy.io:3443/oauth/redirect"
+              naver?redirect_uri=https://i7c202.p.ssafy.io:443/oauth/redirect"
               role="button">Naver</b-button>
               <b-button pill variant="warning"
               href="https://i7c202.p.ssafy.io:8282/oauth2/authorization/
-              kakao?redirect_uri=https://i7c202.p.ssafy.io:3443/oauth/redirect"
+              kakao?redirect_uri=https://i7c202.p.ssafy.io:443/oauth/redirect"
               role="button">Kakao</b-button>
             </div>
           </div>
