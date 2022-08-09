@@ -7,7 +7,6 @@
     <!-- <TeleportExample/> -->
   </div>
 </template>
-
 <script>
 // import TeleportExample from '@/components/MyPage/teleport/TeleportExample.vue';
 import NavBar from './components/NavBar.vue';

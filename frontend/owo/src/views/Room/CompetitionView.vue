@@ -344,6 +344,8 @@ import emojidata from 'emoji-mart-vue-fast/data/all.json';
 import 'emoji-mart-vue-fast/css/emoji-mart.css';
 import { Picker, EmojiIndex } from 'emoji-mart-vue-fast/src';
 import { mapState, mapActions, mapMutations } from 'vuex';
+// import * as tf from '@tensorflow/tfjs';
+import * as tmPose from '@teachablemachine/pose';
 
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
@@ -352,9 +354,17 @@ const accounts = 'accounts';
 const meetingroom = 'meetingroom';
 const emojiIndex = new EmojiIndex(emojidata);
 const emoji = 'emoji';
+// const URL = '{{URL}}';
+// let model, maxPredictions;
 
 export default {
   name: 'CompetitionView',
+  metaInfo: {
+    script: [
+      { src: 'https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js', async: true, defer: true },
+      { src: 'https://cdn.jsdelivr.net/npm/@teachablemachine/pose@0.8/dist/teachablemachine-pose.min.js', async: true, defer: true },
+    ],
+  },
   components: {
     Timer,
     WebRTC,
@@ -388,7 +398,7 @@ export default {
       chatONOFF: false,
       Emoji_ONOFF: null,
       roomName: '붙어보자!',
-      gameName: '팔굽혀펴기',
+      gameName: '스쿼트',
       myemoji: '',
       emojiList: [],
       pictures: [
@@ -399,6 +409,14 @@ export default {
         { src: 'https://cdn.pixabay.com/photo/2017/08/07/14/02/man-2604149_960_720.jpg' },
         { src: 'https://cdn.pixabay.com/photo/2017/08/07/14/02/man-2604149_960_720.jpg' },
       ],
+      webcam: undefined,
+      URL: undefined,
+      model: undefined,
+      status: 'ready',
+      check: false,
+      count: 0,
+      // gameType: 'pushUp',
+      gameType: 1,
     };
   },
   setup() {},
@@ -569,6 +587,7 @@ export default {
 
       // Receiver of the message (usually before calling 'session.connect')
       this.session.on('signal:start', (event) => {
+        this.count = 0;
         console.log(event);
         console.log('게임! start');
       });
@@ -746,11 +765,18 @@ export default {
               resolve(sessionId);
             } else {
               console.warn(
-                `No connection to OpenVidu Server. This may be a certificate error at ${this.OPENVIDU_SERVER_URL}`,
+                `No connection to OpenVidu Server.
+                This may be a certificate error
+                at ${this.OPENVIDU_SERVER_URL}`,
               );
               if (
                 window.confirm(
-                  `No connection to OpenVidu Server. This may be a certificate error at ${this.OPENVIDU_SERVER_URL}\n\nClick OK to navigate and accept it. If no certificate warning is shown, then check that your OpenVidu Server is up and running at "${this.OPENVIDU_SERVER_URL}"`,
+                  `No connection to OpenVidu Server. T
+                  his may be a certificate error
+                  at ${this.OPENVIDU_SERVER_URL}\n\nClick OK to navigate and accept it.
+                  If no certificate warning is shown,
+                  then check that your OpenVidu Server is up and
+                  running at "${this.OPENVIDU_SERVER_URL}"`,
                 )
               ) {
                 window.location.assign(`${this.OPENVIDU_SERVER_URL}/accept-certificate`);
@@ -857,6 +883,145 @@ export default {
     },
     exerciseJournalSubmit(event) {
       event.preventDefault();
+    },
+    async setmodel() {
+      switch (this.gameType) {
+        case 1: // 스쿼트
+          this.URL = 'https://teachablemachine.withgoogle.com/models/np91IAbMN/';
+          break;
+        case 2: // 런지
+          this.URL = 'https://teachablemachine.withgoogle.com/models/qsNO7nn-l/';
+          break;
+        case 3: // 버피
+          this.URL = 'https://teachablemachine.withgoogle.com/models/fR-T-F0cP/';
+          break;
+        default:
+          break;
+      }
+      const modelURL = `${this.URL}model.json`;
+      const metadataURL = `${this.URL}metadata.json`;
+      this.model = await tmPose.load(modelURL, metadataURL);
+    },
+
+    async init() {
+      const size = 200;
+      const flip = true;
+      this.webcam = new tmPose.Webcam(size, size, flip);
+      await this.webcam.setup();
+      await this.webcam.play();
+      window.requestAnimationFrame(this.loop);
+    },
+
+    async loop() {
+      this.webcam.update();
+      switch (this.gameType) {
+        case 1:
+          await this.squatpredict();
+          break;
+        case 2:
+          await this.lungepredict();
+          break;
+        case 3:
+          await this.burpeepredict();
+          break;
+        default:
+          break;
+      }
+      window.requestAnimationFrame(this.loop);
+    },
+
+    async squatpredict() {
+      // Prediction #1: run input through posenet
+      // estimatePose can take in an image, video or canvas html element
+      const { posenetOutput } = await this.model.estimatePose(
+        this.webcam.canvas,
+      );
+      // Prediction 2: run input through teachable machine classification model
+      const prediction = await this.model.predict(posenetOutput);
+
+      if (prediction[0].probability.toFixed(2) > 0.99) {
+        if (this.check) {
+          this.setState({
+            count: this.count + 1,
+          });
+          this.session
+            .signal({
+              data: `${this.myUserName},${this.count}`, // Any string (optional)
+              to: [], // Array of Connection objects (optional. Broadcast to everyone if empty)
+              type: 'count', // The type of message (optional)
+            })
+            .then(() => {
+              this.setState({ check: false });
+            })
+            .catch(() => {});
+        }
+        this.setState({ status: 'ready' });
+      } else if (prediction[1].probability.toFixed(2) > 0.99) {
+        this.setState({ status: 'squat' });
+        this.setState({ check: true });
+      }
+    },
+
+    async lungepredict() {
+      // Prediction #1: run input through posenet
+      // estimatePose can take in an image, video or canvas html element
+      const { posenetOutput } = await this.model.estimatePose(
+        this.webcam.canvas,
+      );
+      // Prediction 2: run input through teachable machine classification model
+      const prediction = await this.model.predict(posenetOutput);
+      if (prediction[0].probability.toFixed(2) > 0.99) {
+        if (this.check) {
+          this.setState({
+            count: this.count + 1,
+          });
+          this.session
+            .signal({
+              data: `${this.myUserName},${this.count}`, // Any string (optional)
+              to: [], // Array of Connection objects (optional. Broadcast to everyone if empty)
+              type: 'count', // The type of message (optional)
+            })
+            .then(() => {
+              this.setState({ check: false });
+            })
+            .catch(() => {});
+        }
+        this.setState({ status: 'ready' });
+      } else if (prediction[1].probability.toFixed(2) > 0.99) {
+        this.setState({ status: 'lunge' });
+        this.setState({ check: true });
+      }
+    },
+
+    async burpeepredict() {
+      // Prediction #1: run input through posenet
+      // estimatePose can take in an image, video or canvas html element
+      const { posenetOutput } = await this.model.estimatePose(
+        this.webcam.canvas,
+      );
+      // Prediction 2: run input through teachable machine classification model
+      const prediction = await this.model.predict(posenetOutput);
+      if (prediction[0].probability.toFixed(2) > 0.99) {
+        if (this.check) {
+          this.setState({
+            count: this.state.count + 1,
+          });
+          this.session
+            .signal({
+              data: `${this.myUserName},${this.count}`, // Any string (optional)
+              to: [], // Array of Connection objects (optional. Broadcast to everyone if empty)
+              type: 'count', // The type of message (optional)
+            })
+            .then(() => {
+              this.setState({ check: false });
+            })
+            .catch(() => {});
+        }
+        this.setState({ status: 'up' });
+      } else if (prediction[1].probability.toFixed(2) > 0.99) {
+        this.setState({ status: 'down' });
+        this.setState({ check: true });
+      }
     },
   },
 };
