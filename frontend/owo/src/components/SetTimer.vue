@@ -7,7 +7,9 @@
             </h3>
         </div>
         <div>
-            <button v-if="!timer" @click="startTimer">시작 하기</button>
+            <!-- <button class="mybtn5" v-if="!timer" @click="startTimer">
+              <img src="@/assets/icon/play.png" alt="">
+            </button> -->
             <button v-if="timerONOFF & (timer>1)" @click="startTimer">다시 시작</button>
             <button v-if="!timerONOFF" @click="stopTimer">휴식 하기</button>
         </div>
@@ -73,19 +75,13 @@ p {
     font-size:5em;
     color:black;
 }
-button {
-    border: none;
-    padding: 18px 10px;
-    font-size: 1.2em;
-    width:180px;
-    margin: 10px;
-    background-color: gray;
-}
-button:hover{
-    cursor:pointer;
-    background-color: #4e8aff;
-    color:#fff;
-    transition: 0.4s;
-    border: none;
+
+.mybtn5 {
+  background-color:transparent;
+  border:none;
+  position:fixed;
+  top:45%;
+  right:30px;
+  z-index: 700;
 }
 </style>

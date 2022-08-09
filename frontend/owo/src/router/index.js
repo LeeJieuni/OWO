@@ -12,8 +12,7 @@ import YoutubeView from '../views/Room/YoutubeView.vue';
 import login from '../views/accounts/loginView.vue';
 import register from '../views/accounts/registerView.vue';
 import TestView from '../views/Room/TestView.vue';
-import redirectView from '../views/Room/RedirectView.vue';
-import Test from '../views/Room/ATest.vue';
+import OauthRedirect from '../views/Room/RedirectView.vue';
 
 const routes = [
   {
@@ -110,11 +109,6 @@ const routes = [
     name: 'authRedrect',
     component: redirectView,
     meta: { unauthorized: true },
-  },
-  {
-    path: '/test',
-    name: 'ATest',
-    component: Test,
   },
 ];
 
