@@ -10,8 +10,10 @@
               <form enctype="multipart/form-data" id="imageUploadForm">
               <label for="profileImag">이미지
                 <input class="input-image" accept="image/*" type="file"
-                  ref="profileImg" @change.prevent="updateProfileImg($event)" id="profileImg">
+                  ref="profileImg" @change.prevent="uploadProfileImg($event)" id="profileImg">
               </label>
+              <button type="submit" class="btn btn-outline-primary"
+                @click.prevent="updateProfileImg($event)" for="imageUploadForm">이미지 보내기</button>
             </form>
             </div>
           </div>
@@ -54,6 +56,7 @@
 import MySidebar from '@/components/MyPage/MySidebar.vue';
 import { useStore } from 'vuex';
 import { computed, reactive } from 'vue';
+// import multer from
 
 export default {
   name: 'MyPage',
@@ -78,9 +81,21 @@ export default {
 
     // Methods
     const updateProfileImg = (e) => {
+      e.preventDefault();
+      console.log('이미지 불러오기');
+      const img = e.target.files[0];
+      const formData = new FormData();
+      // const imgFile = {
+      // }
+      formData.append('file', img);
+      store.dispatch('accounts/updateProfileImg', formData);
+    };
+    const uploadProfileImg = (e) => {
       // const img2 = document.querySelector('.input-image');
       // const modal = document.querySelector('.modal');
       e.preventDefault();
+      // const multer = require('multer');
+      // const path = require('path');
       console.log('이미지 불러오기');
       let img = e.target.files[0];
       // console.log(img);
@@ -91,9 +106,12 @@ export default {
         img = null;
       }
       console.log('처리 후');
-      const formData = new FormData();
+      // const formData = new FormData();
       // formData.append('name', img.name);
-      formData.append('file', img);
+      // const imgFile = {
+
+      // }
+      // formData.append('file', img);
       // formData.append('user_id', user.value.id);
       // formData.append('date', new Date());
       // console.log(formData);
@@ -107,13 +125,14 @@ export default {
       // console.log(formData);
       // // eslint-disable-next-line
 
-      store.dispatch('accounts/updateProfileImg', formData);
+      // store.dispatch('accounts/updateProfileImg', formData);
     };
 
     return {
       slogan,
       state,
       updateSlogan,
+      uploadProfileImg,
       updateProfileImg,
       user,
     };
@@ -185,7 +204,7 @@ export default {
   .container {
     height: 100%;
   }
-  button {
+  button:not(.btn) {
     border: none;
     background-color: white;
   }

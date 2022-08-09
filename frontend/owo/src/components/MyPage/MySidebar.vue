@@ -2,6 +2,7 @@
 <div>
   <div class="d-flex justify-content-center">
     <div class="row sidebar-row d-flex justify-content-center pt-4">
+      <!-- {{ profileImg }} -->
       <div class="img-wrapper">
         <img
           class="profile-img"
@@ -93,6 +94,7 @@ export default {
     const user = computed(() => store.getters['accounts/userInfo']);
     const goals = computed(() => store.getters['accounts/goals']);
     const profileImg = computed(() => store.getters['accounts/profileImg']);
+
     // for (let i = 0; i < this.goals.length; i += 1) {
     //   console.log(this.goals[i].value.exercise);
     // }
@@ -162,7 +164,7 @@ export default {
       console.log(e)
     };
     console.log('이미지시작')
-    console.log(profileImg);
+    console.log(typeof(profileImg));
     console.log('이미지끝')
     // Methods
     // const onInputImage = () => {
