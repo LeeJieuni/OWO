@@ -56,7 +56,7 @@
 import 'vue3-circle-progress/dist/circle-progress.css';
 import CircleProgress from 'vue3-circle-progress';
 import { mapActions, mapGetters, mapState } from 'vuex';
-// import MySmCalendar from '../MyPage/MySmCalendar.vue';
+import MySmCalendar from '../MyPage/MySmCalendar.vue';
 
 const mainpage = 'mainpage';
 const accounts = 'accounts';
