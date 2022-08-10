@@ -50,28 +50,8 @@
               v-on:click.prevent="onClickNextDay(currentYear, currentMonth, day)">▶</a>
           </div>
           <!--카로셀-->
-          <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
-            <div class="carousel-inner">
-              <div class="carousel-item active">
-                <img src="https://phantom-marca.unidadeditorial.es/746e69f29df0fa7da1f9df1cffc2af10/crop/0x20/1499x861/resize/1320/f/jpg/assets/multimedia/imagenes/2022/01/12/16419960151339.jpg" class="d-block w-100" alt="">
-              </div>
-              <div class="carousel-item">
-                <img src="https://cdn.pixabay.com/photo/2016/11/14/03/38/achieve-1822503__480.jpg" class="d-block w-100" alt="">
-              </div>
-              <div class="carousel-item">
-                <img src="https://cdn.pixabay.com/photo/2018/02/06/14/07/ease-3134828__340.jpg" class="d-block w-100" alt="">
-              </div>
-            </div>
-            <button class="carousel-control-prev" type="button"
-              data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-              <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button"
-              data-bs-target="#carouselExampleControls" data-bs-slide="next">
-              <span class="carousel-control-next-icon" aria-hidden="true"></span>
-              <span class="visually-hidden">Next</span>
-            </button>
+          <div>
+            <img :src="recordPicture" alt="">
           </div>
 
           <!--태그-->
@@ -129,6 +109,9 @@
 </template>
 
 <script>
+// import { useStore } from 'vuex';
+// import { computed } from 'vue';
+
 export default {
   name: 'MyCalendar',
   data() {
@@ -139,6 +122,7 @@ export default {
       currentYear: new Date().getFullYear(),
       currentMonth: new Date().getMonth() + 1,
       currentDay: new Date().getDate(),
+      stringDate: '',
       currentMonthStartWeekIndex: null,
       currentCalendarMatrix: [],
       endOfDay: null,
@@ -255,28 +239,53 @@ export default {
       }
       this.init();
     },
-
     // 모달 내에서 날짜 변경
     onClickPrevDay(year, month, day) {
       const date = new Date(year, month - 1, day);
       date.setDate(date.getDate() - 1);
-      console.log(date);
-      const yesterYear = date.getFullYear();
-      const yesterMonth = date.getMonth() + 1;
-      const yesterDay = date.getDate();
-      this.currentYear = yesterYear;
-      this.currentMonth = yesterMonth;
-      this.day = yesterDay;
+      this.currentYear = date.getFullYear();
+      this.currentMonth = date.getMonth() + 1;
+      this.day = date.getDate();
+      // axios로 보낼 문자열 날짜 (예.20220820)
+      const stringYear = String(this.currentYear);
+      let stringMonth;
+      if (this.currentMonth >= 10) {
+        stringMonth = String(this.currentMonth);
+      } else {
+        stringMonth = String(0) + String(this.currentMonth);
+      }
+      let stringDay;
+      if (this.currentDay >= 10) {
+        stringDay = String(this.day);
+      } else {
+        stringDay = String(0) + String(this.day);
+      }
+      this.stringDate = stringYear + stringMonth + stringDay;
+      console.log(this.stringDate);
+      // store.dispatch('record/fetchDayExerciseList', this.stringDate);
     },
     onClickNextDay(year, month, day) {
       const date = new Date(year, month - 1, day);
       date.setDate(date.getDate() + 1);
-      console.log(date);
-      // const yesterYear = date.getFullYear();
-      const yesterMonth = date.getMonth() + 1;
-      const yesterDay = date.getDate();
-      console.log(yesterMonth);
-      console.log(yesterDay);
+      this.currentYear = date.getFullYear();
+      this.currentMonth = date.getMonth() + 1;
+      this.day = date.getDate();
+      // axios로 보낼 문자열 날짜 (예.20220820)
+      const stringYear = String(this.currentYear);
+      let stringMonth;
+      if (this.currentMonth >= 10) {
+        stringMonth = String(this.currentMonth);
+      } else {
+        stringMonth = String(0) + String(this.currentMonth);
+      }
+      let stringDay;
+      if (this.currentDay >= 10) {
+        stringDay = String(this.day);
+      } else {
+        stringDay = String(0) + String(this.day);
+      }
+      this.stringDate = stringYear + stringMonth + stringDay;
+      console.log(this.stringDate);
     },
     isToday(year, month, day) {
       const date = new Date();
@@ -290,6 +299,65 @@ export default {
       modal('hide');
     },
   },
+  // setup() {
+  //   const store = useStore();
+  //   const dayExerciseList = computed(() => store.getters['accounts/dayExerciseList']);
+
+  //   // 모달 내에서 날짜 변경
+  //   const onClickPrevDay = function (year, month, day) {
+  //     const date = new Date(year, month - 1, day);
+  //     date.setDate(date.getDate() - 1);
+  //     this.currentYear = date.getFullYear();
+  //     this.currentMonth = date.getMonth() + 1;
+  //     this.day = date.getDate();
+  //     // axios로 보낼 문자열 날짜 (예.20220820)
+  //     const stringYear = String(this.currentYear);
+  //     let stringMonth;
+  //     if (this.currentMonth >= 10) {
+  //       stringMonth = String(this.currentMonth);
+  //     } else {
+  //       stringMonth = String(0) + String(this.currentMonth);
+  //     }
+  //     let stringDay;
+  //     if (this.currentDay >= 10) {
+  //       stringDay = String(this.day);
+  //     } else {
+  //       stringDay = String(0) + String(this.day);
+  //     }
+  //     this.stringDate = stringYear + stringMonth + stringDay;
+  //     console.log(this.stringDate);
+  //     store.dispatch('record/fetchDayExerciseList', this.stringDate);
+  //   };
+  //   const onClickNextDay = function (year, month, day) {
+  //     const date = new Date(year, month - 1, day);
+  //     date.setDate(date.getDate() + 1);
+  //     this.currentYear = date.getFullYear();
+  //     this.currentMonth = date.getMonth() + 1;
+  //     this.day = date.getDate();
+  //     // axios로 보낼 문자열 날짜 (예.20220820)
+  //     const stringYear = String(this.currentYear);
+  //     let stringMonth;
+  //     if (this.currentMonth >= 10) {
+  //       stringMonth = String(this.currentMonth);
+  //     } else {
+  //       stringMonth = String(0) + String(this.currentMonth);
+  //     }
+  //     let stringDay;
+  //     if (this.currentDay >= 10) {
+  //       stringDay = String(this.day);
+  //     } else {
+  //       stringDay = String(0) + String(this.day);
+  //     }
+  //     this.stringDate = stringYear + stringMonth + stringDay;
+  //     console.log(this.stringDate);
+  //   };
+  //   return {
+  //     // state,
+  //     dayExerciseList,
+  //     onClickPrevDay,
+  //     onClickNextDay,
+  //   };
+  // },
 };
 </script>
 

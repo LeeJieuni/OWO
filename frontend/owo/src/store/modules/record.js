@@ -10,10 +10,12 @@ export const record = {
     refreshToken: null,
     userId: '',
     percentage: '',
+    dayExerciseList: '',
   }),
   getters: {
     percentage: (state) => state.percentage,
     userId: (state) => state.userId,
+    dayExerciseList: (state) => state.dayExerciseList,
   },
   mutations: {
     SET_PERCENTAGE: (state, payload) => {
@@ -23,6 +25,9 @@ export const record = {
       state.accessToken = payload.accessToken;
       state.refreshToken = payload.refreshToken;
       state.userId = payload.user.id;
+    },
+    SET_DAY_EXERCISE_LIST: (state, payload) => {
+      state.dayExerciseList = payload;
     },
   },
   actions: {
@@ -41,7 +46,7 @@ export const record = {
       console.log(payload);
       commit('SET_SESSIONS', payload);
     },
-    fetchPercentage({ state, commit }, date) {
+    fetchPercentage({ state, commit }) {
       console.log(' fetchPercentage axios 전');
       // console.log(state.userId);
       axios({
@@ -54,6 +59,26 @@ export const record = {
       })
         .then((res) => {
           commit('SET_PERCENTAGE', res.data.data);
+          // console.log(state.percentage);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    fetchDayExerciseList({ state, commit }, date) {
+      console.log(' fetchPercentage axios 전');
+      // console.log(state.userId);
+      axios({
+        url: `https://i7c202.p.ssafy.io:8282/api/record/percentage/${state.userId}`,
+        method: 'get',
+        headers: {
+          'X-AUTH-TOKEN': state.accessToken,
+          'REFRESH-TOKEN': state.refreshToken,
+        },
+        data: date,
+      })
+        .then((res) => {
+          commit('SET_DAY_EXERCISE_LIST', res.data.data);
           // console.log(state.percentage);
         })
         .catch((err) => {
