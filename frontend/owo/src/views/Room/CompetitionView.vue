@@ -1,60 +1,12 @@
 <template>
-  <div class="d-flex justify-content-center" style="width: 100%; height:100vh">
+  <div class="d-flex justify-content-center" style="width: 100%; height:100%">
     <div style="width:1600px;">
     <!-- <div style="width:90%;"> -->
       <div class="d-flex justify-content-between align-items-center" style="height: 80px">
         <h3 class="game-name m-0">{{ gameName }}</h3>
-        <Timer />
       </div>
-      <!-- <div>
-        <p class="text-center">
-          <button class="btn btn-lg btn-success" @click="makeRoom()">세션열기</button>
-        </p>
-        <p class="text-center">
-          <button class="btn btn-lg btn-success" @click="getRoomList(mode[0])">자유방 목록</button>
-        </p>
-        <p class="text-center">
-          <button class="btn btn-lg btn-success" @click="getRoomList(mode[1])">
-            스트리밍방 목록
-          </button>
-        </p>
-        <p class="text-center">
-          <button class="btn btn-lg btn-success" @click="getRoomList(mode[2])">게임방 목록</button>
-        </p>
-      </div> -->
-      <!-- 세션 없다면 이동 -->
-      <div id="join" v-if="!session">
-        <div id="img-div">
-          <img src="resources/images/openvidu_grey_bg_transp_cropped.png" alt="" />
-        </div>
-        <div id="join-dialog" class="jumbotron vertical-center">
-          <h1>Join a video session</h1>
-          <div class="form-group">
-            <p>
-              <label for="participant">Participant
-              <input for="participant" v-model="myUserName"
-              class="form-control" type="text" required /></label>
-            </p>
-            <p>
-              <label for="session">Session
-              <input for="session" v-model="sessionId"
-              class="form-control" type="text" required /></label>
-            </p>
-            <p class="text-center">
-              <button class="btn btn-lg btn-success" @click="joinSession(sessionId)">
-                Join!
-              </button>
-            </p>
-          </div>
-        </div>
-      </div>
-      <!-- 세션 열리는 동안 -->
+      <!-- 세션 영역-->
       <div id="session" v-if="session">
-        <!-- <div id="session-header" class="d-flex">
-          <h1 id="session-title">{{ mySessionId }}</h1>
-          <input class="btn btn-large btn-danger" type="button"
-            id="buttonLeaveSession" @click="leaveSession" value="Leave session"/>
-        </div> -->
         <!-- WebRTC 목록 -->
         <div>
           <div id="" class="row d-flex align-items-start justify-content-center">
@@ -72,191 +24,86 @@
           </div>
         </div>
       </div>
-      <!-- <p class="text-center">
-        <button class="btn btn-lg btn-success" @click="start()">게임시작</button>
-      </p>
-      <p class="text-center">
-        <button class="btn btn-lg btn-success" @click="end()">게임종료</button>
-      </p> -->
       <!-- Rooom 버튼 -->
       <div>
         <div class="d-flex justify-content-center">
           <div class="d-flex justify-content-start align-items-center">
-            <button class="btn btn-outline-secondary m-2 " style="width:145px;"
-            @click="mic_off" v-if="mic">
-              <img class="menu_icon1" src="@/assets/icon/mic_off.png" alt="mic_on">음소거 해제
-            </button>
-            <button class="btn btn-outline-secondary m-2 " style="width:145px;"
-            @click="mic_on" v-if="!mic">
-              <img class="menu_icon1" src="@/assets/icon/mic_on.png" alt="mic_off">음소거
-            </button>
-            <button class="btn btn-outline-secondary m-2" style="width:145px;"
-            @click="video_off" v-if="video">
-              <img class="menu_icon1" src="@/assets/icon/video_off.png" alt="video_on">비디오 시작
-            </button>
-            <button class="btn btn-outline-secondary m-2" style="width:145px;"
-              @click="video_on" v-if="!video">
-              <img class="menu_icon1" src="@/assets/icon/video_on.png" alt="video_off">비디오 중지
-            </button>
-            <div class="m-2">
-              <b-dropdown split @click="take_photo" variant="outline-secondary">
-                <template #button-content >
-                  <img class="menu_icon1" src="@/assets/icon/photo.png" alt="photo">&ensp;사진촬영
-                </template>
-                <b-dropdown-item :value="timer" @click="set_timer_3">3초</b-dropdown-item>
-                <b-dropdown-item :value="timer" @click="set_timer_5">5초</b-dropdown-item>
-                <b-dropdown-item :value="timer" @click="set_timer_10">10초</b-dropdown-item>
-              </b-dropdown>
-            </div>
-            <!-- 운동 셋팅 모달 -->
-            <div>
-              <button v-b-modal.room-setting-modal
-              class="btn btn-outline-secondary m-2">
-                <img class="menu_icon1" src="@/assets/icon/room_setting.png" alt="mic_off">설정
-              </button>
-              <b-modal id="room-setting-modal" title="#오운완" size="lg" hide-footer>
-                <div class="after-exercise">
-                  <div class="d-flex justify-content-start align-items-end">
-                    <img class="menu_icon3" src="@/assets/icon/room_setting.png" alt="mic_off">
-                    <div class="d-flex justify-content-center align-items-end">
-                      <h2 style="line-height: 0.8;">&ensp;운동 설정&ensp;&ensp;&ensp;</h2>
-                      <div v-if="lockroomcheck" class="d-flex align-items-center">
-                        <img class="menu_icon1" src="@/assets/icon/unlock.png" alt="lock">
-                        <div class="text-center">&ensp;비밀 방&ensp;</div>
-                        <label class="form-check-label"
-                        for="flexCheckDefault"><input
-                        class="form-check-input"
-                        type="checkbox" value=""
-                        @click="lockroom" id="flexCheckDefault"></label>
-                        &ensp;&ensp;&ensp;&ensp;비밀번호&ensp;
-                        <label for="form-password-label"><input class="form-password-input"
-                        type="password" maxlength="4" size="10" disabled></label>
-                      </div>
-                      <div v-if="!lockroomcheck" class="d-flex align-items-center">
-                        <img class="menu_icon1" src="@/assets/icon/lock.png" alt="lock">
-                        <div class="text-center">&ensp;비밀 방&ensp;</div>
-                        <label class="form-check-label" for="flexCheckDefault">
-                        <input class="form-check-input" type="checkbox" value=""
-                        @click="lockroom" id="flexCheckDefault"></label>
-                        &ensp;&ensp;&ensp;&ensp;비밀번호&ensp;
-                        <label for="form-password-label"><input class="form-password-input"
-                        type="password" maxlength="4" size="10"></label>
-                      </div>
-                    </div>
-                  </div>
-                  <br>
-                  <br>
-                  <div>방 모드 변경하기</div>
-                  <br>
-                  <div class="d-flex justify-content-around">
-                      <button class="btn btn-primary">친구들과 운동하기</button>
-                      <button class="btn btn">영상보며 운동하기</button>
-                  </div>
-                  <br>
-                  <br>
-                  <div class="d-flex justify-content-between">
-                    <div>
-                      <div>방 이름 변경</div>
-                      <br>
-                      <label for="roomNameChange" class="roomNameChange">
-                      <input v-model="this.sessionId" type="text" class="roomNameChange" size="30">
-                      </label>
-                    </div>
-                    <div>
-                      <div>운동 변경</div>
-                      <br>
-                      <label for="exerciseChange" class="exerciseChange">
-                      <input type="text" class="exerciseChange" rows="2" size="30"></label>
-                    </div>
-                  </div>
-                  <br>
-                  <br>
-                  <div v-if="this.mode">
-                    <div>운동 영상 링크</div>
-                    <br>
-                    <label for="youtubelink"><textarea id="youtubelink"
-                    name="youtubelink" size="77" rows="2" cols="77"></textarea></label>
-                  </div>
-                  <br>
-                  <br>
-                  <div class="d-flex justify-content-center">
-                    <button class="btn btn-primary">저장</button>&ensp;&ensp;&ensp;&ensp;
-                    <button class="btn btn">취소</button>
-                  </div>
-                </div>
-              </b-modal>
-            </div>
             <!-- 운동 종료 버튼 / 모달 -->
             <div>
-                <button @click="leaveSession"
-                v-b-modal.after-exercise-modal class="btn btn-outline-secondary m-2">
-                  <img class="menu_icon1" src="@/assets/icon/room_end.png" alt="mic_off">
-                  운동 종료
-                </button>
-                <b-modal id="after-exercise-modal" size="lg" hide-footer hide-header>
+              <!-- <button @click="leaveSession" -->
+              <button
+              v-b-modal.after-exercise-modal class="btn btn-outline-secondary m-2">
+                <img class="menu_icon1" src="@/assets/icon/room_end.png" alt="mic_off">
+                운동 종료
+              </button>
+                <b-modal id="after-exercise-modal" size="xl" hide-footer hide-header>
+                  <form @submit.prevent="sendRecord(credentials, credentialsUser)">
                   <div>
                     <h1 class="title text-center mt-4">운동일지 작성하기</h1>
-                    <div class="wrapper">
+                    <!-- 운동일지, 사진 -->
+                    <div>
                       <div class="md-title text-center">오늘의 운동 사진 고르기📷</div>
-                      <div class="container mycontainer">
-                        <div class="row row-cols-3">
-                          <div v-for="(photo, i) in this.pictures" :key="i" class="col photo">
-                            <div class="col p-1">
-                              <div class="card">
-                                <img :src="photo.src" alt="" class=" img-fluid">
-                              </div>
-                            </div>
-                          </div>
-                        </div>
+                        <!-- eslint-disable-next-line -->
+                      <div class="row d-flex align-items-start justify-content-center">
+                        <!-- eslint-disable-next-line -->
+                        <button v-for="(mypicture, i) in mypictures" :key="i" class="col-4 m0p0" style="padding:0px; width:330px;">
+                          <img :src="mypicture" alt="img" style="width:330px;">
+                        </button>
                       </div>
                     </div>
-                    <div class="wrapper">
-                      <div class="md-title text-center">운동 종류 기록하기</div>
-                      <!-- 나만의 태그 기록 -->
-                      <!-- <form action="">
-                        <label for="my-tag">
-                        <input v-model="inputMyTag" type="text">
-                        <button @click="addMyTag($event)">추가</button>
-                        </label>
-                      </form>
-                      <div class="mytags row">
-                        <div>hi</div>
-                        <div v-for="(mytag, index) in roomexercise.mytag" :key="index">
-                          <p>#{{ roomexercise.mytag }}</p>
-                        </div>
-                      </div> -->
-                      <div class="d-flex justify-content-center">
-                        <button class="mybutton btn btn-primary m-2">#유산소</button>
-                        <button class="mybutton btn btn-primary m-2">#헬스</button>
-                        <button class="mybutton btn btn-primary m-2">#스트레칭</button>
-                        <button class="mybutton btn btn-primary m-2">#맨몸운동</button>
-                        <button class="mybutton btn btn-primary m-2">#요가</button>
-                        <button class="mybutton btn btn-primary m-2">#필라테스</button>
-                        <button class="mybutton btn btn-primary m-2">#기타</button>
-                      </div>
-                    </div>
-                    <div class="wrapper">
-                      <div class="md-title text-center">메모 남기기</div>
-                      <div class="d-flex justify-content-center">
-                        <form action="" id="exerciseMemoForm">
-                          <label for="exerciseMemo">
-                            <textarea
-                              id="exerciseMemo"
-                              name="exerciseJournal"
-                              rows="5"
-                              cols="90">
-                            </textarea>
+                    <!-- 메모 남기기 버튼 -->
+                    <div>
+                      <div class="md-title">
+                        <div class="text-center">운동 종류</div>
+                        <!-- 나만의 태그 기록 -->
+                        <!-- <form action="">
+                          <label for="my-tag">
+                          <input v-model="inputMyTag" type="text">
+                          <button @click="addMyTag($event)">추가</button>
                           </label>
                         </form>
+                        <div class="mytags row">
+                          <div>hi</div>
+                          <div v-for="(mytag, index) in roomexercise.mytag" :key="index">
+                            <p>#{{ roomexercise.mytag }}</p>
+                          </div>
+                        </div> -->
+                        <div class="d-flex justify-content-center" style="flex-flow:row wrap;">
+                          <!-- eslint-disable-next-line -->
+                          <button @click.prevent="myTagList('#유산소')" class="mybutton btn btn-primary m-2">&ensp;#유산소&ensp;</button>
+                          <!-- eslint-disable-next-line -->
+                          <button @click.prevent="myTagList('#헬스')" class="mybutton btn btn-primary m-2 p-2">&ensp;#헬스&ensp;</button>
+                          <!-- eslint-disable-next-line -->
+                          <button @click.prevent="myTagList('#스트레칭')" class="mybutton btn btn-primary m-2 p-2">&ensp;#스트레칭&ensp;</button>
+                          <!-- eslint-disable-next-line -->
+                          <button @click.prevent="myTagList('#맨몸운동')" class="mybutton btn btn-primary m-2 p-2">&ensp;#맨몸운동&ensp;</button>
+                          <!-- eslint-disable-next-line -->
+                          <button @click.prevent="myTagList('#요가')" class="mybutton btn btn-primary m-2 p-2">&ensp;#요가&ensp;</button>
+                          <!-- eslint-disable-next-line -->
+                          <button @click.prevent="myTagList('#필라테스')" class="mybutton btn btn-primary m-2 p-2">&ensp;#필라테스&ensp;</button>
+                          <!-- eslint-disable-next-line -->
+                          <button @click.prevent="myTagList('#기타')" class="mybutton btn btn-primary m-2 p-2">&ensp;#기타&ensp;</button>
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <div class="md-title text-center">메모 남기기</div>
+                      <div class="d-flex justify-content-center" style="width:100%;">
+                        <label for="exerciseMemo" class="d-flex justify-content-center">
+                          <!-- eslint-disable-next-line -->
+                          <textarea v-model="credentials.recordMemo" id="exerciseMemo" name="exerciseJournal" rows="5" style="width:95%"></textarea>
+                        </label>
                       </div>
                     </div>
                     <div class="d-flex justify-content-center">
-                      <button on @click="exerciseJournalSubmit($event)"
-                        class="mybutton  btn btn-primary" form="exerciseMemoForm">작성</button>
+                      <!-- eslint-disable-next-line -->
+                      <b-button type="submit" class="mybutton btn btn-primary m-2 p-2">&ensp;작성&ensp;</b-button>
                     </div>
                   </div>
-                </b-modal>
-              </div>
+                {{credentials}}
+                </form>
+              </b-modal>
+            </div>
           </div>
           <!-- 촬영 시 배경 -->
           <div class="d-flex justify-content-center align-items-center"
@@ -302,7 +149,7 @@
           </div>
           <div id="chattingList" class="fluid achat-content"
           style="overflow:auto; height:490px;">
-            <div v-for="(item, i) in recvList" :key="i">
+            <div v-for="(item, i) in allchattingList" :key="i">
               <div class="mychatting p-0" style="margin-top:0px; margin-bottom:10px;
               margin-left:auto; margin-right:30px; width:220px; height:90px;"
               v-if="item.p === this.userInfo.nick">
@@ -330,14 +177,50 @@
         </div>
       </div>
       <!-- 채팅영역 끝 -->
+      <div>
+        <button class="mybtn1" @click="mic_off" v-if="mic">
+          <img class=" menu_icon2" src="@/assets/icon/mic_off.png" alt="mic_on">
+        </button>
+        <button class="mybtn1" @click="mic_on" v-if="!mic">
+          <img class="menu_icon2" src="@/assets/icon/mic_on.png" alt="mic_off">
+        </button>
+        <button class="mybtn2" @click="video_off" v-if="video">
+          <img class="menu_icon2" src="@/assets/icon/video_off.png" alt="video_on">
+        </button>
+        <button class="mybtn2" @click="video_on" v-if="!video">
+          <img class="menu_icon2" src="@/assets/icon/video_on.png" alt="video_off">
+        </button>
+        <button class="mybtn3" @click="take_photo">
+          <img class="menu_icon2" src="@/assets/icon/photo.png" alt="photo">
+        </button>
+        <button class="mybtn6" @click="leaveSession">
+          <img class="menu_icon2" src="@/assets/icon/roomout.png" alt="photo">
+        </button>
+        <!-- eslint-disable-next-line -->
+        <button class="mybtn4 dropdown dropright dropright-toggle-no-caret text-decoration-none" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <img class="menu_icon2" src="@/assets/icon/phototimer.png" alt="photo">
+        </button>
+        <ul class="dropdown-menu" role="menu" style="width:50px;">
+        <!-- eslint-disable-next-line -->
+          <li role="presentation" style="width:100%;"><button @click="set_timer_3" class="dropdown-item text-center" type="button" target="_self">타이머 : 3초</button></li>
+        <!-- eslint-disable-next-line -->
+          <li role="presentation" style="width:100%;"><button @click="set_timer_5" class="dropdown-item text-center" type="button" target="_self">타이머 : 5초</button></li>
+        <!-- eslint-disable-next-line -->
+          <li role="presentation" style="width:100%;"><button @click="set_timer_10" class="dropdown-item text-center" type="button" target="_self">타이머 : 10초</button></li>
+        </ul>
+      </div>
+      <div class="setTimer2position">
+        <setTimer2 ref="setTimer2" />
+      </div>
+      <button @click="time">타임</button>
     </div>
   </div>
 </template>
 <script>
 import html2canvas from 'html2canvas';
-import Timer from '@/components/SetTimer.vue';
 import WebRTC from '@/components/Room/WebRTC.vue';
 import WebRTCPhoto from '@/components/Room/WebRTCPhoto.vue';
+import setTimer2 from '@/components/Room/setTimer2.vue';
 import axios from 'axios';
 import { OpenVidu } from 'openvidu-browser';
 import emojidata from 'emoji-mart-vue-fast/data/all.json';
@@ -352,59 +235,77 @@ const accounts = 'accounts';
 const meetingroom = 'meetingroom';
 const emojiIndex = new EmojiIndex(emojidata);
 const emoji = 'emoji';
+// const record = 'record';
+
+const today = new Date();
+const year = today.getFullYear();
+const month = today.getMonth() + 1;
+const day = today.getDate();
+// eslint-disable-next-line
+const format = year + '-' + (('00' + month.toString()).slice(-2)) + '-' +
+((`00${day.toString()}`).slice(-2));
 
 export default {
   name: 'CompetitionView',
   components: {
-    Timer,
     WebRTC,
     WebRTCPhoto,
     Picker,
+    setTimer2,
   },
   data() {
     return {
-      lockroomcheck: false,
-      isMaster: true,
-      video: false,
-      mic: false,
+      // 타이머 셋팅
       timer: 3,
       temp_timer: 3,
       take_photo_timer: null,
       is_take_photo: false,
-      // pictures: [],
+      // 이모지 셋팅
+      myemoji: '',
       emojiIndex,
-      emojisOutput: '',
+      Emoji_ONOFF: null,
+      emojiList: [],
+      // 채팅
+      myChat: '',
+      allchattingList: [],
+      chatONOFF: false,
+      // openvidu 셋팅
       OV: undefined,
       session: undefined,
+      video: false,
+      mic: false,
       mainStreamManager: undefined,
       publisher: undefined,
       subscribers: [],
+      // 방 설정
+      lockroomcheck: false,
+      isMaster: true,
       roommode: 'GAME',
-      mode: ['FREE', 'STREAMING', 'GAME'],
-      myUserName: '',
-      sessionId: 'SessionA',
-      myChat: '',
-      recvList: [],
-      chatONOFF: false,
-      Emoji_ONOFF: null,
-      roomName: '붙어보자!',
-      gameName: '팔굽혀펴기',
-      myemoji: '',
-      emojiList: [],
-      pictures: [
-        { src: 'https://cdn.pixabay.com/photo/2017/08/07/14/02/man-2604149_960_720.jpg' },
-        { src: 'https://cdn.pixabay.com/photo/2017/08/07/14/02/man-2604149_960_720.jpg' },
-        { src: 'https://cdn.pixabay.com/photo/2017/08/07/14/02/man-2604149_960_720.jpg' },
-        { src: 'https://cdn.pixabay.com/photo/2017/08/07/14/02/man-2604149_960_720.jpg' },
-        { src: 'https://cdn.pixabay.com/photo/2017/08/07/14/02/man-2604149_960_720.jpg' },
-        { src: 'https://cdn.pixabay.com/photo/2017/08/07/14/02/man-2604149_960_720.jpg' },
-      ],
+      mode: ['FRIEND', 'YOUTUBE', 'GAME'],
+      sessionId: null,
+      // roomName: '붙어보자!',
+      gameName: ['팔굽혀펴기', '런지', '버피테스트'],
+      credentials: {
+        recordDatetime: format,
+        recordMemo: null,
+        secret: false,
+        // recordimg: null,
+        tagList: ['a'],
+      },
+      credentialsUser: {
+        memberId: null,
+        meetingRoomId: null,
+      },
+      mytags: [],
+      mypictures: [],
     };
   },
   setup() {},
   created() {
     this.sessionId = this.$route.params.sessionId;
     this.joinSession(this.sessionId);
+    this.credentialsUser.memberId = this.userInfo.id;
+    this.credentialsUser.meetingRoomId = this.mySessionId;
   },
   moundted() {
   },
@@ -435,11 +336,41 @@ export default {
     ...mapState(emoji, ['allEmojiList']),
     ...mapState(accounts, ['accessToken', 'userInfo']),
     ...mapState(openvidu, ['OPENVIDU_SERVER_URL', 'OPENVIDU_SERVER_SECRET']),
-    ...mapState(meetingroom, ['mySessionId', 'meetingRoomList', 'camera', 'mic']),
+    ...mapState(meetingroom, ['myRoomName', 'mySessionId', 'meetingRoomList', 'camera', 'mic']),
     // ...openviduHelper.mapState(["OPENVIDU_SERVER_URL", "OPENVIDU_SERVER_SECRET"]),
     // ...meetingRoomHelper.mapState(["sessionID", "meetingRoomList"]),
   },
   methods: {
+    time() {
+      this.$refs.setTimer2.pauseTimer();
+    },
+    sendRecord(credentials, credentialsUser) {
+      this.credentialsUser.memberId = encodeURI(this.credentialsUser.memberId);
+      this.credentialsUser.meetingRoomId = encodeURI(this.credentialsUser.meetingRoomId);
+      console.log(this.credentialsUser.memberId);
+      console.log(this.credentialsUser.meetingRoomId);
+      console.log(this.credentials);
+      axios.post(`https://i7c202.p.ssafy.io:8282/api/record/finish/${credentialsUser.memberId}/${credentialsUser.meetingRoomId}`, credentials)
+        .then((res) => {
+          console.log('성공', res.data);
+        })
+        .catch((err) => {
+          console.log('실패', err);
+        });
+    },
+    // ...mapActions(record, ['sendRecord']),
+    // pickRecordImg(img) {
+    //   this.credentials.recordimg = img;
+    // },
+    myTagList(tag) {
+      // this.credentials.tagList.push(tag);
+      // console.log(this.credentials.tagList.indexOf(tag));
+      if (this.credentials.tagList.indexOf(tag) >= 0) {
+        this.credentials.tagList.splice(this.credentials.tagList.indexOf(tag), 1);
+      } else {
+        this.credentials.tagList.push(tag);
+      }
+    },
     ...mapActions(emoji, ['changeEmojiList', 'removeEmojiList']),
     ...mapMutations(meetingroom, ['SET_SESSION_ID']),
     ...mapActions(meetingroom, [
@@ -452,12 +383,12 @@ export default {
     async makeRoom() {
       const requestDto = {
         accesstoken: this.accessToken,
-        memberId: '2',
-        secret: false,
-        password: '',
-        mode: 'GAME',
-        roomName: '방1',
-        type: 'GAME',
+        memberId: '2', // state와 연결하는 항목
+        secret: false, // 방 만들 때 바인딩해야하는 항목
+        password: '', // 방 만들 때 바인딩해야하는 항목
+        mode: 'GAME', // 방 만들 때 바인딩해야하는 항목
+        roomName: '방1', // 방 만들 때 바인딩해야하는 항목
+        type: 'GAME', // 방 만들 때 바인딩해야하는 항목
         link: '',
       };
       await this.makeSession(requestDto);
@@ -525,7 +456,7 @@ export default {
               // Whether you want to start publishing with your audio unmuted or not
               publishVideo: true,
               // Whether you want to start publishing with your video enabled or not
-              resolution: '250x150', // The resolution of your video
+              resolution: '260x180', // The resolution of your video
               frameRate: 30, // The frame rate of your video
               insertMode: 'APPEND',
               // How the video is inserted in the target element 'video-container'
@@ -554,7 +485,7 @@ export default {
           m: chatdata[0],
           p: chatdata[1],
         };
-        this.recvList.push(obj);
+        this.allchattingList.push(obj);
         // console.log(this.recvList[0].m);
         const chat = document.querySelector('#chattingList');
         chat.scrollTop = chat.scrollHeight + 10000000;
@@ -825,14 +756,15 @@ export default {
           const el = document.querySelector('#take_photo_WebRTC');
           // eslint-disable-next-line
           html2canvas(el).then((canvas) => {
-            // document.body.appendChild(canvas);
-            const link = document.createElement('a');
-            document.body.appendChild(link);
-            link.href = canvas.toDataURL('image/png', 1.0);
-            localStorage.setItem('userImage', link);
-            link.download = '안녕하세요?.png';
-            link.click();
-            document.body.removeChild(link);
+            if (this.mypictures.length >= 3) { this.mypictures.pop(); }
+            this.mypictures.unshift(canvas.toDataURL('image/png', 1.0));
+            // const link = document.createElement('a');
+            // document.body.appendChild(link);
+            // link.href = canvas.toDataURL('image/png', 1.0);
+            // localStorage.setItem('userImage', link);
+            // link.download = '안녕하세요?.png';
+            // link.click();
+            // document.body.removeChild(link);
           });
           clearInterval(this.take_photo_timer);
           this.is_take_photo = false;
@@ -897,7 +829,7 @@ div {
   border:none;
   background-color:transparent;
   position:fixed;
-  bottom: 30px;
+  bottom: 29px;
   right: 30px;
 }
 
@@ -953,14 +885,16 @@ solid #ccb9a8; border-top: 10px solid transparent; border-bottom: 10px solid tra
 .webrtcetc {
   /* width: 30%;
   height:100%; */
-  width:500px;
-  height:300px;
+  width:520px;
+  height:360px;
   text-align:center;
   vertical-align: middle;
   background-image: url('../../assets/icon/Loading2.gif');
   background-position: center;
   background-size: 30px 30px;
   background-repeat: no-repeat;
+  border-radius: 20px;
+  border: 3px solid #4e8aff;
 }
 
 .Emoji {
@@ -992,13 +926,12 @@ solid #ccb9a8; border-top: 10px solid transparent; border-bottom: 10px solid tra
 }
 
 #take_photo_WebRTC {
-  margin:0px;
-  padding:0px;
   background-color:gray;
   position: fixed;
-  top: 10%;
-  left: 20%;
   width: 60%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   /* height: 80%; */
   z-index: 100;
 }
@@ -1021,7 +954,6 @@ solid #ccb9a8; border-top: 10px solid transparent; border-bottom: 10px solid tra
 .mybutton {
   padding: 0;
   border: none;
-  background: none;
 }
 
 #after-exercise-modal {
@@ -1040,11 +972,7 @@ solid #ccb9a8; border-top: 10px solid transparent; border-bottom: 10px solid tra
 }
 
 .mycontainer {
-  height: 400px;
-}
-
-.wrapper {
-  padding: 20px 0;
+  width: 100%;
 }
 
 .photo-row {
@@ -1102,5 +1030,57 @@ solid #ccb9a8; border-top: 10px solid transparent; border-bottom: 10px solid tra
   position:relative;
   top:7px;
   left:0px;
+}
+
+.mybtn1 {
+  background-color:transparent;
+  border:none;
+  position:fixed;
+  top:10%;
+  left:30px;
+  z-index: 700;
+}
+
+.mybtn2 {
+  background-color:transparent;
+  border:none;
+  position:fixed;
+  top:20%;
+  left:30px;
+  z-index: 700;
+}
+
+.mybtn3 {
+  background-color:transparent;
+  border:none;
+  position:fixed;
+  top:30%;
+  left:30px;
+  z-index: 700;
+}
+
+.mybtn4 {
+  background-color:transparent;
+  border:none;
+  position:fixed;
+  top:40%;
+  left:30px;
+  z-index: 700;
+}
+
+.mybtn6 {
+  background-color:transparent;
+  border:none;
+  position:fixed;
+  bottom:30px;
+  right: 120px;
+  z-index: 700;
+}
+
+.setTimer2position {
+  position:fixed;
+  top:60px;
+  right:30px;
+  z-index:800;
 }
 </style>

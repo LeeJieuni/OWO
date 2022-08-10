@@ -11,9 +11,7 @@ import FriendView from '../views/Room/FriendView.vue';
 import YoutubeView from '../views/Room/YoutubeView.vue';
 import login from '../views/accounts/loginView.vue';
 import register from '../views/accounts/registerView.vue';
-import TestView from '../views/Room/TestView.vue';
-import redirectView from '../views/Room/RedirectView.vue';
-import Test from '../views/Room/ATest.vue';
+import redirectView from '../views/accounts/RedirectView.vue';
 
 const routes = [
   {
@@ -26,12 +24,6 @@ const routes = [
     path: '/login',
     name: 'login',
     component: login,
-    meta: { unauthorized: true },
-  },
-  {
-    path: '/social',
-    name: 'TestPage',
-    component: TestView,
     meta: { unauthorized: true },
   },
   {
@@ -98,23 +90,6 @@ const routes = [
     path: '/room/youtube',
     name: 'Youtube',
     component: YoutubeView,
-  },
-  {
-    path: '/social',
-    name: 'TestPage',
-    component: TestView,
-    meta: { unauthorized: true },
-  },
-  {
-    path: '/oauth/redirect',
-    name: 'OauthRedrect',
-    component: redirectView,
-    meta: { unauthorized: true },
-  },
-  {
-    path: '/test',
-    name: 'ATest',
-    component: Test,
   },
 ];
 

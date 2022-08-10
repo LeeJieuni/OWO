@@ -4,7 +4,8 @@ import axios from 'axios';
 export const meetingroom = {
   namespaced: true,
   state: {
-    mySessionId: '12341234',
+    myRoomName: '',
+    mySessionId: '12341234', // roomId
     meetingRoomList: [],
     camera: true,
     mic: true,
@@ -49,6 +50,7 @@ export const meetingroom = {
           console.log(res.data);
           const { roomId } = res.data.data;
           commit('SET_SESSION_ID', roomId);
+          this.myRoomName = requestDto.roomName;
           console.log(`test = ${state.mySessionId}`);
           router.push('/room/competition');
         })

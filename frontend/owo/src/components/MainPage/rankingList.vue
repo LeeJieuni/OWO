@@ -4,27 +4,19 @@
     <b-card-group deck class="d-flex justify-content-evenly">
       <b-card class="rounded-5 cards">
         <h5 class="card-title">어제 운동왕</h5>
-        <div class="ranking1">
+        <div class="ranking" v-for="(rank, index) in rankingList" :key="index">
           <b-button block pill size='lg' variant="primary">
-            1위 {{userrank.username}}님  {{userrank.workoutTime}}분</b-button>
-        </div>
-        <div class="ranking2">
-          <b-button block pill size='lg' variant="outline-secondary">
-            2위 {{userrank.username}}님 {{userrank.workoutTime}}분</b-button>
-        </div>
-        <div class="ranking3">
-          <b-button block pill size='lg' variant="outline-danger">
-            3위 {{userrank.username}}님 {{userrank.workoutTime}}분</b-button>
+          {{index + 1}}위 : {{rank.name}}</b-button>
         </div>
         <hr/>
         <div class="myranking">
           <b-button block pill size='lg' variant="outline-danger">
-            {{userrank.rate}}위 {{userrank.username}}님 {{userrank.workoutTime}}분</b-button>
+            나의 랭킹 : {{myranking.data.data.ranking}}위</b-button>
         </div>
       </b-card>
       <b-card class="rounded-5 cards">
         <h5 class="card-title">운동왕의 record</h5>
-        <h2>{{userrank.username}}</h2>
+        <h2>test2</h2>
         <div class="d-flex justify-content-center" sytle="margin-bottom: 10px">
           <circle-progress
             class="progress-bar"
@@ -46,34 +38,27 @@
 </template>
 
 <script>
-import { useStore } from 'vuex';
-import { reactive, computed } from 'vue';
 import 'vue3-circle-progress/dist/circle-progress.css';
 import CircleProgress from 'vue3-circle-progress';
+import { mapActions, mapState } from 'vuex';
 // import MySmCalendar from '../MyPage/MySmCalendar.vue';
+
+const mainpage = 'mainpage';
 
 export default {
   components: {
     CircleProgress,
     // MySmCalendar,
   },
-  setup() {
-    const store = useStore();
-    const user = computed(() => store.getters['accounts/userInfo']);
-    // const physical = computed(() => store.getters['accounts/physicalInfo']);
-    const state = reactive({
-    });
-    return {
-      value: 'test',
-      userrank: {
-        rate: 1,
-        username: '백한나',
-        workoutTime: 10,
-      },
-      date: new Date(),
-      state,
-      user,
-    };
+  computed: {
+    ...mapState(mainpage, ['rankingList', 'myranking']),
+  },
+  methods: {
+    ...mapActions(mainpage, ['getMyRanking', 'getRankingList']),
+  },
+  created() {
+    this.getRankingList();
+    this.getMyRanking();
   },
 };
 </script>
@@ -98,7 +83,7 @@ export default {
 .title {
   padding: 30px 0 50px 0;
 }
-.ranking1 {
+.ranking {
   padding: 10px;
 }
 .ranking2 {

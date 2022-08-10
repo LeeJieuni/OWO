@@ -1,7 +1,7 @@
 <template>
 <div style="position:relative">
-  <div class="circle">
-    <svg width="300" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg">
+  <div v-show="isStarted" class="circle">
+    <svg width="200" style="background-color:white; border-radius: 50%;" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg">
       <g transform="translate(110,110)">
         <circle r="100" class="e-c-base"/>
         <g transform="rotate(-90)">
@@ -13,23 +13,24 @@
       </g>
     </svg>
   </div>
-  <div class="controlls">
+  <div v-show="isStarted" class="controlls">
     <div class="display-remain-time">{{timesetting}}</div>
   </div>
-  <button @click="pauseTimer">시작버튼</button>
+  <button class="mybtn5" v-if="!isStarted" @click="pauseTimer">
+    <img class="menu_icon2" src="@/assets/icon/play.png" alt="">
+  </button>
 </div>
 </template>
 
 <script>
 export default {
-  name: 'ATest',
   components: {
   },
   data() {
     return {
       intervalTimer: null,
       timeLeft: null,
-      wholeTime: 5,
+      wholeTime: 120,
       isPaused: false,
       isStarted: false,
       length: Math.PI * 2 * 100,
@@ -122,7 +123,7 @@ button[data-setter]:hover { opacity: 0.5; }
 .seconds-set { float: right; }
 
 .controlls {
-  position:absolute;
+  position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -131,7 +132,7 @@ button[data-setter]:hover { opacity: 0.5; }
 .display-remain-time {
   font-family: 'Roboto';
   font-weight: 100;
-  font-size: 65px;
+  font-size: 50px;
   color: #4E8Aff;
 }
 
@@ -194,4 +195,17 @@ button[data-setter]:hover { opacity: 0.5; }
 #e-pointer { transition: transform 0.7s; }
 h1 { margin-top:150px; text-align:center;}
 body { background-color:#f7f7f7;}
+
+.mybtn5 {
+  background-color:transparent;
+  border:none;
+  position:fixed;
+  top:25%;
+  right:105px;
+  z-index: 700;
+}
+
+.menu_icon2 {
+  width:50px;
+}
 </style>

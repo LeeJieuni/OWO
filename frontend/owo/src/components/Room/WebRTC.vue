@@ -10,6 +10,7 @@
       <div class="myreaction">{{newAllEMojiList[0]}}</div>
       <p class="myname">&ensp;{{ clientData }}&ensp;</p>
       <!-- <img class="mymic" v-if="!mic" src="@/assets/icon/micmute.png" alt=""> -->
+      <!-- eslint-disable-next-line -->
       <ov-video class="ov-video" :stream-manager="streamManager" />
     </div>
   </div>
@@ -93,17 +94,20 @@ export default {
 }
 
 .webrtctag {
-  width:500px;
-  height:300px;
+  width:520px;
+  height:360px;
+  border-radius: 20px;
+  border: 3px solid #4e8aff;
 }
 
 .myname {
   position:absolute;
-  top:0px;
-  left:0px;
-  background-color:white;
+  top:-2px;
+  left:-2px;
+  background-color:#4e8aff;
   font-size:24px;
-  border-radius: 0px 0px 10px 0px;
+  border-radius: 20px 0px 10px 0px;
+  z-index:600;
 }
 
 .myreaction {
@@ -112,13 +116,17 @@ export default {
   top:0px;
   right:0px;
   font-size:150px;
-  z-index:500;
+  z-index:700;
 }
 
 .ov-video {
-  width: 100%;
-  height: 100%;
+  width: 101%;
+  height: 101%;
   border-radius: 20px;
+  position:relative;
+  top:-2px;
+  left:-2px;
+  z-index:500;
 }
 
 .mymic {

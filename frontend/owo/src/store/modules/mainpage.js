@@ -1,7 +1,7 @@
 import axios from 'axios';
-
 // eslint-disable-next-line
 export const mainpage = {
+  namespaced: true,
   state: () => ({
     userImg: '',
     rankingList: null,
@@ -25,24 +25,29 @@ export const mainpage = {
   actions: {
     getRankingList({ state, commit }) {
       axios({
-        url: `https://i7c202.p.ssafy.io:8282/api/ranking/api/${sessionStorage.getItem('userInfo.id')}`,
-        method: '',
+        url: 'https://i7c202.p.ssafy.io:8282/api/rankingList',
+        method: 'get',
         headers: {
           'X-AUTH-TOKEN': state.accessToken,
           'REFRESH-TOKEN': state.refreshToken,
         },
       })
         .then((res) => {
-          console.log(res);
-          commit('SET_RANKIGN_LIST', res);
+          console.log(res.data);
+          commit('SET_RANKING_LIST', res.data.data);
+          console.log(state.rankingList[0]);
         })
         .catch((err) => {
           console.log(err);
         });
     },
     getMyRanking({ state, commit }) {
+      let userInfo = sessionStorage.getItem('vuex');
+      userInfo = JSON.parse(userInfo);
+      // eslint-disable-next-line
+      const userId = userInfo['accounts']['userInfo']['id'];
       axios({
-        url: 'https://i7c202.p.ssafy.io:8282/api/rankingList',
+        url: `https://i7c202.p.ssafy.io:8282/api/ranking/${userId}`,
         method: 'get',
         headers: {
           'X-AUTH-TOKEN': state.accessToken,

@@ -1,8 +1,5 @@
-// import Vue from "vue";
 import Vuex from 'vuex';
 import createPersistedState from 'vuex-persistedstate';
-
-// import { createStore } from "vuex";
 import { accounts } from '@/store/modules/accounts';
 import { openvidu } from '@/store/modules/openvidu';
 import { meetingroom } from '@/store/modules/meetingroom';
