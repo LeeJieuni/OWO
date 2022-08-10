@@ -175,7 +175,7 @@ a {
   text-align: center;
   display: block;
   position: relative;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.4);
   border-radius: 30px;
   width: 100%;
   height: 400px;
