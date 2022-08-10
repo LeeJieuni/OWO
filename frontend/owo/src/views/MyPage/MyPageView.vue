@@ -18,7 +18,6 @@
             </div>
           </div>
         </div>
-
         <div class="d-flex justify-content-center">
           <button on @click="updateProfileImg($event)"
             class="btn btn-primary" form="imageUploadForm">작성</button>

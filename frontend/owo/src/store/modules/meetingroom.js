@@ -5,13 +5,14 @@ export const meetingroom = {
   namespaced: true,
   state: {
     myRoomName: '',
-    mySessionId: '12341234', // roomId
+    mySessionId: '', // roomId
     meetingRoomList: [],
     camera: true,
     mic: true,
   },
   mutations: {
     SET_SESSION_ID: (state, mySessionId) => {
+      console.log('여기', mySessionId);
       state.mySessionId = String(mySessionId);
     },
     SET_MEETING_ROOM_LIST: (state, list) => {

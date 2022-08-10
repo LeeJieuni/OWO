@@ -98,6 +98,7 @@ export default {
   height:360px;
   border-radius: 20px;
   border: 3px solid #4e8aff;
+  background-color:#eaf1ff;
 }
 
 .myname {
@@ -120,12 +121,11 @@ export default {
 }
 
 .ov-video {
-  width: 101%;
-  height: 101%;
+  width: 100.2%;
   border-radius: 20px;
   position:relative;
-  top:-2px;
-  left:-2px;
+  top:-1px;
+  left:-1px;
   z-index:500;
 }
 

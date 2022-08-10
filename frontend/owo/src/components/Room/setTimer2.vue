@@ -1,7 +1,7 @@
 <template>
 <div style="position:relative">
   <div v-show="isStarted" class="circle">
-    <svg width="200" style="background-color:white; border-radius: 50%;" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg">
+    <svg width="150" style="background-color:white; border-radius: 50%;" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg">
       <g transform="translate(110,110)">
         <circle r="100" class="e-c-base"/>
         <g transform="rotate(-90)">
@@ -16,9 +16,6 @@
   <div v-show="isStarted" class="controlls">
     <div class="display-remain-time">{{timesetting}}</div>
   </div>
-  <button class="mybtn5" v-if="!isStarted" @click="pauseTimer">
-    <img class="menu_icon2" src="@/assets/icon/play.png" alt="">
-  </button>
 </div>
 </template>
 
@@ -132,7 +129,7 @@ button[data-setter]:hover { opacity: 0.5; }
 .display-remain-time {
   font-family: 'Roboto';
   font-weight: 100;
-  font-size: 50px;
+  font-size: 40px;
   color: #4E8Aff;
 }
 

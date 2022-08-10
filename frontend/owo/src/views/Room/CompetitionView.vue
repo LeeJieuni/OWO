@@ -2,8 +2,11 @@
   <div class="d-flex justify-content-center" style="width: 100%; height:100%">
     <div style="width:1600px;">
     <!-- <div style="width:90%;"> -->
-      <div class="d-flex justify-content-between align-items-center" style="height: 80px">
+      <!-- eslint-disable-next-line -->
+      <div class="startbtnpositionsub d-flex justify-content-center align-items-center" style="height: 80px; width:100%;">
         <h3 class="game-name m-0">{{ gameName }}</h3>
+        <!-- eslint-disable-next-line -->
+        <button class="startbtnposition mybtn5" @click="time"><img class="menu_icon4" src="@/assets/icon/start.png" alt=""></button>
       </div>
       <!-- 세션 영역-->
       <div id="session" v-if="session">
@@ -41,9 +44,21 @@
                   <div>
                     <h1 class="title text-center mt-4">운동일지 작성하기</h1>
                     <!-- 운동일지, 사진 -->
-                    <div>
-                      <div class="md-title text-center">오늘의 운동 사진 고르기📷</div>
+                    <div class="checkboxposition">
+                      <div class="md-title2 text-center">오늘의 운동 사진 고르기📷</div>
                         <!-- eslint-disable-next-line -->
+                      <label for="my-checkbox m-0" class="secretcheckbox d-flex align-items-center">
+                        <input v-model="credentials.secret" type="checkbox">
+                        <div v-if="credentials.secret">
+                          <!-- eslint-disable-next-line -->
+                          &ensp;&ensp;<span style="color:#de7474;">비공개</span>&ensp;<img class="menu_icon1" src="@/assets/icon/lock.png" alt="">
+                        </div>
+                        <div  v-if="!credentials.secret">
+                          <!-- eslint-disable-next-line -->
+                          &ensp;&ensp;&ensp;&ensp;<span style="color:#4e8aff;">공개</span>&ensp;<img class="menu_icon1" src="@/assets/icon/unlock.png" alt="">
+                        </div>
+                        <!-- eslint-disable-next-line -->
+                      </label>
                       <div class="row d-flex align-items-start justify-content-center">
                         <!-- eslint-disable-next-line -->
                         <button v-for="(mypicture, i) in mypictures" :key="i" class="col-4 m0p0" style="padding:0px; width:330px;">
@@ -70,19 +85,19 @@
                         </div> -->
                         <div class="d-flex justify-content-center" style="flex-flow:row wrap;">
                           <!-- eslint-disable-next-line -->
-                          <button @click.prevent="myTagList('#유산소')" class="mybutton btn btn-primary m-2">&ensp;#유산소&ensp;</button>
+                          <button @click.prevent="myTagList('#유산소')" id="#유산소" class="mybutton btn btn-secondary m-2">&ensp;#유산소&ensp;</button>
                           <!-- eslint-disable-next-line -->
-                          <button @click.prevent="myTagList('#헬스')" class="mybutton btn btn-primary m-2 p-2">&ensp;#헬스&ensp;</button>
+                          <button @click.prevent="myTagList('#헬스')" id="#헬스" class="mybutton btn btn-secondary m-2 p-2">&ensp;#헬스&ensp;</button>
                           <!-- eslint-disable-next-line -->
-                          <button @click.prevent="myTagList('#스트레칭')" class="mybutton btn btn-primary m-2 p-2">&ensp;#스트레칭&ensp;</button>
+                          <button @click.prevent="myTagList('#스트레칭')" id="#스트레칭" class="mybutton btn btn-secondary m-2 p-2">&ensp;#스트레칭&ensp;</button>
                           <!-- eslint-disable-next-line -->
-                          <button @click.prevent="myTagList('#맨몸운동')" class="mybutton btn btn-primary m-2 p-2">&ensp;#맨몸운동&ensp;</button>
+                          <button @click.prevent="myTagList('#맨몸운동')" id="#맨몸운동" class="mybutton btn btn-secondary m-2 p-2">&ensp;#맨몸운동&ensp;</button>
                           <!-- eslint-disable-next-line -->
-                          <button @click.prevent="myTagList('#요가')" class="mybutton btn btn-primary m-2 p-2">&ensp;#요가&ensp;</button>
+                          <button @click.prevent="myTagList('#요가')" id="#요가" class="mybutton btn btn-secondary m-2 p-2">&ensp;#요가&ensp;</button>
                           <!-- eslint-disable-next-line -->
-                          <button @click.prevent="myTagList('#필라테스')" class="mybutton btn btn-primary m-2 p-2">&ensp;#필라테스&ensp;</button>
+                          <button @click.prevent="myTagList('#필라테스')" id="#필라테스" class="mybutton btn btn-secondary m-2 p-2">&ensp;#필라테스&ensp;</button>
                           <!-- eslint-disable-next-line -->
-                          <button @click.prevent="myTagList('#기타')" class="mybutton btn btn-primary m-2 p-2">&ensp;#기타&ensp;</button>
+                          <button @click.prevent="myTagList('#기타')" id="#기타" class="mybutton btn btn-secondary m-2 p-2">&ensp;#기타&ensp;</button>
                         </div>
                       </div>
                     </div>
@@ -212,7 +227,19 @@
       <div class="setTimer2position">
         <setTimer2 ref="setTimer2" />
       </div>
-      <button @click="time">타임</button>
+      <!-- <div>
+        <div>유튜브 보면서 운동</div>
+        <div class="d-flex align-items-start justify-content-start mx-1 mb-5"
+        style="background-color:aqua; width:911px; height:592px">
+        <iframe width="100%" height="100%" :src="youtubeURL"
+        title="YouTube video player" frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media;
+        gyroscope; picture-in-picture"
+        allowfullscreen></iframe>
+        </div>
+        <div>새로운 API 셋팅</div>
+        <div id="player"></div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -278,6 +305,7 @@ export default {
       publisher: undefined,
       subscribers: [],
       // 방 설정
+      youtubeURL: '',
       lockroomcheck: false,
       isMaster: true,
       roommode: 'GAME',
@@ -342,7 +370,7 @@ export default {
   },
   methods: {
     time() {
-      this.$refs.setTimer2.pauseTimer();
+      this.startround1();
     },
     sendRecord(credentials, credentialsUser) {
       this.credentialsUser.memberId = encodeURI(this.credentialsUser.memberId);
@@ -366,8 +394,12 @@ export default {
       // this.credentials.tagList.push(tag);
       // console.log(this.credentials.tagList.indexOf(tag));
       if (this.credentials.tagList.indexOf(tag) >= 0) {
+        document.getElementById(`${tag}`).classList.add('btn-secondary');
+        document.getElementById(`${tag}`).classList.remove('btn-primary');
         this.credentials.tagList.splice(this.credentials.tagList.indexOf(tag), 1);
       } else {
+        document.getElementById(`${tag}`).classList.add('btn-primary');
+        document.getElementById(`${tag}`).classList.remove('btn-secondary');
         this.credentials.tagList.push(tag);
       }
     },
@@ -457,7 +489,7 @@ export default {
               publishVideo: true,
               // Whether you want to start publishing with your video enabled or not
               resolution: '260x180', // The resolution of your video
-              frameRate: 30, // The frame rate of your video
+              frameRate: 60, // The frame rate of your video
               insertMode: 'APPEND',
               // How the video is inserted in the target element 'video-container'
               mirror: false, // Whether to mirror your local video or not
@@ -508,6 +540,11 @@ export default {
         console.log(event);
         console.log('게임! end');
         this.leaveSession();
+      });
+
+      this.session.on('signal:startround1', () => {
+        this.$refs.setTimer2.pauseTimer();
+        this.youtubeURL = 'https://www.youtube.com/embed/gTowV_F07uI';
       });
 
       window.addEventListener('beforeunload', this.leaveSession);
@@ -580,6 +617,14 @@ export default {
         });
     },
 
+    startround1() {
+      this.session
+        .signal({
+          data: '', // Any string (optional)
+          to: [], // Array of Connection objects (optional. Broadcast to everyone if empty)
+          type: 'startround1', // The type of message (optional)
+        });
+    },
     start() {
       const requestDto = {
         accesstoken: this.accessToken,
@@ -630,6 +675,7 @@ export default {
       this.subscribers = [];
       this.OV = undefined;
       window.removeEventListener('beforeunload', this.leaveSession);
+      this.SET_SESSION_ID('');
       this.$router.push('/');
     },
 
@@ -757,6 +803,8 @@ export default {
           // eslint-disable-next-line
           html2canvas(el).then((canvas) => {
             if (this.mypictures.length >= 3) { this.mypictures.pop(); }
+            console.log(canvas.toDataURL('image/png', 1.0));
+            // this.mypictures.unshift(canvas.toDataURL('image/png', 1.0));
             this.mypictures.unshift(canvas.toDataURL('image/png', 1.0));
             // const link = document.createElement('a');
             // document.body.appendChild(link);
@@ -811,6 +859,10 @@ div {
   width:40px;
 }
 
+.menu_icon4 {
+  width:80px;
+}
+
 .emoji_position {
   position:fixed;
   bottom: 100px;
@@ -839,7 +891,7 @@ div {
 
 .achat {
   position:fixed;
-  border: 2px solid #4e8aff;
+  border: 4px solid #4e8aff;
   border-radius: 30px;
   width:320px;
   height:600px;
@@ -850,7 +902,7 @@ div {
 
 .achat-content {
   position:fixed;
-  border: 2px solid #4e8aff;
+  border: 4px solid #4e8aff;
   width:320px;
   height:490px;
   background-color: white;
@@ -894,7 +946,8 @@ solid #ccb9a8; border-top: 10px solid transparent; border-bottom: 10px solid tra
   background-size: 30px 30px;
   background-repeat: no-repeat;
   border-radius: 20px;
-  border: 3px solid #4e8aff;
+  border: 4px solid #4e8aff;
+  background-color:#eaf1ff;
 }
 
 .Emoji {
@@ -933,7 +986,7 @@ solid #ccb9a8; border-top: 10px solid transparent; border-bottom: 10px solid tra
   left: 50%;
   transform: translate(-50%, -50%);
   /* height: 80%; */
-  z-index: 100;
+  z-index: 600;
 }
 
 #take_photo_timer {
@@ -942,7 +995,7 @@ solid #ccb9a8; border-top: 10px solid transparent; border-bottom: 10px solid tra
     left: 0%;
     width: 100%;
     height: 100%;
-    z-index: 101;
+    z-index: 601;
     font-size:300px;
 }
 
@@ -969,6 +1022,12 @@ solid #ccb9a8; border-top: 10px solid transparent; border-bottom: 10px solid tra
   font-size: 24px;
   font-weight: 800;
   margin: 20px 0;
+}
+
+.md-title2 {
+  font-size: 24px;
+  font-weight: 800;
+  margin: 0;
 }
 
 .mycontainer {
@@ -1068,6 +1127,11 @@ solid #ccb9a8; border-top: 10px solid transparent; border-bottom: 10px solid tra
   z-index: 700;
 }
 
+.mybtn5 {
+  background-color:transparent;
+  border:none;
+}
+
 .mybtn6 {
   background-color:transparent;
   border:none;
@@ -1079,8 +1143,31 @@ solid #ccb9a8; border-top: 10px solid transparent; border-bottom: 10px solid tra
 
 .setTimer2position {
   position:fixed;
-  top:60px;
+  top:70px;
   right:30px;
   z-index:800;
+}
+
+.startbtnpositionsub {
+  position:relative;
+}
+
+.startbtnposition {
+  position: absolute;
+  top: 50%;
+  right:20px;
+  transform: translate(0, -50%);
+}
+
+.checkboxposition {
+  position:relative;
+}
+
+.secretcheckbox {
+  position: absolute;
+  top: 50%;
+  right:20px;
+  transform: translate(0, -50%);
+  /* line-height: 0.8; */
 }
 </style>
