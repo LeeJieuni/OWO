@@ -44,18 +44,18 @@
               aria-valuemin="0" aria-valuemax="100">비만
             </div>
           </div>
-          <div v-if="physical.bmi > 0" class="yes-bmi">
+          <div v-if="!state.text === '신체정보를 추가해주세요!'" class="yes-bmi">
           <div class="bmi-solution pt-2 text-start">
-            bmi 지수 : {{physical.bmi}}
+            bmi 지수 : {{state.bmi}}
           </div>
         </div>
         <div v-else class="no-bmi">
           <div class="bmi-solution pt-2 text-start">
             <p class="rg-font">
-              {{bmiText}}
+              {{state.text}}
               <router-link
                 to="/mypage/update"
-                class="link">{{state.bmiNotEnoughInfo}} 추가하기</router-link>
+                class="link">{{state.notEnoughInfo}} 추가하기</router-link>
             </p>
           </div>
         </div>
@@ -70,7 +70,7 @@
           <template #title>BMR</template>
           숨만 쉬고 잠만 잘 때 사용되는 생명 유지를 위한 <b>최소한의 열량</b>
         </b-popover>
-        <div v-if="physical.bmr > 0" class="info yes-bmr">
+        <div v-if="!state.text === '신체정보를 추가해주세요!'" class="info yes-bmr">
           <div class="progress">
             <div class="progress-bar"
               role="progressbar" aria-label="Segment 1"
@@ -87,7 +87,7 @@
           <p>{{ state.bmrText }}</p>
         </div>
         <div v-else class="no-bmr">
-          정보가 부족합니다.
+          정보가 부족합니다. <router-link to="/mypage/update">수정하기</router-link>
         </div>
       </div>
     </div>
@@ -95,9 +95,12 @@
     <div class="row analy-div bmr mb-3">
       <div class="sm-div">
         <p class="md-title">하루 섭취 권장 칼로리</p>
-        <div class="info">
-          <p class="kcal">{{ physical.caloriePerDay }} kcal</p>
+        <div class="info" v-if="!state.text === '신체정보를 추가해주세요!'">
+          <p class="kcal">{{ state.caloriePerDay }} kcal</p>
           <a href="https://www.fatsecret.kr/%EC%B9%BC%EB%A1%9C%EB%A6%AC-%EC%98%81%EC%96%91%EC%86%8C/">음식 칼로리 계산하러 가기</a>
+        </div>
+        <div v-else>
+          <p class="no-bmr">정보가 부족합니다. <router-link to="/mypage/update">수정하기</router-link></p>
         </div>
       </div>
     </div>
@@ -127,11 +130,11 @@ export default {
       bmi: 0,
       bmr: 0,
       caloriePerDay: 0,
-      bmiNotEnoughInfo: '',
+
+      notEnoughInfo: '',
       avgMinBmr: 0,
       avgMaxBmr: 0,
-      bmiText: '',
-      bmrText: '',
+      text: '',
       caloriePerDayText: '',
       bmrPercent: 0,
       bmrColor: '',
@@ -143,35 +146,39 @@ export default {
     };
   },
   created() {
-    console.log('test');
-    console.log(this.physical.bmi);
-
     // physical info 반올림
-    this.state.bmi = this.physical.bmi;
-    this.state.bmr = this.physical.bmr;
-    this.state.caloriePerDay = this.physical.caloriePerDay;
+    this.state.bmi = Math.round(this.physical.bmi);
+    this.state.bmr = Math.round(this.physical.bmr);
+    this.state.caloriePerDay = Math.round(this.physical.caloriePerDay);
 
     // user 정보 부족 시 bmi, bmr, calorie 초기화
     // eslint-disable-next-line
     if (this.user.gender === '' || this.user.weight === '' || this.user.weight === '' || this.user.height === '' || this.user.activityLevel === '') {
-      this.state.bmrText = '신체정보를 추가해주세요!';
+      this.state.text = '신체정보를 추가해주세요!';
     }
 
     // bmr
-    // if (this.physical.bmr == null || this.physical.bmr <= 0) {
-    //   this.state.bmr = 0;
-    // } else {
-    //   this.state.bmr = Math.round(this.physical.bmr);
-    // }
+    if (this.physical.bmr == null || this.physical.bmr <= 0) {
+      this.state.bmr = 0;
+    } else {
+      this.state.bmr = Math.round(this.physical.bmr);
+    }
 
-    // BMI를 계산하기에 부족한 정보 분류
+    // bmi 초기화
+    if (this.physical.bmr == null || this.physical.bmr <= 0) {
+      this.state.bmr = 0;
+    } else {
+      this.state.bmr = Math.round(this.physical.bmr);
+    }
+
+    // 칼로리를 계산하기에 부족한 정보 분류
     if (!this.physical.bmi || this.physical.bmi === 0) {
       if (!this.user.weight && this.user.height > 0) {
-        this.state.bmiNotEnoughInfo = '몸무게';
+        this.state.notEnoughInfo = '몸무게';
       } else if (this.user.weight > 0 && !this.user.height) {
-        this.state.bmiNotEnoughInfo = '키';
+        this.state.notEnoughInfo = '키';
       } else if (!this.user.weight && !this.user.height) {
-        this.state.bmiNotEnoughInfo = '몸무게, 키';
+        this.state.notEnoughInfo = '몸무게, 키';
       }
     }
 
@@ -235,7 +242,7 @@ export default {
     }
     // console.log(this.bmr);
     // // bmi 진단 -> 일단 그래프 색깔 활성화만
-    if (this.physical.bmi < 18.5) {
+    if (this.physical.bmi && this.physical.bmi < 18.5) {
       this.state.opacityActive.underWeight = '';
     } else if (this.physical.bmi >= 18.5 && this.physical.bmi < 23) {
       this.state.opacityActive.normalWeight = '';

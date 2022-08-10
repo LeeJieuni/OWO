@@ -12,7 +12,7 @@
                   class="progress-bar"
                   role="progressbar" aria-label="Segment one"
                   :style="{width: record.exerciseRate + '%',
-                    backgroundColor: colors[recordIndex] }"
+                    backgroundColor: state.colors[recordIndex] }"
                   :aria-valuenow=record.exerciseRate
                   aria-valuemin="0" aria-valuemax="100" >
                   <span class="rate-name">
@@ -29,20 +29,47 @@
                 </div>
               </template>
           </div>
-          <p class="rate-comment">{{ user.name }}님은 유산소를 많이 하셨군요!</p>
+          <p class="rate-comment">{{ user.nick }}님은 유산소를 많이 하셨군요!</p>
         </div>
       </div>
   </div>
 </template>
 <script>
+import { useStore } from 'vuex';
+import { computed, reactive } from 'vue';
+
 export default {
   name: 'MyExerciseRate',
   components: {},
+  setup() {
+    const store = useStore();
+    const user = computed(() => store.getters['accounts/userInfo']);
+    const percentage = computed(() => store.getters['record/percentage']);
+    // const percentKeys = Object.keys(percentage);
+    // for (let key in percentage) {
+    //   const value = percentage[key];
+    //   console.log(key);
+    //   console.log(value);
+    // }
+    const state = reactive({
+      colors: [
+        '#6842FF', '#3C48E8', '#4E8AFF', '#3CA3E8', '#42E5FF', '#31E8CE', '#36FFAA',
+      ],
+    });
+    const update = function (userInfo) {
+      // console.log(userInfo);
+      store.dispatch('accounts/updateUserInfo', userInfo);
+    };
+    return {
+      state,
+      user,
+      percentage,
+      update,
+      // percentKeys,
+    };
+  },
   data() {
     return {
-      user: {
-        name: '한나',
-      },
       sumOfExerciseHours: 0,
       records: [
         { name: '유산소', exerciseHours: 24, exerciseRate: null },
@@ -53,13 +80,10 @@ export default {
         { name: '필라테스', exerciseHours: 3, exerciseRate: null },
         { name: '기타', exerciseHours: 2, exerciseRate: null },
       ],
-      colors: [
-        '#6842FF', '#3C48E8', '#4E8AFF', '#3CA3E8', '#42E5FF', '#31E8CE', '#36FFAA',
-      ],
     };
   },
-  setup() {},
   created() {
+    console.log(this.percentage);
     for (let i = 0; i < this.records.length; i += 1) {
       this.sumOfExerciseHours += this.records[i].exerciseHours;
     }

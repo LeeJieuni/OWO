@@ -64,7 +64,7 @@ const accounts = 'accounts';
 export default {
   components: {
     CircleProgress,
-    // MySmCalendar,
+    MySmCalendar,
   },
   computed: {
     ...mapState(mainpage, ['rankingList', 'myranking', 'lastingDay']),

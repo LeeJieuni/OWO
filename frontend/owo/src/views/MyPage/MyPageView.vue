@@ -1,19 +1,29 @@
 <template>
   <div class="mypageview">
-    <b-modal id="image-upload" size="lg" hide-footer hide-header>
+    <b-modal id="image-upload" size="md" hide-footer hide-header centered>
       <div>
-        <h1 class="modal-title text-center mt-4">프로필 이미지</h1>
+        <h3 class="modal-title text-center mt-4">프로필 이미지 업로드📷</h3>
         <div class="wrapper">
-          <div class="md-title text-center">업로드📷</div>
           <div class="container">
             <div class="row row-cols-3">
-              <form enctype="multipart/form-data" id="imageUploadForm">
-              <label for="profileImag">이미지
+              <div class="img-wrapper">
+                <img
+                  class="profile-img"
+                  :src="state.preloadImgUrl"
+                  alt="프로필이미지"
+                >
+              </div>
+              <form enctype="multipart/form-data" imgFormData>
+              <label for="profileImag">
                 <input class="input-image" accept="image/*" type="file"
                   ref="profileImg" @change.prevent="uploadProfileImg($event)" id="profileImg">
               </label>
-              <button type="submit" class="btn btn-outline-primary"
-                @click.prevent="updateProfileImg($event)" for="imageUploadForm">이미지 보내기</button>
+              <div class="d-flex justify-content-center">
+                <button on @click="updateProfileImg($event)"
+                  class="btn btn-primary" form="imageUploadForm" >작성</button>
+              </div>
+              <!-- <button type="submit" class="btn btn-outline-primary"
+                @click.prevent="updateProfileImg($event)" for="imageUploadForm">이미지 보내기</button> -->
             </form>
             </div>
           </div>
@@ -62,6 +72,8 @@ export default {
   components: { MySidebar },
   setup() {
     const store = useStore();
+    store.dispatch('record/fetchSessions');
+    store.dispatch('record/fetchPercentage');
     const slogan = computed(() => store.getters['accounts/slogan']);
     const user = computed(() => store.getters['accounts/userInfo']);
 
@@ -70,6 +82,8 @@ export default {
         id: user.value.id,
         slogan: slogan.value,
       },
+      preloadImgUrl: '',
+      // imgFormData: '',
     });
 
     // action
@@ -77,16 +91,23 @@ export default {
       // console.log(slogan);
       store.dispatch('accounts/updateSlogan', sloganData);
     };
+    const fetchPercentage = function () {
+      store.dispatch('record/fetchPercentage');
+    };
 
     // Methods
     const updateProfileImg = (e) => {
       e.preventDefault();
-      console.log('이미지 불러오기');
-      const img = e.target.files[0];
+      const img2 = document.querySelector('.input-image');
+      // console.log('이미지 불러오기');
+      // console.log(e.target.files[0]);
+      // const img = e.target.files[0];
       const formData = new FormData();
       // const imgFile = {
       // }
-      formData.append('file', img);
+      formData.append('file', img2.files[0]);
+      formData.append('file', new Blob([JSON.stringify(img2)], { type: 'image/*' }));
+      // console.log(state.imgFormData);
       store.dispatch('accounts/updateProfileImg', formData);
     };
     const uploadProfileImg = (e) => {
@@ -101,10 +122,18 @@ export default {
       // console.log(img2.files[0]);
       console.log('파일사이즈 검사');
       if (img.size > (2 * 1024 * 1024)) {
-        alert('파일 사이즈가 20mb를 넘습니다.');
+        alert('파일 사이즈가 2mb를 넘습니다.');
         img = null;
+      } else {
+        console.log('처리 후');
+        state.preloadImgUrl = URL.createObjectURL(img);
+        this.imgFormData.append('file', img);
       }
-      console.log('처리 후');
+      // const formData = new FormData();
+      // const imgFile = {
+      // }
+      // formData.append('file', img);
+      // store.dispatch('accounts/updateProfileImg', formData);
       // const formData = new FormData();
       // formData.append('name', img.name);
       // const imgFile = {
@@ -133,10 +162,12 @@ export default {
       updateSlogan,
       uploadProfileImg,
       updateProfileImg,
+      fetchPercentage,
       user,
     };
   },
-  created() {},
+  created() {
+  },
   mounted() {},
   unmounted() {},
   // methods: {
@@ -151,7 +182,23 @@ export default {
   a {
     text-decoration: none;
   }
-
+  .img-wrapper {
+    position: relative;
+    width: 150px;
+    height: 150px;
+  }
+  .img-wrapper img {
+    border-radius: 50%;
+    /* margin: 0 auto; */
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translate(50, 50);
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    margin: auto;
+  }
   .mypageview {
     text-align: center;
     color: black;

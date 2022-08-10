@@ -33,17 +33,16 @@ export const accounts = {
       bmr: null,
       caloriePerDay: null,
     },
-    slogandata: '',
     image: '',
     record: {
       point: '', // 경쟁
       exp: '', // 자유, 영상 경험치
     },
-    compete: {
-      workout1: '', // 운동1 최고기록
-      workout2: '', // 운동2 최고기록
-      workout3: '', // 운동3 최고기록
-    },
+    // compete: {
+    //   workout1: '', // 운동1 최고기록
+    //   workout2: '', // 운동2 최고기록
+    //   workout3: '', // 운동3 최고기록
+    // },
     goals: '',
     profileImg: '',
   }),
@@ -94,11 +93,11 @@ export const accounts = {
     SET_POINT: (state, payload) => {
       state.record.point = payload;
     },
-    SET_COMPETE: (state, payload) => {
-      state.compete.workout1 = payload.workout1;
-      state.compete.workout2 = payload.workout2;
-      state.compete.workout3 = payload.workout3;
-    },
+    // SET_COMPETE: (state, payload) => {
+    //   state.compete.workout1 = payload.workout1;
+    //   state.compete.workout2 = payload.workout2;
+    //   state.compete.workout3 = payload.workout3;
+    // },
     SET_GOAL: (state, payload) => {
       state.goals = payload;
     },
@@ -288,6 +287,8 @@ export const accounts = {
         },
       })
         .then((res) => {
+          console.log('운동분석 업데이트');
+          console.log(res.data.data);
           commit('SET_PHYSICAL_INFO', res.data.data);
         })
         .catch((err) => {
@@ -313,7 +314,7 @@ export const accounts = {
           // router.push({ name: 'MyPageMainView' });
         })
         .catch((err) => {
-          console.log(err.toJSON());
+          console.log(err);
         });
     },
     setProfileImg({ commit }, payload) {
@@ -333,7 +334,11 @@ export const accounts = {
           // eslint-disable-next-line
           // const url = window.URL.createObjectURL(new Blob([res.data], { type: res.headers['content-type'] }));
           console.log('이미지axios응답');
-          dispatch('setProfileImg', res.data.data);
+          console.log(res);
+          console.log(res.data);
+          console.log('응답 끝');
+          const url = URL.createObjectURL(res.data);
+          dispatch('setProfileImg', url);
         })
         .catch((err) => {
           console.log(err);
@@ -357,6 +362,7 @@ export const accounts = {
           alert(res.data.message);
           // console.log(payload);
           dispatch('setProfileImg', res.data);
+          // dispatch('fetchProfileImg', res.data);  // 이미지 바꾸고 바로 페치하고싶은데, 이미지 바꾼 게 완료된 후 하고싶은데
           // router.push({ name: 'MyPageMainView' });
         })
         .catch((err) => {
@@ -374,7 +380,7 @@ export const accounts = {
       })
         .then((res) => {
           // console.log(res.data.message);
-          console.log(res.data.data);
+          // console.log(res.data.data);
           commit('SET_POINT', res.data.data);
         })
         .catch((err) => {
