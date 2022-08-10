@@ -85,7 +85,7 @@ export const accounts = {
       state.physicalInfo.caloriePerDay = payload.caloriePerDay;
     },
     SET_SLOGAN: (state, payload) => {
-      state.slogan = payload.slogan;
+      state.slogan = payload;
     },
     SET_PROFILE_IMG: (state, payload) => {
       state.image = payload;
@@ -277,7 +277,7 @@ export const accounts = {
           console.log(err);
         });
     },
-    physicalInfo({ state, commit }) {
+    fetchPhysicalInfo({ state, commit }) {
       axios({
         url: `https://i7c202.p.ssafy.io:8282/api/user/bmi/${state.userInfo.id}`,
         method: 'get',
@@ -290,6 +290,47 @@ export const accounts = {
           console.log('운동분석 업데이트');
           console.log(res.data.data);
           commit('SET_PHYSICAL_INFO', res.data.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    setSlogan({ commit }, payload) {
+      commit('SET_SLOGAN', payload);
+    },
+    fetchSlogan({ state, dispatch }) {
+      axios({
+        url: `https://i7c202.p.ssafy.io:8282/api/user/slogan/${state.userInfo.id}`,
+        method: 'get',
+        headers: {
+          'X-AUTH-TOKEN': state.accessToken,
+          'REFRESH-TOKEN': state.refreshToken,
+        },
+      })
+        .then((res) => {
+          // console.log('');
+          dispatch('setSlogan', res.data.data.slogan);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    updateSlogan({ state, dispatch }, payload) {
+      console.log('axios 하기 전');
+      axios({
+        url: 'https://i7c202.p.ssafy.io:8282/api/user/slogan',
+        method: 'put',
+        headers: {
+          'X-AUTH-TOKEN': state.accessToken,
+          'REFRESH-TOKEN': state.refreshToken,
+        },
+        data: payload,
+      })
+        .then((res) => {
+          // console.log('res');
+          console.log(res.data.message);
+          dispatch('fetchSlogan');
+          alert('수정되었습니다.');
         })
         .catch((err) => {
           console.log(err);
@@ -333,10 +374,10 @@ export const accounts = {
         .then((res) => {
           // eslint-disable-next-line
           // const url = window.URL.createObjectURL(new Blob([res.data], { type: res.headers['content-type'] }));
-          console.log('이미지axios응답');
-          console.log(res);
-          console.log(res.data);
-          console.log('응답 끝');
+          // console.log('이미지axios응답');
+          // console.log(res);
+          // console.log(res.data);
+          // console.log('응답 끝');
           const url = URL.createObjectURL(res.data);
           dispatch('setProfileImg', url);
         })
@@ -345,7 +386,7 @@ export const accounts = {
         });
     },
     updateProfileImg({ state, dispatch }, payload) {
-      console.log('이미지 업데이트 axios 하기 전');
+      // console.log('이미지 업데이트 axios 하기 전');
       axios({
         url: `https://i7c202.p.ssafy.io:8282/api/user/img/${state.userInfo.id}`,
         method: 'post',
@@ -357,8 +398,8 @@ export const accounts = {
         data: payload,
       })
         .then((res) => {
-          console.log('이미지 업데이트 res.data.data 보내기 전');
-          console.log(res);
+          // console.log('이미지 업데이트 res.data.data 보내기 전');
+          // console.log(res);
           alert(res.data.message);
           // console.log(payload);
           dispatch('setProfileImg', res.data);

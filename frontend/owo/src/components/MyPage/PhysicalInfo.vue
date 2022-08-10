@@ -44,7 +44,7 @@
               aria-valuemin="0" aria-valuemax="100">비만
             </div>
           </div>
-          <div v-if="!state.text === '신체정보를 추가해주세요!'" class="yes-bmi">
+          <div v-if="state.notEnoughInfo ==='enough'" class="yes-bmi">
           <div class="bmi-solution pt-2 text-start">
             bmi 지수 : {{state.bmi}}
           </div>
@@ -70,7 +70,7 @@
           <template #title>BMR</template>
           숨만 쉬고 잠만 잘 때 사용되는 생명 유지를 위한 <b>최소한의 열량</b>
         </b-popover>
-        <div v-if="!state.text === '신체정보를 추가해주세요!'" class="info yes-bmr">
+        <div v-if="state.notEnoughInfo ==='enough'" class="info yes-bmr">
           <div class="progress">
             <div class="progress-bar"
               role="progressbar" aria-label="Segment 1"
@@ -95,7 +95,7 @@
     <div class="row analy-div bmr mb-3">
       <div class="sm-div">
         <p class="md-title">하루 섭취 권장 칼로리</p>
-        <div class="info" v-if="!state.text === '신체정보를 추가해주세요!'">
+        <div class="info" v-if="state.notEnoughInfo ==='enough'">
           <p class="kcal">{{ state.caloriePerDay }} kcal</p>
           <a href="https://www.fatsecret.kr/%EC%B9%BC%EB%A1%9C%EB%A6%AC-%EC%98%81%EC%96%91%EC%86%8C/">음식 칼로리 계산하러 가기</a>
         </div>
@@ -131,7 +131,7 @@ export default {
       bmr: 0,
       caloriePerDay: 0,
 
-      notEnoughInfo: '',
+      notEnoughInfo: 'enough',
       avgMinBmr: 0,
       avgMaxBmr: 0,
       text: '',
@@ -146,6 +146,8 @@ export default {
     };
   },
   created() {
+    console.log('created');
+    console.log(this.state.notEnoughInfo);
     // physical info 반올림
     this.state.bmi = Math.round(this.physical.bmi);
     this.state.bmr = Math.round(this.physical.bmr);
@@ -155,24 +157,9 @@ export default {
     // eslint-disable-next-line
     if (this.user.gender === '' || this.user.weight === '' || this.user.weight === '' || this.user.height === '' || this.user.activityLevel === '') {
       this.state.text = '신체정보를 추가해주세요!';
-    }
-
-    // bmr
-    if (this.physical.bmr == null || this.physical.bmr <= 0) {
-      this.state.bmr = 0;
-    } else {
-      this.state.bmr = Math.round(this.physical.bmr);
-    }
-
-    // bmi 초기화
-    if (this.physical.bmr == null || this.physical.bmr <= 0) {
-      this.state.bmr = 0;
-    } else {
-      this.state.bmr = Math.round(this.physical.bmr);
-    }
-
-    // 칼로리를 계산하기에 부족한 정보 분류
-    if (!this.physical.bmi || this.physical.bmi === 0) {
+      this.state.bmi = '';
+      this.state.bmr = '';
+      this.state.caloriePerDay = '';
       if (!this.user.weight && this.user.height > 0) {
         this.state.notEnoughInfo = '몸무게';
       } else if (this.user.weight > 0 && !this.user.height) {
@@ -182,6 +169,7 @@ export default {
       }
     }
 
+    // 계산 공식들
     // 성별에 따른 기초대사량 계산 (미플린-지어(Mifflin-St.Jeor)공식)
     // if (this.user.gender === 'femail') {
     //   this.physical.bmr = Math.round(
@@ -193,14 +181,13 @@ export default {
     //   );
     // }
     // const activityrule = [1.2, 1.375, 1.55, 1.725, 1.9];
-
     // // BMI
     // this.physical.bmi = Math.round(this.user.weight / ((this.user.height / 100) ** 2));
     // eslint-disable-next-line
     // this.physical.caloriePerDay = Math.round(activityrule[this.user.activityLevel - 1] * this.physical.bmr);
 
     // // 성별, 나이별 평균 기초대사량
-    if (this.user.gender === 'male') {
+    if (this.user.gender === 'MALE') {
       if (this.user.age >= 50) {
         this.state.avgMinBmr = Math.round(1498.3 - 228.6);
         this.state.avgMaxBmr = Math.round(1498.3 + 315.3);
@@ -211,7 +198,7 @@ export default {
         this.state.avgMinBmr = Math.round(1728 - 368.2);
         this.state.avgMaxBmr = Math.round(1728 + 368.2);
       }
-    } else if (this.user.gender === 'female') {
+    } else if (this.user.gender === 'FEMALE') {
       if (this.user.age >= 50) {
         this.state.avgMinBmr = Math.round(1252.5 - 228.6);
         this.state.avgMaxBmr = Math.round(1252.5 + 228.6);
@@ -223,6 +210,9 @@ export default {
         this.state.avgMaxBmr = Math.round(1311.5 + 233);
       }
     }
+    // console.log('TEST');
+    // console.log(this.user.gender);
+    // console.log(this.state.avgMinBmr);
     // // 기초대사량이 평균에 속하면
     if (this.physical.bmr >= this.state.avgMinBmr && this.physical.bmr <= this.state.avgMaxBmr) {
       this.state.bmrColor = '#198754';

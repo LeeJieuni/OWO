@@ -7,16 +7,16 @@
       <div class="my-rate-info align-items-center">
         <div class="bar-info">
           <div class="progress bar">
-              <template v-for="(record, recordIndex) in records" :key="recordIndex">
-                <div v-if="record.exerciseHours > 10"
+              <template v-for="(recordName, i) in state.recordNames" :key="i">
+                <div v-if="percentage"
                   class="progress-bar"
                   role="progressbar" aria-label="Segment one"
-                  :style="{width: record.exerciseRate + '%',
-                    backgroundColor: state.colors[recordIndex] }"
-                  :aria-valuenow=record.exerciseRate
+                  :style="{width: state.recordHours[i] + '%',
+                    backgroundColor: state.colors[i] }"
+                  :aria-valuenow=state.recordHours[i]
                   aria-valuemin="0" aria-valuemax="100" >
                   <span class="rate-name">
-                    {{record.name}} <span class="rate-rate">{{record.exerciseRate}}%</span>
+                    {{recordName}} <span class="rate-rate">{{state.recordHours[i]}}%</span>
                   </span>
                 </div>
                 <div v-else
@@ -24,7 +24,7 @@
                   role="progressbar" aria-label="Segment one"
                   :style="{width: record.exerciseRate + '%',
                     backgroundColor: '#828282' }"
-                  :aria-valuenow=record.exerciseRate
+                  :aria-valuenow="100"
                   aria-valuemin="0" aria-valuemax="100">
                 </div>
               </template>
@@ -45,16 +45,12 @@ export default {
     const store = useStore();
     const user = computed(() => store.getters['accounts/userInfo']);
     const percentage = computed(() => store.getters['record/percentage']);
-    // const percentKeys = Object.keys(percentage);
-    // for (let key in percentage) {
-    //   const value = percentage[key];
-    //   console.log(key);
-    //   console.log(value);
-    // }
     const state = reactive({
       colors: [
         '#6842FF', '#3C48E8', '#4E8AFF', '#3CA3E8', '#42E5FF', '#31E8CE', '#36FFAA',
       ],
+      recordNames: [],
+      recordHours: [],
     });
     const update = function (userInfo) {
       // console.log(userInfo);
@@ -68,30 +64,48 @@ export default {
       // percentKeys,
     };
   },
-  data() {
-    return {
-      sumOfExerciseHours: 0,
-      records: [
-        { name: '유산소', exerciseHours: 24, exerciseRate: null },
-        { name: '헬스', exerciseHours: 20, exerciseRate: null },
-        { name: '스트레칭', exerciseHours: 15, exerciseRate: null },
-        { name: '맨몸운동', exerciseHours: 12, exerciseRate: null },
-        { name: '요가', exerciseHours: 11, exerciseRate: null },
-        { name: '필라테스', exerciseHours: 3, exerciseRate: null },
-        { name: '기타', exerciseHours: 2, exerciseRate: null },
-      ],
-    };
-  },
+  // data() {
+  //   return {
+  //     sumOfExerciseHours: 0,
+  //     records: [
+  //       { name: '유산소', exerciseHours: 24, exerciseRate: null },
+  //       { name: '헬스', exerciseHours: 20, exerciseRate: null },
+  //       { name: '스트레칭', exerciseHours: 15, exerciseRate: null },
+  //       { name: '맨몸운동', exerciseHours: 12, exerciseRate: null },
+  //       { name: '요가', exerciseHours: 11, exerciseRate: null },
+  //       { name: '필라테스', exerciseHours: 3, exerciseRate: null },
+  //       { name: '기타', exerciseHours: 2, exerciseRate: null },
+  //     ],
+  //   };
+  // },
   created() {
-    console.log(this.percentage);
-    for (let i = 0; i < this.records.length; i += 1) {
-      this.sumOfExerciseHours += this.records[i].exerciseHours;
+    console.log('퍼센트 출력');
+    const percentKeys = Object.keys(this.percentage);
+    // for (let key in percentage) {
+    //   const value = percentage[key];
+    //   console.log(key);
+    //   console.log(value);
+    // }
+    console.log(percentKeys);
+    // console.log(percentKeys.length);
+    for (let i = 0; i < percentKeys.length; i += 1) {
+      console.log('퍼센트 키 하나씩 출력');
+      console.log(percentKeys[i]);
+      console.log(this.percentage[percentKeys[i]]);
+      this.state.recordNames.push(percentKeys[i]);
+      this.state.recordHours.push(this.percentage[percentKeys[i]]);
+    //   // console.log(this.percentage[percentKeys[i]]);
+    //   // this.state.records.append(this.percentage[percentKeys[i]]);
+    //   // this.sumOfExerciseHours += this.records[i].exerciseHours;
     }
-    for (let i = 0; i < this.records.length; i += 1) {
-      this.records[i].exerciseRate = Math.round(
-        (this.records[i].exerciseHours / this.sumOfExerciseHours) * 100,
-      );
-    }
+    console.log('결과');
+    console.log(this.state.recordNames);
+    console.log(this.state.recordHours);
+    // for (let i = 0; i < this.records.length; i += 1) {
+    //   this.records[i].exerciseRate = Math.round(
+    //     (this.records[i].exerciseHours / this.sumOfExerciseHours) * 100,
+    //   );
+    // }
   },
   moundted() {},
   unmounted() {},

@@ -46,9 +46,10 @@
               <h4>{{slogan}}</h4>
               <form action="">
                 <label for="slogan">
-                  <input type="text" id="slogan" v-model="slogan">
+                  <input type="text" id="slogan" v-model="state.sloganData.slogan">
+                  <!-- {{ state.sloganData.slogan }} -->
                 </label>
-                <button @click.prevent="updateSlogan(slogan)">변경</button>
+                <button @click.prevent="updateSlogan($event)">변경</button>
               </form>
             </div>
             <div>
@@ -87,9 +88,11 @@ export default {
     });
 
     // action
-    const updateSlogan = function (sloganData) {
-      // console.log(slogan);
-      store.dispatch('accounts/updateSlogan', sloganData);
+    const updateSlogan = function (e) {
+      e.preventDefault();
+      console.log('보낸다');
+      console.log(this.state.sloganData);
+      store.dispatch('accounts/updateSlogan', this.state.sloganData);
     };
     const fetchPercentage = function () {
       store.dispatch('record/fetchPercentage');

@@ -163,9 +163,10 @@ export default {
       e.preventDefault();
       console.log(e)
     };
-    console.log('이미지시작')
-    console.log(typeof(profileImg));
-    console.log('이미지끝')
+    // console.log('이미지시작')
+    // console.log(typeof(profileImg));
+    // console.log('이미지끝')
+
     // Methods
     // const onInputImage = () => {
     //   const input = document.querySelector('.input-image');

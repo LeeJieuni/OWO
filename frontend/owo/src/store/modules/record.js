@@ -12,7 +12,8 @@ export const record = {
     percentage: '',
   }),
   getters: {
-    percentage: (state) => !!state.percentage,
+    percentage: (state) => state.percentage,
+    userId: (state) => state.userId,
   },
   mutations: {
     SET_PERCENTAGE: (state, payload) => {
@@ -21,7 +22,7 @@ export const record = {
     SET_SESSIONS: (state, payload) => {
       state.accessToken = payload.accessToken;
       state.refreshToken = payload.refreshToken;
-      state.userId = payload.userId;
+      state.userId = payload.user.id;
     },
   },
   actions: {
@@ -30,17 +31,19 @@ export const record = {
       userInfo = JSON.parse(userInfo);
       const accessToken = userInfo['accounts']['accessToken'];
       const refreshToken = userInfo['accounts']['refreshToken'];
-      const userId = userInfo['accounts']['userInfo.id'];
+      const user = userInfo['accounts']['userInfo'];
       const payload = {
         accessToken: accessToken,
         refreshToken: refreshToken,
-        userId: userId,
+        user: user,
       };
+      console.log('record test');
       console.log(payload);
       commit('SET_SESSIONS', payload);
     },
     fetchPercentage({ state, commit }, date) {
-      console.log('axios 전');
+      console.log(' fetchPercentage axios 전');
+      // console.log(state.userId);
       axios({
         url: `https://i7c202.p.ssafy.io:8282/api/record/percentage/${state.userId}`,
         method: 'get',
@@ -51,6 +54,7 @@ export const record = {
       })
         .then((res) => {
           commit('SET_PERCENTAGE', res.data.data);
+          // console.log(state.percentage);
         })
         .catch((err) => {
           console.log(err);
