@@ -49,12 +49,13 @@
 import Carousel from '@/components/MainPage/Carousel.vue';
 import rankingList from '@/components/MainPage/rankingList.vue';
 import roomTab from '@/components/MainPage/roomTab.vue';
-import { createNamespacedHelpers } from 'vuex';
 import swal from 'sweetalert2';
+import { mapActions, mapGetters } from 'vuex';
 
 window.Swal = swal;
 
-const { mapGetters } = createNamespacedHelpers('accounts');
+const mainpage = 'mainpage';
+const accounts = 'accounts';
 
 export default {
   components: {
@@ -63,7 +64,7 @@ export default {
     roomTab,
   },
   computed: {
-    ...mapGetters(['userInfo', 'isLogin']),
+    ...mapGetters(accounts, ['userInfo', 'isLogin']),
   },
   setup() {
     const onInputImage = () => {
@@ -78,6 +79,7 @@ export default {
     setCookie() {
       this.$cookies.set('nosee', 'Y', '7d');
     },
+    ...mapActions(mainpage, ['getRankingList']),
   },
   created() {
     const check = this.$cookies.get('nosee');
@@ -115,6 +117,7 @@ export default {
         });
       }
     }
+    this.getRankingList();
   },
 };
 </script>
