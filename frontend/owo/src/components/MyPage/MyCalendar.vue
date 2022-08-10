@@ -43,7 +43,11 @@
         :title="`${currentYear}년 ${currentMonth}월 ${day}일`" hide-header>
         <div class="carousel-box">
           <div class="modal-title">
-            <p class="lg-title">{{currentYear}}년 {{currentMonth}}월 {{day}}일</p>
+            <a class="month-change-btn" href="#"
+              @click.prevent="onClickPrevDay(currentYear, currentMonth, day)">◀</a>
+              <span class="lg-title">{{currentYear}}년 {{currentMonth}}월 {{day}}일 운동 기록</span>
+            <a class="month-change-btn" href="#"
+              v-on:click.prevent="onClickNextDay(currentYear, currentMonth, day)">▶</a>
           </div>
           <!--카로셀-->
           <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
@@ -230,6 +234,7 @@ export default {
         }
       }
     },
+    // 캘린더에서 월 변경
     onClickPrev(month) {
       this.month -= 1;
       if (month <= 0) {
@@ -249,6 +254,29 @@ export default {
         this.currentMonth += 1;
       }
       this.init();
+    },
+
+    // 모달 내에서 날짜 변경
+    onClickPrevDay(year, month, day) {
+      const date = new Date(year, month - 1, day);
+      date.setDate(date.getDate() - 1);
+      console.log(date);
+      const yesterYear = date.getFullYear();
+      const yesterMonth = date.getMonth() + 1;
+      const yesterDay = date.getDate();
+      this.currentYear = yesterYear;
+      this.currentMonth = yesterMonth;
+      this.day = yesterDay;
+    },
+    onClickNextDay(year, month, day) {
+      const date = new Date(year, month - 1, day);
+      date.setDate(date.getDate() + 1);
+      console.log(date);
+      // const yesterYear = date.getFullYear();
+      const yesterMonth = date.getMonth() + 1;
+      const yesterDay = date.getDate();
+      console.log(yesterMonth);
+      console.log(yesterDay);
     },
     isToday(year, month, day) {
       const date = new Date();

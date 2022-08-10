@@ -308,7 +308,7 @@ export const accounts = {
         },
       })
         .then((res) => {
-          // console.log('');
+          console.log(res.data);
           dispatch('setSlogan', res.data.data.slogan);
         })
         .catch((err) => {
