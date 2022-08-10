@@ -50,7 +50,7 @@ public class RankingController {
     }
 
     @ApiOperation(value = "나의 랭킹 순위 조회",notes = "나의 memberId를 통해 나의 랭킹정보를 조회한다.")
-    @GetMapping("/api/ranking/{memberId}")
+    @GetMapping("/api/user/ranking/{memberId}")
     @ApiImplicitParam(name = "memberId",value = "사용자 id",dataType = "int",paramType = "path")
     public ResponseEntity<?> getMyRank(@PathVariable("memberId") int memberId){
         Message message = new Message();
