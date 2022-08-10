@@ -12,7 +12,6 @@ import YoutubeView from '../views/Room/YoutubeView.vue';
 import login from '../views/accounts/loginView.vue';
 import register from '../views/accounts/registerView.vue';
 import redirectView from '../views/accounts/RedirectView.vue';
-import Test from '../views/Room/ATest.vue';
 
 const routes = [
   {
@@ -91,11 +90,6 @@ const routes = [
     path: '/room/youtube',
     name: 'Youtube',
     component: YoutubeView,
-  },
-  {
-    path: '/test',
-    name: 'ATest',
-    component: Test,
   },
 ];
 

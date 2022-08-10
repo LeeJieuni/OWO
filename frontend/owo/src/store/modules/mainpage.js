@@ -1,7 +1,7 @@
 import axios from 'axios';
-
 // eslint-disable-next-line
 export const mainpage = {
+  namespaced: true,
   state: () => ({
     userImg: '',
     rankingList: null,
@@ -34,7 +34,8 @@ export const mainpage = {
       })
         .then((res) => {
           console.log(res.data);
-          commit('SET_RANKIGN_LIST', res.data);
+          commit('SET_RANKING_LIST', res.data.data);
+          console.log(state.rankingList[0]);
         })
         .catch((err) => {
           console.log(err);
