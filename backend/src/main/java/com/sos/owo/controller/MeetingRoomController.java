@@ -52,7 +52,7 @@ public class MeetingRoomController {
         this.openVidu = new OpenVidu(OPENVIDU_URL, OPENVIDU_SECRET);
     }
 
-    @PostMapping("/api/room")
+    @PostMapping("/api/user/room")
     @ApiOperation(value="운동방을 만드는 API", notes = "방만들기를 통해 화상방에 대한 세션과 토큰을 생성한 후에 토큰, 방에 대한 정보를 반환")
     public ResponseEntity<?> makeMeetingRoom(@RequestBody MeetingRoomMakeRequestDto requestDto) throws OpenViduJavaClientException, OpenViduHttpException {
         Message message = new Message();
@@ -105,7 +105,7 @@ public class MeetingRoomController {
         }
     }
 
-    @GetMapping("/api/room/{roomId}")
+    @GetMapping("/api/user/room/{roomId}")
     @ApiOperation(value="방 입장 처리에 대한 API", notes = "특정 방번호(roomId)를 통해 방 입장에 대한 요청 처리를 수행합니다.")
     @ApiImplicitParam(name = "roomId",value = "방의 번호",paramType = "path")
     public ResponseEntity<?> enterMeetingRoom(@PathVariable int roomId) throws OpenViduJavaClientException, OpenViduHttpException {
@@ -129,7 +129,7 @@ public class MeetingRoomController {
         }
     }
 
-    @PutMapping("/api/room/exit/{roomId}")
+    @PutMapping("/api/user/room/exit/{roomId}")
     @ApiOperation(value="방 퇴장 처리에 대한 API", notes = "특정 방번호(roomId)를 통해 방 퇴장에 대한 요청 처리를 수행합니다.")
     @ApiImplicitParam(name = "roomId",value = "방의 번호",paramType = "path")
     public ResponseEntity<?> exit(@PathVariable int roomId) throws OpenViduJavaClientException, OpenViduHttpException {
@@ -153,7 +153,7 @@ public class MeetingRoomController {
         }
     }
 
-    @PutMapping("/api/room/start/{roomId}")
+    @PutMapping("/api/user/room/start/{roomId}")
     @ApiOperation(value = "방 시작",notes = "방 시작. status start로 변경. start_date 저장")
     @ApiImplicitParam(name = "roomId",value = "방의 번호",paramType = "path")
     public ResponseEntity<?> startRoom(@PathVariable int roomId){//}, @RequestBody GameStartDto gameStartDto){
@@ -178,7 +178,7 @@ public class MeetingRoomController {
         }
     }
 
-    @PutMapping("/api/room/end/{roomId}")
+    @PutMapping("/api/user/room/end/{roomId}")
     @ApiOperation(value = "방 종료",notes = "방(운동) 끝. status end로 변경. end_date 저장")
     @ApiImplicitParam(name = "roomId",value = "방의 번호",paramType = "path")
     public ResponseEntity<?> endRoom(@PathVariable("roomId") int roomId){//}, @RequestBody GameStartDto gameStartDto){

@@ -142,7 +142,7 @@ public class RecordRepository {
     }
 
     public Map<String,Integer> findPercentage(int memberId){
-        Query query = em.createQuery("SELECT r.recordExercise ,count(*) FROM Record as r WHERE r.member.id = :memberId GROUP BY r.recordExercise ")
+        Query query = em.createQuery("SELECT r.recordExercise, count(*) as c FROM Record as r WHERE r.member.id = :memberId GROUP BY r.recordExercise ORDER BY c DESC")
                 .setParameter("memberId",memberId);
         List<Object[]> recordList = query.getResultList(); // 사용자에 대한 모든 운동 기록 리스트
 
