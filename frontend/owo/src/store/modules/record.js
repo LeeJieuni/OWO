@@ -66,16 +66,16 @@ export const record = {
         });
     },
     fetchDayExerciseList({ state, commit }, date) {
-      console.log(' fetchPercentage axios 전');
+      console.log(' fetchDayExerciseList axios 전');
       // console.log(state.userId);
       axios({
-        url: `https://i7c202.p.ssafy.io:8282/api/record/percentage/${state.userId}`,
+        url: `https://i7c202.p.ssafy.io:8282/api/record/day/${state.userId}/${date}`,
         method: 'get',
         headers: {
           'X-AUTH-TOKEN': state.accessToken,
           'REFRESH-TOKEN': state.refreshToken,
         },
-        data: date,
+        // data: date,
       })
         .then((res) => {
           commit('SET_DAY_EXERCISE_LIST', res.data.data);
@@ -86,42 +86,43 @@ export const record = {
         });
     },
   },
-  setDayPictures({ commit }, payload) {
-    commit('SET_DAY_PICTURES', payload);
-  },
-  loadDayRecord({ state, dispatch }, date) {
-    axios({
-      url: `https://i7c202.p.ssafy.io:8282/api/record/day/${sessionStorage.getItem('userInfo.id')}/${date}`,
-      method: 'get',
-      headers: {
-        'X-AUTH-TOKEN': state.accessToken,
-        'REFRESH-TOKEN': state.refreshToken,
-      },
-      // data: date,
-    })
-      .then((res) => {
-        dispatch('setDayPictures', res.data.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  },
-  loadDayPicture({ state, dispatch }, payload) {
-    axios({
-      url: 'https://i7c202.p.ssafy.io/api/record/img/:memberId/:date',
-      method: 'put',
-      headers: {
-        'X-AUTH-TOKEN': state.accessToken,
-        'REFRESH-TOKEN': state.refreshToken,
-      },
-      data: payload,
-    })
-      .then((res) => {
-        dispatch('setDayPicture', res.data.data);
-      })
-      .catch((err) => {
-        console.log(err.toJSON());
-      });
+  // setDayPictures({ commit }, payload) {
+  //   commit('SET_DAY_PICTURES', payload);
+  // },
+  // loadDayRecord({ state, dispatch }, date) {
+  //   axios({
+  //     url: `https://i7c202.p.ssafy.io:8282/api/record/day/${sessionStorage.getItem('userInfo.id')}/${date}`,
+  //     method: 'get',
+  //     headers: {
+  //       'X-AUTH-TOKEN': state.accessToken,
+  //       'REFRESH-TOKEN': state.refreshToken,
+  //     },
+  //     // data: date,
+  //   })
+  //     .then((res) => {
+  //       dispatch('setDayPictures', res.data.data);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // },
+  // loadDayPicture({ state, dispatch }, payload) {
+  //   axios({
+  //     url: 'https://i7c202.p.ssafy.io/api/record/img/:memberId/:date',
+  //     method: 'put',
+  //     headers: {
+  //       'X-AUTH-TOKEN': state.accessToken,
+  //       'REFRESH-TOKEN': state.refreshToken,
+  //     },
+  //     data: payload,
+  //   })
+  //     .then((res) => {
+  //       dispatch('setDayPicture', res.data.data);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err.toJSON());
+  //     });
+  //   },
     // eslint-disable-next-line
     // sendRecord({}, { credentials, credentialsUser }) {
     //   console.log(credentialsUser);
@@ -134,5 +135,4 @@ export const record = {
     //       console.log('실패', err);
     //     });
     // },
-  },
 };

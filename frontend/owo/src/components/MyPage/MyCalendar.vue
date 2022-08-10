@@ -54,6 +54,20 @@
             <img :src="recordPicture" alt="">
           </div>
 
+          <div class="row">
+            <div v-for="(exercise, i) in dayExerciseList" :key="i">
+              recordId: {{ exercise.recordId }} <br>
+              memberId: {{ exercise.memberId }} <br>
+              meetingRoomId: {{ exercise.meetingRoomId }} <br>
+              tags: {{ exercise.tags }} <br>
+              recordHour: {{ exercise.recordHour }} <br>
+              recordMemo: {{ exercise.recordMemo }} <br>
+              datetime: {{ exercise.datetime }} <br>
+              recordSecret: {{ exercise.recordSecret }} <br>
+              exercise: {{ exercise.exercise }} <hr>
+            </div>
+          </div>
+
           <!--태그-->
           <div class="tags row">
             <button
@@ -109,8 +123,7 @@
 </template>
 
 <script>
-// import { useStore } from 'vuex';
-// import { computed } from 'vue';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
   name: 'MyCalendar',
@@ -136,12 +149,17 @@ export default {
         ],
       },
       memo: '사레레 10*20*3 , 사레레 10*20*3 , 사레레 10*20*3 , 사레레 10*20*3 , 사레레 10*20*3 , 사레레 10*20*3 함. 개힘들었다 정말... 내일도 해야하는데 정말 미쳐버리겠다 운동을 좋아서 하는 사람들은 대체 어떤 사람',
+      // dayExerciseList: '',
     };
+  },
+  computed: {
+    ...mapGetters('record', ['dayExerciseList']),
   },
   mounted() {
     this.init();
   },
   methods: {
+    ...mapActions('record', ['fetchDayExerciseList']),
     hideModal() {
       console.log(this.$refs.myModal);
       this.$refs.myModal.hide();
@@ -255,14 +273,16 @@ export default {
         stringMonth = String(0) + String(this.currentMonth);
       }
       let stringDay;
-      if (this.currentDay >= 10) {
+      if (this.day >= 10) {
         stringDay = String(this.day);
       } else {
         stringDay = String(0) + String(this.day);
       }
       this.stringDate = stringYear + stringMonth + stringDay;
-      console.log(this.stringDate);
-      // store.dispatch('record/fetchDayExerciseList', this.stringDate);
+      // console.log(stringMonth);
+      // console.log(stringDay);
+      // console.log(this.stringDate);
+      this.fetchDayExerciseList(this.stringDate);
     },
     onClickNextDay(year, month, day) {
       const date = new Date(year, month - 1, day);
@@ -279,14 +299,15 @@ export default {
         stringMonth = String(0) + String(this.currentMonth);
       }
       let stringDay;
-      if (this.currentDay >= 10) {
+      if (this.day >= 10) {
         stringDay = String(this.day);
       } else {
         stringDay = String(0) + String(this.day);
       }
       this.stringDate = stringYear + stringMonth + stringDay;
-      console.log(this.stringDate);
+      this.fetchDayExerciseList(this.stringDate);
     },
+
     isToday(year, month, day) {
       const date = new Date();
       return year === date.getFullYear() && month === date.getMonth() + 1 && day === date.getDate();
