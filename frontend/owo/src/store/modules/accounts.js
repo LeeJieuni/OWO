@@ -160,8 +160,31 @@ export const accounts = {
               );
             } else {
               commit('SET_LOGIN_ERR', err.response.data.message); // 서버 error
+              swal.fire(
+                '#오운완',
+                '로그인에 실패하였습니다. 다시 시도해 주세요!',
+                'warning',
+              );
             }
           }
+        });
+    },
+    socialLogin({ commit }, token) {
+      axios({
+        url: 'https://i7c202.p.ssafy.io:8282/api/social',
+        method: 'get',
+        headers: {
+          'X-AUTH-TOKEN': token,
+        },
+      })
+        .then((res) => {
+          console.log('소셜로그인 in vuex');
+          commit('SET_USER_INFO', res.data);
+          router.push('/');
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
         });
     },
     logout({ state, dispatch }) { // 로그아웃
