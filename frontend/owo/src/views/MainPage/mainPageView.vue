@@ -1,8 +1,14 @@
 <template>
   <div>
-    <Carousel></Carousel>
-    <rankingList/>
-    <roomTab></roomTab>
+    <div v-if="!isLogin">
+      <Carousel></Carousel>
+      <rankingList/>
+      <roomTab></roomTab>
+    </div>
+    <div v-if="isLogin">
+      <rankingList/>
+      <roomTab></roomTab>
+    </div>
     <!--TEST -->
     <br><br><br><br>
     <button type="button" class="btn btn-primary"
@@ -50,11 +56,10 @@ import Carousel from '@/components/MainPage/Carousel.vue';
 import rankingList from '@/components/MainPage/rankingList.vue';
 import roomTab from '@/components/MainPage/roomTab.vue';
 import swal from 'sweetalert2';
-import { mapActions, mapGetters } from 'vuex';
+import { mapGetters } from 'vuex';
 
 window.Swal = swal;
 
-const mainpage = 'mainpage';
 const accounts = 'accounts';
 
 export default {
@@ -79,7 +84,6 @@ export default {
     setCookie() {
       this.$cookies.set('nosee', 'Y', '7d');
     },
-    ...mapActions(mainpage, ['getRankingList']),
   },
   created() {
     const check = this.$cookies.get('nosee');
@@ -117,7 +121,6 @@ export default {
         });
       }
     }
-    this.getRankingList();
   },
 };
 </script>

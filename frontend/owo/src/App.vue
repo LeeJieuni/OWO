@@ -18,7 +18,6 @@ const meetingroom = 'meetingroom';
 export default {
   components: {
     NavBar,
-    // TeleportExample,
   },
   computed: {
     ...mapState(meetingroom, ['mySessionId']),

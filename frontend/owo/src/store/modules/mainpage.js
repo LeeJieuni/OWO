@@ -27,17 +27,14 @@ export const mainpage = {
     },
   },
   actions: {
-    getRankingList({ state, commit, dispatch }) {
-      console.log(state.rankingList);
+    getRankingList({ commit, dispatch }) {
       axios({
         url: 'https://i7c202.p.ssafy.io:8282/api/rankingList',
         method: 'get',
       })
         .then((res) => {
           commit('SET_RANKING_LIST', res.data.data);
-          console.log(state.rankingList);
           dispatch('getLastingDay', res.data.data[0].member_id);
-          console.log('getL');
         })
         .catch((err) => {
           console.log(err);

@@ -157,14 +157,14 @@ export const accounts = {
                 '이메일 혹은 비밀번호가 맞지 않습니다.',
                 'warning',
               );
-            } else {
-              commit('SET_LOGIN_ERR', err.response.data.message); // 서버 error
-              swal.fire(
-                '#오운완',
-                '로그인에 실패하였습니다. 다시 시도해 주세요!',
-                'warning',
-              );
             }
+          } else {
+            // commit('SET_LOGIN_ERR', err.response.data.message); // 서버 error
+            swal.fire(
+              '#오운완',
+              '서버 문제로 로그인에 실패하였습니다. 다시 시도해 주세요!',
+              'warning',
+            );
           }
         });
     },
