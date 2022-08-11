@@ -2,8 +2,9 @@
   <div>
     <div class="login">
       <div class="container">
+        <img src="../../assets/logo/logo2.png" alt="" style="width: 700px">
         <form @submit.prevent="login(credentials)" class="loginForm">
-          <h2 class="mb-3">Login</h2>
+          <h1 style="font-weight: bold; margin-bottom: 20px;">Login</h1>
           <div class="input">
             <label for="email">아이디<input v-model="credentials.email"
             class="form-control" type="email"
@@ -37,7 +38,8 @@
             </div>
           </div>
             <b-button type="submit" class="mt-3 btn-pers"
-            id="login_button" variant="outline-primary">로그인</b-button>
+            id="login_button" variant="outline-primary"
+            style="width: 90%; border-radius:50px">로그인</b-button>
         </form>
       </div>
     </div>
@@ -92,6 +94,7 @@ export default {
   padding: 50px;
   border: solid 1px rgb(177, 177, 181);
   border-radius: 10%;
+  box-shadow: 2px 2px 2px 2px rgb(154, 152, 152);
 }
 
 label {

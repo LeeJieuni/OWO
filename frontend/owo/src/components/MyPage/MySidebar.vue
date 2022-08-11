@@ -54,9 +54,12 @@
         :key="i"
         class="tag"
         @click="tagModal">
-        <p>{{goal.exercise}} {{goal.hour}}H</p>
-        <button @click.prevent="updateGoal()">수정</button>
-        <button @click.prevent="deleteGoal()">삭제</button>
+        <p>{{goal.exercise}} {{goal.hour}}H<span class="updateGoal"
+        @click.prevent="updateGoal()" @keyup.enter="updateGoal()"/>수정<span class="deleteGoal"
+        @click.prevent="deleteGoal()" @keyup.enter="deleteGoal()">삭제</span><span>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16">
+          <!-- eslint-disable-next-line-->
+          <path fill="none" d="M0 0h24v24H0z"/><path d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z" fill="rgba(156,0,0,1)"/></svg></span></p>
       </button>
     </div>
 
@@ -101,14 +104,6 @@ export default {
     // console.log(this.goals);
     // State (vue3의 data 선언 방식. state라는 이름으로 접근)
     const state = reactive({
-      selected: '',
-      options: [
-        { text: '없음', value: '1' },
-        { text: '약간', value: '2' },
-        { text: '중간', value: '3' },
-        { text: '많음', value: '4' },
-        { text: '매우 많음', value: '5' },
-      ],
       input: {
         image: '',
       },
@@ -221,7 +216,7 @@ export default {
     padding: 0 10px;
   }
   .tag {
-    width: 105px;
+    width: 150px;
     height: 26px;
     border: solid #828282 1px;
     display:inline-block;
@@ -318,5 +313,15 @@ export default {
   }
   button {
     border: none;
+  }
+  .updateGoal:hover {
+    color: yellow;
+  }
+  .deleteGoal:hover {
+    color: red;
+  }
+  .close_icon {
+    height: 10px;
+    opacity: 60%;
   }
 </style>

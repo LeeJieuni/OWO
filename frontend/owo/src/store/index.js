@@ -7,6 +7,9 @@ import { room } from '@/store/modules/room';
 import { record } from '@/store/modules/record';
 import { emoji } from '@/store/modules/emoji';
 import { mainpage } from '@/store/modules/mainpage';
+// export interface RootState {
+//   Accounts: AccountsState;
+// }
 
 const store = new Vuex.Store({
   modules: {

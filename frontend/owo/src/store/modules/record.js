@@ -50,7 +50,7 @@ export const record = {
       console.log(' fetchPercentage axios 전');
       // console.log(state.userId);
       axios({
-        url: `https://i7c202.p.ssafy.io:8282/api/record/percentage/${state.userId}`,
+        url: `https://i7c202.p.ssafy.io:8282/api/user/record/percentage/${state.userId}`,
         method: 'get',
         headers: {
           'X-AUTH-TOKEN': state.accessToken,
@@ -69,7 +69,7 @@ export const record = {
       console.log(' fetchDayExerciseList axios 전');
       // console.log(state.userId);
       axios({
-        url: `https://i7c202.p.ssafy.io:8282/api/record/day/${state.userId}/${date}`,
+        url: `https://i7c202.p.ssafy.io:8282/api/user/record/day/${state.userId}/${date}`,
         method: 'get',
         headers: {
           'X-AUTH-TOKEN': state.accessToken,

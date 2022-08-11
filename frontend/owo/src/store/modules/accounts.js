@@ -12,6 +12,11 @@ export const accounts = {
     isLoginErr: false,
     accessToken: null,
     refreshToken: null,
+    roomList: {
+      freeRoomList: '',
+      gameRoomList: '',
+      streamingRoomList: '',
+    },
     signupInfo: {
       signupErr: false,
       message: '',
@@ -47,6 +52,15 @@ export const accounts = {
     profileImg: '',
   }),
   mutations: {
+    SET_FREE_ROOM_LIST: (state, payload) => {
+      state.roomList.freeRoomList = payload;
+    },
+    SET_GAME_ROOM_LIST: (state, payload) => {
+      state.roomList.gameRoomList = payload;
+    },
+    SET_STREAMING_ROOM_LIST: (state, payload) => {
+      state.roomList.streamingRoomList = payload;
+    },
     SET_SIGNUP_MSG: (state, message) => {
       state.signupInfo.message = message;
       state.signupInfo.singupErr = true;
@@ -137,6 +151,7 @@ export const accounts = {
           dispatch('fetchCompete');
           dispatch('fetchGoal');
           dispatch('fetchProfileImg');
+          dispatch('fetchPercentage');
           router.push('/');
         })
         .catch((err) => {
@@ -162,13 +177,13 @@ export const accounts = {
             // commit('SET_LOGIN_ERR', err.response.data.message); // 서버 error
             swal.fire(
               '#오운완',
-              '서버 문제로 로그인에 실패하였습니다. 다시 시도해 주세요!',
+              '서버 문제로 로그인에 실패하였습니다. <br> 다시 시도해 주세요!',
               'warning',
             );
           }
         });
     },
-    socialLogin({ commit }, token) {
+    socialLogin({ commit, dispatch }, token) {
       axios({
         url: 'https://i7c202.p.ssafy.io:8282/api/social',
         method: 'get',
@@ -178,12 +193,31 @@ export const accounts = {
       })
         .then((res) => {
           console.log('소셜로그인 in vuex');
-          commit('SET_USER_INFO', res.data);
+          console.log(res.data.data);
+          const response = res.data.data;
+          // eslint-disable-next-line
+          const accessToken = response.accessToken;
+          // eslint-disable-next-line
+          const refreshToken = response.refreshToken;
+          commit('SET_USER_INFO', response);
+          commit('SET_ACCESS_TOKEN', accessToken);
+          commit('SET_REFRESH_TOKEN', refreshToken);
+          dispatch('fetchPhysicalInfo');
+          dispatch('fetchSlogan');
+          dispatch('fetchPoint');
+          dispatch('fetchCompete');
+          dispatch('fetchGoal');
+          dispatch('fetchProfileImg');
+          dispatch('fetchPercentage');
           router.push('/');
-          console.log(res.data);
         })
         .catch((err) => {
           console.log(err);
+          swal.fire(
+            '#오운완',
+            '소셜로그인 실패! <br> 다시 시도해 주세요.',
+            'warning',
+          );
         });
     },
     logout({ state, dispatch }) { // 로그아웃
@@ -446,9 +480,12 @@ export const accounts = {
           console.log(err);
         });
     },
-    fetchGoal({ state, commit }) {
+    setGoal({ commit }, payload) {
+      commit('SET_GOAL', payload);
+    },
+    fetchGoal({ state, dispatch }) {
       axios({
-        url: `https://i7c202.p.ssafy.io:8282/api/user/compete/${state.userInfo.id}`,
+        url: `https://i7c202.p.ssafy.io:8282/api/user/goal/${state.userInfo.id}`,
         method: 'get',
         headers: {
           'X-AUTH-TOKEN': state.accessToken,
@@ -456,9 +493,65 @@ export const accounts = {
         },
       })
         .then((res) => {
-          // console.log(res.data.message);
           console.log(res.data.data);
-          commit('SET_GOAL', res.data.data);
+          dispatch('setGoal', res.data.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    addGoal({ state, dispatch }, payload) {
+      axios({
+        url: `https://i7c202.p.ssafy.io:8282/api/user/goal/${state.userInfo.id}`,
+        method: 'post',
+        headers: {
+          'X-AUTH-TOKEN': state.accessToken,
+          'REFRESH-TOKEN': state.refreshToken,
+        },
+        data: payload,
+      })
+        .then((res) => {
+          dispatch('setGoal', res.data.data);
+        })
+        .catch((err) => {
+          console.log(err.toJSON());
+        });
+    },
+    updateGoal({ state, dispatch }, payload) {
+      axios({
+        url: `https://i7c202.p.ssafy.io:8282/api/user/goal/${state.userInfo.id}`,
+        method: 'put',
+        headers: {
+          'X-AUTH-TOKEN': state.accessToken,
+          'REFRESH-TOKEN': state.refreshToken,
+        },
+        data: payload,
+      })
+        .then((res) => {
+          dispatch('setGoal', res.data.data);
+        })
+        .catch((err) => {
+          console.log(err.toJSON());
+        });
+    },
+    getRoomList({ commit }, mode) {
+      axios({
+        url: `https://i7c202.p.ssafy.io:8282/room/${mode}`,
+        method: 'get',
+      })
+        .then((res) => {
+          if (mode === 'FREE') {
+            console.log(res);
+            commit('SET_FREE_ROOM_LIST', res.data);
+          }
+          if (mode === 'GAME') {
+            console.log(res);
+            commit('SET_GAME_ROOM_LIST', res.data);
+          }
+          if (mode === 'STREAMING') {
+            console.log(res);
+            commit('SET_STREAMING_ROOM_LIST', res.data);
+          }
         })
         .catch((err) => {
           console.log(err);
@@ -474,5 +567,6 @@ export const accounts = {
     workout: (state) => state.workout,
     goals: (state) => state.goals,
     profileImg: (state) => state.profileImg,
+    roomList: (state) => state.roomList,
   },
 };

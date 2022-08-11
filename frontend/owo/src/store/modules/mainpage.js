@@ -47,23 +47,34 @@ export const mainpage = {
       const userId = userInfo['accounts']['userInfo']['id'];
       // eslint-disable-next-line
       const accessToken = userInfo['accounts']['accessToken'];
-      console.log(accessToken);
       axios({
-        url: `https://i7c202.p.ssafy.io:8282/api/ranking/${userId}`,
+        url: `https://i7c202.p.ssafy.io:8282/api/user/ranking/${userId}`,
         method: 'get',
+        headers: {
+          'X-AUTH-TOKEN': accessToken,
+        },
       })
         .then((res) => {
+          console.log('내랭킹정보조회');
+          console.log(res.data.data);
           commit('SET_MY_RANKING', res.data.data.ranking);
-          console.log(res.data.data.ranking);
         })
         .catch((err) => {
           console.log(err);
         });
     },
-    getLastingDay({ commit }, KingID) {
+    getLastingDay({ commit }) { // KingID
+      let userInfo = sessionStorage.getItem('vuex');
+      userInfo = JSON.parse(userInfo);
+      // eslint-disable-next-line
+      const accessToken = userInfo['accounts']['accessToken'];
       axios({
-        url: `https://i7c202.p.ssafy.io:8282/api/record/lastingDay/${KingID}`,
+        // url: `https://i7c202.p.ssafy.io:8282/api/record/lastingDay/${KingID}`,
+        url: 'https://i7c202.p.ssafy.io:8282/api/user/record/lastingDay/2',
         method: 'get',
+        headers: {
+          'X-AUTH-TOKEN': accessToken,
+        },
       })
         .then((res) => {
           commit('SET_LASTING_DAY', res.data);
