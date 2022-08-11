@@ -4,10 +4,16 @@
       <Carousel></Carousel>
       <!-- <rankingList/> -->
       <roomTab></roomTab>
+      <p>{{roomList.freeRoomList}}</p>
+      <hr>
+      <p>{{roomList.gameRoomList}}</p>
+      <hr>
+      <p>{{roomList.streamingRoomList}}</p>
     </div>
     <div v-if="isLogin">
       <!-- <rankingList/> -->
       <roomTab></roomTab>
+      <p>{{roomList}}</p>
     </div>
     <!--TEST -->
     <br><br><br><br>
@@ -56,7 +62,7 @@ import Carousel from '@/components/MainPage/Carousel.vue';
 // import rankingList from '@/components/MainPage/rankingList.vue';
 import roomTab from '@/components/MainPage/roomTab.vue';
 import swal from 'sweetalert2';
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 window.Swal = swal;
 
@@ -69,7 +75,7 @@ export default {
     roomTab,
   },
   computed: {
-    ...mapGetters(accounts, ['userInfo', 'isLogin']),
+    ...mapGetters(accounts, ['userInfo', 'isLogin', 'roomList']),
   },
   setup() {
     const onInputImage = () => {
@@ -81,6 +87,7 @@ export default {
     };
   },
   methods: {
+    ...mapActions(accounts, ['getRoomList']),
     setCookie() {
       this.$cookies.set('nosee', 'Y', '7d');
     },
@@ -120,6 +127,10 @@ export default {
           }
         });
       }
+    }
+    const mode = ['FREE', 'GAME', 'STREAMING'];
+    for (let i = 0; i < mode.length; i += 1) {
+      this.getRoomList(mode[i]);
     }
   },
 };

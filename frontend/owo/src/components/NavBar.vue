@@ -180,6 +180,7 @@ li {
 .menu1 {
   margin-left: 2em;
   font-size: 1rem;
+  text-align: center;
 }
 
 .navli {

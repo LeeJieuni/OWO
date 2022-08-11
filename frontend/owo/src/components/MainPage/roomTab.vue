@@ -11,36 +11,42 @@
     <div class="tab-content wrap">
       <div v-show="currentTab == 0" class="scroll__wrap">
         <div v-for="(room, i) in roomList" :key="i" class="scroll--element">
-            <b-card :header="room" footer-tag="footer">
-                <b-card-img src="https://placekitten.com/380/200"></b-card-img>
-                <template #footer>
-                  <b-button variant="outline" @click="joinMeeting(room)">들어가기</b-button>
-                </template>
-            </b-card>
+          <b-card
+          img-src="https://placekitten.com/380/200"
+          img-top
+          class="mb-3">
+                <h3>{{room}}</h3>
+                <b-button variant="primary" @click="joinMeeting(room)"
+                style="width: 40%">들어가기</b-button>
+          </b-card>
         </div>
       </div>
     </div>
     <div class="tab-content wrap">
       <div v-show="currentTab == 1" class="scroll__wrap">
         <div v-for="(room, i) in roomList" :key="i" class="scroll--element">
-            <b-card :header="room" footer-tag="footer">
-                <b-card-img src="https://placekitten.com/380/200"></b-card-img>
-                <template #footer>
-                  <b-button variant="outline" @click="joinMeeting(room)">들어가기</b-button>
-                </template>
-            </b-card>
+          <b-card
+          img-src="https://placekitten.com/380/200"
+          img-top
+          class="mb-3">
+                <h3>{{room}}</h3>
+                <b-button variant="primary" @click="joinMeeting(room)"
+                style="width: 40%">들어가기</b-button>
+          </b-card>
         </div>
       </div>
     </div>
     <div class="tab-content wrap">
       <div v-show="currentTab == 2" class="scroll__wrap">
         <div v-for="(room, i) in roomList" :key="i" class="scroll--element">
-            <b-card :header="room" footer-tag="footer" class="scroll--element_sub">
-                <b-card-img src="https://placekitten.com/380/200"></b-card-img>
-                <template #footer>
-                  <b-button variant="outline" @click="joinMeeting(room)">들어가기</b-button>
-                </template>
-            </b-card>
+          <b-card
+          img-src="https://placekitten.com/380/200"
+          img-top
+          class="mb-3">
+                <h3>{{room}}</h3>
+                <b-button variant="primary" @click="joinMeeting(room)"
+                style="width: 40%">들어가기</b-button>
+          </b-card>
         </div>
       </div>
     </div>
@@ -87,6 +93,7 @@ export default {
   line-height: 15px;
   width:33%;
   height:100%;
+  padding-left: 10px;
 }
 .scroll--element + scroll--element {margin-left:10px;}
 </style>
