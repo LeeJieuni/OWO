@@ -2,11 +2,11 @@
   <div>
     <div v-if="!isLogin">
       <Carousel></Carousel>
-      <rankingList/>
+      <!-- <rankingList/> -->
       <roomTab></roomTab>
     </div>
     <div v-if="isLogin">
-      <rankingList/>
+      <!-- <rankingList/> -->
       <roomTab></roomTab>
     </div>
     <!--TEST -->
@@ -53,7 +53,7 @@
 // import { useStore } from 'vuex';
 // import { reactive, computed } from 'vue';
 import Carousel from '@/components/MainPage/Carousel.vue';
-import rankingList from '@/components/MainPage/rankingList.vue';
+// import rankingList from '@/components/MainPage/rankingList.vue';
 import roomTab from '@/components/MainPage/roomTab.vue';
 import swal from 'sweetalert2';
 import { mapGetters } from 'vuex';
@@ -65,7 +65,7 @@ const accounts = 'accounts';
 export default {
   components: {
     Carousel,
-    rankingList,
+    // rankingList,
     roomTab,
   },
   computed: {

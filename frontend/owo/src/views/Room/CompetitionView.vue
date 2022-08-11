@@ -27,12 +27,13 @@
       <!-- 운동 종료 모달 -->
       <div>
         <div class="d-flex justify-content-center align-items-center">
-          <!-- <button
+          <button
           v-b-modal.after-exercise-modal class="btn btn-outline-secondary m-2">
             <img class="menu_icon1" src="@/assets/icon/room_end.png" alt="mic_off">
             운동 종료
-          </button> -->
-          <b-modal id="after-exercise-modal" size="xl" hide-footer hide-header>
+          </button>
+          <!-- eslint-disable-next-line -->
+          <b-modal id="after-exercise-modal" size="xl" no-close-on-esc no-close-on-backdrop hide-footer hide-header>
             <form @submit.prevent="sendRecord(credentials, credentialsUser)">
               <div class="checkboxposition">
                 <h1 class="title text-center mt-4">🏃‍♂️운동 일지</h1>
@@ -97,7 +98,7 @@
                             <!-- eslint-disable-next-line -->
                             <label for="my-tag" class="m-0 p-0" style="width:100% - 120px;">
                               <!-- eslint-disable-next-line -->
-                              <input id="myTagInput" v-model="newTagContent" type="text" style="text-align: center; width:100px; color:white; border: none; border-bottom:1px solid white; background: transparent;" placeholder="나만의 태그">
+                              <input id="myTagInput" v-model="newTagContent" type="text" style="text-align: center; width:100px; color:white; border: none; border-bottom:1px solid white; background: transparent;" placeholder="#나만의 태그">
                             </label>&ensp;추가&ensp;
                           </button>
                         </form>
@@ -120,6 +121,11 @@
                   <!-- eslint-disable-next-line -->
                   <b-button type="submit" class="mybutton btn btn-success m-2 p-2">&ensp;작성 완료&ensp;</b-button>
                 </div>
+              </div>
+              <br>
+              <div class="d-flex justify-content-center">
+                <!-- eslint-disable-next-line -->
+                <div style="width: 95%; text-align: right; color:red;">강제 종료 / 새로 고침하면 기록이 저장되지 않아요!</div>
               </div>
               <div class="text-center">{{credentials}}</div>
             </form>
@@ -210,7 +216,7 @@
         <button class="mybtn3" @click="take_photo">
           <img class="menu_icon2" src="@/assets/icon/photo.png" alt="photo">
         </button>
-        <button class="mybtn6" @click="leaveSession">
+        <button class="mybtn6" @click="roomOut">
           <img class="menu_icon2" src="@/assets/icon/roomout.png" alt="leaveSession">
         </button>
         <button v-if="isStarted" class="mybtn5" @click="time">
@@ -322,6 +328,7 @@ export default {
       newTagContent: '',
       myTags: [],
       mypictures: [],
+      roomTime: null,
     };
   },
   setup() {},
@@ -365,6 +372,15 @@ export default {
     // ...meetingRoomHelper.mapState(["sessionID", "meetingRoomList"]),
   },
   methods: {
+    roomOut() {
+      if (!this.roomTime) {
+        swal.fire({
+          icon: 'warning',
+          title: '알림',
+          text: '최대 200bytes까지 입력가능해요!',
+        });
+      }
+    },
     // textarea 바이트 수 체크하는 함수
     fn_checkByte() {
       const maxByte = 200; // 최대 200바이트
@@ -404,11 +420,12 @@ export default {
           icon: 'warning',
           title: '알림',
           text: '추가 태그는 5개까지 가능해요!',
+          closeOnEsc: true,
         });
       } else {
         if (newTagContent !== '') {
-          if (this.myTags.indexOf(newTagContent.replace(' ', '')) < 0) {
-            this.myTags.push(newTagContent.replace(' ', ''));
+          if (this.myTags.indexOf(newTagContent.replace(' ', '').replace('#', '')) < 0) {
+            this.myTags.push(newTagContent.replace(' ', '').replace('#', ''));
             this.newTagContent = '';
             this.myTagList(this.myTags[this.myTags.length - 1]);
           }
@@ -418,9 +435,9 @@ export default {
       }
     },
     deletemyTagList(newTagContent) {
-      this.myTags.splice(this.myTags.indexOf(newTagContent.replace(' ', '')), 1);
-      if (this.credentials.tagList.indexOf(newTagContent.replace(' ', '')) >= 0) {
-        this.credentials.tagList.splice(this.credentials.tagList.indexOf(newTagContent.replace(' ', '')), 1);
+      this.myTags.splice(this.myTags.indexOf(newTagContent.replace(' ', '').replace('#', '')), 1);
+      if (this.credentials.tagList.indexOf(newTagContent.replace(' ', '').replace('#', '')) >= 0) {
+        this.credentials.tagList.splice(this.credentials.tagList.indexOf(newTagContent.replace(' ', '').replace('#', '')), 1);
       }
     },
     myTagList(tag) {
@@ -448,6 +465,10 @@ export default {
       axios.post(`https://i7c202.p.ssafy.io:8282/api/record/finish/${credentialsUser.memberId}/${credentialsUser.meetingRoomId}`, credentials)
         .then((res) => {
           console.log('성공', res.data);
+          this.$router.push('/');
+          document.getElementsByClassName('modal-backdrop')[0].remove();
+          document.getElementsByClassName('modal-open')[0].removeClass('modal-open');
+          this.leaveSession();
         })
         .catch((err) => {
           console.log('실패', err);
@@ -1026,7 +1047,7 @@ solid #ccb9a8; border-top: 10px solid transparent; border-bottom: 10px solid tra
     height: 100%;
     z-index: 600;
     opacity: 0.7;
-    font-size:300px;
+    font-size:599px;
 }
 
 #take_photo_WebRTC {
@@ -1148,7 +1169,7 @@ solid #ccb9a8; border-top: 10px solid transparent; border-bottom: 10px solid tra
   position:fixed;
   top:10%;
   left:30px;
-  z-index: 700;
+  z-index: 500;
 }
 
 .mybtn2 {
@@ -1157,7 +1178,7 @@ solid #ccb9a8; border-top: 10px solid transparent; border-bottom: 10px solid tra
   position:fixed;
   top:20%;
   left:30px;
-  z-index: 700;
+  z-index: 500;
 }
 
 .mybtn3 {
@@ -1166,7 +1187,7 @@ solid #ccb9a8; border-top: 10px solid transparent; border-bottom: 10px solid tra
   position:fixed;
   top:30%;
   left:30px;
-  z-index: 700;
+  z-index: 500;
 }
 
 .mybtn4 {
@@ -1175,7 +1196,7 @@ solid #ccb9a8; border-top: 10px solid transparent; border-bottom: 10px solid tra
   position:fixed;
   top:40%;
   left:30px;
-  z-index: 700;
+  z-index: 500;
 }
 
 .mybtn5 {
@@ -1184,7 +1205,7 @@ solid #ccb9a8; border-top: 10px solid transparent; border-bottom: 10px solid tra
   position:fixed;
   top: 6px;
   right: 120px;
-  z-index: 700;
+  z-index: 500;
 }
 
 .mybtn6 {
@@ -1193,14 +1214,14 @@ solid #ccb9a8; border-top: 10px solid transparent; border-bottom: 10px solid tra
   position:fixed;
   top: 30px;
   right: 30px;
-  z-index: 700;
+  z-index: 500;
 }
 
 .setTimer2position {
   position:fixed;
   top:90px;
   right:30px;
-  z-index:800;
+  z-index:500;
 }
 
 .startbtnpositionsub {
