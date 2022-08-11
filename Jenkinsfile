@@ -11,10 +11,10 @@ pipeline {
                 }
 
                 dir('frontend/owo'){
-                                sh 'sudo docker ps -f name=front -q | xargs --no-run-if-empty docker container stop'
-                                sh 'sudo docker container ls -a -f name=front -q | xargs -r docker container rm'
-                                sh 'sudo docker images --no-trunc --all --quiet --filter="dangling=true" | xargs --no-run-if-empty docker rmi'
-                                sh 'sudo docker run -d --name front -p 8080:8080 front:latest'
+                                sh 'docker ps -f name=front -q | xargs --no-run-if-empty docker container stop'
+                                sh 'docker container ls -a -f name=front -q | xargs -r docker container rm'
+                                sh 'docker images --no-trunc --all --quiet --filter="dangling=true" | xargs --no-run-if-empty docker rmi'
+                                sh 'docker run -d --name front -p 8080:8080 front:latest'
                  }
 
             }
@@ -36,10 +36,10 @@ pipeline {
 
 
               dir('backend'){
-              sh 'sudo docker ps -f name=backend -q | xargs --no-run-if-empty docker container stop'
-              sh 'sudo docker container ls -a -f name=backend -q | xargs -r docker container rm'
-              sh 'sudo docker images --no-trunc --all --quiet --filter="dangling=true" | xargs --no-run-if-empty docker rmi'
-              sh 'sudo docker run -d --name backend -p 8282:8282 backend:latest'
+              sh 'docker ps -f name=backend -q | xargs --no-run-if-empty docker container stop'
+              sh 'docker container ls -a -f name=backend -q | xargs -r docker container rm'
+              sh 'docker images --no-trunc --all --quiet --filter="dangling=true" | xargs --no-run-if-empty docker rmi'
+              sh 'docker run -d --name backend -p 8282:8282 backend:latest'
               }
 
              }
