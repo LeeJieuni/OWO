@@ -3,17 +3,17 @@ package com.sos.owo.domain.repository;
 import com.sos.owo.domain.MeetingRoom;
 import com.sos.owo.domain.Member;
 import com.sos.owo.domain.Record;
-import com.sos.owo.dto.GoalResponseDto;
-import com.sos.owo.dto.RecordDto;
-import com.sos.owo.dto.RecordResponseDto;
-import com.sos.owo.dto.TagResponseDto;
+import com.sos.owo.domain.RecordImg;
+import com.sos.owo.dto.*;
 import com.sos.owo.service.TagService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.connection.stream.RecordId;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import java.nio.charset.StandardCharsets;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -51,25 +51,29 @@ public class RecordRepository {
     // 운동 기록을 저장한다.
     // member,미팅룸을 불러와서, 그것으로 정보를 저장하고,
     // 운동 시간, 운동종류(ex.AEROBIC) 저장
-    public Record registRecord(int memberId, int meetingRoomId, Record record){
+    public Record registRecord(int memberId, int meetingRoomId, int recordImgId,Record record){
         Member findMember = em.find(Member.class,memberId);
         record.setMember(findMember);
         MeetingRoom findMeetingRoom = em.find(MeetingRoom.class,meetingRoomId);
         record.setMeetingRoom(findMeetingRoom);
 
-        int hour = findMeetingRoom.getEndDate().getHour()-findMeetingRoom.getStartDate().getHour();
-        int endmin = findMeetingRoom.getEndDate().getMinute();
-        int startmin = findMeetingRoom.getStartDate().getMinute();
-        int min = 0;
-        if(endmin<startmin){
-            hour--;
-            min = 60-startmin+endmin;
-        }else{
-            min = endmin-startmin;
-        }
-        record.setRecordTime(hour*60 + min);
+//        int hour = findMeetingRoom.getEndDate().getHour()-findMeetingRoom.getStartDate().getHour();
+//        int endmin = findMeetingRoom.getEndDate().getMinute();
+//        int startmin = findMeetingRoom.getStartDate().getMinute();
+//        int min = 0;
+//        if(endmin<startmin){
+//            hour--;
+//            min = 60-startmin+endmin;
+//        }else{
+//            min = endmin-startmin;
+//        }
+//        record.setRecordTime(hour*60 + min);
+
 
         record.setRecordExercise(findMeetingRoom.getType());
+
+        RecordImg recordImg = em.find(RecordImg.class,recordImgId);
+        record.setRecordImg(recordImg);
 
         em.persist(record);
 
@@ -142,12 +146,12 @@ public class RecordRepository {
     }
 
     public Map<String,Integer> findPercentage(int memberId){
-        Query query = em.createQuery("SELECT r.recordExercise, count(*) as c FROM Record as r WHERE r.member.id = :memberId GROUP BY r.recordExercise ORDER BY c DESC")
+        Query query = em.createQuery("SELECT r.recordExercise ,count(r.recordTime) as c FROM Record as r WHERE r.member.id = :memberId and r.recordExercise not in ('GAME') GROUP BY r.recordExercise ORDER BY c DESC")
                 .setParameter("memberId",memberId);
         List<Object[]> recordList = query.getResultList(); // 사용자에 대한 모든 운동 기록 리스트
 
         //한 사람에 대한 운동 기록 총 수 // count의 반환형은 Long이다.
-        Long sum = em.createQuery("SELECT count(*) FROM Record as r WHERE r.member.id = :memberId",Long.class)
+        Long sum = em.createQuery("SELECT count(r.recordTime) FROM Record as r WHERE r.member.id = :memberId and r.recordExercise not in ('GAME')",Long.class)
                 .setParameter("memberId",memberId).getSingleResult();
 
         HashMap<String,Integer> percentage = new HashMap<>();
@@ -230,4 +234,62 @@ public class RecordRepository {
     }
 
 
+    public int saveImg(RecordImgDto recordImgDto){ //int recordId,
+        System.out.println("2 "+recordImgDto.getId()+" "+recordImgDto.getFileOriName()+" "+recordImgDto.getFileUrl());
+        RecordImg recordImg = new RecordImg();
+        recordImg.setFileOriName(recordImgDto.getFileOriName());
+//        recordImg.setFileName(recordId+"_"+recordImgDto.getFileOriName());
+        recordImg.setFileUrl(recordImgDto.getFileUrl().getBytes());
+        System.out.println("3 "+recordImg.getId()+" "+recordImg.getFileOriName()+" "+recordImg.getFileUrl());
+        em.persist(recordImg);
+
+//        Record record = em.find(Record.class,recordId);
+//        record.setRecordImg(recordImg);
+//        em.persist(record);
+        return recordImg.getId();
+    }
+
+    public RecordImg getImg(int recordId) {
+        Record record = em.find(Record.class,recordId);
+        RecordImg recordImg = record.getRecordImg();
+        return recordImg;
+    }
+
+    public List<RecordImgDto> getFileDayList(int memberId,LocalDate date){
+        List<RecordResponseDto> list = findRecordByDay(memberId,date);
+        List<RecordImgDto> responseList = new ArrayList<>();
+
+        for (RecordResponseDto findRecord:list) {
+            int recordId = findRecord.getRecordId();
+            Record r = findOneRecord(recordId);
+            RecordImg recordImg = r.getRecordImg();
+            if(recordImg == null) return null;
+            RecordImgDto recordImgDto = RecordImgDto.builder()
+                    .id(recordImg.getId())
+                    .fileOriName(recordImg.getFileOriName())
+                    .fileUrl(new String(recordImg.getFileUrl()))
+                    .build();
+            responseList.add(recordImgDto);
+        }
+        return responseList;
+    }
+
+    public List<RecordImgDto> getFileMonthList(int memberId,int year,int day){
+        List<RecordResponseDto> list = findRecordByMonth(memberId,year,day);
+        List<RecordImgDto> responseList = new ArrayList<>();
+
+        for (RecordResponseDto findRecord:list) {
+            int recordId = findRecord.getRecordId();
+            Record r = findOneRecord(recordId);
+            RecordImg recordImg = r.getRecordImg();
+            if(recordImg == null) return null;
+            RecordImgDto recordImgDto = RecordImgDto.builder()
+                    .id(recordImg.getId())
+                    .fileOriName(recordImg.getFileOriName())
+                    .fileUrl(new String(recordImg.getFileUrl()))
+                    .build();
+            responseList.add(recordImgDto);
+        }
+        return responseList;
+    }
 }

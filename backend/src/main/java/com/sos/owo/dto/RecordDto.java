@@ -16,39 +16,52 @@ import java.util.List;
 @RequiredArgsConstructor
 @Builder
 public class RecordDto {
-//    @ApiModelProperty(example="2")
-//    private int recordHour;
+
     @ApiModelProperty(example="오늘의 운동 완료")
     @ApiParam(value = "기록에 남길 메모",type = "String")
     private String recordMemo;
-//    @ApiModelProperty(example="2022-08-04 03:11:11")
+
     @DateTimeFormat(pattern = "yyyyMMdd")
     @ApiModelProperty(example="20220805")
     @ApiParam(value = "기록하는 날짜(연월일 8자)",type = "LocalDate")
     private LocalDate recordDatetime;
-//    private LocalDateTime recordDatetime;
+
     @ApiModelProperty(example="false")
     @ApiParam(value = "기록의 공개여부",type = "boolean")
     private boolean secret;
 
+    @ApiModelProperty(example="false")
     @ApiParam(value = "기록에 대한 태그들 리스트",type = "List<String>")
     private List<String> tagList;
 
+    @ApiModelProperty(example="apple.png")
+    @ApiParam(value = "이미지 파일 명",type = "String")
+    private String fileOriName;
+
+    @ApiModelProperty(example="base64인코딩된것")
+    @ApiParam(value = "이미지 파일의 url",type = "String")
+    private String fileUrl;
+
+    @ApiModelProperty(example="60")
+    @ApiParam(value = "운동한 시간(단위 : 분)",type = "int")
+    private int recordTime;
+
     @Builder
-    public RecordDto(String recordMemo, LocalDate recordDatetime, boolean secret, List<String> tagList) {
-//        this.recordHour = recordHour;
+    public RecordDto(String recordMemo, LocalDate recordDatetime, boolean secret, List<String> tagList, String fileOriName, String fileUrl,int recordTime) {
         this.recordMemo = recordMemo;
         this.recordDatetime = recordDatetime;
         this.secret = secret;
         this.tagList = tagList;
+        this.fileOriName = fileOriName;
+        this.fileUrl = fileUrl;
+        this.recordTime=recordTime;
     }
 
-
-
+    
 
     public Record toEntity()
     {
-        return Record.builder().recordMemo(recordMemo).recordDatetime(recordDatetime).recordSecret(secret).build();
+        return Record.builder().recordMemo(recordMemo).recordDatetime(recordDatetime).recordSecret(secret).recordTime(recordTime).build();
     }
 
 }

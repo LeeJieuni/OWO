@@ -21,8 +21,8 @@ public class RecordService {
     private final RecordRepository recordRepository;
 
     @Transactional
-    public Record registRecord(int memberId, int meetingRoomId, Record record) {
-        return recordRepository.registRecord(memberId,meetingRoomId,record);
+    public Record registRecord(int memberId, int meetingRoomId, int recordImgId,Record record) {
+        return recordRepository.registRecord(memberId,meetingRoomId,recordImgId,record);
     }
 
     @Transactional
