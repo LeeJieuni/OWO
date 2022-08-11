@@ -6,15 +6,15 @@ pipeline {
 
                 dir('frontend/owo'){
                 script{
-                    docker.build('owo_front')
+                    docker.build('front')
                  }
                 }
 
                 dir('frontend/owo'){
-                                sh 'docker ps -f name=owo_front -q | xargs --no-run-if-empty docker container stop'
-                                sh 'docker container ls -a -f name=owo_front -q | xargs -r docker container rm'
+                                sh 'docker ps -f name=front -q | xargs --no-run-if-empty docker container stop'
+                                sh 'docker container ls -a -f name=front -q | xargs -r docker container rm'
                                 sh 'docker images --no-trunc --all --quiet --filter="dangling=true" | xargs --no-run-if-empty docker rmi'
-                                sh 'docker run -d --name owo_front -p 8080:8080 owo_front:latest'
+                                sh 'docker run -d --name front -p 8080:8080 front:latest'
                  }
 
             }
@@ -25,20 +25,21 @@ pipeline {
 
         stage('BackEnd'){
 
+
             steps {
 
              dir('backend'){
                       script{
-                         docker.build('owo_backend')
+                         docker.build('backend')
                       }
              }
 
 
               dir('backend'){
-              sh 'docker ps -f name=owo_backend -q | xargs --no-run-if-empty docker container stop'
-              sh 'docker container ls -a -f name=owo_backend -q | xargs -r docker container rm'
+              sh 'docker ps -f name=backend -q | xargs --no-run-if-empty docker container stop'
+              sh 'docker container ls -a -f name=backend -q | xargs -r docker container rm'
               sh 'docker images --no-trunc --all --quiet --filter="dangling=true" | xargs --no-run-if-empty docker rmi'
-              sh 'docker run -d --name owo_backend --net {네트워크명} -p 8282:8282 owo_backend:latest'
+              sh 'docker run -d --name backend --net {네트워크명} -p 8282:8282 backend:latest'
               }
 
              }
