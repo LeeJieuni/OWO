@@ -183,7 +183,7 @@ export const accounts = {
           }
         });
     },
-    socialLogin({ commit, dispatch }, token) {
+    socialLogin({ dispatch, state }, token) {
       axios({
         url: 'https://i7c202.p.ssafy.io:8282/api/social',
         method: 'get',
@@ -193,15 +193,21 @@ export const accounts = {
       })
         .then((res) => {
           console.log('소셜로그인 in vuex');
+          console.log('------response 출력 res.data.data--------');
           console.log(res.data.data);
           const response = res.data.data;
           // eslint-disable-next-line
           const accessToken = response.accessToken;
+          console.log('-------accessToken-------');
+          console.log(accessToken);
+          // eslint-disable-next-line
+          console.log('-------refreshToken-------');
           // eslint-disable-next-line
           const refreshToken = response.refreshToken;
-          commit('SET_USER_INFO', response);
-          commit('SET_ACCESS_TOKEN', accessToken);
-          commit('SET_REFRESH_TOKEN', refreshToken);
+          console.log(refreshToken);
+          dispatch('saveAccessToken', accessToken);
+          dispatch('saveRefreshToken', refreshToken);
+          dispatch('setUserInfo', response);
           dispatch('fetchPhysicalInfo');
           dispatch('fetchSlogan');
           dispatch('fetchPoint');
@@ -209,7 +215,15 @@ export const accounts = {
           dispatch('fetchGoal');
           dispatch('fetchProfileImg');
           dispatch('fetchPercentage');
+          console.log('-------state, accessToken-------');
+          console.log(state.accessToken);
+          console.log('-------state, refreshToken-------');
+          console.log(refreshToken);
+          console.log('-------state, userInfo-------');
+          console.log(state.userInfo);
           router.push('/');
+          console.log('---------res 출력----------');
+          console.log(res);
         })
         .catch((err) => {
           console.log(err);
