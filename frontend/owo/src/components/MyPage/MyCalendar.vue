@@ -51,7 +51,7 @@
           </div>
           <!--카로셀-->
           <div>
-            <img :src="recordPicture" alt="">
+            <!-- <img :src="recordPicture" alt=""> -->
           </div>
 
           <div class="row">
