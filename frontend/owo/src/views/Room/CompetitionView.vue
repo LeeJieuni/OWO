@@ -22,6 +22,8 @@
             <div v-if="this.subscribers.length <= 3" class="webrtcetc col-4 m0p0 mb-2 mx-1"></div>
             <div v-if="this.subscribers.length <= 4" class="webrtcetc col-4 m0p0 mb-2 mx-1"></div>
           </div>
+          <!-- eslint-disable-next-line -->
+          <div v-for="sub in subscribers" :key="sub.stream.connection.connectionId"> {{sub.stream.connection.connectionId}} </div>
         </div>
       </div>
       <!-- 운동 종료 모달 -->
@@ -60,7 +62,7 @@
                 </div>
                 <div class="row d-flex align-items-start justify-content-center">
                   <!-- eslint-disable-next-line -->
-                  <button v-for="(mypicture, i) in mypictures" :key="i" class="col-4 m0p0" style="padding:0px; margin:0px; width:330px;">
+                  <button @click.prevenet="pickmyImg(`${mypicture}`)" v-for="(mypicture, i) in mypictures" :key="i" class="col-4 m0p0" style="padding:0px; margin:0px; width:330px;">
                     <img :src="mypicture" alt="img" style="width:328px;">
                   </button>
                 </div>
@@ -315,6 +317,7 @@ export default {
       // roomName: '붙어보자!',
       gameName: ['팔굽혀펴기', '런지', '버피테스트'],
       credentials: {
+        recordImg: '',
         recordDatetime: format,
         recordMemo: null,
         secret: false,
@@ -372,14 +375,18 @@ export default {
     // ...meetingRoomHelper.mapState(["sessionID", "meetingRoomList"]),
   },
   methods: {
+    pickmyImg(Img) {
+      this.credentials.recordImg = Img;
+    },
     roomOut() {
-      if (!this.roomTime) {
-        swal.fire({
-          icon: 'warning',
-          title: '알림',
-          text: '최대 200bytes까지 입력가능해요!',
-        });
-      }
+      // if (!this.roomTime) {
+      //   swal.fire({
+      //     icon: 'warning',
+      //     title: '알림',
+      //     text: '최대 200bytes까지 입력가능해요!',
+      //   });
+      // }
+      this.leaveSession();
     },
     // textarea 바이트 수 체크하는 함수
     fn_checkByte() {
@@ -461,17 +468,22 @@ export default {
       this.credentialsUser.meetingRoomId = encodeURI(this.credentialsUser.meetingRoomId);
       console.log(this.credentialsUser.memberId);
       console.log(this.credentialsUser.meetingRoomId);
-      console.log(this.credentials);
-      axios.post(`https://i7c202.p.ssafy.io:8282/api/record/finish/${credentialsUser.memberId}/${credentialsUser.meetingRoomId}`, credentials)
+      console.log('보내는 데이터 양식', this.credentials);
+      axios.post(`https://i7c202.p.ssafy.io:8282/api/user/record/finish/${credentialsUser.memberId}/${credentialsUser.meetingRoomId}`, credentials)
         .then((res) => {
           console.log('성공', res.data);
-          this.$router.push('/');
-          document.getElementsByClassName('modal-backdrop')[0].remove();
-          document.getElementsByClassName('modal-open')[0].removeClass('modal-open');
-          this.leaveSession();
+          // this.$router.push('/');
+          // document.getElementsByClassName('modal-backdrop')[0].remove();
+          // document.getElementsByClassName('modal-open')[0].removeClass('modal-open');
+          // this.leaveSession();
         })
         .catch((err) => {
           console.log('실패', err);
+          // this.$router.push('/');
+          // document.getElementsByClassName('modal-backdrop')[0].remove();
+          // document.getElementsByClassName('modal-open')[0].removeClass('modal-open');
+          // this.leaveSession();
+          // this.mySessionId = '';
         });
     },
     ...mapActions(emoji, ['changeEmojiList', 'removeEmojiList']),
@@ -520,6 +532,7 @@ export default {
 
       // --- Init a session ---
       this.session = this.OV.initSession();
+      console.log('점원목록', this.subscribers);
 
       // --- Specify the actions when events take place in the session ---
 
@@ -613,12 +626,34 @@ export default {
         this.leaveSession();
       });
 
+      this.session.on('signal:leaveRoomMe', (event) => {
+        console.log(event.data);
+        for (let i = 0; i < this.subscribers.length; i += 1) {
+          if (this.subscribers[i].stream.connection.connectionId === event.data) {
+            this.subscribers.splice(this.subscribers[i], 1);
+          }
+        }
+      });
+
       this.session.on('signal:startround1', () => {
         this.$refs.setTimer2.pauseTimer();
         this.youtubeURL = 'https://www.youtube.com/embed/gTowV_F07uI';
       });
 
-      window.addEventListener('beforeunload', this.leaveSession);
+      window.addEventListener('beforeunload', this.leavepeople);
+    },
+
+    leavepeople() {
+      this.leaveSession();
+      this.session
+        .signal({
+          data: `${this.streamManager.stream.connection.connectionId}`,
+          to: [],
+          type: 'leaveRoomMe',
+        })
+        .then(() => {
+        })
+        .catch(() => {});
     },
 
     sendEmoji() {
