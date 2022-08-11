@@ -183,7 +183,7 @@ export const accounts = {
           }
         });
     },
-    socialLogin({ commit, dispatch, state }, token) {
+    socialLogin({ dispatch, state }, token) {
       axios({
         url: 'https://i7c202.p.ssafy.io:8282/api/social',
         method: 'get',
@@ -205,9 +205,9 @@ export const accounts = {
           // eslint-disable-next-line
           const refreshToken = response.refreshToken;
           console.log(refreshToken);
-          commit('SET_USER_INFO', response);
-          commit('SET_ACCESS_TOKEN', accessToken);
-          commit('SET_REFRESH_TOKEN', refreshToken);
+          dispatch('saveAccessToken', accessToken);
+          dispatch('saveRefreshToken', refreshToken);
+          dispatch('setUserInfo', response);
           dispatch('fetchPhysicalInfo');
           dispatch('fetchSlogan');
           dispatch('fetchPoint');
