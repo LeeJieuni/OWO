@@ -33,8 +33,12 @@ export const mainpage = {
         method: 'get',
       })
         .then((res) => {
+          console.log('getRankingListt실행됨');
+          console.log(res);
           commit('SET_RANKING_LIST', res.data.data);
+          console.log('커밋실행됨');
           dispatch('getLastingDay', res.data.data[0].member_id);
+          console.log('디스패치 실행됨');
         })
         .catch((err) => {
           console.log(err);
@@ -45,9 +49,6 @@ export const mainpage = {
       userInfo = JSON.parse(userInfo);
       // eslint-disable-next-line
       const userId = userInfo['accounts']['userInfo']['id'];
-      // eslint-disable-next-line
-      const accessToken = userInfo['accounts']['accessToken'];
-      console.log(accessToken);
       axios({
         url: `https://i7c202.p.ssafy.io:8282/api/ranking/${userId}`,
         method: 'get',
@@ -60,9 +61,10 @@ export const mainpage = {
           console.log(err);
         });
     },
-    getLastingDay({ commit }, KingID) {
+    getLastingDay({ commit }) { // KingID
       axios({
-        url: `https://i7c202.p.ssafy.io:8282/api/record/lastingDay/${KingID}`,
+        // url: `https://i7c202.p.ssafy.io:8282/api/record/lastingDay/${KingID}`,
+        url: 'https://i7c202.p.ssafy.io:8282/api/record/lastingDay/2',
         method: 'get',
       })
         .then((res) => {

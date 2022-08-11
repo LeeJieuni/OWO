@@ -1,34 +1,21 @@
 <template>
   <div class="body container-fluid">
     <h1 class="title">오늘의 운동왕은 누구?</h1>
-    <b-card-group deck class="d-flex justify-content-evenly" v-if="isLogin === true">
+    <b-card-group deck class="d-flex justify-content-evenly"
+    v-if="isLogin === true">
       <b-card class="rounded-5 cards">
         <h5 class="card-title">어제 운동왕</h5>
-        <div class="ranking">
+        <div class="ranking" v-for="(rank, index) in rankingList" :key="index">
           <b-button block pill size='lg' variant="outline-primary"
           class="d-flex justify-content-between button">
-            <span>1위 : </span><span>{{ rankingList[0].name }}</span>
-            <span>{{ rankingList[0].score }}분</span>
-          </b-button>
-        </div>
-        <div class="ranking">
-          <b-button block pill size='lg' variant="outline-primary"
-          class="d-flex justify-content-between button">
-            <span>2위 : </span><span>{{ rankingList[1].name }}</span>
-            <span>{{ rankingList[1].score }}분</span>
-          </b-button>
-        </div>
-        <div class="ranking">
-          <b-button block pill size='lg' variant="outline-primary"
-          class="d-flex justify-content-between button">
-            <span>3위 : </span><span>{{ rankingList[2].name }}</span>
-            <span>{{ rankingList[2].score }}분</span>
+            <span>{{index+1}}위 : </span><span>{{ rank.name }}</span>
+            <span>{{ rank.score }}분</span>
           </b-button>
         </div>
         <hr />
         <div class="myranking">
           <b-button class="button" block pill size='lg'
-          variant="outline-danger" v-if="isLogin && getMyRanking()">
+          variant="outline-danger" v-if="isLogin">
             나의 랭킹 : {{ myranking }}위</b-button>
           <b-button class="button" block pill size='lg'
           variant="outline-danger" v-if="
@@ -36,6 +23,7 @@
             로그인 해주세요</b-button>
         </div>
       </b-card>
+      <!--운동왕의 레코드  -->
       <b-card class="rounded-5 cards">
         <h5 class="card-title">{{ rankingList[0].name }}님의 record</h5>
         <div class="d-flex justify-content-center" sytle="margin-bottom: 10px">
@@ -46,9 +34,10 @@
       </b-card>
       <b-card class="rounded-5 cards">
         <h5 class="card-title">나의 운동 기록</h5>
-        <!-- <MySmCalendar/> -->
+        <MySmCalendar/>
       </b-card>
     </b-card-group>
+    <!--로그인 전  화면 부분-->
     <a v-if="isLogin === false"><router-link to="/login">로그인 후 이용해주세요.</router-link></a>
     <b-card-group deck class="d-flex justify-content-evenly" v-if="isLogin === false">
         <b-card class="rounded-5 cards">
@@ -101,11 +90,11 @@ const mainpage = 'mainpage';
 const accounts = 'accounts';
 
 export default {
-  methods: {
-    ...mapActions(mainpage, ['getMyRanking', 'getRankingList']),
-  },
   created() {
     this.getRankingList();
+  },
+  methods: {
+    ...mapActions(mainpage, ['getMyRanking', 'getRankingList']),
   },
   components: {
     CircleProgress,
