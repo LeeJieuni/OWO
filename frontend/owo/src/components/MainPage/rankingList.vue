@@ -15,7 +15,7 @@
         <hr />
         <div class="myranking">
           <b-button class="button" block pill size='lg'
-          variant="outline-danger" v-if="isLogin">
+          variant="outline-danger" v-if="isLogin && getMyRanking()">
             나의 랭킹 : {{ myranking }}위</b-button>
           <b-button class="button" block pill size='lg'
           variant="outline-danger" v-if="
