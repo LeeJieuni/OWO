@@ -255,6 +255,7 @@ import 'emoji-mart-vue-fast/css/emoji-mart.css';
 import { Picker, EmojiIndex } from 'emoji-mart-vue-fast/src';
 import { mapState, mapActions, mapMutations } from 'vuex';
 import swal from 'sweetalert2';
+// import { onUnmounted } from 'vue';
 
 window.Swal = swal;
 
@@ -334,7 +335,12 @@ export default {
       roomTime: null,
     };
   },
-  setup() {},
+  setup() {
+    // onUnmounted(() => {
+    //   // alert('hello');
+    //   this.leavepeople();
+    // });
+  },
   created() {
     this.sessionId = this.$route.params.sessionId;
     this.joinSession(this.sessionId);
@@ -343,7 +349,9 @@ export default {
   },
   moundted() {
   },
-  unmounted() {},
+  unmounted() {
+    this.leaveSession();
+  },
   watch: {
     mySessionId() {},
     camera() {
@@ -472,10 +480,10 @@ export default {
       axios.post(`https://i7c202.p.ssafy.io:8282/api/user/record/finish/${credentialsUser.memberId}/${credentialsUser.meetingRoomId}`, credentials)
         .then((res) => {
           console.log('성공', res.data);
-          // this.$router.push('/');
-          // document.getElementsByClassName('modal-backdrop')[0].remove();
-          // document.getElementsByClassName('modal-open')[0].removeClass('modal-open');
-          // this.leaveSession();
+          this.$router.push('/');
+          document.getElementsByClassName('modal-backdrop')[0].remove();
+          document.getElementsByClassName('modal-open')[0].removeClass('modal-open');
+          this.leaveSession();
         })
         .catch((err) => {
           console.log('실패', err);
@@ -644,6 +652,7 @@ export default {
     },
 
     leavepeople() {
+      alert('나가는중!');
       this.leaveSession();
       this.session
         .signal({
@@ -780,7 +789,7 @@ export default {
       this.publisher = undefined;
       this.subscribers = [];
       this.OV = undefined;
-      window.removeEventListener('beforeunload', this.leaveSession);
+      window.removeEventListener('beforeunload', this.leavepeople);
       this.SET_SESSION_ID('');
       this.$router.push('/');
     },
