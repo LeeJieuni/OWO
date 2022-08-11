@@ -532,6 +532,8 @@ export const accounts = {
         })
         .catch((err) => {
           console.log(err.toJSON());
+        });
+    },
     getRoomList({ commit }, mode) {
       axios({
         url: `https://i7c202.p.ssafy.io:8282/room/${mode}`,
