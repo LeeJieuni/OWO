@@ -30,15 +30,19 @@ public class RecordDto {
     @ApiParam(value = "기록의 공개여부",type = "boolean")
     private boolean secret;
 
+    @ApiModelProperty(example="false")
     @ApiParam(value = "기록에 대한 태그들 리스트",type = "List<String>")
     private List<String> tagList;
 
+    @ApiModelProperty(example="apple.png")
     @ApiParam(value = "이미지 파일 명",type = "String")
     private String fileOriName;
 
+    @ApiModelProperty(example="base64인코딩된것")
     @ApiParam(value = "이미지 파일의 url",type = "String")
     private String fileUrl;
 
+    @ApiModelProperty(example="60")
     @ApiParam(value = "운동한 시간(단위 : 분)",type = "int")
     private int recordTime;
 
