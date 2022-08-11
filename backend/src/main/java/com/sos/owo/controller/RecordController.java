@@ -504,8 +504,8 @@ public class RecordController {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(new MediaType("application","json", Charset.forName("UTF-8")));
         try {
-            List<RecordFileDto> fileDto = recordImgService.getFileDayList(memberId, date);
-            if (fileDto == null) {
+            List<RecordImgDto> result = recordImgService.getFileDayList(memberId, date);
+            if (result == null) {
                 System.out.println(">>>fileDto null");
                 return new ResponseEntity<String>("null", HttpStatus.OK);
             }
