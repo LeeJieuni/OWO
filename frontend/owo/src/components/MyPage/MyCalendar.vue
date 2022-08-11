@@ -21,14 +21,14 @@
           <tr v-for="(row, index) in currentCalendarMatrix" :key="index">
             <td class="day-td" v-for="(day, index2) in row" :key="index2">
               <a v-if="isToday(currentYear, currentMonth, day)" class="today day-a" href="#"
-                @click="selectDay(currentMonth, day)" v-b-modal="'myModal'">
+                @click="selectDay(currentYear, currentMonth, day)" v-b-modal="'myModal'">
                 {{day}}
               </a>
               <!-- <a>
                 <img class="stamp" src="@/assets/icon/stamps/evaluate1.png" alt=""></img>
               </a> -->
               <span v-else>
-                <a class="days day-a" href="#" @click="selectDay(currentMonth, day)"
+                <a class="days day-a" href="#" @click="selectDay(currentYear, currentMonth, day)"
                   v-b-modal="'myModal'">{{day}}</a>
               </span>
             </td>
@@ -312,8 +312,25 @@ export default {
       const date = new Date();
       return year === date.getFullYear() && month === date.getMonth() + 1 && day === date.getDate();
     },
-    selectDay(currentMonth, day) {
+    selectDay(year, month, day) {
+      this.currentYear = year;
+      this.currentMonth = month;
       this.day = day;
+      const stringYear = String(this.currentYear);
+      let stringMonth;
+      if (this.currentMonth >= 10) {
+        stringMonth = String(this.currentMonth);
+      } else {
+        stringMonth = String(0) + String(this.currentMonth);
+      }
+      let stringDay;
+      if (this.day >= 10) {
+        stringDay = String(this.day);
+      } else {
+        stringDay = String(0) + String(this.day);
+      }
+      this.stringDate = stringYear + stringMonth + stringDay;
+      this.fetchDayExerciseList(this.stringDate);
     },
     cancle() {
       const modal = document.querySelector('.modal');
