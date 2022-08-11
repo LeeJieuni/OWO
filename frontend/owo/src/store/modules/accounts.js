@@ -480,9 +480,12 @@ export const accounts = {
           console.log(err);
         });
     },
-    fetchGoal({ state, commit }) {
+    setGoal({ commit }, payload) {
+      commit('SET_GOAL', payload);
+    },
+    fetchGoal({ state, dispatch }) {
       axios({
-        url: `https://i7c202.p.ssafy.io:8282/api/user/compete/${state.userInfo.id}`,
+        url: `https://i7c202.p.ssafy.io:8282/api/user/goal/${state.userInfo.id}`,
         method: 'get',
         headers: {
           'X-AUTH-TOKEN': state.accessToken,
@@ -490,14 +493,45 @@ export const accounts = {
         },
       })
         .then((res) => {
-          // console.log(res.data.message);
           console.log(res.data.data);
-          commit('SET_GOAL', res.data.data);
+          dispatch('setGoal', res.data.data);
         })
         .catch((err) => {
           console.log(err);
         });
     },
+    addGoal({ state, dispatch }, payload) {
+      axios({
+        url: `https://i7c202.p.ssafy.io:8282/api/user/goal/${state.userInfo.id}`,
+        method: 'post',
+        headers: {
+          'X-AUTH-TOKEN': state.accessToken,
+          'REFRESH-TOKEN': state.refreshToken,
+        },
+        data: payload,
+      })
+        .then((res) => {
+          dispatch('setGoal', res.data.data);
+        })
+        .catch((err) => {
+          console.log(err.toJSON());
+        });
+    },
+    updateGoal({ state, dispatch }, payload) {
+      axios({
+        url: `https://i7c202.p.ssafy.io:8282/api/user/goal/${state.userInfo.id}`,
+        method: 'put',
+        headers: {
+          'X-AUTH-TOKEN': state.accessToken,
+          'REFRESH-TOKEN': state.refreshToken,
+        },
+        data: payload,
+      })
+        .then((res) => {
+          dispatch('setGoal', res.data.data);
+        })
+        .catch((err) => {
+          console.log(err.toJSON());
     getRoomList({ commit }, mode) {
       axios({
         url: `https://i7c202.p.ssafy.io:8282/room/${mode}`,
