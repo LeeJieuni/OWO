@@ -1,10 +1,7 @@
 package com.sos.owo.dto;
 
 import com.sos.owo.domain.RecordImg;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
@@ -17,8 +14,8 @@ public class RecordFileDto {
     private String fileName;
     private String fileUrl;
 
-    public RecordImg toEntity(){
-        RecordImg build = RecordImg.builder()
+    public RecordFileDto toEntity(){
+        RecordFileDto build = RecordFileDto.builder()
                 .id(id)
                 .fileOriName(fileOriName)
                 .fileName(fileName)
@@ -35,4 +32,9 @@ public class RecordFileDto {
         this.fileUrl = fileUrl;
     }
 
+    public RecordFileDto(int id, String fileOriName, String fileUrl) {
+        this.id = id;
+        this.fileOriName = fileOriName;
+        this.fileUrl = fileUrl;
+    }
 }

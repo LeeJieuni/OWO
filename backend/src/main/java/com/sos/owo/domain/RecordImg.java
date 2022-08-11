@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Table(name = "record_img")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 public class RecordImg {
 
     @Id
@@ -23,15 +23,17 @@ public class RecordImg {
     private String fileOriName;
 
     @Column(name = "record_img_fileurl")
-    private String fileUrl;
+    private byte[] fileUrl;
 
     @Builder
-    public RecordImg(int id, String fileOriName, String fileName, String fileUrl){
+    public RecordImg(int id, String fileOriName, String fileName, byte[] fileUrl){
         this.id = id;
         this.fileOriName = fileOriName;
         this.fileName = fileName;
         this.fileUrl = fileUrl;
     }
+
+
 
     public void updateRecordImg(RecordImg recordImg){
         this.fileOriName = recordImg.getFileOriName();
