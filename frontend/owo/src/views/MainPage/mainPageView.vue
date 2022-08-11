@@ -2,7 +2,7 @@
   <div>
     <div v-if="!isLogin">
       <Carousel></Carousel>
-      <!-- <rankingList/> -->
+      <rankingList/>
       <roomTab></roomTab>
       <p>{{roomList.freeRoomList}}</p>
       <hr>
@@ -11,7 +11,8 @@
       <p>{{roomList.streamingRoomList}}</p>
     </div>
     <div v-if="isLogin">
-      <!-- <rankingList/> -->
+      <Carousel></Carousel>
+      <rankingList/>
       <roomTab></roomTab>
       <p>{{roomList}}</p>
     </div>
@@ -59,7 +60,7 @@
 // import { useStore } from 'vuex';
 // import { reactive, computed } from 'vue';
 import Carousel from '@/components/MainPage/Carousel.vue';
-// import rankingList from '@/components/MainPage/rankingList.vue';
+import rankingList from '@/components/MainPage/rankingList.vue';
 import roomTab from '@/components/MainPage/roomTab.vue';
 import swal from 'sweetalert2';
 import { mapGetters, mapActions } from 'vuex';
@@ -71,7 +72,7 @@ const accounts = 'accounts';
 export default {
   components: {
     Carousel,
-    // rankingList,
+    rankingList,
     roomTab,
   },
   computed: {
