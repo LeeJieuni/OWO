@@ -169,6 +169,7 @@ public class MemberService {
         int rank = memberRepository2.findRanking(memberid);
         int allCnt = memberRepository2.findMemberCnt();
         double percentage = ((double) rank / allCnt) * 100;
+        percentage = Math.floor(percentage);
         return percentage;
     }
 

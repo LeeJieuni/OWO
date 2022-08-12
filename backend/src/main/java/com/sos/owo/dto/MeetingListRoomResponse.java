@@ -9,6 +9,7 @@ import lombok.*;
 public class MeetingListRoomResponse {
     int roomId;
     int memberId;
+    int manger_point;
     int person;
     boolean secret;
     String password;
@@ -18,9 +19,10 @@ public class MeetingListRoomResponse {
     String link;
 
     @Builder
-    public MeetingListRoomResponse(int roomId, int memberId, int person, boolean secret, String password, Mode mode, String roomName, Exercise type, String link) {
+    public MeetingListRoomResponse(int roomId, int memberId, int manger_point, int person, boolean secret, String password, Mode mode, String roomName, Exercise type, String link) {
         this.roomId = roomId;
         this.memberId = memberId;
+        this.manger_point = manger_point;
         this.person = person;
         this.secret = secret;
         this.password = password;
