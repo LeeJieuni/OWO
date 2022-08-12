@@ -14,8 +14,12 @@
             <WebRTC :stream-manager="sub"
               v-for="sub in subscribers"
               :key="sub.stream.connection.connectionId"
-              @click="updateMainVideoStreamManager(sub)"
             />
+            <!-- <WebRTC :stream-manager="sub"
+              v-for="sub in subscribers"
+              :key="sub.stream.connection.connectionId"
+              @click="updateMainVideoStreamManager(sub)"
+            /> -->
             <div v-if="this.subscribers.length <= 0" class="webrtcetc col-4 m0p0 mb-2 mx-1"></div>
             <div v-if="this.subscribers.length <= 1" class="webrtcetc col-4 m0p0 mb-2 mx-1"></div>
             <div v-if="this.subscribers.length <= 2" class="webrtcetc col-4 m0p0 mb-2 mx-1"></div>
@@ -204,19 +208,43 @@
           <img class="menu_icon2" src="@/assets/icon/emoji.png" alt="emoji">
         </button>
         <button class="mybtn1" @click="mic_off" v-if="mic">
-          <img class=" menu_icon2" src="@/assets/icon/mic_off.png" alt="mic_on">
+          <img class="menu_icon2" src="@/assets/icon/mic_on.png" alt="mic_off">
+          <div style="color:#4e8aff; font-size:12px;">
+            음소거
+          </div>
         </button>
         <button class="mybtn1" @click="mic_on" v-if="!mic">
-          <img class="menu_icon2" src="@/assets/icon/mic_on.png" alt="mic_off">
+          <img class=" menu_icon2" src="@/assets/icon/mic_off.png" alt="mic_on">
+          <div style="color:#de7474; font-size:12px;">
+            음소거
+          </div>
+          <div style="color:#de7474; font-size:12px; line-height:0.8;">
+            해제
+          </div>
         </button>
         <button class="mybtn2" @click="video_off" v-if="video">
           <img class="menu_icon2" src="@/assets/icon/video_off.png" alt="video_on">
+          <div style="color:#de7474; font-size:12px;" >
+            비디오
+          </div>
+          <div style="color:#de7474; font-size:12px; line-height:0.8;">
+            시작
+          </div>
         </button>
         <button class="mybtn2" @click="video_on" v-if="!video">
           <img class="menu_icon2" src="@/assets/icon/video_on.png" alt="video_off">
+          <div style="color:#4e8aff; font-size:12px;">
+            비디오
+          </div>
+          <div style="color:#4e8aff; font-size:12px; line-height:0.8;">
+            중지
+          </div>
         </button>
         <button class="mybtn3" @click="take_photo">
           <img class="menu_icon2" src="@/assets/icon/photo.png" alt="photo">
+          <div style="color:#4e8aff; font-size:12px;">
+            사진
+          </div>
         </button>
         <button class="mybtn6" @click="roomOut">
           <img class="menu_icon2" src="@/assets/icon/roomout.png" alt="leaveSession">
@@ -226,20 +254,25 @@
         </button>
         <!-- eslint-disable-next-line -->
         <button class="mybtn4 dropdown dropright dropright-toggle-no-caret text-decoration-none" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-          <img class="menu_icon2" src="@/assets/icon/phototimer.png" alt="photo">
+          <img class="menu_icon2" src="@/assets/icon/setTimer.png" alt="photo">
+          <div style="color:#4e8aff; font-size:12px;">
+            타이머
+          </div>
         </button>
         <ul class="dropdown-menu" role="menu" style="width:50px;">
         <!-- eslint-disable-next-line -->
-          <li role="presentation" style="width:100%;"><button @click="set_timer_3" class="dropdown-item text-center" type="button" target="_self">타이머 : 3초</button></li>
+          <li role="presentation" style="width:100%;"><button @click="set_timer_3" class="dropdown-item text-center" type="button" target="_self">3초</button></li>
         <!-- eslint-disable-next-line -->
-          <li role="presentation" style="width:100%;"><button @click="set_timer_5" class="dropdown-item text-center" type="button" target="_self">타이머 : 5초</button></li>
+          <li role="presentation" style="width:100%;"><button @click="set_timer_5" class="dropdown-item text-center" type="button" target="_self">5초</button></li>
         <!-- eslint-disable-next-line -->
-          <li role="presentation" style="width:100%;"><button @click="set_timer_10" class="dropdown-item text-center" type="button" target="_self">타이머 : 10초</button></li>
+          <li role="presentation" style="width:100%;"><button @click="set_timer_10" class="dropdown-item text-center" type="button" target="_self">10초</button></li>
         </ul>
       </div>
       <div class="setTimer2position">
         <setTimer2 ref="setTimer2" />
       </div>
+      <button @click="init">start</button>
+      <div>나의 카운트 : {{ count }} </div>
     </div>
   </div>
 </template>
@@ -255,7 +288,9 @@ import 'emoji-mart-vue-fast/css/emoji-mart.css';
 import { Picker, EmojiIndex } from 'emoji-mart-vue-fast/src';
 import { mapState, mapActions, mapMutations } from 'vuex';
 import swal from 'sweetalert2';
-// import { onUnmounted } from 'vue';
+// eslint-disable-next-line
+import * as tf from '@tensorflow/tfjs';
+import * as tmPose from '@teachablemachine/pose';
 
 window.Swal = swal;
 
@@ -278,6 +313,12 @@ const format = year + '-' + (('00' + month.toString()).slice(-2)) + '-' +
 
 export default {
   name: 'CompetitionView',
+  metaInfo: {
+    script: [
+      { src: 'https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js', async: true, defer: true },
+      { src: 'https://cdn.jsdelivr.net/npm/@teachablemachine/pose@0.8/dist/teachablemachine-pose.min.js', async: true, defer: true },
+    ],
+  },
   components: {
     WebRTC,
     WebRTCPhoto,
@@ -304,7 +345,7 @@ export default {
       OV: undefined,
       session: undefined,
       video: false,
-      mic: false,
+      mic: true,
       mainStreamManager: undefined,
       publisher: undefined,
       subscribers: [],
@@ -333,6 +374,29 @@ export default {
       myTags: [],
       mypictures: [],
       roomTime: null,
+      // tm 영역
+      webcam: undefined,
+      URL: undefined,
+      model: undefined,
+      status: 'ready',
+      check: false,
+      check2: false,
+      count: 0,
+      // gameType: 'pushUp',
+      gameType: 2, // 1:squat, 2:lunge, 3:burpee
+      ctx: undefined,
+      // 각 운동의 카운트를 memberId와 함께 session.on으로 보내주고 데이터 받아서 저장한다.
+      // sqcount,
+      // bpcount,
+      // lgcount,
+      // 운동이 끝나면 count는 서버에 보내고, counts에 따라 임의의 score를 저장한다.
+      // sqscore,
+      // bpscore,
+      // lgscore,
+      // score의 합산으로 다시 정렬해서 순위별 등수를 매겨로 포인트를 부여한다.
+      // myscore,
+      // mypoints를 서버에 보낸다.
+      // mypoints,
     };
   },
   setup() {
@@ -348,6 +412,7 @@ export default {
     this.credentialsUser.meetingRoomId = this.mySessionId;
   },
   moundted() {
+    this.init();
   },
   unmounted() {
     this.leaveSession();
@@ -383,6 +448,18 @@ export default {
     // ...meetingRoomHelper.mapState(["sessionID", "meetingRoomList"]),
   },
   methods: {
+    drawPose(pose) {
+      if (this.webcam.canvas) {
+        // console.log('drawPose ctx drawImage');
+        this.ctx.drawImage(this.webcam.canvas, 0, 0);
+        if (pose) {
+          // console.log('drawPose tmPose drawSkeleton');
+          const minPartConfidence = 0.5;
+          tmPose.drawKeypoints(pose.keypoints, minPartConfidence, this.ctx);
+          tmPose.drawSkeleton(pose.keypoints, minPartConfidence, this.ctx);
+        }
+      }
+    },
     pickmyImg(Img) {
       this.credentials.recordImg = Img;
     },
@@ -952,6 +1029,177 @@ export default {
     },
     exerciseJournalSubmit(event) {
       event.preventDefault();
+    },
+    async setmodel() {
+      // console.log('setmodel');
+      switch (this.gameType) {
+        case 1: // 스쿼트
+          this.URL = 'https://teachablemachine.withgoogle.com/models/N9Uzcp-sg/';
+          break;
+        case 2: // 런지
+          this.URL = 'https://teachablemachine.withgoogle.com/models/qsNO7nn-l/';
+          break;
+        case 3: // 버피
+          this.URL = 'https://teachablemachine.withgoogle.com/models/fR-T-F0cP/';
+          break;
+        default:
+          break;
+      }
+      const modelURL = `${this.URL}model.json`;
+      const metadataURL = `${this.URL}metadata.json`;
+      // console.log('model set before');
+      // this.model = await tmPose.load(modelURL, metadataURL);
+      this.model = Object.freeze(await tmPose.load(modelURL, metadataURL));
+      // console.log('model set -> ', this.model);
+      // const mymodel = await tf.loadGraphModel(modelURL);
+      // mymodel.dispose();
+    },
+
+    async init() {
+      this.setmodel();
+
+      // const size = 200;
+      const flip = true;
+      this.webcam = new tmPose.Webcam(500, 300, flip);
+      // this.webcam.canvas = document.querySelector('canvas');
+      await this.webcam.setup();
+      await this.webcam.play();
+      // console.log('init_webcam >> ', this.webcam);
+      window.requestAnimationFrame(this.loop);
+
+      const canvas2 = this.webcam.canvas;
+      canvas2.width = 500;
+      canvas2.height = 300;
+      this.ctx = canvas2.getContext('2d');
+    },
+    async loop() {
+      this.webcam.update();
+
+      switch (this.gameType) {
+        case 1:
+          await this.squatpredict();
+          break;
+        case 2:
+          await this.lungepredict();
+          break;
+        case 3:
+          await this.burpeepredict();
+          break;
+        default:
+          break;
+      }
+      window.requestAnimationFrame(this.loop);
+    },
+
+    async squatpredict() {
+      // Prediction #1: run input through posenet
+      // estimatePose can take in an image, video or canvas html element
+      // console.log('squat predict -> ', this.model);
+      const { pose, posenetOutput } = await this.model.estimatePose(
+        this.webcam.canvas,
+      );
+      // Prediction 2: run input through teachable machine classification model
+      const prediction = await this.model.predict(posenetOutput);
+
+      if (prediction[1].probability.toFixed(2) > 0.99) { // 스쿼트
+        if (this.check) {
+          this.count += 1;
+          console.log('squat', this.count);
+          this.session
+            .signal({
+              data: `${this.myUserName},${this.count}`, // Any string (optional)
+              to: [], // Array of Connection objects (optional. Broadcast to everyone if empty)
+              type: 'count', // The type of message (optional)
+            })
+            .then(() => {
+              // this.setState({ check: false });
+              this.check = false;
+            })
+            .catch(() => {});
+        }
+        this.status = 'squat';
+        // this.setState({ status: 'ready' });
+      } else if (prediction[0].probability.toFixed(2) > 0.99) { // 서 있는 자세
+        // const countTemp = this.count;
+        // this.count = countTemp + 1;
+
+        // this.count += 1;
+        // console.log('squat count : ', this.count);
+
+        this.status = 'ready';
+        // this.setState({ check: true });
+        this.check = true;
+      }
+      // console.log('squat finish');
+      this.drawPose(pose);
+    },
+
+    async lungepredict() {
+      const { pose, posenetOutput } = await this.model.estimatePose(
+        this.webcam.canvas,
+      );
+      const prediction = await this.model.predict(posenetOutput);
+
+      if (prediction[1].probability.toFixed(2) > 0.99) { // 런지
+        if (this.check) {
+          this.count += 1;
+          console.log('lunge', this.count);
+          this.session
+            .signal({
+              data: `${this.myUserName},${this.count}`, // Any string (optional)
+              to: [], // Array of Connection objects (optional. Broadcast to everyone if empty)
+              type: 'count', // The type of message (optional)
+            })
+            .then(() => {
+              // this.setState({ check: false });
+              this.check = false;
+            })
+            .catch(() => {});
+        }
+        this.status = 'lunge';
+        // this.setState({ status: 'ready' });
+      } else if (prediction[0].probability.toFixed(2) > 0.99) { // 서 있는 자세
+        this.status = 'ready';
+        this.check = true;
+      }
+      this.drawPose(pose);
+    },
+
+    async burpeepredict() {
+      const { pose, posenetOutput } = await this.model.estimatePose(
+        this.webcam.canvas,
+      );
+      const prediction = await this.model.predict(posenetOutput);
+
+      if (prediction[2].probability.toFixed(2) > 0.99) { // 서 있는 자세
+        if (this.check && this.check2) {
+          this.count += 1;
+          console.log('burpee', this.count);
+          this.session
+            .signal({
+              data: `${this.myUserName},${this.count}`, // Any string (optional)
+              to: [], // Array of Connection objects (optional. Broadcast to everyone if empty)
+              type: 'count', // The type of message (optional)
+            })
+            .then(() => {
+              // this.setState({ check: false });
+              this.check = false;
+              this.check2 = false;
+            })
+            .catch(() => {});
+        }
+        this.status = 'go';
+        // this.setState({ status: 'ready' });
+      } else if (prediction[1].probability.toFixed(2) > 0.99) { // 쪼그려 앉아 있는 자세
+        this.status = 'ready';
+        if (this.check) {
+          this.check = true;
+        }
+      } else if (prediction[0].probability.toFixed(2) > 0.99) { // 엎드려 있는 자세
+        this.status = 'set';
+        this.check2 = true;
+      }
+      this.drawPose(pose);
     },
   },
 };
