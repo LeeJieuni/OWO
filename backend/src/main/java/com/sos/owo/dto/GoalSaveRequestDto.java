@@ -9,13 +9,18 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotNull;
+
 @Getter
 @NoArgsConstructor
 public class GoalSaveRequestDto {
 
+    @NotNull
     @ApiModelProperty(example = "YOGA")
     @ApiParam(value = "운동 종목 이름",type = "EXERCISE")
     private Exercise exercise;
+
+    @NotNull
     @ApiModelProperty(example = "2")
     @ApiParam(value = "운동 종목에 대한 목표 시간(시 단위)",type = "int")
     private int hour;

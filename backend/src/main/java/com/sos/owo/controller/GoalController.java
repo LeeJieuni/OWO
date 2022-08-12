@@ -20,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.nio.charset.Charset;
 import java.util.List;
 
@@ -33,16 +34,18 @@ public class GoalController {
     @ApiOperation(value = "운동 목표 추가",notes = "memberId와 목표운동, 목표시간을 받아서 추가한다.")
     @ApiImplicitParam(name = "memberId",value = "사용자 id",dataType = "int",paramType = "path")
     @PostMapping("/api/user/goal/{memberId}")
-    public ResponseEntity<?> saveGoal(@PathVariable("memberId") int memberId, @RequestBody GoalSaveRequestDto goalSaveRequestDto){
+    public ResponseEntity<?> saveGoal(@PathVariable("memberId") int memberId, @Valid @RequestBody GoalSaveRequestDto goalSaveRequestDto){
         Message message = new Message();
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(new MediaType("application","json", Charset.forName("UTF-8")));
+
         try {
             goalService.saveGoal(memberId,goalSaveRequestDto.toEntity());
             message.setStatus(StatusEnum.OK);
             message.setMessage("운동 목표 추가 성공");
             message.setData(goalSaveRequestDto);
             return new ResponseEntity<>(message,httpHeaders,HttpStatus.OK);
+
         } catch (IllegalStateException e){
             e.printStackTrace();
             message.setStatus(StatusEnum.BAD_REQUEST);

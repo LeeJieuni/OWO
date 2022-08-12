@@ -3,6 +3,7 @@ package com.sos.owo.controller;
 
 import com.sos.owo.domain.MD5Generator;
 import com.sos.owo.domain.Member;
+import com.sos.owo.domain.ProfileImg;
 import com.sos.owo.dto.*;
 import com.sos.owo.service.EmailTokenService;
 import com.sos.owo.service.MemberService;
@@ -11,6 +12,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.codec.binary.Base64;
 import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
@@ -24,11 +26,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
 import javax.mail.Session;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.io.File;
-import java.io.IOException;
+import java.awt.image.BufferedImage;
+import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.file.AccessDeniedException;
 import java.nio.file.Files;
@@ -318,6 +321,73 @@ public class MemberController {
             return new ResponseEntity<>(message, headers,  HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+//    @ApiOperation(value = "사용자 프로필 사진 수정 요청" ,notes = "사용자의 프로필 사진을 수정 요청한다.")
+//    @ApiImplicitParams(
+//            {
+//                    @ApiImplicitParam(name = "file",value = "사용자 이미지 파일"),
+//                    @ApiImplicitParam(name = "memberId",value = "사용자 memberId"),
+//            })
+//    @PostMapping("/api/user/img/{memberId}")
+//    public ResponseEntity<?> updateProfileImg(@RequestParam("file") MultipartFile file, @PathVariable("memberId") int memberId) {
+//        Message message = new Message();
+//        HttpHeaders headers= new HttpHeaders();
+//        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+//        try {
+//            if (file != null) {
+//                String fileOriName = file.getOriginalFilename();
+////                String fileName = new MD5Generator(fileOriName).toString() + "."+file.getOriginalFilename().split(".")[1];
+//                String fileName = memberId+"_"+fileOriName;
+//                String savePath = System.getProperty("user.dir") +"\\src\\main\\resources\\static\\img\\profile";
+//                if (!new File(savePath).exists()) {
+//                    try {
+//                        new File(savePath).mkdir();
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//                String fileUrl = savePath + "\\" + fileName;
+//                file.transferTo(new File(fileUrl));
+//                FileDto fileDto = profileImgService.saveFile(memberId, fileOriName, fileName, fileUrl);
+//                message.setStatus(StatusEnum.OK);
+//                message.setMessage("프로필 사진 수정 성공");
+//                return new ResponseEntity<>(message, headers, HttpStatus.OK);
+//            } else {
+//                message.setStatus(StatusEnum.BAD_REQUEST);
+//                message.setMessage("이미지 파일 오류 발생");
+//                return new ResponseEntity<>(message, headers, HttpStatus.BAD_REQUEST);
+//            }
+//
+//        } catch (IllegalStateException e){
+//            e.printStackTrace();
+//            message.setStatus(StatusEnum.BAD_REQUEST);
+//            message.setMessage("해당 이메일이 존재하지 않습니다.");
+//            return new ResponseEntity<>(message, headers, HttpStatus.BAD_REQUEST);
+//        } catch (Exception e){
+//            e.printStackTrace();
+//            message.setStatus(StatusEnum.INTERNAL_SERVER_ERROR);
+//            message.setMessage("서버 에러 발생");
+//            return new ResponseEntity<>(message, headers,  HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
+
+//    @ApiOperation(value = "사용자 프로필 사진파일 요청" ,notes = "사용자의 프로필 사진파일을 요청한다.")
+//    @ApiImplicitParam(name = "memberId",value = "사용자 memberId",dataType = "int",paramType = "path")
+//    @GetMapping("/api/user/{memberId}")
+//    public ResponseEntity<?> getProfileImg(@PathVariable("memberId") int memberId) throws IOException {
+//        FileDto fileDto = profileImgService.getFile(memberId);
+//        if(fileDto == null){
+//            return new ResponseEntity<String>("null", HttpStatus.OK);
+//        }
+//        Path path = Paths.get(fileDto.getFileUrl());
+//        Resource resource = new InputStreamResource(Files.newInputStream(path));
+//
+//
+//
+//        return ResponseEntity.ok().contentType(MediaType.parseMediaType("image/png"))
+//                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileDto.getFileOriName() + "\"")
+//                .body(resource);
+//    }
+
     @ApiOperation(value = "사용자 프로필 사진 수정 요청" ,notes = "사용자의 프로필 사진을 수정 요청한다.")
     @ApiImplicitParams(
             {
@@ -329,24 +399,38 @@ public class MemberController {
         Message message = new Message();
         HttpHeaders headers= new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+
         try {
             if (file != null) {
-                String fileOriName = file.getOriginalFilename();
-//                String fileName = new MD5Generator(fileOriName).toString() + "."+file.getOriginalFilename().split(".")[1];
-                String fileName = memberId+"_"+fileOriName;
-                String savePath = System.getProperty("user.dir") +"\\src\\main\\resources\\static\\img\\profile";
-                if (!new File(savePath).exists()) {
-                    try {
-                        new File(savePath).mkdir();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                InputStream inputStream = null;
+                ByteArrayOutputStream byteArrayOutputStream = null;
+                String binaryString = "";
+                int id = 0;
+                try {
+
+//                    BufferedImage image = ImageIO.read(file.getInputStream());
+//                    byteArrayOutputStream = new ByteArrayOutputStream();
+//                    ImageIO.write(image,"png",byteArrayOutputStream);
+//                    String encodedImage = Base64.encodeBase64String(byteArrayOutputStream.toByteArray());
+
+                    // dataURL String 생성하기
+                     byte[] encodeBase64 = Base64.encodeBase64(file.getBytes());
+                     binaryString = "data:image/png;base64," + new String(encodeBase64, "UTF-8"); // 실제 data url 생성!
+//                     String fileName = memberId+"_"+file.getOriginalFilename();
+
+                    id = profileImgService.saveImg(memberId,file.getOriginalFilename(),binaryString);
+
+
+                    } catch (IOException ex) {
+                    message.setStatus(StatusEnum.BAD_REQUEST);
+                    message.setMessage("이미지 파일 오류 발생");
+                    return new ResponseEntity<>(message, headers, HttpStatus.BAD_REQUEST);
+
                 }
-                String fileUrl = savePath + "\\" + fileName;
-                file.transferTo(new File(fileUrl));
-                FileDto fileDto = profileImgService.saveFile(memberId, fileOriName, fileName, fileUrl);
                 message.setStatus(StatusEnum.OK);
                 message.setMessage("프로필 사진 수정 성공");
+                message.setData(id +" "+binaryString);
                 return new ResponseEntity<>(message, headers, HttpStatus.OK);
             } else {
                 message.setStatus(StatusEnum.BAD_REQUEST);
@@ -365,24 +449,25 @@ public class MemberController {
             message.setMessage("서버 에러 발생");
             return new ResponseEntity<>(message, headers,  HttpStatus.INTERNAL_SERVER_ERROR);
         }
+
     }
 
     @ApiOperation(value = "사용자 프로필 사진파일 요청" ,notes = "사용자의 프로필 사진파일을 요청한다.")
     @ApiImplicitParam(name = "memberId",value = "사용자 memberId",dataType = "int",paramType = "path")
     @GetMapping("/api/user/{memberId}")
     public ResponseEntity<?> getProfileImg(@PathVariable("memberId") int memberId) throws IOException {
-        FileDto fileDto = profileImgService.getFile(memberId);
-        if(fileDto == null){
-            return new ResponseEntity<String>("null", HttpStatus.OK);
-        }
-        Path path = Paths.get(fileDto.getFileUrl());
-        Resource resource = new InputStreamResource(Files.newInputStream(path));
+        Message message = new Message();
+        HttpHeaders headers= new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
+        ProfileImg profileImg = profileImgService.getImg(memberId);
+        FileDto result = new FileDto(profileImg.getId(),profileImg.getFileOriName(),new String(profileImg.getFileUrl()));
 
-        //return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/octet-stream"))
-        return ResponseEntity.ok().contentType(MediaType.parseMediaType("image/png"))
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileDto.getFileOriName() + "\"")
-                .body(resource);
+        message.setStatus(StatusEnum.OK);
+        message.setMessage("사용자의 프로필 사진 조회 성공");
+        message.setData(result);
+
+        return new ResponseEntity<>(message, headers, HttpStatus.OK);
     }
 
     @ApiOperation(value = "사용자 슬로건 수정 요청" ,notes = "사용자의 슬로건의 수정을 요청한다.")
