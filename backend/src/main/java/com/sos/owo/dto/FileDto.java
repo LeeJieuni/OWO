@@ -9,27 +9,27 @@ import lombok.*;
 @NoArgsConstructor
 public class FileDto {
     private int id;
-    private int member_id;
+//    private int member_id;
     private String fileOriName;
-    private String fileName;
+//    private String fileName;
     private String fileUrl;
 
 
-    public ProfileImg toEntity() {
-        ProfileImg build = ProfileImg.builder()
+    public FileDto toEntity() {
+        FileDto build = FileDto.builder()
                 .id(id)
                 .fileOriName(fileOriName)
-                .fileName(fileName)
+//                .fileName(fileName)
                 .fileUrl(fileUrl)
                 .build();
         return build;
     }
 
     @Builder
-    public FileDto(int id, String fileOriName, String fileName, String fileUrl) {
+    public FileDto(int id,String fileOriName, String fileUrl) {
         this.id = id;
         this.fileOriName = fileOriName;
-        this.fileName = fileName;
+//        this.fileName = fileName;
         this.fileUrl = fileUrl;
     }
 }

@@ -60,14 +60,10 @@ public class RecordController {
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
         try {
             RecordImgDto recordImgDto = new RecordImgDto(recordDto.getFileOriName(),recordDto.getFileUrl());
-            System.out.println("0 "+recordDto.getFileOriName()+" "+recordDto.getFileUrl());
-            System.out.println("1 "+recordImgDto.getId()+" "+recordImgDto.getFileOriName()+" "+recordImgDto.getFileUrl());
             int recordImgId = recordImgService.saveImg(recordImgDto);
-            System.out.println("4 "+ recordImgId);
 
             Record record = recordService.registRecord(memberId,meetingRoomId,recordImgId,recordDto.toEntity());
             int recordId = record.getRecordId();
-            System.out.println("5 "+recordId);
 
             List<String> tagList = recordDto.getTagList();
             tagService.registTag(recordId,tagList);
