@@ -151,7 +151,6 @@ export const accounts = {
           dispatch('fetchCompete');
           dispatch('fetchGoal');
           dispatch('fetchProfileImg');
-          dispatch('fetchPercentage');
           router.push('/');
         })
         .catch((err) => {
@@ -214,7 +213,6 @@ export const accounts = {
           dispatch('fetchCompete');
           dispatch('fetchGoal');
           dispatch('fetchProfileImg');
-          dispatch('fetchPercentage');
           console.log('-------state, accessToken-------');
           console.log(state.accessToken);
           console.log('-------state, refreshToken-------');
@@ -507,6 +505,7 @@ export const accounts = {
         },
       })
         .then((res) => {
+          console.log('fetchGoal 응답');
           console.log(res.data.data);
           dispatch('setGoal', res.data.data);
         })
@@ -515,6 +514,7 @@ export const accounts = {
         });
     },
     addGoal({ state, dispatch }, payload) {
+      console.log(payload);
       axios({
         url: `https://i7c202.p.ssafy.io:8282/api/user/goal/${state.userInfo.id}`,
         method: 'post',
@@ -525,6 +525,8 @@ export const accounts = {
         data: payload,
       })
         .then((res) => {
+          console.log('addgoal 응답');
+          alert('목표가 추가되었습니다.');
           dispatch('setGoal', res.data.data);
         })
         .catch((err) => {
@@ -543,6 +545,24 @@ export const accounts = {
       })
         .then((res) => {
           dispatch('setGoal', res.data.data);
+        })
+        .catch((err) => {
+          console.log(err.toJSON());
+        });
+    },
+    deleteGoal({ state, dispatch }, goalId) {
+      axios({
+        url: `https://i7c202.p.ssafy.io:8282/api/user/goal/${state.userInfo.id}/${goalId}`,
+        method: 'delete',
+        headers: {
+          'X-AUTH-TOKEN': state.accessToken,
+          'REFRESH-TOKEN': state.refreshToken,
+        },
+      })
+        .then((res) => {
+          console.log(res.data.message);
+          dispatch('setGoal', res.data.data);
+          router.push('/mypage/main');
         })
         .catch((err) => {
           console.log(err.toJSON());

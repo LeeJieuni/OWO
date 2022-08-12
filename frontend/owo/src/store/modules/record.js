@@ -11,11 +11,13 @@ export const record = {
     userId: '',
     percentage: '',
     dayExerciseList: '',
+    achievementRate: '',
   }),
   getters: {
     percentage: (state) => state.percentage,
     userId: (state) => state.userId,
     dayExerciseList: (state) => state.dayExerciseList,
+    achievementRate: (state) => state.achievementRate,
   },
   mutations: {
     SET_PERCENTAGE: (state, payload) => {
@@ -29,6 +31,9 @@ export const record = {
     SET_DAY_EXERCISE_LIST: (state, payload) => {
       state.dayExerciseList = payload;
     },
+    SET_ACHIEVEMENT_RATE: (state, payload) => {
+      state.achievementRate = payload;
+    }
   },
   actions: {
     fetchSessions({ commit }) {
@@ -46,6 +51,25 @@ export const record = {
       console.log(payload);
       commit('SET_SESSIONS', payload);
     },
+    fetchAchievementRate({ state, commit }) {
+      console.log('fetchAchievementRate axios 전');
+      axios({
+        url: `https://i7c202.p.ssafy.io:8282/api/user/record/goal/do/${state.userId}`,
+        method: 'get',
+        headers: {
+          'X-AUTH-TOKEN': state.accessToken,
+          'REFRESH-TOKEN': state.refreshToken,
+        },
+      })
+        .then((res) => {
+          console.log('fetchAchievementRate 응답');
+          console.log(res.data.message);
+          commit('SET_ACHIEVEMENT_RATE', res.data.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
     fetchPercentage({ state, commit }) {
       console.log(' fetchPercentage axios 전');
       // console.log(state.userId);
@@ -58,8 +82,14 @@ export const record = {
         },
       })
         .then((res) => {
-          commit('SET_PERCENTAGE', res.data.data);
-          // console.log(state.percentage);
+          if (!!state.accessToken) {
+            console.log('fetchPercentage응답');
+            console.log(res.data);
+            commit('SET_PERCENTAGE', res.data.data);
+          } else {
+            console.log('비로그인');
+          }
+          
         })
         .catch((err) => {
           console.log(err);

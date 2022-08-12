@@ -10,7 +10,7 @@
 
 <script>
 // import TeleportExample from '@/components/MyPage/teleport/TeleportExample.vue';
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import NavBar from './components/NavBar.vue';
 
 const meetingroom = 'meetingroom';
@@ -21,6 +21,25 @@ export default {
   },
   computed: {
     ...mapState(meetingroom, ['mySessionId']),
+  },
+  beforeCreate() {
+    console.log('app.vue befordCreate');
+    // this.fetchPercentage();
+  },
+  created() {
+    console.log('app.vue created');
+    this.fetchPercentage();
+    this.fetchGoal();
+    this.fetchAchievementRate();
+  },
+  // updated() {
+  //   this.fetchPercentage();
+  //   this.fetchGoal();
+  //   this.fetchAchievementRate();
+  // },
+  methods: {
+    ...mapActions('record', ['fetchPercentage', 'fetchAchievementRate']),
+    ...mapActions('accounts', ['fetchGoal']),
   },
 };
 </script>

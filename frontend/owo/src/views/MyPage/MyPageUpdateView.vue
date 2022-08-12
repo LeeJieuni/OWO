@@ -166,15 +166,6 @@ export default {
     color: white;
     letter-spacing: -1.5;
   }
-  .tag:hover {
-    background-color: #DE7474;
-    color: white;
-    transition: 0.2s;
-    cursor: pointer;
-  }
-  .tag p {
-    text-align: center;
-  }
   button {
     border-radius: 15px;
     height: 29px;
@@ -226,9 +217,9 @@ export default {
     padding-top: 1px;
   }
 
-  select:hover {
+  /* select:hover {
     cursor: pointer;
-  }
+  } */
 
   .form-label {
     width: 162px;

@@ -74,7 +74,7 @@ export default {
   setup() {
     const store = useStore();
     store.dispatch('record/fetchSessions');
-    store.dispatch('record/fetchPercentage');
+    // store.dispatch('record/fetchPercentage');
     const slogan = computed(() => store.getters['accounts/slogan']);
     const user = computed(() => store.getters['accounts/userInfo']);
 
@@ -97,6 +97,12 @@ export default {
     const fetchPercentage = function () {
       store.dispatch('record/fetchPercentage');
     };
+    const fetchAchievementRate = function () {
+      store.dispatch('record/fetchAchievementRate');
+    };
+    const fetchGoal = function () {
+      store.dispatch('account/fetchGoal');
+    };
 
     // Methods
     const updateProfileImg = (e) => {
@@ -109,7 +115,7 @@ export default {
       // const imgFile = {
       // }
       formData.append('file', img2.files[0]);
-      formData.append('file', new Blob([JSON.stringify(img2)], { type: 'image/*' }));
+      // formData.append('file', new Blob([JSON.stringify(img2)], { type: 'image/*' }));
       // console.log(state.imgFormData);
       store.dispatch('accounts/updateProfileImg', formData);
     };
@@ -166,6 +172,8 @@ export default {
       uploadProfileImg,
       updateProfileImg,
       fetchPercentage,
+      fetchGoal,
+      fetchAchievementRate,
       user,
     };
   },
