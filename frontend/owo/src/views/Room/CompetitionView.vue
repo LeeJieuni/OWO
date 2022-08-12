@@ -7,7 +7,6 @@
       </div>
       <!-- 세션 -->
       <div id="session" v-if="session">
-        <!-- WebRTC 목록 -->
         <div>
           <div id="" class="row d-flex align-items-start justify-content-center">
             <WebRTC :stream-manager="mainStreamManager"/>
@@ -33,11 +32,6 @@
       <!-- 운동 종료 모달 -->
       <div>
         <div class="d-flex justify-content-center align-items-center">
-          <button
-          v-b-modal.after-exercise-modal class="btn btn-outline-secondary m-2">
-            <img class="menu_icon1" src="@/assets/icon/room_end.png" alt="mic_off">
-            운동 종료
-          </button>
           <!-- eslint-disable-next-line -->
           <b-modal id="after-exercise-modal" size="xl" no-close-on-esc no-close-on-backdrop hide-footer hide-header>
             <form @submit.prevent="sendRecord(credentials, credentialsUser)">
@@ -66,7 +60,7 @@
                 </div>
                 <div class="row d-flex align-items-start justify-content-center">
                   <!-- eslint-disable-next-line -->
-                  <button @click.prevenet="pickmyImg(`${mypicture}`)" v-for="(mypicture, i) in mypictures" :key="i" class="col-4 m0p0" style="padding:0px; margin:0px; width:330px;">
+                  <button @click.prevent="pickmyImg(`${mypicture}`)" v-for="(mypicture, i) in mypictures" :key="i" class="col-4 m0p0" style="padding:0px; margin:0px; width:330px;">
                     <img :src="mypicture" alt="img" style="width:328px;">
                   </button>
                 </div>
@@ -126,6 +120,8 @@
                 <div class="d-flex justify-content-center">
                   <!-- eslint-disable-next-line -->
                   <b-button type="submit" class="mybutton btn btn-success m-2 p-2">&ensp;작성 완료&ensp;</b-button>
+                  <!-- eslint-disable-next-line -->
+                  <button @click="tempLeaveSession()" class="mybutton btn btn-danger m-2 p-2">저장하지않고 마치기(임시)</button>
                 </div>
               </div>
               <br>
@@ -138,7 +134,7 @@
           </b-modal>
         </div>
       </div>
-      <!-- 촬영 시 배경 -->
+      <!-- 사진 양식 -->
       <div class="d-flex justify-content-center align-items-center"
       v-if="is_take_photo" id="take_photo_background"></div>
       <div class="d-flex justify-content-center align-items-center text-white"
@@ -147,14 +143,14 @@
       </div>
       <div class="d-flex justify-content-center align-items-center text-white mt-4"
       v-if="is_take_photo" id="take_photo_timer">{{ timer }}</div>
-      <!-- 이모티콘 영역 -->
+      <!-- 이모티콘 -->
       <div class="emoji_position" v-if="Emoji_ONOFF">
         <div class="row">
           <!-- apple, google, twitter, facebook -->
           <Picker :data="emojiIndex" set="twitter" @select="showEmoji" />
         </div>
       </div>
-      <!-- 채팅 영역 -->
+      <!-- 채팅 -->
       <div v-if="this.session">
         <button v-if="chatONOFF" @click="chatoff" class="chat">
           <img class="chatimg" src="@/assets/icon/commentoff.png" alt="">
@@ -246,10 +242,10 @@
             사진
           </div>
         </button>
-        <button class="mybtn6" @click="roomOut">
+        <button v-b-modal.after-exercise-modal class="mybtn6">
           <img class="menu_icon2" src="@/assets/icon/roomout.png" alt="leaveSession">
         </button>
-        <button v-if="isStarted" class="mybtn5" @click="time">
+        <button v-if="!isStarted" class="mybtn5" @click="startround1">
           <img class="menu_icon4" src="@/assets/icon/start.png" alt="Start">
         </button>
         <!-- eslint-disable-next-line -->
@@ -269,7 +265,12 @@
         </ul>
       </div>
       <div class="setTimer2position">
+      </div>
+      <div v-show="isStarted" class="myBackGroundSetting">
+        안녕하세요?
+        안녕하세요?2
         <setTimer2 ref="setTimer2" />
+        <!-- <setTimer3 ref="setTimer3"/> -->
       </div>
       <button @click="init">start</button>
       <div>나의 카운트 : {{ count }} </div>
@@ -281,6 +282,7 @@ import html2canvas from 'html2canvas';
 import WebRTC from '@/components/Room/WebRTC.vue';
 import WebRTCPhoto from '@/components/Room/WebRTCPhoto.vue';
 import setTimer2 from '@/components/Room/setTimer2.vue';
+// import setTimer3 from '@/components/Room/setTimer3.vue';
 import axios from 'axios';
 import { OpenVidu } from 'openvidu-browser';
 import emojidata from 'emoji-mart-vue-fast/data/all.json';
@@ -324,6 +326,7 @@ export default {
     WebRTCPhoto,
     Picker,
     setTimer2,
+    // setTimer3,
   },
   data() {
     return {
@@ -359,11 +362,12 @@ export default {
       // roomName: '붙어보자!',
       gameName: ['팔굽혀펴기', '런지', '버피테스트'],
       credentials: {
-        recordImg: '',
+        fileOriName: '',
+        fileUrl: '',
         recordDatetime: format,
         recordMemo: null,
+        recordTime: 30,
         secret: false,
-        // recordimg: null,
         tagList: [],
       },
       credentialsUser: {
@@ -374,6 +378,8 @@ export default {
       myTags: [],
       mypictures: [],
       roomTime: null,
+      isStarted: false,
+      RoundStartTimer: null,
       // tm 영역
       webcam: undefined,
       URL: undefined,
@@ -382,7 +388,6 @@ export default {
       check: false,
       check2: false,
       count: 0,
-      // gameType: 'pushUp',
       gameType: 2, // 1:squat, 2:lunge, 3:burpee
       ctx: undefined,
       // 각 운동의 카운트를 memberId와 함께 session.on으로 보내주고 데이터 받아서 저장한다.
@@ -448,6 +453,12 @@ export default {
     // ...meetingRoomHelper.mapState(["sessionID", "meetingRoomList"]),
   },
   methods: {
+    tempLeaveSession() {
+      this.leaveSession();
+      document.getElementsByClassName('modal-backdrop')[0].remove();
+      document.getElementsByClassName('modal-open')[0].removeAttribute('style');
+      console.log(document.getElementsByClassName('modal-open')[0].classList.remove('modal-open'));
+    },
     drawPose(pose) {
       if (this.webcam.canvas) {
         // console.log('drawPose ctx drawImage');
@@ -461,19 +472,32 @@ export default {
       }
     },
     pickmyImg(Img) {
-      this.credentials.recordImg = Img;
+      this.credentials.fileOriName = `${this.userInfo.nick}_${format}.png`;
+      this.credentials.fileUrl = Img;
     },
-    roomOut() {
-      // if (!this.roomTime) {
-      //   swal.fire({
-      //     icon: 'warning',
-      //     title: '알림',
-      //     text: '최대 200bytes까지 입력가능해요!',
-      //   });
-      // }
-      this.leaveSession();
-    },
-    // textarea 바이트 수 체크하는 함수
+    // roomOut() {
+    //   console.log(this.$bvModal);
+    //   this.$bvModal.show('after-exercise-modal');
+    //   this.leaveSession();
+    //   if (this.roomTime < 1) {
+    //     this.leaveSession();
+    //   } else if (this.roomTime < 5) {
+    //     swal.fire({
+    //       title: '퇴장하실건가요?',
+    //       text: "5분 미만 운동 시 기록이 저장되지 않습니다.",
+    //       icon: 'warning',
+    //       showCancelButton: true,
+    //       confirmButtonColor: '#d33',
+    //       confirmButtonText: '그래도 나갈게요.',
+    //       cancelButtonColor: '#3085d6',
+    //       denyButtonText: `더 운동할께요!`,
+    //     }).then(() => {
+    //       this.leaveSession();
+    //     })
+    //   } else {
+
+    //   };
+    //   }
     fn_checkByte() {
       const maxByte = 200; // 최대 200바이트
       const textVal = document.getElementById('exerciseMemo').value; // 입력한 문자
@@ -499,6 +523,7 @@ export default {
           title: '알림',
           text: '최대 200bytes까지 입력가능해요!',
         });
+        document.getElementById('exerciseMemo').value = document.getElementById('exerciseMemo').value.substr(0, 200);
         document.getElementById('nowByte').innerText = totalByte;
         document.getElementById('nowByte').style.color = 'red';
       } else {
@@ -545,18 +570,25 @@ export default {
         this.credentials.tagList.push(tag);
       }
     },
-    time() {
-      this.startround1();
-    },
     async sendRecord(credentials, credentialsUser) {
-      // eslint-disable-next-line
-      let self = this;
       this.credentialsUser.memberId = encodeURI(this.credentialsUser.memberId);
       this.credentialsUser.meetingRoomId = encodeURI(this.credentialsUser.meetingRoomId);
-      console.log(this.credentialsUser.memberId);
-      console.log(this.credentialsUser.meetingRoomId);
-      console.log('보내는 데이터 양식', this.credentials);
-      await axios.post(`https://i7c202.p.ssafy.io:8282/api/user/record/finish/${credentialsUser.memberId}/${credentialsUser.meetingRoomId}`, credentials)
+      await axios({
+        url: `https://i7c202.p.ssafy.io:8282/api/user/record/finish/${credentialsUser.memberId}/${credentialsUser.meetingRoomId}`,
+        method: 'post',
+        headers: {
+          'X-AUTH-TOKEN': this.accessToken,
+        },
+        data: {
+          fileOriName: credentials.fileOriName, //
+          fileUrl: credentials.fileUrl, //
+          recordDatetime: credentials.recordDatetime, //
+          recordMemo: credentials.recordMemo, //
+          recordTime: credentials.recordTime, // time만 양식에 맞춰서 반영하면 될듯?
+          secret: credentials.secret,
+          tagList: credentials.tagList,
+        },
+      })
         .then((res) => {
           console.log('성공', res.data);
           this.leaveSession();
@@ -614,7 +646,6 @@ export default {
 
       // --- Init a session ---
       this.session = this.OV.initSession();
-      console.log('점원목록', this.subscribers);
 
       // --- Specify the actions when events take place in the session ---
 
@@ -716,10 +747,21 @@ export default {
           }
         }
       });
-
       this.session.on('signal:startround1', () => {
+        this.isStarted = true;
         this.$refs.setTimer2.pauseTimer();
-        this.youtubeURL = 'https://www.youtube.com/embed/gTowV_F07uI';
+        // const audio = new Audio('//bit.ly/3euuS7B');
+        console.log('음악시작');
+        // eslint-disable-next-line
+        const audio = new Audio(require('@/assets/music/321.mp3'));
+        // audio.src = '@/assest/music/321.mp3';
+        audio.play();
+        console.log('음악끝');
+        // this.RoundStartTimer = setInterval(() => {
+        // }, 4000);
+        // this.isStarted = false;
+        // clearInterval(this.RoundStartTimer);
+        // this.$refs.setTimer3.pauseTimer();
       });
 
       window.addEventListener('beforeunload', this.leavepeople);
@@ -1553,5 +1595,16 @@ solid #ccb9a8; border-top: 10px solid transparent; border-bottom: 10px solid tra
 
 .viewsetting {
   margin:auto;
+}
+
+.myBackGroundSetting {
+  background-color: #000000;
+  position:fixed;
+  top: 0%;
+  left: 0%;
+  width: 100%;
+  height: 100%;
+  z-index:900;
+  opacity: 0.7;
 }
 </style>

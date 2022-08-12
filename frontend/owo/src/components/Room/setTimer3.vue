@@ -1,20 +1,20 @@
 <template>
 <div style="position:relative">
-  <div v-show="isStarted" class="circle">
-    <svg width="700" style="background-color:translate; border-radius: 50%;" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg">
+  <div v-show="isStarted" class="circle2">
+    <svg width="600" style="background-color:white; border-radius: 50%;" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg">
       <g transform="translate(110,110)">
-        <circle r="100" class="e-c-base"/>
+        <circle r="150" class="e-c-base2"/>
         <g transform="rotate(-90)">
-          <circle r="100" class="e-c-progress"/>
-          <g id="e-pointer">
-            <circle cx="100" cy="0" r="8" class="e-c-pointer"/>
+          <circle r="100" class="e-c-progress2"/>
+          <g id="e-pointer2">
+            <circle cx="100" cy="0" r="8" class="e-c-pointer2"/>
           </g>
         </g>
       </g>
     </svg>
   </div>
-  <div v-show="isStarted" class="controlls">
-    <div class="display-remain-time" style="font-size:300px;">{{timesetting}}</div>
+  <div v-show="isStarted" class="controlls2">
+    <div class="display-remain-time2" style="font-size:300px;">{{timesetting}}</div>
   </div>
 </div>
 </template>
@@ -27,7 +27,7 @@ export default {
     return {
       intervalTimer: null,
       timeLeft: null,
-      wholeTime: 3,
+      wholeTime: 5,
       isPaused: false,
       isStarted: false,
       length: Math.PI * 2 * 100,
@@ -40,8 +40,7 @@ export default {
   unmounted() {},
   methods: {
     pauseTimer() {
-      console.log('시계2작동중');
-      const progressBar = document.querySelector('.e-c-progress');
+      const progressBar = document.querySelector('.e-c-progress2');
       progressBar.style.strokeDasharray = this.length;
       if (this.isStarted === false) {
         this.timer(this.wholeTime);
@@ -50,9 +49,9 @@ export default {
     },
     update(value, timePercent) {
       const offset = (+this.length) - (this.length * value) / (timePercent);
-      const progressBar = document.querySelector('.e-c-progress');
+      const progressBar = document.querySelector('.e-c-progress2');
       progressBar.style.strokeDashoffset = offset;
-      const pointer = document.getElementById('e-pointer');
+      const pointer = document.getElementById('e-pointer2');
       pointer.style.transform = `rotate(${(360 * value) / (timePercent)}deg)`;
     },
     displayTimeLeft(timeLeft) { // displays time on the input
@@ -84,7 +83,7 @@ export default {
 <style scoped>
 @import url('https://fonts.googleapis.com/css?family=Roboto:100,300');
 
-/* button[data-setter] {
+button[data-setter] {
   outline: none;
   background: transparent;
   border: none;
@@ -95,18 +94,18 @@ export default {
   height: 30px;
   color: #4E8Aff;
   cursor: pointer;
-} */
+}
 
-/* button[data-setter]:hover { opacity: 0.5; } */
+button[data-setter]:hover { opacity: 0.5; }
 
-/* .container {
+.container {
   position: relative;
   top: 0px;
   width: 0px;
   margin: 0 auto;
-} */
+}
 
-/* .setters {
+.setters {
   position: absolute;
   left: 85px;
   top: 75px;
@@ -117,24 +116,23 @@ export default {
   margin-right: 28px;
 }
 
-.seconds-set { float: right; } */
+.seconds-set { float: right; }
 
-.controlls {
+.controlls2 {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index:1500;
 }
 
-.display-remain-time {
+.display-remain-time2 {
   font-family: 'Roboto';
   font-weight: 100;
   font-size: 40px;
   color: #4E8Aff;
 }
 
-/* #pause {
+#pause {
   outline: none;
   background: transparent;
   border: none;
@@ -169,28 +167,28 @@ export default {
   border-bottom: none;
 }
 
-#pause:hover { opacity: 0.8; } */
+#pause:hover { opacity: 0.8; }
 
-.e-c-base {
+.e-c-base2 {
   fill: none;
-  stroke: white;
-  stroke-width: 4px
+  stroke: black;
+  stroke-width: 20px
 }
 
-.e-c-progress {
+.e-c-progress2 {
   fill: none;
   stroke: #4E8Aff;
   stroke-width: 4px;
   transition: stroke-dashoffset 0.7s;
 }
 
-.e-c-pointer {
+.e-c-pointer2 {
   fill: #FFF;
   stroke: #4E8Aff;
   stroke-width: 2px;
 }
 
-#e-pointer { transition: transform 0.7s; }
+#e-pointer2 { transition: transform 0.7s; }
 h1 { margin-top:150px; text-align:center;}
 body { background-color:#f7f7f7;}
 
@@ -198,7 +196,7 @@ body { background-color:#f7f7f7;}
   width:50px;
 }
 
-.circle {
+.circle2 {
   position: fixed;
   top: 50%;
   left: 50%;
