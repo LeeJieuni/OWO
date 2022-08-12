@@ -46,7 +46,8 @@
           </div>
           <div v-if="state.notEnoughInfo ==='enough'" class="yes-bmi">
           <div class="bmi-solution pt-2 text-start">
-            bmi 지수 : {{state.bmi}}
+            <p>bmi 지수 : {{state.bmi}}</p>
+            <p>{{ state.bmiText }}</p>
           </div>
         </div>
         <div v-else class="no-bmi">
@@ -130,7 +131,7 @@ export default {
       bmi: 0,
       bmr: 0,
       caloriePerDay: 0,
-
+      bmiText: '',
       notEnoughInfo: 'enough',
       avgMinBmr: 0,
       avgMaxBmr: 0,
@@ -234,12 +235,16 @@ export default {
     // // bmi 진단 -> 일단 그래프 색깔 활성화만
     if (this.physical.bmi && this.physical.bmi < 18.5) {
       this.state.opacityActive.underWeight = '';
+      this.state.bmiText = '저체중입니다.';
     } else if (this.physical.bmi >= 18.5 && this.physical.bmi < 23) {
       this.state.opacityActive.normalWeight = '';
+      this.state.bmiText = '정상입니다.';
     } else if (this.physical.bmi >= 23 && this.physical.bmi < 25) {
       this.state.opacityActive.overWeight = '';
+      this.state.bmiText = '과체중입니다.';
     } else {
       this.state.opacityActive.obesity = '';
+      this.state.bmiText = '비만입니다.';
     }
   },
   moundted() {},

@@ -16,16 +16,18 @@
               class="progress-bar progress-bar-striped progress-bar-animated"
               role="progressbar"
               aria-label="Example with label"
-              v-bind:style="{ width: state.tearPercent, backgroundColor: state.tierColor }"
-              :aria-valuenow="state.tearPercentage"
+              v-bind:style="{ width: state.pointPercentage, backgroundColor: state.tierColor }"
+              :aria-valuenow="state.pointPercent"
               aria-valuemin="0"
-              aria-valuemax="100">{{state.tearPercent}}
+              aria-valuemax="100">{{state.pointPercentage}}
             </div>
           </div>
           <div class="tear-info d-flex text-center align-items-end">
             <div class="tear-name">{{ state.tearName }}&nbsp;&nbsp;</div>
-            <div class="me-auto user-percent">전체 사용자 중 상위 {{state.rankPercent}}%</div>
-            <div class="user-point">{{ state.pointSet }} / {{ state.levelUp}} P</div>
+            <div class="me-auto user-percent">
+              LEVEL {{ state.level }}&nbsp;&nbsp;|&nbsp;&nbsp;
+              전체 사용자 중 상위(가짜) {{state.rankPercent}}%</div>
+            <div class="user-point">{{ state.pointSet }} / {{ state.levelUp }} P</div>
           </div>
         </div>
       </div>
@@ -43,41 +45,43 @@ export default {
     const record = computed(() => store.getters['accounts/record']);
     // const user = computed(() => store.getters['accounts/userInfo']);
     const state = reactive({
-      tearPercent: '25%',
-      tearPercentage: 25,
       tierColor: '#919191',
       tierNum: 2,
       rankPercent: 70,
       tearName: '실버',
       pointSet: '',
       levelUp: '',
-      // point: 300,
+      pointPercent: '',
+      pointPercentage: '',
+      level: '',
     });
-    // action
-    // const updateSlogan = function (sloganData) {
-    //   // console.log(slogan);
-    //   store.dispatch('accounts/updateSlogan', sloganData);
-    //    };
-    // };
-    // point 계산하기
     return {
       state,
       record,
     };
   },
   created() {
+    let level = 0;
     let po = this.record.point;
     let lvup = 100;
     if (po > lvup) {
       while (po > lvup) {
         po -= lvup;
         lvup += 5;
+        level += 1;
       }
     }
     this.state.pointSet = po;
     this.state.levelUp = lvup;
-    // console.log(po);
-    // console.log(lvup);
+    this.state.level = level;
+    console.log(po);
+    console.log(lvup);
+
+    this.state.pointPercent = Math.round((this.state.pointSet / this.state.levelUp) * 100);
+    const stringPercent = String(this.state.pointPercent);
+    this.state.pointPercentage = stringPercent.concat('%');
+    console.log('아아');
+    console.log(this.state.pointPercent, this.state.pointPercentage);
   },
   moundted() {},
   unmounted() {},
@@ -99,6 +103,9 @@ export default {
   padding-left: 40px;
   padding-bottom: 10px;
 }
+.my-level-title > p:hover {
+  background-color: yellow;
+}
 
 .my-level-info {
   width: 90%;
@@ -109,8 +116,9 @@ export default {
 }
 
 .user-percent {
-  font-family: 'LeferiPoint-WhiteA';
+  /* font-family: 'LeferiPoint-WhiteA'; */
   font-size: 12px;
+  /* font-weight: 900; */
 }
 
 .my-level-icon {
@@ -136,7 +144,7 @@ export default {
 .progress-bar {
   font-size: 14px;
   text-shadow: 2px 2px 2px #2E2E2E;
-  width: 90%
+  /* width: 90% */
 }
 .tear-info {
   padding-top: 5px;

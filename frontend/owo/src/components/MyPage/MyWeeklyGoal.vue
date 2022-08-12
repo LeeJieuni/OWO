@@ -3,18 +3,17 @@
     <div class="row">
       <p class="my-weekly-goal-title">주간 목표 달성률</p>
     </div>
-    {{ achievementRate }}
-    {{ state.achieves }}
-    {{ state.achieves }}
     <div class="my-weekly-goal-info container-fluid">
       <div class="d-flex justify-content-center">
-        <div v-for="(achieve, i) in state.achieves" :key="i" class="goal">
-          <p class="goal-name">{{ achieve.achieveName }}ds</p>
+        <div v-for="(name, i) in state.achieveName" :key="i" class="goal">
+          <p class="goal-name">{{ name }}</p>
           <div class="progress-box">
             <circle-progress
-            class="progress-bar" :percent="achieve.achieveRate" :show-percent="true"
+            class="progress-bar" :percent="state.achieveRate[i]" :show-percent="true"
             :viewport="true" :size="130"/>
           </div>
+          <p style="font-size: 12px; padding-top: 5px; color: #4E8AFF"
+            v-if="state.achieveRate[i]==100">목표 달성 완료!</p>
         </div>
       </div>
     </div>
@@ -37,10 +36,8 @@ export default {
     console.log('ㅇㅇ');
     console.log(achievementRate.value);
     const state = reactive({
-      achieves: {
-        achieveName: [],
-        achieveRate: [],
-      },
+      achieveName: [],
+      achieveRate: [],
     });
     return {
       state,
@@ -64,8 +61,14 @@ export default {
     // console.log(achieve);
     // console.log(achieve.length);
     for (let i = 0; i < achieve.length; i += 1) {
-      this.state.achieves.achieveName.push(achieve[i]);
-      this.state.achieves.achieveRate.push(this.achievementRate[achieve[i]]);
+      this.state.achieveName.push(achieve[i]);
+      let realRate;
+      if (this.achievementRate[achieve[i]] > 100) {
+        realRate = 100;
+      } else {
+        realRate = this.achievementRate[achieve[i]];
+      }
+      this.state.achieveRate.push(realRate);
     }
     console.log(this.state.achieves);
   },
@@ -82,6 +85,7 @@ export default {
   font-size: 18px;
   padding-left: 40px;
   padding-bottom: 10px;
+  margin-bottom: 0;
 }
 .my-weekly-goal-info {
   padding: 0;
