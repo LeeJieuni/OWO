@@ -4,6 +4,7 @@ import com.sos.owo.domain.MeetingRoom;
 import com.sos.owo.domain.Mode;
 import com.sos.owo.dto.*;
 import com.sos.owo.service.MeetingRoomService;
+import com.sos.owo.service.MemberService;
 import io.openvidu.java.client.OpenVidu;
 import io.openvidu.java.client.OpenViduHttpException;
 import io.openvidu.java.client.OpenViduJavaClientException;
@@ -31,6 +32,7 @@ public class MeetingRoomController {
 
     private final int LIMIT = 6;
     private final MeetingRoomService roomService;
+    private final MemberService memberService;
 
     // 오픈 비두 객체
     private OpenVidu openVidu;
@@ -45,8 +47,9 @@ public class MeetingRoomController {
 
     // MeetingRoomController 접근시에 오픈비두 서버 관련 변수를 얻음
     @Autowired
-    public MeetingRoomController(MeetingRoomService roomService, @Value("${openvidu.secret}") String secret, @Value("${openvidu.url}") String openviduUrl){
+    public MeetingRoomController(MeetingRoomService roomService, MemberService memberService, @Value("${openvidu.secret}") String secret, @Value("${openvidu.url}") String openviduUrl){
         this.roomService = roomService;
+        this.memberService = memberService;
         this.OPENVIDU_SECRET = secret;
         this.OPENVIDU_URL = openviduUrl;
         this.openVidu = new OpenVidu(OPENVIDU_URL, OPENVIDU_SECRET);
@@ -73,7 +76,7 @@ public class MeetingRoomController {
     @GetMapping("/room/{mode}")
     @ApiImplicitParam(name = "mode",value = "방 모드(FREE, STREAMING, GAME)",paramType = "path")
     @ApiOperation(value="활성화된 모든 운동방 불러오는 API", notes = "특정 방모드(FREE/STREAMING/GAME)에 맞춰 활성화된 운동방의 정보를 모두 반환")
-    public ResponseEntity<?> makeMeetingRoom(@PathVariable Mode mode) throws OpenViduJavaClientException, OpenViduHttpException {
+    public ResponseEntity<?> getMeetingRoom(@PathVariable Mode mode) throws OpenViduJavaClientException, OpenViduHttpException {
         Message message = new Message();
         HttpHeaders headers= new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
@@ -91,6 +94,7 @@ public class MeetingRoomController {
                 meetingRooomDtoList.add(MeetingListRoomResponse.builder()
                         .roomId(meetingRoom.getId())
                         .memberId(meetingRoom.getManager())
+                        .manger_point(memberService.getMemberPoint(meetingRoom.getManager()))
                         .person(this.roomSession.get(meetingRoom.getId()))
                         .secret(meetingRoom.isSecret())
                         .password(meetingRoom.getPassword())
@@ -98,6 +102,11 @@ public class MeetingRoomController {
                         .roomName(meetingRoom.getName())
                         .type(meetingRoom.getType())
                         .link(meetingRoom.getLink()).build());
+            }
+
+            if(meetingRooomDtoList.size() == 0){
+                message.setMessage("현재 활성화된 운동방이 존재하지 않습니다.");
+                return new ResponseEntity<>(message, headers, HttpStatus.OK);
             }
             message.setData(meetingRooomDtoList);
             message.setStatus(StatusEnum.OK);
