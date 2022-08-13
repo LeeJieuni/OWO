@@ -706,7 +706,7 @@ export const accounts = {
           console.log(res.data.message);
           console.log(res.data.data);
           commit('SET_PERCENTAGE', res.data.data);
-          })
+        })
         .catch((err) => {
           console.log(err);
         });
