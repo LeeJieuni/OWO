@@ -156,7 +156,7 @@ export default {
 
     // user 정보 부족 시 bmi, bmr, calorie 초기화
     // eslint-disable-next-line
-    if (this.user.gender === '' || this.user.weight === '' || this.user.weight === '' || this.user.height === '' || this.user.activityLevel === '') {
+    if (!this.user.gender || !this.user.weight || !this.user.weight || !this.user.height || !this.user.activityLevel) {
       this.state.text = '신체정보를 추가해주세요!';
       this.state.bmi = '';
       this.state.bmr = '';

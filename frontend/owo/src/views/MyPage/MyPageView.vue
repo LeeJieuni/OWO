@@ -1,5 +1,11 @@
 <template>
   <div class="mypageview">
+    <!-- <div class="spinner-div" v-if="isLoading">
+      <q-spinner-cube
+      color="primary"
+      size="5em"
+      />
+    </div> -->
     <b-modal id="image-upload" size="md" hide-footer hide-header centered>
       <div>
         <h3 class="modal-title text-center mt-4">프로필 이미지 업로드📷</h3>
@@ -36,28 +42,28 @@
     </b-modal>
 
     <!-- <div class="background-box"> -->
-      <div class="front-box row">
-        <div class="mypageContainer row">
-          <div class="col-3 sidebar m-0 p-0">
-            <MySidebar/>
+    <div class="front-box row">
+      <div class="mypageContainer row">
+        <div class="col-3 sidebar m-0 p-0">
+          <MySidebar/>
+        </div>
+        <div class="col-9 m-0 p-0 right">
+          <div class="title text-center">
+            <h4>{{slogan}}</h4>
+            <form action="">
+              <label for="slogan">
+                <input type="text" id="slogan" v-model="state.sloganData.slogan">
+                <!-- {{ state.sloganData.slogan }} -->
+              </label>
+              <button @click.prevent="updateSlogan($event)">변경</button>
+            </form>
           </div>
-          <div class="col-9 m-0 p-0">
-            <div class="title text-center">
-              <h4>{{slogan}}</h4>
-              <form action="">
-                <label for="slogan">
-                  <input type="text" id="slogan" v-model="state.sloganData.slogan">
-                  <!-- {{ state.sloganData.slogan }} -->
-                </label>
-                <button @click.prevent="updateSlogan($event)">변경</button>
-              </form>
-            </div>
-            <div>
-              <router-view></router-view>
-            </div>
+          <div>
+            <router-view></router-view>
           </div>
         </div>
       </div>
+    </div>
     <!-- </div> -->
   </div>
 </template>
@@ -77,34 +83,38 @@ export default {
     // store.dispatch('record/fetchPercentage');
     const slogan = computed(() => store.getters['accounts/slogan']);
     const user = computed(() => store.getters['accounts/userInfo']);
-
+    store.dispatch('accounts/fetchMypage');
     const state = reactive({
       sloganData: {
         id: user.value.id,
         slogan: slogan.value,
       },
       preloadImgUrl: '',
+      // isLoading: true,
       // imgFormData: '',
     });
 
     // action
+    // const fetchMypage = function () {
+    //   store.dispatch('accounts/fetchMypage');
+    // };
+    // const fetchAchievementRate = function () {
+    //   store.dispatch('record/fetchAchievementRate');
+    // };
+    // const fetchGoal = function () {
+    //   store.dispatch('account/fetchGoal');
+    // };
+    // const fetchProfileImg = function () {
+    //   store.dispatch('account/fetchProfileImg');
+    // };
+
+    // Methods
     const updateSlogan = function (e) {
       e.preventDefault();
       console.log('보낸다');
       console.log(this.state.sloganData);
       store.dispatch('accounts/updateSlogan', this.state.sloganData);
     };
-    const fetchPercentage = function () {
-      store.dispatch('record/fetchPercentage');
-    };
-    const fetchAchievementRate = function () {
-      store.dispatch('record/fetchAchievementRate');
-    };
-    const fetchGoal = function () {
-      store.dispatch('account/fetchGoal');
-    };
-
-    // Methods
     const updateProfileImg = (e) => {
       e.preventDefault();
       const img2 = document.querySelector('.input-image');
@@ -133,10 +143,6 @@ export default {
       if (img.size > (2 * 1024 * 1024)) {
         alert('파일 사이즈가 2mb를 넘습니다.');
         img = null;
-      } else {
-        console.log('처리 후');
-        state.preloadImgUrl = URL.createObjectURL(img);
-        this.imgFormData.append('file', img);
       }
       // const formData = new FormData();
       // const imgFile = {
@@ -171,9 +177,10 @@ export default {
       updateSlogan,
       uploadProfileImg,
       updateProfileImg,
-      fetchPercentage,
-      fetchGoal,
-      fetchAchievementRate,
+      // fetchPercentage,
+      // fetchGoal,
+      // fetchAchievementRate,
+      // fetchProfileImg
       user,
     };
   },
@@ -213,6 +220,9 @@ export default {
   .mypageview {
     text-align: center;
     color: black;
+    background-color: #F6F7F9;
+    overflow-x: hidden;
+    height: 94vh;
   }
   h1, h2, h3, h4, h5 {
     font-weight: 900;
@@ -231,7 +241,7 @@ export default {
     box-shadow: rgb(105, 105, 105) 3px 3px 10px;
     opacity: 93%;
     /* padding: 35px; */
-    margin-bottom: 100px;
+    margin-bottom: 70px;
     padding: 0;
   }
   .title {
@@ -264,5 +274,8 @@ export default {
   button:not(.btn) {
     border: none;
     background-color: white;
+  }
+  .right {
+    border-radius: 20px;
   }
 </style>

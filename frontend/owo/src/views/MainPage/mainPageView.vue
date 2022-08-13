@@ -72,15 +72,6 @@ export default {
   computed: {
     ...mapGetters(accounts, ['userInfo', 'isLogin']),
   },
-  setup() {
-    const onInputImage = () => {
-      const input = document.querySelector('.input-image');
-      console.log(input.files[0].type);
-    };
-    return {
-      onInputImage,
-    };
-  },
   methods: {
     setCookie() {
       this.$cookies.set('nosee', 'Y', '7d');

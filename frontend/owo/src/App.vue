@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="body">
     <NavBar v-show="!mySessionId" />
     <div class="main-container">
       <router-view/>
@@ -28,9 +28,7 @@ export default {
   },
   created() {
     console.log('app.vue created');
-    this.fetchPercentage();
-    this.fetchGoal();
-    this.fetchAchievementRate();
+    this.fetchMypage();
   },
   // updated() {
   //   this.fetchPercentage();
@@ -39,7 +37,7 @@ export default {
   // },
   methods: {
     ...mapActions('record', ['fetchPercentage', 'fetchAchievementRate']),
-    ...mapActions('accounts', ['fetchGoal']),
+    ...mapActions('accounts', ['fetchMypage']),
   },
 };
 </script>
@@ -58,6 +56,23 @@ export default {
   /* line-height: 1.6; */
   padding: 0;
   margin: 0;
+  scrollbar-color: #D4AA70 #e4e4e4;
+}
+::-webkit-scrollbar {
+  width: 16px;
+}
+::-webkit-scrollbar-track {
+  background-color: #F6F7F9;
+  border-radius: 100px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #d4aa70;
+  border-radius: 100px;
+}
+::-webkit-scrollbar-thumb {
+  background-image: linear-gradient(180deg, #4E8AFF 0%, #b08b8b 99%);
+  box-shadow: inset 2px 2px 5px 0 rgba(#fff, 0.5);
+  border-radius: 100px;
 }
 * {
   margin: 0;

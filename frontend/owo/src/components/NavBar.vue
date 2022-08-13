@@ -62,16 +62,19 @@
               </li>
               <div class="navbar-brand mb-0 h1">
                 <span>안녕하세요
-                <router-link to="/mypage/main"><span class="nickToMypage">{{ userInfo.nick }}</span>
+                <router-link to="/mypage/main"><span
+                  v-once class="nickToMypage">{{ userInfo.nick }}</span>
                 </router-link> 님,
                   반갑습니다!</span>
               </div>
             </div>
             <div class="dropdown">
-              <img class="profile-img " src="https://picsum.photos/150" alt="">
+              <div class="img-wrapper">
+                <img class="profile-img" :src="profileImg" alt="">
+              </div>
               <div class="dropdown-content">
                 <router-link to="/mypage/main">
-                  <li>마이페이지</li>
+                  <li @click="fetchMypage" @keyup.enter="fetchMypage">마이페이지</li>
                 </router-link>
                   <button class="logout-btn" @click="logout()">로그아웃</button>
               </div>
@@ -97,9 +100,14 @@ export default {
     ...mapActions({
       logout: 'logout',
     }),
+    // ...mapActions('record', ['fetchPercentage', 'fetchAchievementRate']),
+    ...mapActions('accounts', ['fetchMypage']),
+    // mypageFetch() {
+    //   this.fetchMypage();
+    // },
   },
   computed: {
-    ...mapGetters(['isLogin', 'userInfo']),
+    ...mapGetters(['isLogin', 'userInfo', 'profileImg']),
   },
 };
 </script>
@@ -240,11 +248,6 @@ li {
   display: block;
 }
 
-.profile-img {
-  border-radius: 50%;
-  height: 50px;
-}
-
 .dropdown-content li {
   padding: 5px;
 }
@@ -252,6 +255,17 @@ li {
   border: none;
   background-color: #F9F9F9
 }
-li, router-link {
+.img-wrapper {
+  width: 50px;
+  height: 50px;
+  overflow:hidden;
+  margin:0 auto;
+}
+.profile-img {
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  border-radius: 50%;
+  border: #DFDFDF 0.2px solid;
 }
 </style>

@@ -8,7 +8,7 @@
         <div class="ranking" v-for="(rank, index) in rankingList" :key="index">
           <b-button block pill size='lg' variant="outline-primary"
           class="d-flex justify-content-between button">
-            <span>{{index+1}}위 : </span><span>{{ rank.name }}</span>
+            <span>{{index+1}}위</span><span>{{ rank.name }}</span>
             <span>{{ rank.score }}분</span>
           </b-button>
         </div>

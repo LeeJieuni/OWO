@@ -67,6 +67,7 @@ export default {
 /* 운동 비율 */
 .wrap {
   margin: 0;
+  /* border-radius: 20px; */
 }
 .my-level {
   height: 170px;

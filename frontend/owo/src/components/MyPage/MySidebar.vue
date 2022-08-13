@@ -1,25 +1,23 @@
 <template>
-<div>
-  <div class="d-flex justify-content-center">
-    <div class="row sidebar-row d-flex justify-content-center pt-4">
-      <!-- {{ profileImg }} -->
-      <div class="img-wrapper">
-        <img
-          class="profile-img"
-          :src="state.profileSrc"
-          alt="프로필이미지"
-        >
+<div class="body">
+  <div class="sidebarcontent d-flex justify-content-center">
+    <div class="row sidebar-row pt-4">
+      <div class="profile-wrapper">
+        <!-- {{ profileImg }} -->
+        <div class="img-wrapper">
+          <img
+            class="profile-img"
+            :src="profileImg"
+            alt="프로필이미지"
+          >
+        </div>
+        <img v-b-modal.image-upload
+          class="change-profile-img" src="@/assets/icon/camera.png" alt="">
       </div>
         <p class="name" v-once>
           {{ user.nick }}
         </p>
       </div>
-    </div>
-    <div class="row sidebar-row">
-      <button
-        v-b-modal.image-upload class="btn btn-outline-secondary">
-        이미지 변경
-      </button>
     </div>
     <div class="row sidebar-row">
       <p>이번주 운동 목표</p>
@@ -87,18 +85,12 @@ import { reactive, computed } from 'vue';
 
 export default {
   name: 'MyPageUpdateView',
-  data() {
-    return {
-      // profileSrc: require('https://src.hidoc.co.kr/image/lib/2021/4/28/1619598179113_0.jpg'),
-    };
-  },
   setup() {
     const store = useStore(); // 필수
     // Getters
     const user = computed(() => store.getters['accounts/userInfo']);
     const goals = computed(() => store.getters['accounts/goals']);
     const profileImg = computed(() => store.getters['accounts/profileImg']);
-
     // for (let i = 0; i < this.goals.length; i += 1) {
     //   console.log(this.goals[i].value.exercise);
     // }
@@ -142,6 +134,7 @@ export default {
       } else {
         confirm('목표를 추가하시겠습니까?');
         store.dispatch('accounts/addGoal', state.inputGoal);
+        store.dispatch('accounts/fetchGoal');
       }
     };
     // 새로고침
@@ -154,6 +147,7 @@ export default {
       alert('운동 목표를 삭제할까요?');
       console.log('삭제 시도 요청');
       store.dispatch('accounts/deleteGoal', goalId);
+      store.dispatch('accounts/fetchGoal');
     };
     // const tagModal = () => {
     //   /* eslint-disable */
@@ -191,12 +185,35 @@ export default {
 </script>
 
 <style scoped>
+.profile-wrapper {
+  text-align: center;
+  white-space: nowrap;
+  position: relative;
+}
+/* .profile-wrapper::before .sidebarcontent::after {
+  border-radius: 50%;
+  border: 1pxsolidrgba(32,33,36,.13);
+  box-sizing: border-box;
+  content: "";
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+} */
   .img-wrapper {
     position: relative;
     width: 150px;
     height: 150px;
+    display: inline-block;
+    margin-bottom: 16px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
   }
   .img-wrapper img {
+    /* border: solid #DFDFDF 1px; */
+    box-shadow:#DFDFDF 1px 1px 3px;
     border-radius: 50%;
     /* margin: 0 auto; */
     position: absolute;
@@ -207,6 +224,18 @@ export default {
     height: 100%;
     object-fit: cover;
     margin: auto;
+  }
+  .change-profile-img {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    cursor: pointer;
+    /* top: 0; */
+    /* left: 0; */
+    right: 35px;
+    bottom: 35px;
+    border: white solid 3px;
+    border-radius: 50px;
   }
 
   .sidebar-row {
