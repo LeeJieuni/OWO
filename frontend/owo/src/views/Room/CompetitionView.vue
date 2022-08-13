@@ -19,11 +19,11 @@
               :key="sub.stream.connection.connectionId"
               @click="updateMainVideoStreamManager(sub)"
             /> -->
-            <div v-if="this.subscribers.length <= 0" class="webrtcetc col-4 m0p0 mb-2 mx-1"></div>
-            <div v-if="this.subscribers.length <= 1" class="webrtcetc col-4 m0p0 mb-2 mx-1"></div>
-            <div v-if="this.subscribers.length <= 2" class="webrtcetc col-4 m0p0 mb-2 mx-1"></div>
-            <div v-if="this.subscribers.length <= 3" class="webrtcetc col-4 m0p0 mb-2 mx-1"></div>
-            <div v-if="this.subscribers.length <= 4" class="webrtcetc col-4 m0p0 mb-2 mx-1"></div>
+            <div v-show="this.subscribers.length <= 0" class="webrtcetc col-4 m0p0 mb-2 mx-1"></div>
+            <div v-show="this.subscribers.length <= 1" class="webrtcetc col-4 m0p0 mb-2 mx-1"></div>
+            <div v-show="this.subscribers.length <= 2" class="webrtcetc col-4 m0p0 mb-2 mx-1"></div>
+            <div v-show="this.subscribers.length <= 3" class="webrtcetc col-4 m0p0 mb-2 mx-1"></div>
+            <div v-show="this.subscribers.length <= 4" class="webrtcetc col-4 m0p0 mb-2 mx-1"></div>
           </div>
           <!-- eslint-disable-next-line -->
           <div v-for="sub in subscribers" :key="sub.stream.connection.connectionId"> {{sub.stream.connection.connectionId}} </div>
@@ -39,11 +39,11 @@
                 <h1 class="title text-center mt-4">🏃‍♂️운동 일지</h1>
                 <label for="my-checkbox m-0" class="secretcheckbox d-flex align-items-center">
                   <input v-model="credentials.secret" type="checkbox">
-                  <div v-if="credentials.secret">
+                  <div v-show="credentials.secret">
                     <!-- eslint-disable-next-line -->
                     &ensp;&ensp;<span style="color:#de7474;">비공개</span>&ensp;<img class="menu_icon1" src="@/assets/icon/lock.png" alt="">
                   </div>
-                  <div  v-if="!credentials.secret">
+                  <div  v-show="!credentials.secret">
                     <!-- eslint-disable-next-line -->
                     &ensp;&ensp;&ensp;&ensp;<span style="color:#4e8aff;">공개</span>&ensp;<img class="menu_icon1" src="@/assets/icon/unlock.png" alt="">
                   </div>
@@ -54,13 +54,13 @@
                 <br>
                 <!-- 운동일지, 사진 -->
                 <div>
-                  <div class="md-title2 text-center">📷오늘의 운동 사진</div>
+                  <div class="md-title2 text-center">📷오늘의 운동 사진 1장을 골라주세요(필수!)</div>
                   <br>
                     <!-- eslint-disable-next-line -->
                 </div>
                 <div class="row d-flex align-items-start justify-content-center">
                   <!-- eslint-disable-next-line -->
-                  <button @click.prevent="pickmyImg(`${mypicture}`)" v-for="(mypicture, i) in mypictures" :key="i" class="col-4 m0p0" style="padding:0px; margin:0px; width:330px;">
+                  <button @click.prevent="pickmyImg(`${mypicture}`)" v-for="(mypicture, i) in mypictures" :key="i" class="col-4 m0p0 mx-1 my-1" style="padding:0px; margin:0px; width:330px;">
                     <img :src="mypicture" alt="img" style="width:328px;">
                   </button>
                 </div>
@@ -129,7 +129,6 @@
                 <!-- eslint-disable-next-line -->
                 <div style="width: 95%; text-align: right; color:red;">강제 종료 / 새로 고침하면 기록이 저장되지 않아요!</div>
               </div>
-              <div class="text-center">{{credentials}}</div>
             </form>
           </b-modal>
         </div>
@@ -138,11 +137,14 @@
       <div class="d-flex justify-content-center align-items-center"
       v-if="is_take_photo" id="take_photo_background"></div>
       <div class="d-flex justify-content-center align-items-center text-white"
-      v-if="is_take_photo" id="">
+      v-if="is_take_photo">
+        <!-- eslint-disable-next-line -->
+        <div id="take_photo_WebRTC_warning">&ensp;사진은 최신 3장까지 저장됩니다!&ensp;</div>
         <WebRTCPhoto id="take_photo_WebRTC" :stream-manager="mainStreamManager"/>
+        <img v-if="this.photoDisplay" id="take_photo_WebRTC_photo" :src="this.mypictures[0]" alt="">
       </div>
       <div class="d-flex justify-content-center align-items-center text-white mt-4"
-      v-if="is_take_photo" id="take_photo_timer">{{ timer }}</div>
+      v-if="is_take_photo" id="take_photo_timer">{{ temp_timer_2 }}</div>
       <!-- 이모티콘 -->
       <div class="emoji_position" v-if="Emoji_ONOFF">
         <div class="row">
@@ -203,13 +205,13 @@
         <button @click="open_emoji" class="open_emoji">
           <img class="menu_icon2" src="@/assets/icon/emoji.png" alt="emoji">
         </button>
-        <button class="mybtn1" @click="mic_off" v-if="mic">
+        <button class="mybtn1" @click="mic_off" v-show="mic">
           <img class="menu_icon2" src="@/assets/icon/mic_on.png" alt="mic_off">
           <div style="color:#4e8aff; font-size:12px;">
             음소거
           </div>
         </button>
-        <button class="mybtn1" @click="mic_on" v-if="!mic">
+        <button class="mybtn1" @click="mic_on" v-show="!mic">
           <img class=" menu_icon2" src="@/assets/icon/mic_off.png" alt="mic_on">
           <div style="color:#de7474; font-size:12px;">
             음소거
@@ -218,7 +220,7 @@
             해제
           </div>
         </button>
-        <button class="mybtn2" @click="video_off" v-if="video">
+        <button class="mybtn2" @click="video_off" v-show="video">
           <img class="menu_icon2" src="@/assets/icon/video_off.png" alt="video_on">
           <div style="color:#de7474; font-size:12px;" >
             비디오
@@ -227,7 +229,7 @@
             시작
           </div>
         </button>
-        <button class="mybtn2" @click="video_on" v-if="!video">
+        <button class="mybtn2" @click="video_on" v-show="!video">
           <img class="menu_icon2" src="@/assets/icon/video_on.png" alt="video_off">
           <div style="color:#4e8aff; font-size:12px;">
             비디오
@@ -333,6 +335,7 @@ export default {
       // 타이머 셋팅
       timer: 3,
       temp_timer: 3,
+      temp_timer_2: 3,
       take_photo_timer: null,
       is_take_photo: false,
       // 이모지 셋팅
@@ -353,6 +356,7 @@ export default {
       publisher: undefined,
       subscribers: [],
       // 방 설정
+      photoDisplay: false,
       youtubeURL: '',
       lockroomcheck: false,
       isMaster: true,
@@ -455,9 +459,19 @@ export default {
   methods: {
     tempLeaveSession() {
       this.leaveSession();
+      document.body.removeAttribute('data-bs-overflow');
+      document.body.removeAttribute('data-bs-padding-right');
+      document.body.removeAttribute('class');
+      document.body.removeAttribute('style');
+      // document.getElementsByClassName('fade').remove();
+      // console.log('여기임1', document.getElementsByClassName('modal-backdrop'));
       document.getElementsByClassName('modal-backdrop')[0].remove();
-      document.getElementsByClassName('modal-open')[0].removeAttribute('style');
-      console.log(document.getElementsByClassName('modal-open')[0].classList.remove('modal-open'));
+      document.getElementsByClassName('modal-backdrop')[0].remove();
+      document.getElementsByClassName('modal-backdrop')[0].remove();
+      // document.getElementsByClassName('modal-open')[0].removeAttribute('style');
+      // document.getElementsByClassName('modal-open')[0].removeAttribute('style');
+      // console.log(document.getElementsByClassName('modal-open')[0].classList.
+      // remove('modal-open'));
     },
     drawPose(pose) {
       if (this.webcam.canvas) {
@@ -540,9 +554,9 @@ export default {
           closeOnEsc: true,
         });
       } else {
-        if (newTagContent !== '') {
-          if (this.myTags.indexOf(newTagContent.replace(' ', '').replace('#', '')) < 0) {
-            this.myTags.push(newTagContent.replace(' ', '').replace('#', ''));
+        if (newTagContent.replace(/ /gi, '').replace(/#/gi, '') !== '') {
+          if (this.myTags.indexOf(newTagContent.replace(/ /gi, '').replace(/#/gi, '')) < 0) {
+            this.myTags.push(newTagContent.replace(/ /gi, '').replace(/#/gi, ''));
             this.newTagContent = '';
             this.myTagList(this.myTags[this.myTags.length - 1]);
           }
@@ -552,9 +566,9 @@ export default {
       }
     },
     deletemyTagList(newTagContent) {
-      this.myTags.splice(this.myTags.indexOf(newTagContent.replace(' ', '').replace('#', '')), 1);
-      if (this.credentials.tagList.indexOf(newTagContent.replace(' ', '').replace('#', '')) >= 0) {
-        this.credentials.tagList.splice(this.credentials.tagList.indexOf(newTagContent.replace(' ', '').replace('#', '')), 1);
+      this.myTags.splice(this.myTags.indexOf(newTagContent.replace(/ /gi, '').replace(/#/gi, '')), 1);
+      if (this.credentials.tagList.indexOf(newTagContent.replace(/ /gi, '').replace(/#/gi, '')) >= 0) {
+        this.credentials.tagList.splice(this.credentials.tagList.indexOf(newTagContent.replace(/ /gi, '').replace(/#/gi, '')), 1);
       }
     },
     myTagList(tag) {
@@ -591,7 +605,7 @@ export default {
       })
         .then((res) => {
           console.log('성공', res.data);
-          this.leaveSession();
+          this.tempLeaveSession();
           document.getElementsByClassName('modal-backdrop')[0].remove();
           document.getElementsByClassName('modal-open')[0].removeAttribute('style');
           console.log(document.getElementsByClassName('modal-open')[0].classList.remove('modal-open'));
@@ -1024,32 +1038,49 @@ export default {
     },
     take_photo() {
       this.temp_timer = this.timer;
+      this.temp_timer2 = this.timer;
       this.is_take_photo = true;
+      // eslint-disable-next-line
+      const audio3 = new Audio(require('@/assets/music/10seconds.mp3'));
+      audio3.play();
+      setTimeout(() => {
+        audio3.pause();
+      }, this.timer * 1000);
       this.take_photo_timer = setInterval(() => {
         this.timer -= 1;
+        this.temp_timer_2 -= 1;
         console.log(this.timer);
         if (this.timer === 0) {
-          console.log('사진찍는 모션');
           const el = document.querySelector('#take_photo_WebRTC');
+          el.style.opacity = '0';
+          this.temp_timer_2 = '';
           // eslint-disable-next-line
-          html2canvas(el).then((canvas) => {
-            if (this.mypictures.length >= 3) { this.mypictures.pop(); }
-            console.log(canvas.toDataURL('image/png', 1.0));
-            // this.mypictures.unshift(canvas.toDataURL('image/png', 1.0));
-            this.mypictures.unshift(canvas.toDataURL('image/png', 1.0));
-            // const link = document.createElement('a');
-            // document.body.appendChild(link);
-            // link.href = canvas.toDataURL('image/png', 1.0);
-            // localStorage.setItem('userImage', link);
-            // link.download = '안녕하세요?.png';
-            // link.click();
-            // document.body.removeChild(link);
-          });
-          clearInterval(this.take_photo_timer);
-          this.is_take_photo = false;
-          this.timer = this.temp_timer;
+          const audio2 = new Audio(require('@/assets/music/takePhoto.mp3'));
+          audio2.play();
         }
+        if (this.timer === -1) {
+          this.temp_timer_2 = '';
+        }
+        if (this.timer === -1) {
+          const el = document.querySelector('#take_photo_WebRTC');
+          html2canvas(el).then((canvas) => {
+            this.mypictures.unshift(canvas.toDataURL('image/png', 1.0));
+            this.photoDisplay = true;
+            setTimeout(() => {
+              this.photoDisplay = false;
+            }, 2000);
+          });
+          if (this.mypictures.length >= 3) { this.mypictures.pop(); }
+          clearInterval(this.take_photo_timer);
+          setTimeout(() => {
+            this.is_take_photo = false;
+            this.timer = this.temp_timer;
+          }, 2000);
+        }
+        // if (this.timer === 0) {
+        // }
       }, 1000);
+      this.temp_timer_2 = this.temp_timer;
     },
     set_timer_3() {
       this.timer = 3;
@@ -1369,7 +1400,7 @@ solid #ccb9a8; border-top: 10px solid transparent; border-bottom: 10px solid tra
 .row > * { margin: auto; }
 
 #take_photo_background {
-    background-color: gray;
+    background-color: black;
     position: fixed;
     overflow: hidden;
     top: 0;
@@ -1382,7 +1413,10 @@ solid #ccb9a8; border-top: 10px solid transparent; border-bottom: 10px solid tra
 }
 
 #take_photo_WebRTC {
-  background-color:gray;
+  background-color:transparent;
+  transition-property: opacity;
+  transition-duration: 2s;
+  transition-timing-function: ease;
   position: fixed;
   width: 60%;
   top: 50%;
@@ -1390,6 +1424,32 @@ solid #ccb9a8; border-top: 10px solid transparent; border-bottom: 10px solid tra
   transform: translate(-50%, -50%);
   /* height: 80%; */
   z-index: 601;
+  opacity: 1;
+}
+
+#take_photo_WebRTC_photo {
+  background-color:transparent;
+  position: fixed;
+  width: 60%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  /* height: 80%; */
+  z-index: 602;
+}
+
+#take_photo_WebRTC_warning {
+  position:fixed;
+  font-size:30px;
+  top: 5%;
+  left: 50%;
+  transform: translate(-50%, 0);
+  color:white;
+  padding:3px;
+  margin:3px;
+  background-color:#4e8aff;
+  z-index:603;
+  border-radius: 10px;
 }
 
 #take_photo_timer {
