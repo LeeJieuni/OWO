@@ -4,17 +4,12 @@
       <Carousel></Carousel>
       <rankingList/>
       <roomTab></roomTab>
-      <p>{{roomList.freeRoomList}}</p>
-      <hr>
-      <p>{{roomList.gameRoomList}}</p>
-      <hr>
-      <p>{{roomList.streamingRoomList}}</p>
     </div>
     <div v-if="isLogin">
       <Carousel></Carousel>
       <rankingList/>
       <roomTab></roomTab>
-      <p>{{roomList}}</p>
+
     </div>
     <!--TEST -->
     <br><br><br><br>
@@ -76,7 +71,7 @@ export default {
     roomTab,
   },
   computed: {
-    ...mapGetters(accounts, ['userInfo', 'isLogin', 'roomList']),
+    ...mapGetters(accounts, ['userInfo', 'isLogin']),
   },
   setup() {
     const onInputImage = () => {
@@ -88,10 +83,10 @@ export default {
     };
   },
   methods: {
-    ...mapActions(accounts, ['getRoomList']),
     setCookie() {
       this.$cookies.set('nosee', 'Y', '7d');
     },
+    ...mapActions(accounts, ['getRoomList']),
   },
   created() {
     const check = this.$cookies.get('nosee');

@@ -112,7 +112,7 @@ export default {
   height: 500px;
   padding: 50px;
   border: solid 1px rgb(177, 177, 181);
-  border-radius: 40px;
+  border-radius: 10%;
   box-shadow: 2px 2px 2px 2px rgb(154, 152, 152);
 }
 label {

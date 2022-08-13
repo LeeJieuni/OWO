@@ -158,7 +158,7 @@ export default {
 }
 a {
   line-height: 400px;
-  font-size: 80px;
+  font-size: 5rem;
   color: white;
   text-decoration: none;
   text-align: center;

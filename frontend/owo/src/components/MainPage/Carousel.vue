@@ -24,7 +24,7 @@
             Start with us!
           </b-button>
         </router-link>
-        <a v-else to="">
+        <a v-else to="!isLogin">
           <b-button pill variant="outline-secondary" class="btn-lg start-btn">
             Start with us!
           </b-button>

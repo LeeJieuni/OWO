@@ -12,6 +12,9 @@ export const accounts = {
     isLoginErr: false,
     accessToken: null,
     refreshToken: null,
+    noFree: false,
+    noGame: false,
+    noStreaming: false,
     roomList: {
       freeRoomList: '',
       gameRoomList: '',
@@ -50,8 +53,28 @@ export const accounts = {
     // },
     goals: '',
     profileImg: '',
+    workout: {
+      유산소: 'AEROBIC',
+      헬스: 'HEALTH',
+      스트레칭: 'STRETCHING',
+      홈트레이닝: 'HOME',
+      맨몸운동: 'BODYWEIGHT',
+      요가: 'YOGA',
+      필라테스: 'PILATES',
+      게임: 'GAME',
+      기타: 'ETC',
+    },
   }),
   mutations: {
+    SET_FREE_SIGNAL: (state) => {
+      state.noFree = true;
+    },
+    SET_GAME_SIGNAL: (state) => {
+      state.noGame = true;
+    },
+    SET_STREAMING_SIGNAL: (state) => {
+      state.noStreaming = true;
+    },
     SET_FREE_ROOM_LIST: (state, payload) => {
       state.roomList.freeRoomList = payload;
     },
@@ -575,17 +598,107 @@ export const accounts = {
       })
         .then((res) => {
           if (mode === 'FREE') {
-            console.log(res);
-            commit('SET_FREE_ROOM_LIST', res.data);
+            if (res.data.data === null || '') {
+              console.log('생성된 방이 없습니다.');
+              commit('SET_FREE_SIGNAL');
+            } else {
+              console.log(res.data.data);
+              commit('SET_FREE_ROOM_LIST', res.data.data);
+            }
           }
           if (mode === 'GAME') {
-            console.log(res);
-            commit('SET_GAME_ROOM_LIST', res.data);
+            if (res.data.data === null || '') {
+              console.log('생성된 방이 없습니다.');
+              commit('SET_GAME_SIGNAL');
+            } else {
+              console.log(res.data.data);
+              commit('SET_GAME_ROOM_LIST', res.data.data);
+            }
           }
           if (mode === 'STREAMING') {
-            console.log(res);
-            commit('SET_STREAMING_ROOM_LIST', res.data);
+            if (res.data.data === null || '') {
+              console.log('생성된 방이 없습니다.');
+              commit('SET_STREAMING_SIGNAL');
+            } else {
+              console.log(res.data.data);
+              commit('SET_STREAMING_ROOM_LIST', res.data.data);
+            }
           }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    entercompetitionroom({ state }, roomId) {
+      console.log(roomId);
+      axios({
+        url: `https://i7c202.p.ssafy.io:8282/api/user/room/${roomId}`,
+        method: 'get',
+        headers: {
+          'X-AUTH-TOKEN': state.accessToken,
+        },
+      })
+        .then((res) => {
+          console.log(res);
+          router.push(`https://i7c202.p.ssafy.io/room/competition/${roomId}`);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    enterstreamingroom({ state }, roomId) {
+      axios({
+        url: `https://i7c202.p.ssafy.io:8282/api/user/room/${roomId}`,
+        method: 'get',
+        headers: {
+          'X-AUTH-TOKEN': state.accessToken,
+        },
+      })
+        .then((res) => {
+          console.log(res);
+          router.push(`https://i7c202.p.ssafy.io/room/youtube/${roomId}`);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    enterfreeroom({ state }, roomId) {
+      axios({
+        url: `https://i7c202.p.ssafy.io:8282/api/user/room/${roomId}`,
+        method: 'get',
+        headers: {
+          'X-AUTH-TOKEN': state.accessToken,
+        },
+      })
+        .then((res) => {
+          console.log(res);
+          router.push(`https://i7c202.p.ssafy.io/room/friend/${roomId}`);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    makeRoom({ state }, roomdata) {
+      console.log('makeRoom_actions');
+      console.log(roomdata);
+      axios({
+        url: 'https://i7c202.p.ssafy.io:8282/api/user/room',
+        method: 'post',
+        headers: {
+          'X-AUTH-TOKEN': state.accessToken,
+        },
+        data: {
+          memberId: state.userInfo.id,
+          secret: roomdata.secret,
+          password: roomdata.password,
+          mode: roomdata.mode,
+          roomName: roomdata.roomName,
+          type: state.workout[roomdata.type],
+          link: roomdata.link,
+        },
+      })
+        .then((res) => {
+          console.log(res);
         })
         .catch((err) => {
           console.log(err);
@@ -602,5 +715,8 @@ export const accounts = {
     goals: (state) => state.goals,
     profileImg: (state) => state.profileImg,
     roomList: (state) => state.roomList,
+    noFree: (state) => state.noFree,
+    noGame: (state) => state.noGame,
+    noStreaming: (state) => state.noStreaming,
   },
 };
