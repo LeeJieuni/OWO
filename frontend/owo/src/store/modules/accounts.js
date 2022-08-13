@@ -12,9 +12,9 @@ export const accounts = {
     isLoginErr: false,
     accessToken: null,
     refreshToken: null,
-    noFree: false,
-    noGame: false,
-    noStreaming: false,
+    noFree: '',
+    noGame: '',
+    noStreaming: '',
     roomList: {
       freeRoomList: '',
       gameRoomList: '',
@@ -64,16 +64,26 @@ export const accounts = {
       게임: 'GAME',
       기타: 'ETC',
     },
+    make_mode: {
+      자유: 'FREE',
+      경쟁: 'GAME',
+      운동: 'STREAMING',
+    },
+    enter_mode: {
+      FREE: 'friend',
+      GAME: 'competition',
+      STREAMING: 'youtube',
+    },
   }),
   mutations: {
-    SET_FREE_SIGNAL: (state) => {
-      state.noFree = true;
+    SET_FREE_SIGNAL: (state, payload) => {
+      state.noFree = !payload;
     },
-    SET_GAME_SIGNAL: (state) => {
-      state.noGame = true;
+    SET_GAME_SIGNAL: (state, payload) => {
+      state.noGame = !payload;
     },
-    SET_STREAMING_SIGNAL: (state) => {
-      state.noStreaming = true;
+    SET_STREAMING_SIGNAL: (state, payload) => {
+      state.noStreaming = !payload;
     },
     SET_FREE_ROOM_LIST: (state, payload) => {
       state.roomList.freeRoomList = payload;
@@ -600,27 +610,33 @@ export const accounts = {
           if (mode === 'FREE') {
             if (res.data.data === null || '') {
               console.log('생성된 방이 없습니다.');
-              commit('SET_FREE_SIGNAL');
+              commit('SET_FREE_SIGNAL', res.data.data);
+              commit('SET_FREE_ROOM_LIST', '');
             } else {
               console.log(res.data.data);
+              commit('SET_FREE_SIGNAL', res.data.data);
               commit('SET_FREE_ROOM_LIST', res.data.data);
             }
           }
           if (mode === 'GAME') {
             if (res.data.data === null || '') {
               console.log('생성된 방이 없습니다.');
-              commit('SET_GAME_SIGNAL');
+              commit('SET_GAME_SIGNAL', res.data.data);
+              commit('SET_GAME_ROOM_LIST', '');
             } else {
               console.log(res.data.data);
+              commit('SET_GAME_SIGNAL', res.data.data);
               commit('SET_GAME_ROOM_LIST', res.data.data);
             }
           }
           if (mode === 'STREAMING') {
             if (res.data.data === null || '') {
               console.log('생성된 방이 없습니다.');
-              commit('SET_STREAMING_SIGNAL');
+              commit('SET_STREAMING_SIGNAL', res.data.data);
+              commit('SET_STREAMING_ROOM_LIST', '');
             } else {
               console.log(res.data.data);
+              commit('SET_STREAMING_SIGNAL', res.data.data);
               commit('SET_STREAMING_ROOM_LIST', res.data.data);
             }
           }
@@ -629,10 +645,10 @@ export const accounts = {
           console.log(err);
         });
     },
-    entercompetitionroom({ state }, roomId) {
-      console.log(roomId);
+    enterroom({ state }, payload) {
+      console.log(payload.mode, payload.roomId);
       axios({
-        url: `https://i7c202.p.ssafy.io:8282/api/user/room/${roomId}`,
+        url: `https://i7c202.p.ssafy.io:8282/api/user/room/${payload.roomId}`,
         method: 'get',
         headers: {
           'X-AUTH-TOKEN': state.accessToken,
@@ -640,39 +656,7 @@ export const accounts = {
       })
         .then((res) => {
           console.log(res);
-          router.push(`https://i7c202.p.ssafy.io/room/competition/${roomId}`);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
-    enterstreamingroom({ state }, roomId) {
-      axios({
-        url: `https://i7c202.p.ssafy.io:8282/api/user/room/${roomId}`,
-        method: 'get',
-        headers: {
-          'X-AUTH-TOKEN': state.accessToken,
-        },
-      })
-        .then((res) => {
-          console.log(res);
-          router.push(`https://i7c202.p.ssafy.io/room/youtube/${roomId}`);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
-    enterfreeroom({ state }, roomId) {
-      axios({
-        url: `https://i7c202.p.ssafy.io:8282/api/user/room/${roomId}`,
-        method: 'get',
-        headers: {
-          'X-AUTH-TOKEN': state.accessToken,
-        },
-      })
-        .then((res) => {
-          console.log(res);
-          router.push(`https://i7c202.p.ssafy.io/room/friend/${roomId}`);
+          router.push(`/room/${state.enter_mode[payload.mode]}/${payload.roomId}`);
         })
         .catch((err) => {
           console.log(err);
@@ -691,13 +675,14 @@ export const accounts = {
           memberId: state.userInfo.id,
           secret: roomdata.secret,
           password: roomdata.password,
-          mode: roomdata.mode,
+          mode: state.make_mode[roomdata.mode],
           roomName: roomdata.roomName,
           type: state.workout[roomdata.type],
           link: roomdata.link,
         },
       })
         .then((res) => {
+          router.push(`/room/${state.enter_mode[state.make_mode[roomdata.mode]]}/${res.data.data.roomId}`);
           console.log(res);
         })
         .catch((err) => {

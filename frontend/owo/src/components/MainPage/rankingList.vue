@@ -27,7 +27,7 @@
       <b-card class="rounded-5 cards">
         <h5 class="card-title">{{ rankingList[0].name }}님의 record</h5>
         <div class="d-flex justify-content-center" sytle="margin-bottom: 10px">
-          <circle-progress class="progress-bar" :percent="80"
+          <circle-progress class="progress-bar" :percent="achievement"
           :show-percent="true" :viewport="true" :size="220" />
         </div>
         <h5 class="card-bottom">연속 {{ lastingDay.data }}일 동안 운동하고 있어요!</h5>
@@ -67,7 +67,7 @@
           <h5 class="card-title">오운완님의 record</h5>
           <div class="d-flex row justify-content-center" sytle="margin-bottom: 10px">
             <p style="font-size: 20px">목표 대비 달성률</p>
-            <circle-progress class="progress-bar" :percent="0"
+            <circle-progress class="progress-bar" :percent="achievement"
             :show-percent="true" :viewport="true" :size="220"/>
           </div>
           <h5 class="card-bottom">연속 5일 동안 운동하고 있어요!</h5>
@@ -103,6 +103,7 @@ export default {
   computed: {
     ...mapState(mainpage, ['rankingList', 'myranking', 'lastingDay']),
     ...mapGetters(accounts, ['isLogin']),
+    ...mapGetters(mainpage, ['achievement']),
   },
 
 };
