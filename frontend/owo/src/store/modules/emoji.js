@@ -17,7 +17,7 @@ export const emoji = {
       commit('CHANGE_EMOJI_LIST', payload);
       setTimeout(() => {
         commit('REMOVE_EMOJI_LIST');
-      }, 5000);
+      }, 4000);
     },
     removeEmojiList({ commit }) {
       commit('REMOVE_EMOJI_LIST');

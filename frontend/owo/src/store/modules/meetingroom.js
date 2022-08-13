@@ -12,7 +12,6 @@ export const meetingroom = {
   },
   mutations: {
     SET_SESSION_ID: (state, mySessionId) => {
-      console.log('여기', mySessionId);
       state.mySessionId = String(mySessionId);
     },
     SET_MEETING_ROOM_LIST: (state, list) => {
@@ -29,8 +28,6 @@ export const meetingroom = {
   },
   actions: {
     async makeSession({ commit, state }, requestDto) {
-      console.log(requestDto);
-
       await axios({
         url: 'https://i7c202.p.ssafy.io:8282/api/room',
         method: 'post',
@@ -48,7 +45,7 @@ export const meetingroom = {
         },
       })
         .then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
           const { roomId } = res.data.data;
           commit('SET_SESSION_ID', roomId);
           this.myRoomName = requestDto.roomName;
@@ -79,17 +76,18 @@ export const meetingroom = {
     },
     enterMeetingRoom({ commit }, requestDto) {
       axios({
-        url: `https://i7c202.p.ssafy.io:8282/api/room/${requestDto.roomId}`,
+        url: `https://i7c202.p.ssafy.io:8282/api/user/room/${requestDto.roomId}`,
         method: 'get',
         headers: {
           'X-AUTH-TOKEN': requestDto.accesstoken,
         },
       })
         .then((res) => {
-          console.log(res.data);
+          console.log('엔터미팅룸', res.data);
           commit('SET_SESSION_ID', requestDto.roomId);
         })
         .catch((err) => {
+          console.log('엔터미팅룸 실패');
           console.log(err);
         });
     },

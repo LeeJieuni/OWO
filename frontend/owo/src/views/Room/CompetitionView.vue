@@ -155,45 +155,46 @@
       <!-- 채팅 -->
       <div v-if="this.session">
         <button v-if="chatONOFF" @click="chatoff" class="chat">
-          <img class="chatimg" src="@/assets/icon/commentoff.png" alt="">
+          <img class="chatimg" src="@/assets/icon/speak.png" alt="">
         </button>
         <button v-if="!chatONOFF" @click="chaton" class="chat">
-          <img class="chatimg" src="@/assets/icon/commenton.png" alt="">
+          <img class="chatimg" src="@/assets/icon/speak.png" alt="">
         </button>
         <div v-if="chatONOFF" class="achat d-flex justify-content-center align-items-center">
           <div class="d-flex align-items-center achat-submit">
             <label class="m-0" for="chatting">
               <textarea @keyup.enter="sendMassage" id="mychat"
               name="chatting" type="text"
-              v-model="myChat" style="resize:none; border-radius:5px;" placeholder=" 채팅 입력"
+              v-model="myChat" style="resize:none; border:none;
+              border-radius:5px;" placeholder=" 채팅 입력"
               rows="2" cols="25"></textarea>
             </label>
-            <button @click="sendMassage" class="btn btn-light achat-submit2">
-            Send</button>
+            <button @click="sendMassage" style="color:#4e8aff;" class="btn btn-light achat-submit2">
+            전송</button>
           </div>
           <div id="chattingList" class="fluid achat-content"
           style="overflow:auto; height:490px;">
-            <div v-for="(item, i) in allchattingList" :key="i">
+            <div v-for="(allchatting, i) in allchattingList" :key="i">
               <div class="mychatting p-0" style="margin-top:0px; margin-bottom:10px;
               margin-left:auto; margin-right:30px; width:220px; height:90px;"
-              v-if="item.p === this.userInfo.nick">
+              v-if="allchatting.userId == this.credentialsUser.memberId">
                 <div style="text-align:left; margin-top:5px; margin-left:5px; font-size:large;">
-                  <strong>{{item.p}}</strong>
+                  <strong>{{allchatting.userNickName}}</strong>
                 </div>
                 <div style="word-wrap:break-word; text-align:left; margin-top:5px;
                 margin-left:5px; font-size:medium;">
-                  {{item.m}}
+                  {{allchatting.userChat}}
                 </div>
               </div>
               <div class="yourchatting p-0" style="margin-top:0px; margin-bottom:10px;
               margin-right:auto; margin-left:30px; width:220px; height:90px;"
-              v-if="item.p !== this.userInfo.nick">
+              v-if="allchatting.userId != this.credentialsUser.memberId">
                 <div style="text-align:left; margin-top:5px; margin-left:5px; font-size:large;">
-                  <strong>{{item.p}}</strong>
+                  <strong>{{allchatting.userNickName}}</strong>
                 </div>
                 <div style="word-wrap:break-word; text-align:left; margin-top:5px;
                 margin-left:5px; font-size:medium;">
-                  {{item.m}}
+                  {{allchatting.userChat}}
                 </div>
               </div>
             </div>
@@ -363,6 +364,7 @@ export default {
       roommode: 'GAME',
       mode: ['FRIEND', 'YOUTUBE', 'GAME'],
       sessionId: null,
+      connectionId: null,
       // roomName: '붙어보자!',
       gameName: ['팔굽혀펴기', '런지', '버피테스트'],
       credentials: {
@@ -409,16 +411,15 @@ export default {
     };
   },
   setup() {
-    // onUnmounted(() => {
-    //   // alert('hello');
-    //   this.leavepeople();
-    // });
   },
   created() {
     this.sessionId = this.$route.params.sessionId;
     this.joinSession(this.sessionId);
     this.credentialsUser.memberId = this.userInfo.id;
     this.credentialsUser.meetingRoomId = this.mySessionId;
+    // console.log('메인', this.mainStreamManager);
+    // this.connectionId = this.mainStreamManager.stream.connection.connectionId;
+    // console.log('커넥션', this.connectionId);
   },
   moundted() {
     this.init();
@@ -453,8 +454,6 @@ export default {
     ...mapState(accounts, ['accessToken', 'userInfo']),
     ...mapState(openvidu, ['OPENVIDU_SERVER_URL', 'OPENVIDU_SERVER_SECRET']),
     ...mapState(meetingroom, ['myRoomName', 'mySessionId', 'meetingRoomList', 'camera', 'mic']),
-    // ...openviduHelper.mapState(["OPENVIDU_SERVER_URL", "OPENVIDU_SERVER_SECRET"]),
-    // ...meetingRoomHelper.mapState(["sessionID", "meetingRoomList"]),
   },
   methods: {
     tempLeaveSession() {
@@ -463,22 +462,14 @@ export default {
       document.body.removeAttribute('data-bs-padding-right');
       document.body.removeAttribute('class');
       document.body.removeAttribute('style');
-      // document.getElementsByClassName('fade').remove();
-      // console.log('여기임1', document.getElementsByClassName('modal-backdrop'));
       document.getElementsByClassName('modal-backdrop')[0].remove();
       document.getElementsByClassName('modal-backdrop')[0].remove();
       document.getElementsByClassName('modal-backdrop')[0].remove();
-      // document.getElementsByClassName('modal-open')[0].removeAttribute('style');
-      // document.getElementsByClassName('modal-open')[0].removeAttribute('style');
-      // console.log(document.getElementsByClassName('modal-open')[0].classList.
-      // remove('modal-open'));
     },
     drawPose(pose) {
       if (this.webcam.canvas) {
-        // console.log('drawPose ctx drawImage');
         this.ctx.drawImage(this.webcam.canvas, 0, 0);
         if (pose) {
-          // console.log('drawPose tmPose drawSkeleton');
           const minPartConfidence = 0.5;
           tmPose.drawKeypoints(pose.keypoints, minPartConfidence, this.ctx);
           tmPose.drawSkeleton(pose.keypoints, minPartConfidence, this.ctx);
@@ -509,7 +500,6 @@ export default {
     //       this.leaveSession();
     //     })
     //   } else {
-
     //   };
     //   }
     fn_checkByte() {
@@ -520,15 +510,11 @@ export default {
 
       for (let i = 0; i < textLen; i += 1) {
         const eachChar = textVal.charAt(i);
-        console.log(eachChar);
         const uniChar = escape(eachChar); // 유니코드 형식으로 변환
-        console.log(uniChar);
         if (uniChar.length > 4) {
-          // 한글 : 2Byte
-          totalByte += 2;
+          totalByte += 2; // 한글 : 2Byte
         } else {
-          // 영문,숫자,특수문자 : 1Byte
-          totalByte += 1;
+          totalByte += 1; // 영문,숫자,특수문자 : 1Byte
         }
       }
       if (totalByte > maxByte) {
@@ -572,8 +558,6 @@ export default {
       }
     },
     myTagList(tag) {
-      // this.credentials.tagList.push(tag);
-      // console.log(this.credentials.tagList.indexOf(tag));
       if (this.credentials.tagList.indexOf(tag) >= 0) {
         document.getElementById(`${tag}`).classList.add('btn-secondary');
         document.getElementById(`${tag}`).classList.remove('btn-primary');
@@ -603,15 +587,11 @@ export default {
           tagList: credentials.tagList,
         },
       })
-        .then((res) => {
-          console.log('성공', res.data);
+        .then(() => {
           this.tempLeaveSession();
           document.getElementsByClassName('modal-backdrop')[0].remove();
           document.getElementsByClassName('modal-open')[0].removeAttribute('style');
-          console.log(document.getElementsByClassName('modal-open')[0].classList.remove('modal-open'));
-        })
-        .catch((err) => {
-          console.log('실패', err);
+          document.getElementsByClassName('modal-open')[0].classList.remove('modal-open');
         });
     },
     ...mapActions(emoji, ['changeEmojiList', 'removeEmojiList']),
@@ -623,29 +603,6 @@ export default {
       'leaveMeetingRoom',
       'startMeetingRoom',
     ]),
-    async makeRoom() {
-      const requestDto = {
-        accesstoken: this.accessToken,
-        memberId: '2', // state와 연결하는 항목
-        secret: false, // 방 만들 때 바인딩해야하는 항목
-        password: '', // 방 만들 때 바인딩해야하는 항목
-        mode: 'GAME', // 방 만들 때 바인딩해야하는 항목
-        roomName: '방1', // 방 만들 때 바인딩해야하는 항목
-        type: 'GAME', // 방 만들 때 바인딩해야하는 항목
-        link: '',
-      };
-      await this.makeSession(requestDto);
-      console.log('=========================');
-      console.log(this.mySessionId);
-      this.joinSession(this.mySessionId);
-    },
-    getRoomList(m) {
-      const requestDto = {
-        accesstoken: this.accessToken,
-        mode: m,
-      };
-      this.getMeetingRoomList(requestDto);
-    },
     joinSession(sessionNum) {
       this.SET_SESSION_ID(sessionNum);
       console.log(`sessionID = ${sessionNum}`);
@@ -653,15 +610,12 @@ export default {
         accesstoken: this.accessToken,
         roomId: String(sessionNum),
       };
-      console.log(sessionNum);
       this.enterMeetingRoom(requestDto);
       // --- Get an OpenVidu object ---
       this.OV = new OpenVidu();
 
       // --- Init a session ---
       this.session = this.OV.initSession();
-
-      // --- Specify the actions when events take place in the session ---
 
       // On every new Stream received...
       this.session.on('streamCreated', ({ stream }) => {
@@ -678,9 +632,9 @@ export default {
       });
 
       // On every asynchronous exception...
-      this.session.on('exception', ({ exception }) => {
-        console.warn(exception);
-      });
+      // this.session.on('exception', ({ exception }) => {
+      //   console.warn(exception);
+      // });
 
       // --- Connect to the session with a valid user token ---
 
@@ -691,7 +645,6 @@ export default {
           .connect(token, { clientData: this.userInfo.nick })
           .then(() => {
             // --- Get your own camera stream with the desired properties ---
-
             const publisher = this.OV.initPublisher(undefined, {
               audioSource: undefined, // The source of audio. If undefined default microphone
               videoSource: undefined, // The source of video. If undefined default webcam
@@ -705,38 +658,35 @@ export default {
               // How the video is inserted in the target element 'video-container'
               mirror: false, // Whether to mirror your local video or not
             });
-
             this.mainStreamManager = publisher;
+            this.connectionId = this.mainStreamManager.stream.session.connection.connectionId;
+            // console.log('마이커넥션 아이디는', connection.connectionId);
+            // this.connectionId = this.mainStreamManager.stream.connection.connectionId;
+            // console.log('커넥션아이디는', this.connectionId);
             this.publisher = publisher;
-
             // --- Publish your stream ---
-
             this.session.publish(this.publisher);
-          })
-          .catch((error) => {
-            console.log('There was an error connecting to the session:', error.code, error.message);
           });
       });
       // Receiver of the message (usually before calling 'session.connect')
       this.session.on('signal:my-chat', (event) => {
         const chatdata = event.data.split(',');
-        // console.log(event.from); // Connection object of the sender //누가 보냈는지가 아니네..?
-        // console.log(event.type); // The type of message ("my-chat")
-        // this.allChat = event.data;
-        // this.who = event.from; //누가 보냈는지
         const obj = {
-          m: chatdata[0],
-          p: chatdata[1],
+          userId: String(chatdata[0]),
+          userNickName: chatdata[1],
+          userChat: chatdata[2],
         };
         this.allchattingList.push(obj);
-        // console.log(this.recvList[0].m);
         const chat = document.querySelector('#chattingList');
-        chat.scrollTop = chat.scrollHeight + 10000000;
+        chat.scrollTop = chat.scrollHeight;
       });
 
       this.session.on('signal:my-emoji', (event) => {
-        const chatdata2 = event.data.split(',');
-        const obj = [chatdata2[1], chatdata2[0]];
+        const sendEmojiData = event.data.split(',');
+        const obj = {
+          connectionId: sendEmojiData[0],
+          userEmoji: sendEmojiData[1],
+        };
         this.emojiList.push(obj);
         this.changeEmojiList(this.emojiList);
       });
@@ -764,67 +714,33 @@ export default {
       this.session.on('signal:startround1', () => {
         this.isStarted = true;
         this.$refs.setTimer2.pauseTimer();
-        // const audio = new Audio('//bit.ly/3euuS7B');
-        console.log('음악시작');
         // eslint-disable-next-line
         const audio = new Audio(require('@/assets/music/321.mp3'));
-        // audio.src = '@/assest/music/321.mp3';
         audio.play();
-        console.log('음악끝');
-        // this.RoundStartTimer = setInterval(() => {
-        // }, 4000);
-        // this.isStarted = false;
-        // clearInterval(this.RoundStartTimer);
-        // this.$refs.setTimer3.pauseTimer();
       });
-
-      window.addEventListener('beforeunload', this.leavepeople);
-    },
-
-    leavepeople() {
-      alert('나가는중!');
-      this.leaveSession();
-      this.session
-        .signal({
-          data: `${this.streamManager.stream.connection.connectionId}`,
-          to: [],
-          type: 'leaveRoomMe',
-        })
-        .then(() => {
-        })
-        .catch(() => {});
     },
 
     sendEmoji() {
       this.session
         .signal({
-          data: `${this.myemoji},${this.userInfo.nick}`,
+          data: `${this.connectionId},${this.myemoji}`,
           to: [],
           type: 'my-emoji',
-        })
-        .then(() => {
-        })
-        .catch(() => {});
+        });
     },
-
     sendMassage() {
-      // Sender of the message (after 'session.connect')
       this.session
         .signal({
-          data: `${this.myChat},${this.userInfo.nick}`, // Any string (optional)
-          to: [], // Array of Connection objects (optional. Broadcast to everyone if empty)
-          type: 'my-chat', // The type of message (optional)
+          data: `${this.credentialsUser.memberId},${this.userInfo.nick},${this.myChat}`,
+          to: [],
+          type: 'my-chat',
         })
         .then(() => {
           const resetText = document.querySelector('#mychat');
           resetText.value = '';
           const chat = document.querySelector('#chattingList');
           chat.scrollTop = chat.scrollHeight + 1000000;
-          console.log('Message successfully sent');
           this.myChat = '';
-        })
-        .catch((error) => {
-          console.error(error);
         });
     },
 
@@ -833,32 +749,18 @@ export default {
         accesstoken: this.accessToken,
         roomId: this.mySessionId,
       };
-
       axios({
         url: `https://i7c202.p.ssafy.io:8282/api/room/end/${Number(requestDto.roomId)}`,
         method: 'put',
         headers: {
           'X-AUTH-TOKEN': requestDto.accesstoken,
         },
-      })
-        .then((res) => {
-          console.log(res.data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-
+      });
       this.session
         .signal({
           data: 'stameetingRoomEnd', // Any string (optional)
           to: [], // Array of Connection objects (optional. Broadcast to everyone if empty)
           type: 'end', // The type of message (optional)
-        })
-        .then(() => {
-          console.log('Message successfully sent(end)');
-        })
-        .catch((error) => {
-          console.error(error);
         });
     },
 
@@ -875,32 +777,18 @@ export default {
         accesstoken: this.accessToken,
         roomId: this.mySessionId,
       };
-
       axios({
         url: `https://i7c202.p.ssafy.io:8282/api/room/start/${Number(requestDto.roomId)}`,
         method: 'put',
         headers: {
           'X-AUTH-TOKEN': requestDto.accesstoken,
         },
-      })
-        .then((res) => {
-          console.log(res.data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-
+      });
       this.session
         .signal({
           data: 'stameetingRoomStartrt', // Any string (optional)
           to: [], // Array of Connection objects (optional. Broadcast to everyone if empty)
           type: 'start', // The type of message (optional)
-        })
-        .then(() => {
-          console.log('Message successfully sent(start)');
-        })
-        .catch((error) => {
-          console.error(error);
         });
     },
 
@@ -919,7 +807,6 @@ export default {
       this.publisher = undefined;
       this.subscribers = [];
       this.OV = undefined;
-      window.removeEventListener('beforeunload', this.leavepeople);
       this.SET_SESSION_ID('');
       this.$router.push('/');
     },
@@ -967,9 +854,6 @@ export default {
             if (error.response.status === 409) {
               resolve(sessionId);
             } else {
-              console.warn(
-                `No connection to OpenVidu Server. This may be a certificate error at ${this.OPENVIDU_SERVER_URL}`,
-              );
               if (
                 window.confirm(
                   `No connection to OpenVidu Server. This may be a certificate error at ${this.OPENVIDU_SERVER_URL}\n\nClick OK to navigate and accept it. If no certificate warning is shown, then check that your OpenVidu Server is up and running at "${this.OPENVIDU_SERVER_URL}"`,
@@ -1004,9 +888,13 @@ export default {
     },
     chatoff() {
       this.chatONOFF = false;
+      const chat = document.querySelector('#chattingList');
+      chat.scrollTop = chat.scrollHeight + 10000000;
     },
     chaton() {
       this.chatONOFF = true;
+      const chat = document.querySelector('#chattingList');
+      chat.scrollTop = chat.scrollHeight + 10000000;
     },
     open_emoji() {
       this.Emoji_ONOFF = !this.Emoji_ONOFF;
@@ -1049,7 +937,6 @@ export default {
       this.take_photo_timer = setInterval(() => {
         this.timer -= 1;
         this.temp_timer_2 -= 1;
-        console.log(this.timer);
         if (this.timer === 0) {
           const el = document.querySelector('#take_photo_WebRTC');
           el.style.opacity = '0';
@@ -1082,18 +969,9 @@ export default {
       }, 1000);
       this.temp_timer_2 = this.temp_timer;
     },
-    set_timer_3() {
-      this.timer = 3;
-      console.log(this.timer);
-    },
-    set_timer_5() {
-      this.timer = 5;
-      console.log(this.timer);
-    },
-    set_timer_10() {
-      this.timer = 10;
-      console.log(this.timer);
-    },
+    set_timer_3() { this.timer = 3; },
+    set_timer_5() { this.timer = 5; },
+    set_timer_10() { this.timer = 10; },
     lockroom() {
       this.lockroomcheck = !this.lockroomcheck;
     },
@@ -1101,7 +979,6 @@ export default {
       event.preventDefault();
     },
     async setmodel() {
-      // console.log('setmodel');
       switch (this.gameType) {
         case 1: // 스쿼트
           this.URL = 'https://teachablemachine.withgoogle.com/models/N9Uzcp-sg/';
@@ -1325,21 +1202,23 @@ div {
 
 .achat {
   position:fixed;
-  border: 4px solid #4e8aff;
+  border: 1px solid white;
   border-radius: 30px;
   width:320px;
   height:600px;
-  background-color: #4e8aff;
+  background: rgb(206,223,255);
+  background: radial-gradient(circle, rgba(206,223,255,1) 0%,
+  rgba(78,138,255,1) 95%, rgba(39,76,149,1) 100%);
   bottom: 100px;
   right: 20px;
 }
 
 .achat-content {
   position:fixed;
-  border: 4px solid #4e8aff;
+  border: 1px solid white;
   width:320px;
   height:490px;
-  background-color: white;
+  background-color: #c5a180;
   bottom: 180px;
   right: 20px;
 }
@@ -1358,15 +1237,19 @@ div {
   right: 40px;
 }
 
+#mychat:focus {
+  outline:1px solid #4e8aff;
+}
+
 .mychatting {position:relative; margin: 50px; padding: 20px; width:180px; height:90px;
-border:1px solid #C5a180; border-radius: 10px; background-color:  #C5a180;}
-.mychatting:after {content:""; position: absolute; top: 21px; right: -30px; border-left: 30px
-solid  #C5a180; border-top: 10px solid transparent; border-bottom: 10px solid transparent;}
+border:1px solid #4e8aff; border-radius: 10px; background-color:  #4e8aff;}
+.mychatting:after {content:""; position: absolute; top: 21px; right: -28px; border-left: 28px
+solid  #4e8aff; border-top: 10px solid transparent; border-bottom: 10px solid transparent;}
 
 .yourchatting {position:relative; margin: 50px; padding: 20px; width:180px; height:90px;
-border:1px solid #ccb9a8; border-radius: 10px; background-color: #ccb9a8;}
-.yourchatting:after {content:""; position: absolute; top: 21px; left: -30px; border-right: 30px
-solid #ccb9a8; border-top: 10px solid transparent; border-bottom: 10px solid transparent;}
+border:1px solid #cedfff; border-radius: 10px; background-color: #cedfff;}
+.yourchatting:after {content:""; position: absolute; top: 21px; left: -28px; border-right: 28px
+solid #cedfff; border-top: 10px solid transparent; border-bottom: 10px solid transparent;}
 
 .webrtcetc {
   /* width: 30%;

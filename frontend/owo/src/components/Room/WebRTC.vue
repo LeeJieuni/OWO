@@ -7,7 +7,8 @@
     </div> -->
     <!-- <p>개인 WebRTC 영상</p> -->
     <div v-if="streamManager" class="position-relative m0p0">
-      <div class="myreaction">{{newAllEMojiList[0]}}</div>
+      <!-- eslint-disable-next-line -->
+      <div class="myreaction" v-if="myreaction.connectionId == this.myconnectionId">{{myreaction.userEmoji}}</div>
       <p class="myname">&ensp;{{ clientData }}&ensp;</p>
       <!-- <img class="mymic" v-if="!mic" src="@/assets/icon/micmute.png" alt=""> -->
       <!-- eslint-disable-next-line -->
@@ -20,7 +21,7 @@ import { mapState } from 'vuex';
 import OvVideo from './OvVideo.vue';
 
 const emoji = 'emoji';
-// const meetingroom = 'meetingroom';
+const accounts = 'accounts';
 
 export default {
   components: {
@@ -28,6 +29,7 @@ export default {
   },
   data() {
     return {
+      myconnectionId: '',
       user_isActive: false,
       user_get_out: false,
     };
@@ -39,24 +41,27 @@ export default {
   methods: {
     get_out() {
       alert('추방하시겠습니까?');
-      // alert 대신 confirm으로 별경한다.
-      // const getout = confirm('추방하시겠습니까?')
-      // comfirm 받은 것을 넘겨서 추방할 수 있도록 한다.
     },
     getConnectionData() {
       const { connection } = this.streamManager.stream;
+      this.myconnectionId = connection.connectionId;
       return JSON.parse(connection.data);
     },
   },
 
   computed: {
     ...mapState(emoji, ['allEmojiList']),
+    ...mapState(accounts, ['userInfo']),
     // ...mapState(meetingroom, ['mic']),
-    newAllEMojiList() {
-      const newList = [];
+    myreaction() {
+      let newList = '';
       for (let i = this.allEmojiList.length - 1; i >= 0; i -= 1) {
-        if (this.allEmojiList[i][0] === this.clientData) {
-          newList.push(this.allEmojiList[i][1]);
+        // eslint-disable-next-line
+        if (this.allEmojiList[i].connectionId == this.myconnectionId) {
+          newList = {
+            connectionId: this.myconnectionId,
+            userEmoji: this.allEmojiList[i].userEmoji,
+          };
           break;
         }
       }
