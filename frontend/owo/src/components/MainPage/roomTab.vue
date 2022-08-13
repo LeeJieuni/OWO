@@ -25,7 +25,6 @@
                <b-input-group prepend="모드" class="roomdata_input">
                  <b-form-select :options="Object.keys(mode)"
                  v-model="roomdatas.mode"></b-form-select>
-                 <div>{{roomdatas.mode}}</div>
                </b-input-group>
                <b-input-group prepend="운동 종류" class="roomdata_input">
                   <b-form-select :options="Object.keys(workout)"
@@ -51,7 +50,7 @@
     <div v-if="!noStreaming" class="tab-content wrap">
       <div v-show="currentTab == 0" class="scroll__wrap">
         <div v-for="(room, i) in roomList.streamingRoomList" :key="i" class="scroll--element">
-          <b-card img-src="https://placekitten.com/280/200" img-top class="rooms">
+          <b-card img-src="https://placekitten.com/200/100" img-top class="rooms">
             <h3>{{ room.roomName }}</h3>
             <p v-if="!room.secret"><img src="@/assets/icon/lock1.png" alt="" style="width:20px"></p>
             <p v-if="room.secret"><img src="@/assets/icon/lock2.png" alt="" style="width:20px"></p>
@@ -70,9 +69,8 @@
     </div>
     <div v-if="!noFree" class="tab-content wrap">
       <div v-show="currentTab == 1" class="scroll__wrap">
-            <p>{{noFree}}</p>
         <div v-for="(room, i) in roomList.freeRoomList" :key="i" class="scroll--element">
-          <b-card img-src="https://placekitten.com/280/200" img-top class="rooms">
+          <b-card img-src="https://placekitten.com/200/100" img-top class="rooms">
             <h3>{{ room.roomName }}</h3>
             <p v-if="!room.secret"><img src="@/assets/icon/lock1.png" alt="" style="width:20px"></p>
             <p v-if="room.secret"><img src="@/assets/icon/lock2.png" alt="" style="width:20px"></p>
@@ -93,9 +91,8 @@
     </div>
     <div v-if="!noGame" class="tab-content wrap">
       <div v-show="currentTab == 2" class="scroll__wrap">
-      <p>{{noStreaming}}</p>
         <div v-for="(room, i) in roomList.gameRoomList" :key="i" class="scroll--element">
-          <b-card img-src="https://placekitten.com/280/200" img-top class="rooms">
+          <b-card img-src="https://placekitten.com/200/100" img-top class="rooms">
             <h3>{{ room.roomName }}</h3>
             <p v-if="!room.secret"><img src="@/assets/icon/lock1.png" alt="" style="width:20px"></p>
             <p v-if="room.secret"><img src="@/assets/icon/lock2.png" alt="" style="width:20px"></p>
