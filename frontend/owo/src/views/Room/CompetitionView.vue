@@ -270,8 +270,6 @@
       <div class="setTimer2position">
       </div>
       <div v-show="isStarted" class="myBackGroundSetting">
-        안녕하세요?
-        안녕하세요?2
         <setTimer2 ref="setTimer2" />
         <!-- <setTimer3 ref="setTimer3"/> -->
       </div>
@@ -668,7 +666,7 @@ export default {
             this.session.publish(this.publisher);
           });
       });
-      // Receiver of the message (usually before calling 'session.connect')
+      // 사용자 정의 함수 영역
       this.session.on('signal:my-chat', (event) => {
         const chatdata = event.data.split(',');
         const obj = {
@@ -691,33 +689,103 @@ export default {
         this.changeEmojiList(this.emojiList);
       });
 
-      // Receiver of the message (usually before calling 'session.connect')
-      this.session.on('signal:start', (event) => {
-        console.log(event);
-        console.log('게임! start');
-      });
-
-      this.session.on('signal:end', (event) => {
-        console.log(event);
-        console.log('게임! end');
-        this.leaveSession();
-      });
-
-      this.session.on('signal:leaveRoomMe', (event) => {
-        console.log(event.data);
-        for (let i = 0; i < this.subscribers.length; i += 1) {
-          if (this.subscribers[i].stream.connection.connectionId === event.data) {
-            this.subscribers.splice(this.subscribers[i], 1);
-          }
-        }
-      });
       this.session.on('signal:startround1', () => {
         this.isStarted = true;
+        setTimeout(() => {
+          this.isStarted = false;
+          document.getElementsByClassName('webrtcetc')[0].remove();
+          document.getElementsByClassName('webrtcetc')[0].remove();
+          document.getElementsByClassName('webrtcetc')[0].remove();
+          document.getElementsByClassName('webrtcetc')[0].remove();
+          document.getElementsByClassName('webrtcetc')[0].remove();
+          const el = document.getElementsByClassName('webrtctag');
+          switch (el.length) {
+            case 2:
+              document.getElementsByClassName('webrtctag')[0].style.width = '48%';
+              document.getElementsByClassName('webrtctag')[0].style.height = '35%';
+              document.getElementsByClassName('webrtctag')[0].style.backgroundColor = 'transparent';
+              document.getElementsByClassName('webrtctag')[0].style.border = 'none';
+              document.getElementsByClassName('webrtctag')[1].style.width = '48%';
+              document.getElementsByClassName('webrtctag')[1].style.height = '35%';
+              document.getElementsByClassName('webrtctag')[1].style.backgroundColor = 'transparent';
+              document.getElementsByClassName('webrtctag')[1].style.border = 'none';
+              break;
+            case 3:
+              document.getElementsByClassName('webrtctag')[0].style.width = '33%';
+              document.getElementsByClassName('webrtctag')[0].style.height = '33%';
+              document.getElementsByClassName('webrtctag')[0].style.backgroundColor = 'transparent';
+              document.getElementsByClassName('webrtctag')[0].style.border = 'none';
+              document.getElementsByClassName('webrtctag')[1].style.width = '33%';
+              document.getElementsByClassName('webrtctag')[1].style.height = '33%';
+              document.getElementsByClassName('webrtctag')[1].style.backgroundColor = 'transparent';
+              document.getElementsByClassName('webrtctag')[1].style.border = 'none';
+              document.getElementsByClassName('webrtctag')[2].style.width = '33%';
+              document.getElementsByClassName('webrtctag')[2].style.height = '33%';
+              document.getElementsByClassName('webrtctag')[2].style.backgroundColor = 'transparent';
+              document.getElementsByClassName('webrtctag')[2].style.border = 'none';
+              break;
+            case 4:
+              document.getElementsByClassName('webrtctag')[0].style.width = '33%';
+              document.getElementsByClassName('webrtctag')[0].style.height = '33%';
+              document.getElementsByClassName('webrtctag')[0].style.backgroundColor = 'transparent';
+              document.getElementsByClassName('webrtctag')[0].style.border = 'none';
+              document.getElementsByClassName('webrtctag')[1].style.width = '33%';
+              document.getElementsByClassName('webrtctag')[1].style.height = '33%';
+              document.getElementsByClassName('webrtctag')[1].style.backgroundColor = 'transparent';
+              document.getElementsByClassName('webrtctag')[1].style.border = 'none';
+              document.getElementsByClassName('webrtctag')[2].style.width = '33%';
+              document.getElementsByClassName('webrtctag')[2].style.height = '33%';
+              document.getElementsByClassName('webrtctag')[2].style.backgroundColor = 'transparent';
+              document.getElementsByClassName('webrtctag')[2].style.border = 'none';
+              document.getElementsByClassName('webrtctag')[3].style.width = '33%';
+              document.getElementsByClassName('webrtctag')[3].style.height = '33%';
+              document.getElementsByClassName('webrtctag')[3].style.backgroundColor = 'transparent';
+              document.getElementsByClassName('webrtctag')[3].style.border = 'none';
+              break;
+            case 5:
+              document.getElementsByClassName('webrtctag')[0].style.backgroundColor = 'transparent';
+              document.getElementsByClassName('webrtctag')[0].style.border = 'none';
+              document.getElementsByClassName('webrtctag')[1].style.backgroundColor = 'transparent';
+              document.getElementsByClassName('webrtctag')[1].style.border = 'none';
+              document.getElementsByClassName('webrtctag')[2].style.backgroundColor = 'transparent';
+              document.getElementsByClassName('webrtctag')[2].style.border = 'none';
+              document.getElementsByClassName('webrtctag')[3].style.backgroundColor = 'transparent';
+              document.getElementsByClassName('webrtctag')[3].style.border = 'none';
+              document.getElementsByClassName('webrtctag')[4].style.backgroundColor = 'transparent';
+              document.getElementsByClassName('webrtctag')[4].style.border = 'none';
+              break;
+            case 6:
+              document.getElementsByClassName('webrtctag')[0].style.backgroundColor = 'transparent';
+              document.getElementsByClassName('webrtctag')[0].style.border = 'none';
+              document.getElementsByClassName('webrtctag')[1].style.backgroundColor = 'transparent';
+              document.getElementsByClassName('webrtctag')[1].style.border = 'none';
+              document.getElementsByClassName('webrtctag')[2].style.backgroundColor = 'transparent';
+              document.getElementsByClassName('webrtctag')[2].style.border = 'none';
+              document.getElementsByClassName('webrtctag')[3].style.backgroundColor = 'transparent';
+              document.getElementsByClassName('webrtctag')[3].style.border = 'none';
+              document.getElementsByClassName('webrtctag')[4].style.backgroundColor = 'transparent';
+              document.getElementsByClassName('webrtctag')[4].style.border = 'none';
+              document.getElementsByClassName('webrtctag')[5].style.backgroundColor = 'transparent';
+              document.getElementsByClassName('webrtctag')[5].style.border = 'none';
+              break;
+            default:
+              break;
+          }
+        }, 4000);
         this.$refs.setTimer2.pauseTimer();
         // eslint-disable-next-line
         const audio = new Audio(require('@/assets/music/321.mp3'));
         audio.play();
       });
+
+      // this.session.on('signal:leaveRoomMe', (event) => {
+      //   console.log(event.data);
+      //   for (let i = 0; i < this.subscribers.length; i += 1) {
+      //     if (this.subscribers[i].stream.connection.connectionId === event.data) {
+      //       this.subscribers.splice(this.subscribers[i], 1);
+      //     }
+      //   }
+      // });
     },
 
     sendEmoji() {
@@ -744,26 +812,6 @@ export default {
         });
     },
 
-    end() {
-      const requestDto = {
-        accesstoken: this.accessToken,
-        roomId: this.mySessionId,
-      };
-      axios({
-        url: `https://i7c202.p.ssafy.io:8282/api/room/end/${Number(requestDto.roomId)}`,
-        method: 'put',
-        headers: {
-          'X-AUTH-TOKEN': requestDto.accesstoken,
-        },
-      });
-      this.session
-        .signal({
-          data: 'stameetingRoomEnd', // Any string (optional)
-          to: [], // Array of Connection objects (optional. Broadcast to everyone if empty)
-          type: 'end', // The type of message (optional)
-        });
-    },
-
     startround1() {
       this.session
         .signal({
@@ -772,23 +820,20 @@ export default {
           type: 'startround1', // The type of message (optional)
         });
     },
-    start() {
-      const requestDto = {
-        accesstoken: this.accessToken,
-        roomId: this.mySessionId,
-      };
-      axios({
-        url: `https://i7c202.p.ssafy.io:8282/api/room/start/${Number(requestDto.roomId)}`,
-        method: 'put',
-        headers: {
-          'X-AUTH-TOKEN': requestDto.accesstoken,
-        },
-      });
+    startround2() {
       this.session
         .signal({
-          data: 'stameetingRoomStartrt', // Any string (optional)
+          data: '', // Any string (optional)
           to: [], // Array of Connection objects (optional. Broadcast to everyone if empty)
-          type: 'start', // The type of message (optional)
+          type: 'startround2', // The type of message (optional)
+        });
+    },
+    startround3() {
+      this.session
+        .signal({
+          data: '', // Any string (optional)
+          to: [], // Array of Connection objects (optional. Broadcast to everyone if empty)
+          type: 'startround3', // The type of message (optional)
         });
     },
 
@@ -811,10 +856,10 @@ export default {
       this.$router.push('/');
     },
 
-    updateMainVideoStreamManager(stream) {
-      if (this.mainStreamManager === stream) return;
-      this.mainStreamManager = stream;
-    },
+    // updateMainVideoStreamManager(stream) {
+    //   if (this.mainStreamManager === stream) return;
+    //   this.mainStreamManager = stream;
+    // },
 
     /**
      * --------------------------
