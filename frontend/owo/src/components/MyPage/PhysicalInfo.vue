@@ -149,17 +149,17 @@ export default {
     // console.log('created');
     console.log(this.user);
     console.log(this.physical);
-    console.log(this.state.bmi);
-    console.log(this.state.bmr);
-    console.log(this.state.caloriePerDay);
     // physical info 반올림
     this.state.bmi = Math.round(this.physical.bmi);
     this.state.bmr = Math.round(this.physical.bmr);
     this.state.caloriePerDay = Math.round(this.physical.caloriePerDay);
+    console.log(this.state.bmi);
+    console.log(this.state.bmr);
+    console.log(this.state.caloriePerDay);
 
     // user 정보 부족 시 bmi, bmr, calorie 초기화
     // eslint-disable-next-line
-    if (!this.user.gender || !this.user.weight ||this.user.weight <= 0 || !this.user.age || this.user.age == 0 || !this.user.height ||!this.user.height <= 0 || !this.user.activityLevel || this.user.activityLevel == 0) {
+    if (!this.user.gender || this.user.weight <= 0 || !this.user.age || this.user.age == 0 || !this.user.height ||this.user.height <= 0 || !this.user.activityLevel || this.user.activityLevel == 0) {
       this.state.text = '신체정보를 추가해주세요!';
       this.state.notEnoughInfo = 'ㄴㄴ';
       // this.state.bmi = '';
@@ -193,6 +193,9 @@ export default {
       //   this.state.notEnoughInfo = '몸무게, 키, 나이';
       // }
     }
+    console.log('운동분석test');
+    console.log(this.state.bmi);
+    console.log(this.state.notEnoughInfo);
 
     // 계산 공식들
     // 성별에 따른 기초대사량 계산 (미플린-지어(Mifflin-St.Jeor)공식)
