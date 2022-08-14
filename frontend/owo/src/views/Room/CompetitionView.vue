@@ -11,7 +11,7 @@
       <div id="session" v-if="session">
         <div>
           <div id="" class="row d-flex align-items-start justify-content-center">
-            <WebRTC :stream-manager="mainStreamManager"/>
+            <WebRTC id="" :stream-manager="mainStreamManager"/>
             <WebRTC :stream-manager="sub"
               v-for="sub in subscribers"
               :key="sub.stream.connection.connectionId"
@@ -331,10 +331,6 @@ const format = year + '-' + (('00' + month.toString()).slice(-2)) + '-' +
 export default {
   name: 'CompetitionView',
   metaInfo: {
-    script: [
-      { src: 'https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js', async: true, defer: true },
-      { src: 'https://cdn.jsdelivr.net/npm/@teachablemachine/pose@0.8/dist/teachablemachine-pose.min.js', async: true, defer: true },
-    ],
   },
   components: {
     WebRTC,
@@ -1162,15 +1158,16 @@ export default {
       event.preventDefault();
     },
     async setmodel() {
+      // console.log('setmodel');
       switch (this.gameType) {
         case 1: // 스쿼트
-          this.URL = 'https://teachablemachine.withgoogle.com/models/N9Uzcp-sg/';
+          this.URL = 'https://teachablemachine.withgoogle.com/models/mtTsf3dWh/';
           break;
         case 2: // 런지
-          this.URL = 'https://teachablemachine.withgoogle.com/models/qsNO7nn-l/';
+          this.URL = 'https://teachablemachine.withgoogle.com/models/rX6NKe6V_/';
           break;
         case 3: // 버피
-          this.URL = 'https://teachablemachine.withgoogle.com/models/fR-T-F0cP/';
+          this.URL = 'https://teachablemachine.withgoogle.com/models/bLxzzIAS3/';
           break;
         default:
           break;
@@ -1188,10 +1185,8 @@ export default {
     async init() {
       this.setmodel();
 
-      // const size = 200;
-      const flip = true;
+      const flip = false;
       this.webcam = new tmPose.Webcam(500, 300, flip);
-      // this.webcam.canvas = document.querySelector('canvas');
       await this.webcam.setup();
       await this.webcam.play();
       // console.log('init_webcam >> ', this.webcam);
