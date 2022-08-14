@@ -1,9 +1,11 @@
 <template>
-  <div class="d-flex justify-content-center" style="width: 100%; height:100vh">
+  <!-- eslint-disable-next-line -->
+  <div class="d-flex justify-content-center" style="width: 100%; height:100vh; background-color:#eaf1ff;">
     <div style="width:1600px;" class="viewsetting">
       <!-- eslint-disable-next-line -->
       <div class="d-flex justify-content-center align-items-center" style="width: 100%; height: 80px;">
-        <h3 class="game-name m-0">{{ gameName }}</h3>
+      <!-- eslint-disable-next-line -->
+        <h3 class="game-name m-0 mb-5" style="font-size:3rem;">{{ myRoomName }}<span v-if="roundGameName"> : {{ roundGameName }}</span></h3>
       </div>
       <!-- 세션 -->
       <div id="session" v-if="session">
@@ -19,11 +21,11 @@
               :key="sub.stream.connection.connectionId"
               @click="updateMainVideoStreamManager(sub)"
             /> -->
-            <div v-show="this.subscribers.length <= 0" class="webrtcetc col-4 m0p0 mb-2 mx-1"></div>
-            <div v-show="this.subscribers.length <= 1" class="webrtcetc col-4 m0p0 mb-2 mx-1"></div>
-            <div v-show="this.subscribers.length <= 2" class="webrtcetc col-4 m0p0 mb-2 mx-1"></div>
-            <div v-show="this.subscribers.length <= 3" class="webrtcetc col-4 m0p0 mb-2 mx-1"></div>
-            <div v-show="this.subscribers.length <= 4" class="webrtcetc col-4 m0p0 mb-2 mx-1"></div>
+            <div v-show="this.subscribers.length <= 0" class="webrtcetc col-4 m0p0 my-2 mx-2"></div>
+            <div v-show="this.subscribers.length <= 1" class="webrtcetc col-4 m0p0 my-2 mx-2"></div>
+            <div v-show="this.subscribers.length <= 2" class="webrtcetc col-4 m0p0 my-2 mx-2"></div>
+            <div v-show="this.subscribers.length <= 3" class="webrtcetc col-4 m0p0 my-2 mx-2"></div>
+            <div v-show="this.subscribers.length <= 4" class="webrtcetc col-4 m0p0 my-2 mx-2"></div>
           </div>
           <!-- eslint-disable-next-line -->
           <div v-for="sub in subscribers" :key="sub.stream.connection.connectionId"> {{sub.stream.connection.connectionId}} </div>
@@ -54,7 +56,7 @@
                 <br>
                 <!-- 운동일지, 사진 -->
                 <div>
-                  <div class="md-title2 text-center">📷오늘의 운동 사진 1장을 골라주세요(필수!)</div>
+                  <div class="md-title2 text-center">📷오늘의 운동 사진 1장을 골라주세요!(필수)</div>
                   <br>
                     <!-- eslint-disable-next-line -->
                 </div>
@@ -133,31 +135,12 @@
           </b-modal>
         </div>
       </div>
-      <!-- 사진 양식 -->
-      <div class="d-flex justify-content-center align-items-center"
-      v-if="is_take_photo" id="take_photo_background"></div>
-      <div class="d-flex justify-content-center align-items-center text-white"
-      v-if="is_take_photo">
-        <!-- eslint-disable-next-line -->
-        <div id="take_photo_WebRTC_warning">&ensp;사진은 최신 3장까지 저장됩니다!&ensp;</div>
-        <WebRTCPhoto id="take_photo_WebRTC" :stream-manager="mainStreamManager"/>
-        <img v-if="this.photoDisplay" id="take_photo_WebRTC_photo" :src="this.mypictures[0]" alt="">
-      </div>
-      <div class="d-flex justify-content-center align-items-center text-white mt-4"
-      v-if="is_take_photo" id="take_photo_timer">{{ temp_timer_2 }}</div>
-      <!-- 이모티콘 -->
-      <div class="emoji_position" v-if="Emoji_ONOFF">
-        <div class="row">
-          <!-- apple, google, twitter, facebook -->
-          <Picker :data="emojiIndex" set="twitter" @select="showEmoji" />
-        </div>
-      </div>
       <!-- 채팅 -->
       <div v-if="this.session">
-        <button v-if="chatONOFF" @click="chatoff" class="chat">
+        <button v-show="chatONOFF" @click="chatoff" class="chat">
           <img class="chatimg" src="@/assets/icon/speak.png" alt="">
         </button>
-        <button v-if="!chatONOFF" @click="chaton" class="chat">
+        <button v-show="!chatONOFF" @click="chaton" class="chat">
           <img class="chatimg" src="@/assets/icon/speak.png" alt="">
         </button>
         <div v-if="chatONOFF" class="achat d-flex justify-content-center align-items-center">
@@ -267,14 +250,43 @@
           <li role="presentation" style="width:100%;"><button @click="set_timer_10" class="dropdown-item text-center" type="button" target="_self">10초</button></li>
         </ul>
       </div>
+      <!-- 이모티콘 -->
+      <div class="emoji_position" v-if="Emoji_ONOFF">
+        <div class="row">
+          <!-- apple, google, twitter, facebook -->
+          <Picker :data="emojiIndex" set="twitter" @select="showEmoji" />
+        </div>
+      </div>
+      <!-- 타이머 -->
       <div class="setTimer2position">
+        <setTimer3 ref="setTimer3" />
       </div>
       <div v-show="isStarted" class="myBackGroundSetting">
-        <setTimer2 ref="setTimer2" />
-        <!-- <setTimer3 ref="setTimer3"/> -->
+        <setTimer2 ref="setTimer2"/>
       </div>
+      <!-- 사진 양식 -->
+      <div class="d-flex justify-content-center align-items-center"
+      v-if="is_take_photo" id="take_photo_background"></div>
+      <div class="d-flex justify-content-center align-items-center text-white"
+      v-if="is_take_photo">
+        <!-- eslint-disable-next-line -->
+        <div id="take_photo_WebRTC_warning">&ensp;사진은 최신 3장까지 저장됩니다!&ensp;</div>
+        <WebRTCPhoto id="take_photo_WebRTC" :stream-manager="mainStreamManager"/>
+        <img v-if="this.photoDisplay" id="take_photo_WebRTC_photo" :src="this.mypictures[0]" alt="">
+      </div>
+      <!-- eslint-disable-next-line -->
+      <div class="d-flex justify-content-center align-items-center text-white mt-4" v-if="is_take_photo" id="take_photo_timer">
+        {{ temp_timer_2 }}
+      </div>
+      <!-- eslint-disable-next-line -->
+      <div v-if="round1Game" class="round1Game" style="font-size:5rem; color:white;">#Round1&ensp;:&ensp;<span>{{ roundGameName }}</span></div>
+      <!-- eslint-disable-next-line -->
+      <div v-if="round2Game" class="round2Game" style="font-size:5rem; color:white;">#Round2&ensp;:&ensp;<span>{{ roundGameName }}</span></div>
+      <!-- eslint-disable-next-line -->
+      <div v-if="round3Game" class="round3Game" style="font-size:5rem; color:white;">#Final Round&ensp;:&ensp;<span>{{ roundGameName }}</span></div>
       <button @click="init">start</button>
       <div>나의 카운트 : {{ count }} </div>
+      <button @click="stopCam">캠 삭제</button>
     </div>
   </div>
 </template>
@@ -283,7 +295,7 @@ import html2canvas from 'html2canvas';
 import WebRTC from '@/components/Room/WebRTC.vue';
 import WebRTCPhoto from '@/components/Room/WebRTCPhoto.vue';
 import setTimer2 from '@/components/Room/setTimer2.vue';
-// import setTimer3 from '@/components/Room/setTimer3.vue';
+import setTimer3 from '@/components/Room/setTimer3.vue';
 import axios from 'axios';
 import { OpenVidu } from 'openvidu-browser';
 import emojidata from 'emoji-mart-vue-fast/data/all.json';
@@ -327,7 +339,7 @@ export default {
     WebRTCPhoto,
     Picker,
     setTimer2,
-    // setTimer3,
+    setTimer3,
   },
   data() {
     return {
@@ -355,6 +367,7 @@ export default {
       publisher: undefined,
       subscribers: [],
       // 방 설정
+      startTime: undefined,
       photoDisplay: false,
       youtubeURL: '',
       lockroomcheck: false,
@@ -364,7 +377,11 @@ export default {
       sessionId: null,
       connectionId: null,
       // roomName: '붙어보자!',
-      gameName: ['팔굽혀펴기', '런지', '버피테스트'],
+      gameName: ['스쿼트', '런지', '버피테스트'],
+      roundGameName: '',
+      round1Game: undefined,
+      round2Game: undefined,
+      round3Game: undefined,
       credentials: {
         fileOriName: '',
         fileUrl: '',
@@ -395,17 +412,20 @@ export default {
       gameType: 2, // 1:squat, 2:lunge, 3:burpee
       ctx: undefined,
       // 각 운동의 카운트를 memberId와 함께 session.on으로 보내주고 데이터 받아서 저장한다.
-      // sqcount,
-      // bpcount,
-      // lgcount,
+      allSquatCountList: [],
+      allLungeCountList: [],
+      allburpeeCountList: [],
+      squatCount: 0,
+      LungeCount: 0,
+      burpeeCount: 0,
       // 운동이 끝나면 count는 서버에 보내고, counts에 따라 임의의 score를 저장한다.
-      // sqscore,
-      // bpscore,
-      // lgscore,
+      squatScore: undefined,
+      burpeeScore: undefined,
+      Lungescore: undefined,
       // score의 합산으로 다시 정렬해서 순위별 등수를 매겨로 포인트를 부여한다.
-      // myscore,
+      myscore: undefined,
       // mypoints를 서버에 보낸다.
-      // mypoints,
+      mypoints: undefined,
     };
   },
   setup() {
@@ -454,6 +474,14 @@ export default {
     ...mapState(meetingroom, ['myRoomName', 'mySessionId', 'meetingRoomList', 'camera', 'mic']),
   },
   methods: {
+    stopCam() {
+      this.webcam.stop();
+    },
+    deletemodel() {
+      console.log('현재 웹캠', this.webcam);
+      this.webcam.deleteProperty('webcam', 'video');
+      console.log('현재 웹캠', this.webcam);
+    },
     tempLeaveSession() {
       this.leaveSession();
       document.body.removeAttribute('data-bs-overflow');
@@ -667,6 +695,42 @@ export default {
           });
       });
       // 사용자 정의 함수 영역
+      // this.session.on('signal:squatCount', (event) => {
+      //   const sendSquatCountData = event.data.split(',');
+      //   const obj = {
+      //     connectionId: sendSquatCountData[0],
+      //     allUserSquatCount: sendSquatCountData[1],
+      //   };
+      //   this.allSquatCountList = obj;
+      // });
+
+      // this.session.on('signal:lungeCount', (event) => {
+      //   const sendLungeCountData = event.data.split(',');
+      //   const obj = {
+      //     connectionId: sendLungeCountData[0],
+      //     allUserLungeCount: sendLungeCountData[1],
+      //   };
+      //   this.allLungeCountList = obj;
+      // });
+
+      // this.session.on('signal:burpeeCount', (event) => {
+      //   const sendBurpeeCountData = event.data.split(',');
+      //   const obj = {
+      //     connectionId: sendBurpeeCountData[0],
+      //     allUserBurpeeCount: sendBurpeeCountData[1],
+      //   };
+      //   this.allBurpeeCountList = obj;
+      // });
+
+      this.session.on('signal:my-emoji', (event) => {
+        const sendEmojiData = event.data.split(',');
+        const obj = {
+          connectionId: sendEmojiData[0],
+          userEmoji: sendEmojiData[1],
+        };
+        this.changeEmojiList(obj);
+      });
+
       this.session.on('signal:my-chat', (event) => {
         const chatdata = event.data.split(',');
         const obj = {
@@ -679,103 +743,163 @@ export default {
         chat.scrollTop = chat.scrollHeight;
       });
 
-      this.session.on('signal:my-emoji', (event) => {
-        const sendEmojiData = event.data.split(',');
-        const obj = {
-          connectionId: sendEmojiData[0],
-          userEmoji: sendEmojiData[1],
-        };
-        this.emojiList.push(obj);
-        this.changeEmojiList(this.emojiList);
-      });
-
       this.session.on('signal:startround1', () => {
+        // eslint-disable-next-line
+        const audio = new Audio(require('@/assets/music/round1.mp3'));
+        audio.play();
         this.isStarted = true;
+        this.round1Game = true;
+        this.roundGameName = '스쿼트';
+        setTimeout(() => {
+          this.round1Game = false;
+          // eslint-disable-next-line
+          const audio = new Audio(require('@/assets/music/321.mp3'));
+          audio.play();
+          this.$refs.setTimer2.pauseTimer();
+          document.getElementsByClassName('webrtcetc')[0].remove();
+          document.getElementsByClassName('webrtcetc')[0].remove();
+          document.getElementsByClassName('webrtcetc')[0].remove();
+          document.getElementsByClassName('webrtcetc')[0].remove();
+          document.getElementsByClassName('webrtcetc')[0].remove();
+          setTimeout(() => {
+            const el = document.getElementsByClassName('webrtctag');
+            switch (el.length) {
+              case 2:
+                document.getElementsByClassName('webrtctag')[0].style.width = '49%';
+                document.getElementsByClassName('webrtctag')[0].style.height = '50%';
+                document.getElementsByClassName('webrtctag')[0].style.backgroundColor = 'transparent';
+                document.getElementsByClassName('webrtctag')[0].style.border = 'none';
+                document.getElementsByClassName('webrtctag')[1].style.width = '49%';
+                document.getElementsByClassName('webrtctag')[1].style.height = '50%';
+                document.getElementsByClassName('webrtctag')[1].style.backgroundColor = 'transparent';
+                document.getElementsByClassName('webrtctag')[1].style.border = 'none';
+                break;
+              case 3:
+                document.getElementsByClassName('webrtctag')[0].style.width = '33%';
+                document.getElementsByClassName('webrtctag')[0].style.height = '33%';
+                document.getElementsByClassName('webrtctag')[0].style.backgroundColor = 'transparent';
+                document.getElementsByClassName('webrtctag')[0].style.border = 'none';
+                document.getElementsByClassName('webrtctag')[1].style.width = '33%';
+                document.getElementsByClassName('webrtctag')[1].style.height = '33%';
+                document.getElementsByClassName('webrtctag')[1].style.backgroundColor = 'transparent';
+                document.getElementsByClassName('webrtctag')[1].style.border = 'none';
+                document.getElementsByClassName('webrtctag')[2].style.width = '33%';
+                document.getElementsByClassName('webrtctag')[2].style.height = '33%';
+                document.getElementsByClassName('webrtctag')[2].style.backgroundColor = 'transparent';
+                document.getElementsByClassName('webrtctag')[2].style.border = 'none';
+                break;
+              case 4:
+                document.getElementsByClassName('webrtctag')[0].style.width = '33%';
+                document.getElementsByClassName('webrtctag')[0].style.height = '33%';
+                document.getElementsByClassName('webrtctag')[0].style.backgroundColor = 'transparent';
+                document.getElementsByClassName('webrtctag')[0].style.border = 'none';
+                document.getElementsByClassName('webrtctag')[1].style.width = '33%';
+                document.getElementsByClassName('webrtctag')[1].style.height = '33%';
+                document.getElementsByClassName('webrtctag')[1].style.backgroundColor = 'transparent';
+                document.getElementsByClassName('webrtctag')[1].style.border = 'none';
+                document.getElementsByClassName('webrtctag')[2].style.width = '33%';
+                document.getElementsByClassName('webrtctag')[2].style.height = '33%';
+                document.getElementsByClassName('webrtctag')[2].style.backgroundColor = 'transparent';
+                document.getElementsByClassName('webrtctag')[2].style.border = 'none';
+                document.getElementsByClassName('webrtctag')[3].style.width = '33%';
+                document.getElementsByClassName('webrtctag')[3].style.height = '33%';
+                document.getElementsByClassName('webrtctag')[3].style.backgroundColor = 'transparent';
+                document.getElementsByClassName('webrtctag')[3].style.border = 'none';
+                break;
+              case 5:
+                document.getElementsByClassName('webrtctag')[0].style.backgroundColor = 'transparent';
+                document.getElementsByClassName('webrtctag')[0].style.border = 'none';
+                document.getElementsByClassName('webrtctag')[1].style.backgroundColor = 'transparent';
+                document.getElementsByClassName('webrtctag')[1].style.border = 'none';
+                document.getElementsByClassName('webrtctag')[2].style.backgroundColor = 'transparent';
+                document.getElementsByClassName('webrtctag')[2].style.border = 'none';
+                document.getElementsByClassName('webrtctag')[3].style.backgroundColor = 'transparent';
+                document.getElementsByClassName('webrtctag')[3].style.border = 'none';
+                document.getElementsByClassName('webrtctag')[4].style.backgroundColor = 'transparent';
+                document.getElementsByClassName('webrtctag')[4].style.border = 'none';
+                break;
+              case 6:
+                document.getElementsByClassName('webrtcetc')[0].style.width = 0;
+                document.getElementsByClassName('webrtcetc')[0].style.height = 0;
+                document.getElementsByClassName('webrtctag')[0].style.backgroundColor = 'transparent';
+                document.getElementsByClassName('webrtctag')[0].style.border = 'none';
+                document.getElementsByClassName('webrtctag')[1].style.backgroundColor = 'transparent';
+                document.getElementsByClassName('webrtctag')[1].style.border = 'none';
+                document.getElementsByClassName('webrtctag')[2].style.backgroundColor = 'transparent';
+                document.getElementsByClassName('webrtctag')[2].style.border = 'none';
+                document.getElementsByClassName('webrtctag')[3].style.backgroundColor = 'transparent';
+                document.getElementsByClassName('webrtctag')[3].style.border = 'none';
+                document.getElementsByClassName('webrtctag')[4].style.backgroundColor = 'transparent';
+                document.getElementsByClassName('webrtctag')[4].style.border = 'none';
+                document.getElementsByClassName('webrtctag')[5].style.backgroundColor = 'transparent';
+                document.getElementsByClassName('webrtctag')[5].style.border = 'none';
+                break;
+              default:
+                break;
+            }
+          }, 100);
+        }, 2000);
         setTimeout(() => {
           this.isStarted = false;
-          document.getElementsByClassName('webrtcetc')[0].remove();
-          document.getElementsByClassName('webrtcetc')[0].remove();
-          document.getElementsByClassName('webrtcetc')[0].remove();
-          document.getElementsByClassName('webrtcetc')[0].remove();
-          document.getElementsByClassName('webrtcetc')[0].remove();
-          const el = document.getElementsByClassName('webrtctag');
-          switch (el.length) {
-            case 2:
-              document.getElementsByClassName('webrtctag')[0].style.width = '48%';
-              document.getElementsByClassName('webrtctag')[0].style.height = '35%';
-              document.getElementsByClassName('webrtctag')[0].style.backgroundColor = 'transparent';
-              document.getElementsByClassName('webrtctag')[0].style.border = 'none';
-              document.getElementsByClassName('webrtctag')[1].style.width = '48%';
-              document.getElementsByClassName('webrtctag')[1].style.height = '35%';
-              document.getElementsByClassName('webrtctag')[1].style.backgroundColor = 'transparent';
-              document.getElementsByClassName('webrtctag')[1].style.border = 'none';
-              break;
-            case 3:
-              document.getElementsByClassName('webrtctag')[0].style.width = '33%';
-              document.getElementsByClassName('webrtctag')[0].style.height = '33%';
-              document.getElementsByClassName('webrtctag')[0].style.backgroundColor = 'transparent';
-              document.getElementsByClassName('webrtctag')[0].style.border = 'none';
-              document.getElementsByClassName('webrtctag')[1].style.width = '33%';
-              document.getElementsByClassName('webrtctag')[1].style.height = '33%';
-              document.getElementsByClassName('webrtctag')[1].style.backgroundColor = 'transparent';
-              document.getElementsByClassName('webrtctag')[1].style.border = 'none';
-              document.getElementsByClassName('webrtctag')[2].style.width = '33%';
-              document.getElementsByClassName('webrtctag')[2].style.height = '33%';
-              document.getElementsByClassName('webrtctag')[2].style.backgroundColor = 'transparent';
-              document.getElementsByClassName('webrtctag')[2].style.border = 'none';
-              break;
-            case 4:
-              document.getElementsByClassName('webrtctag')[0].style.width = '33%';
-              document.getElementsByClassName('webrtctag')[0].style.height = '33%';
-              document.getElementsByClassName('webrtctag')[0].style.backgroundColor = 'transparent';
-              document.getElementsByClassName('webrtctag')[0].style.border = 'none';
-              document.getElementsByClassName('webrtctag')[1].style.width = '33%';
-              document.getElementsByClassName('webrtctag')[1].style.height = '33%';
-              document.getElementsByClassName('webrtctag')[1].style.backgroundColor = 'transparent';
-              document.getElementsByClassName('webrtctag')[1].style.border = 'none';
-              document.getElementsByClassName('webrtctag')[2].style.width = '33%';
-              document.getElementsByClassName('webrtctag')[2].style.height = '33%';
-              document.getElementsByClassName('webrtctag')[2].style.backgroundColor = 'transparent';
-              document.getElementsByClassName('webrtctag')[2].style.border = 'none';
-              document.getElementsByClassName('webrtctag')[3].style.width = '33%';
-              document.getElementsByClassName('webrtctag')[3].style.height = '33%';
-              document.getElementsByClassName('webrtctag')[3].style.backgroundColor = 'transparent';
-              document.getElementsByClassName('webrtctag')[3].style.border = 'none';
-              break;
-            case 5:
-              document.getElementsByClassName('webrtctag')[0].style.backgroundColor = 'transparent';
-              document.getElementsByClassName('webrtctag')[0].style.border = 'none';
-              document.getElementsByClassName('webrtctag')[1].style.backgroundColor = 'transparent';
-              document.getElementsByClassName('webrtctag')[1].style.border = 'none';
-              document.getElementsByClassName('webrtctag')[2].style.backgroundColor = 'transparent';
-              document.getElementsByClassName('webrtctag')[2].style.border = 'none';
-              document.getElementsByClassName('webrtctag')[3].style.backgroundColor = 'transparent';
-              document.getElementsByClassName('webrtctag')[3].style.border = 'none';
-              document.getElementsByClassName('webrtctag')[4].style.backgroundColor = 'transparent';
-              document.getElementsByClassName('webrtctag')[4].style.border = 'none';
-              break;
-            case 6:
-              document.getElementsByClassName('webrtctag')[0].style.backgroundColor = 'transparent';
-              document.getElementsByClassName('webrtctag')[0].style.border = 'none';
-              document.getElementsByClassName('webrtctag')[1].style.backgroundColor = 'transparent';
-              document.getElementsByClassName('webrtctag')[1].style.border = 'none';
-              document.getElementsByClassName('webrtctag')[2].style.backgroundColor = 'transparent';
-              document.getElementsByClassName('webrtctag')[2].style.border = 'none';
-              document.getElementsByClassName('webrtctag')[3].style.backgroundColor = 'transparent';
-              document.getElementsByClassName('webrtctag')[3].style.border = 'none';
-              document.getElementsByClassName('webrtctag')[4].style.backgroundColor = 'transparent';
-              document.getElementsByClassName('webrtctag')[4].style.border = 'none';
-              document.getElementsByClassName('webrtctag')[5].style.backgroundColor = 'transparent';
-              document.getElementsByClassName('webrtctag')[5].style.border = 'none';
-              break;
-            default:
-              break;
-          }
-        }, 4000);
-        this.$refs.setTimer2.pauseTimer();
+          this.$refs.setTimer3.pauseTimer();
+          // 여기에 스쿼트 세는 함수가 시작되어야 한다.
+          // 숫자가 오를때마다 message를 보내서 숫자를 업데이트한다.
+        }, 6000);
+        setTimeout(() => {
+          this.startround2();
+        }, 16000);
+      });
+
+      this.session.on('signal:startround2', () => {
         // eslint-disable-next-line
-        const audio = new Audio(require('@/assets/music/321.mp3'));
+        const audio = new Audio(require('@/assets/music/round2.mp3'));
         audio.play();
+        this.isStarted = true;
+        this.round2Game = true;
+        this.roundGameName = '런지';
+        setTimeout(() => {
+          this.round2Game = false;
+          // eslint-disable-next-line
+          const audio = new Audio(require('@/assets/music/321.mp3'));
+          audio.play();
+          this.$refs.setTimer2.pauseTimer();
+        }, 2000);
+        setTimeout(() => {
+          this.isStarted = false;
+          this.$refs.setTimer3.pauseTimer();
+          // 여기에 런지 세는 함수가 시작되어야 한다.
+          // 숫자가 오를때마다 message를 보내서 숫자를 업데이트한다.
+        }, 6000);
+        setTimeout(() => {
+          this.startround3();
+        }, 16000);
+      });
+
+      this.session.on('signal:startround3', () => {
+        // eslint-disable-next-line
+        const audio = new Audio(require('@/assets/music/roundfinal.mp3'));
+        audio.play();
+        this.isStarted = true;
+        this.round3Game = true;
+        this.roundGameName = '버피테스트';
+        setTimeout(() => {
+          this.round3Game = false;
+          // eslint-disable-next-line
+          const audio = new Audio(require('@/assets/music/321.mp3'));
+          audio.play();
+          this.$refs.setTimer2.pauseTimer();
+        }, 2000);
+        setTimeout(() => {
+          this.isStarted = false;
+          this.$refs.setTimer3.pauseTimer();
+          // 여기에 런지 세는 함수가 시작되어야 한다.
+          // 숫자가 오를때마다 message를 보내서 숫자를 업데이트한다.
+        }, 6000);
+        setTimeout(() => {
+          alert('운동종료');
+          // 모달 띄우기
+          // 포인트 -> 순위 보여줘야함, 포인트 추가된 것 확인되어야함.
+        }, 16000);
       });
 
       // this.session.on('signal:leaveRoomMe', (event) => {
@@ -1084,6 +1208,8 @@ export default {
     },
 
     async squatpredict() {
+      this.check = false;
+      this.check2 = false;
       // Prediction #1: run input through posenet
       // estimatePose can take in an image, video or canvas html element
       // console.log('squat predict -> ', this.model);
@@ -1095,13 +1221,13 @@ export default {
 
       if (prediction[1].probability.toFixed(2) > 0.99) { // 스쿼트
         if (this.check) {
-          this.count += 1;
-          console.log('squat', this.count);
+          this.squatCount += 1;
+          console.log('squatCount', this.squatCount);
           this.session
             .signal({
-              data: `${this.myUserName},${this.count}`, // Any string (optional)
+              data: `${this.connectionId},${this.squatCount}`, // Any string (optional)
               to: [], // Array of Connection objects (optional. Broadcast to everyone if empty)
-              type: 'count', // The type of message (optional)
+              type: 'squatCount', // The type of message (optional)
             })
             .then(() => {
               // this.setState({ check: false });
@@ -1127,6 +1253,8 @@ export default {
     },
 
     async lungepredict() {
+      this.check = false;
+      this.check2 = false;
       const { pose, posenetOutput } = await this.model.estimatePose(
         this.webcam.canvas,
       );
@@ -1134,13 +1262,13 @@ export default {
 
       if (prediction[1].probability.toFixed(2) > 0.99) { // 런지
         if (this.check) {
-          this.count += 1;
-          console.log('lunge', this.count);
+          this.lungeCount += 1;
+          console.log('lungeCount', this.lungeCount);
           this.session
             .signal({
-              data: `${this.myUserName},${this.count}`, // Any string (optional)
+              data: `${this.connectionId},${this.lungeCount}`, // Any string (optional)
               to: [], // Array of Connection objects (optional. Broadcast to everyone if empty)
-              type: 'count', // The type of message (optional)
+              type: 'lungeCount', // The type of message (optional)
             })
             .then(() => {
               // this.setState({ check: false });
@@ -1158,6 +1286,8 @@ export default {
     },
 
     async burpeepredict() {
+      this.check = false;
+      this.check2 = false;
       const { pose, posenetOutput } = await this.model.estimatePose(
         this.webcam.canvas,
       );
@@ -1165,13 +1295,13 @@ export default {
 
       if (prediction[2].probability.toFixed(2) > 0.99) { // 서 있는 자세
         if (this.check && this.check2) {
-          this.count += 1;
-          console.log('burpee', this.count);
+          this.burpeeCount += 1;
+          console.log('burpeeCount', this.burpeeCount);
           this.session
             .signal({
-              data: `${this.myUserName},${this.count}`, // Any string (optional)
+              data: `${this.connectionId},${this.burpeeCount}`, // Any string (optional)
               to: [], // Array of Connection objects (optional. Broadcast to everyone if empty)
-              type: 'count', // The type of message (optional)
+              type: 'burpeeCount', // The type of message (optional)
             })
             .then(() => {
               // this.setState({ check: false });
@@ -1222,7 +1352,7 @@ div {
   position:fixed;
   bottom: 100px;
   left: 20px;
-  z-index:1000;
+  /* z-index:1000; */
 }
 
 .open_emoji {
@@ -1309,14 +1439,16 @@ solid #cedfff; border-top: 10px solid transparent; border-bottom: 10px solid tra
   background-repeat: no-repeat;
   border-radius: 20px;
   border: 4px solid #4e8aff;
-  background-color:#eaf1ff;
+  background-color:white;
+  transition-property: width, height;
+  transition-duration: 2s;
 }
 
 .Emoji {
   position:fixed;
   top:100px;
   left:100px;
-  z-index: 103;
+  /* z-index: 103; */
 }
 
 .m0p0 {
@@ -1335,7 +1467,7 @@ solid #cedfff; border-top: 10px solid transparent; border-bottom: 10px solid tra
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 600;
+    /* z-index: 600; */
     opacity: 0.7;
     font-size:599px;
 }
@@ -1351,7 +1483,7 @@ solid #cedfff; border-top: 10px solid transparent; border-bottom: 10px solid tra
   left: 50%;
   transform: translate(-50%, -50%);
   /* height: 80%; */
-  z-index: 601;
+  /* z-index: 601; */
   opacity: 1;
 }
 
@@ -1363,7 +1495,7 @@ solid #cedfff; border-top: 10px solid transparent; border-bottom: 10px solid tra
   left: 50%;
   transform: translate(-50%, -50%);
   /* height: 80%; */
-  z-index: 602;
+  /* z-index: 602; */
 }
 
 #take_photo_WebRTC_warning {
@@ -1376,7 +1508,7 @@ solid #cedfff; border-top: 10px solid transparent; border-bottom: 10px solid tra
   padding:3px;
   margin:3px;
   background-color:#4e8aff;
-  z-index:603;
+  /* z-index:603; */
   border-radius: 10px;
 }
 
@@ -1386,7 +1518,7 @@ solid #cedfff; border-top: 10px solid transparent; border-bottom: 10px solid tra
     left: 0%;
     width: 100%;
     height: 100%;
-    z-index: 602;
+    /* z-index: 602; */
     font-size:300px;
 }
 
@@ -1488,7 +1620,7 @@ solid #cedfff; border-top: 10px solid transparent; border-bottom: 10px solid tra
   position:fixed;
   top:10%;
   left:30px;
-  z-index: 500;
+  /* z-index: 500; */
 }
 
 .mybtn2 {
@@ -1497,7 +1629,7 @@ solid #cedfff; border-top: 10px solid transparent; border-bottom: 10px solid tra
   position:fixed;
   top:20%;
   left:30px;
-  z-index: 500;
+  /* z-index: 500; */
 }
 
 .mybtn3 {
@@ -1506,7 +1638,7 @@ solid #cedfff; border-top: 10px solid transparent; border-bottom: 10px solid tra
   position:fixed;
   top:30%;
   left:30px;
-  z-index: 500;
+  /* z-index: 500; */
 }
 
 .mybtn4 {
@@ -1515,7 +1647,7 @@ solid #cedfff; border-top: 10px solid transparent; border-bottom: 10px solid tra
   position:fixed;
   top:40%;
   left:30px;
-  z-index: 500;
+  /* z-index: 500; */
 }
 
 .mybtn5 {
@@ -1524,7 +1656,7 @@ solid #cedfff; border-top: 10px solid transparent; border-bottom: 10px solid tra
   position:fixed;
   top: 6px;
   right: 120px;
-  z-index: 500;
+  /* z-index: 500; */
 }
 
 .mybtn6 {
@@ -1533,14 +1665,14 @@ solid #cedfff; border-top: 10px solid transparent; border-bottom: 10px solid tra
   position:fixed;
   top: 30px;
   right: 30px;
-  z-index: 500;
+  /* z-index: 500; */
 }
 
 .setTimer2position {
   position:fixed;
   top:90px;
   right:30px;
-  z-index:500;
+  /* z-index:500; */
 }
 
 .startbtnpositionsub {
@@ -1592,7 +1724,56 @@ solid #cedfff; border-top: 10px solid transparent; border-bottom: 10px solid tra
   left: 0%;
   width: 100%;
   height: 100%;
-  z-index:900;
+  /* z-index:900; */
   opacity: 0.7;
+}
+
+.round1Game {
+  font-size:5rem;
+  color:white;
+  background-color:#4e8aff;
+  position: absolute;
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  width:100%;
+  height:40%;
+  top: 50%;
+  left:0%;
+  transform: translate(0, -50%);
+  /* z-index:901; */
+  opacity: 0.9;
+}
+.round2Game {
+  font-size:5rem;
+  color:white;
+  background-color:#4e8aff;
+  position: absolute;
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  width:100%;
+  height:40%;
+  top: 50%;
+  left:0%;
+  transform: translate(0, -50%);
+  /* z-index:901; */
+  opacity: 0.9;
+}
+.round3Game {
+  font-size:5rem;
+  color:white;
+  background-color:#4e8aff;
+  position: absolute;
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  width:100%;
+  height:40%;
+  top: 50%;
+  left:0%;
+  transform: translate(0, -50%);
+  /* z-index:901; */
+  opacity: 0.9;
 }
 </style>

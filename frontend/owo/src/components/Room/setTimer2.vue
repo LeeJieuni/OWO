@@ -84,41 +84,6 @@ export default {
 <style scoped>
 @import url('https://fonts.googleapis.com/css?family=Roboto:100,300');
 
-/* button[data-setter] {
-  outline: none;
-  background: transparent;
-  border: none;
-  font-family: 'Roboto';
-  font-weight: 300;
-  font-size: 18px;
-  width: 25px;
-  height: 30px;
-  color: #4E8Aff;
-  cursor: pointer;
-} */
-
-/* button[data-setter]:hover { opacity: 0.5; } */
-
-/* .container {
-  position: relative;
-  top: 0px;
-  width: 0px;
-  margin: 0 auto;
-} */
-
-/* .setters {
-  position: absolute;
-  left: 85px;
-  top: 75px;
-}
-
-.minutes-set {
-  float: left;
-  margin-right: 28px;
-}
-
-.seconds-set { float: right; } */
-
 .controlls {
   position: fixed;
   top: 50%;
@@ -131,45 +96,8 @@ export default {
   font-family: 'Roboto';
   font-weight: 100;
   font-size: 40px;
-  color: #4E8Aff;
+  color: white;
 }
-
-/* #pause {
-  outline: none;
-  background: transparent;
-  border: none;
-  margin-top: 10px;
-  width: 50px;
-  height: 50px;
-  position: relative;
-}
-
-.play::before {
-  display: block;
-  content: "";
-  position: absolute;
-  top: 8px;
-  left: 16px;
-  border-top: 15px solid transparent;
-  border-bottom: 15px solid transparent;
-  border-left: 22px solid #4E8Aff;
-}
-
-.pause::after {
-  content: "";
-  position: absolute;
-  top: 8px;
-  left: 12px;
-  width: 15px;
-  height: 30px;
-  background-color: transparent;
-  border-radius: 1px;
-  border: 5px solid #4E8Aff;
-  border-top: none;
-  border-bottom: none;
-}
-
-#pause:hover { opacity: 0.8; } */
 
 .e-c-base {
   fill: none;
@@ -193,10 +121,6 @@ export default {
 #e-pointer { transition: transform 0.7s; }
 h1 { margin-top:150px; text-align:center;}
 body { background-color:#f7f7f7;}
-
-.menu_icon2 {
-  width:50px;
-}
 
 .circle {
   position: fixed;
