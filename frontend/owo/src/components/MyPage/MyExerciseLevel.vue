@@ -22,17 +22,17 @@
             class="progress-bar progress-bar-striped progress-bar-animated"
             role="progressbar"
             aria-label="Example with label"
-            v-bind:style="{ width: state.pointPercentage, backgroundColor: state.tierColor }"
-            :aria-valuenow="state.pointPercent"
+            v-bind:style="{ width: state.recordPercentage, backgroundColor: state.tierColor }"
+            :aria-valuenow="state.recordPercent"
             aria-valuemin="0"
-            aria-valuemax="100">{{state.pointPercentage}}
+            aria-valuemax="100">{{state.recordPercentage}}
           </div>
         </div>
         <div class="tear-info d-flex text-center align-items-end">
           <div class="tear-name">{{ state.tearName }}&nbsp;&nbsp;</div>
           <div class="me-auto user-percent">
             LEVEL {{ state.level }}&nbsp;&nbsp;|&nbsp;&nbsp;
-            전체 사용자 중 상위(가짜) {{state.rankPercent}}%</div>
+            전체 사용자 중 상위 {{pointPercent}}%</div>
           <div class="user-point">{{ state.pointSet }} / {{ state.levelUp }} P</div>
         </div>
       </div>
@@ -49,7 +49,7 @@ export default {
   setup() {
     const store = useStore();
     const record = computed(() => store.getters['accounts/record']);
-    // const user = computed(() => store.getters['accounts/']);
+    const pointPercent = computed(() => store.getters['accounts/pointPercent']);
     const state = reactive({
       tierColor: '#919191',
       tierNum: 2,
@@ -57,8 +57,8 @@ export default {
       tearName: '실버',
       pointSet: '',
       levelUp: '',
-      pointPercent: '',
-      pointPercentage: '',
+      recordPercent: '',
+      recordPercentage: '',
       level: '',
     });
     const refresh = () => {
@@ -68,6 +68,7 @@ export default {
       state,
       record,
       refresh,
+      pointPercent,
     };
   },
   created() {
@@ -84,14 +85,11 @@ export default {
     this.state.pointSet = po;
     this.state.levelUp = lvup;
     this.state.level = level;
-    console.log(po);
-    console.log(lvup);
 
-    this.state.pointPercent = Math.round((this.state.pointSet / this.state.levelUp) * 100);
-    const stringPercent = String(this.state.pointPercent);
-    this.state.pointPercentage = stringPercent.concat('%');
-    console.log('아아');
-    console.log(this.state.pointPercent, this.state.pointPercentage);
+    this.state.recordPercent = Math.round((this.state.pointSet / this.state.levelUp) * 100);
+    const stringPercent = String(this.state.recordPercent);
+    this.state.recordPercentage = stringPercent.concat('%');
+    console.log('레코드퍼센트', this.state.recordPercent, this.state.recordPercentage);
   },
   moundted() {},
   unmounted() {},

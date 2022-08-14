@@ -24,19 +24,9 @@
                 <input class="input-image" accept="image/*" type="file"
                   ref="profileImg" @change.prevent="uploadProfileImg($event)" id="profileImg">
               </label>
-              <div class="d-flex justify-content-center">
-                <button on @click="updateProfileImg($event)"
-                  class="btn btn-primary" form="imageUploadForm" >작성</button>
-              </div>
-              <!-- <button type="submit" class="btn btn-outline-primary"
-                @click.prevent="updateProfileImg($event)" for="imageUploadForm">이미지 보내기</button> -->
             </form>
             </div>
           </div>
-        </div>
-        <div class="d-flex justify-content-center">
-          <button on @click="updateProfileImg($event)"
-            class="btn btn-primary" form="imageUploadForm">작성</button>
         </div>
       </div>
     </b-modal>
@@ -90,23 +80,8 @@ export default {
         slogan: slogan.value,
       },
       preloadImgUrl: '',
-      // isLoading: true,
-      // imgFormData: '',
+      imgData: '',
     });
-
-    // action
-    // const fetchMypage = function () {
-    //   store.dispatch('accounts/fetchMypage');
-    // };
-    // const fetchAchievementRate = function () {
-    //   store.dispatch('record/fetchAchievementRate');
-    // };
-    // const fetchGoal = function () {
-    //   store.dispatch('account/fetchGoal');
-    // };
-    // const fetchProfileImg = function () {
-    //   store.dispatch('account/fetchProfileImg');
-    // };
 
     // Methods
     const updateSlogan = function (e) {
@@ -115,68 +90,97 @@ export default {
       console.log(this.state.sloganData);
       store.dispatch('accounts/updateSlogan', this.state.sloganData);
     };
-    const updateProfileImg = (e) => {
-      e.preventDefault();
-      const img2 = document.querySelector('.input-image');
-      // console.log('이미지 불러오기');
-      // console.log(e.target.files[0]);
-      // const img = e.target.files[0];
+    const updateProfileImg = (img) => {
+      // e.preventDefault();
+      // console.log(e.target);
+      // console.log(img);
       const formData = new FormData();
-      // const imgFile = {
-      // }
-      formData.append('file', img2.files[0]);
-      // formData.append('file', new Blob([JSON.stringify(img2)], { type: 'image/*' }));
-      // console.log(state.imgFormData);
+      formData.append('file', img);
+      console.log('폼데이터 값 출력', formData.get('file'));
       store.dispatch('accounts/updateProfileImg', formData);
     };
     const uploadProfileImg = (e) => {
-      // const img2 = document.querySelector('.input-image');
-      // const modal = document.querySelector('.modal');
       e.preventDefault();
-      // const multer = require('multer');
-      // const path = require('path');
       console.log('이미지 불러오기');
       let img = e.target.files[0];
-      // console.log(img);
-      // console.log(img2.files[0]);
       console.log('파일사이즈 검사');
       if (img.size > (2 * 1024 * 1024)) {
         alert('파일 사이즈가 2mb를 넘습니다.');
         img = null;
+      } else if (img.type.indexOf('image/png') < 0) {
+        alert('이미지(png) 파일만 업로드 가능합니다.');
+        img = null;
+      } else {
+        console.log('처리 후');
+        state.preloadImgUrl = URL.createObjectURL(img);
+        state.imgData = img;
+        setTimeout(() => {
+          // eslint-disable-next-line
+          const imgConfirm = confirm('업로드 하시겠습니까?');
+          if (imgConfirm) {
+            updateProfileImg(img);
+          } else {
+            alert('다시 선택해주세요.');
+            img = null;
+          }
+        }, 1000);
       }
-      // const formData = new FormData();
-      // const imgFile = {
-      // }
-      // formData.append('file', img);
-      // store.dispatch('accounts/updateProfileImg', formData);
-      // const formData = new FormData();
-      // formData.append('name', img.name);
-      // const imgFile = {
+      // const preview = URL.createObjectURL(file);
+      // console.log(file);
+      // console.log(file.type);
+      // // this.previewUrl = preview;
+      // console.log(preview);
+      // // console.log(file);
+      // let validation = true;
+      // let message = '';
 
+      // 파일 용량 제한
+      // if (file.size > (2 * 1024 * 1024)) {
+      //   message = `${message}, 파일 용량은 2MB 이하만 가능합니다.`;
+      //   validation = false;
       // }
-      // formData.append('file', img);
-      // formData.append('user_id', user.value.id);
-      // formData.append('date', new Date());
-      // console.log(formData);
-      // eslint-disable-next-line
-      // formData.append('file', new Blob([JSON.stringify(state.data)], { type: 'application/json' }));
-      // formData.append('file', new Blob([img], { type: 'application/octet-stream' });, img.name);
-      // formData.append('file', new Blob([img], { type: `${img.type}` }), img.name);
-      // for (let i; i < formData.length; i += 1) {
-      // // console.log(formData[i]);
+      // if (file.type.indexOf('image/png') < 0) {
+      //   message = `${message}, 이미지 파일만 업로드 가능합니다.`;
+      //   validation = false;
       // }
-      // console.log(formData);
-      // // eslint-disable-next-line
 
-      // store.dispatch('accounts/updateProfileImg', formData);
+      // if (validation) {
+      //   state.imgFile = file;
+      //   // this.preview = URL.createObjectURL(file);
+      //   // console.log(this.preview);
+      // } else {
+      //   state.imgFile = '';
+      //   alert(message);
+      // }
     };
+    // const uploadProfileImg = (event) => {
+    //   event.preventDefault();
+    //   console.log('이미지 불러오기');
+    //   const img = event.target;
+    //   if (img.files && img.files[0]) {
+    //     const reader = new FileReader();
+    //     reader.onload = (e) => {
+    //       this.preloadImg = e.target.target;
+    //     };
+    //     reader.readAsDataURL(img.files[0]);
+    //   }
+    //   // console.log('파일사이즈 검사');
+    //   // if (img.size > (2 * 1024 * 1024)) {
+    //   //   alert('파일 사이즈가 2mb를 넘습니다.');
+    //   //   img = null;
+    //   //   this.preloadImgUrl = null;
+    //   // } else {
+    //   //   updateProfileImg(img);
+    //   //   this.preloadImgUrl = img;
+    //   // }
+    // };
 
     return {
       slogan,
       state,
       updateSlogan,
-      uploadProfileImg,
       updateProfileImg,
+      uploadProfileImg,
       // fetchPercentage,
       // fetchGoal,
       // fetchAchievementRate,

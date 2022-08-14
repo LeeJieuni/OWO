@@ -63,6 +63,7 @@ export const accounts = {
       achieveNames: [],
       achieveRates: [],
     },
+    pointPercent: '',
     monthRecord: '',
     workout: {
       유산소: 'AEROBIC',
@@ -179,6 +180,9 @@ export const accounts = {
       const bestExercise = keys[0];
       state.percentage.best = bestExercise;
     },
+    SET_POINT_PERCENT: (state, payload) => {
+      state.pointPercent = payload;
+    },
     SET_ACHIEVEMENT_RATE: (state, payload) => {
       const achievementRate = payload;
       console.log(state.goals.length);
@@ -232,9 +236,10 @@ export const accounts = {
           dispatch('fetchPhysicalInfo');
           dispatch('fetchSlogan');
           dispatch('fetchPoint');
-          // dispatch('fetchCompete');
           dispatch('fetchGoal');
           dispatch('fetchProfileImg');
+          dispatch('fetchAchievementRate');
+          dispatch('fetchPointPercent');
           router.push({ name: 'mainpage' });
         })
         .catch((err) => {
@@ -294,9 +299,10 @@ export const accounts = {
           dispatch('fetchPhysicalInfo');
           dispatch('fetchSlogan');
           dispatch('fetchPoint');
-          // dispatch('fetchCompete');
           dispatch('fetchGoal');
           dispatch('fetchProfileImg');
+          dispatch('fetchAchievementRate');
+          dispatch('fetchPointPercent');
           console.log('-------state, accessToken-------');
           console.log(state.accessToken);
           console.log('-------state, refreshToken-------');
@@ -415,6 +421,7 @@ export const accounts = {
       dispatch('fetchPoint');
       dispatch('fetchGoal');
       dispatch('fetchAchievementRate');
+      dispatch('fetchPointPercent');
     },
     fetchPhysicalInfo({ state, commit }) {
       axios({
@@ -522,7 +529,7 @@ export const accounts = {
         });
     },
     updateProfileImg({ state, dispatch }, payload) {
-      // console.log('이미지 업데이트 axios 하기 전');
+      console.log('이미지 업데이트 axios 하기 전');
       axios({
         url: `https://i7c202.p.ssafy.io:8282/api/user/img/${state.userInfo.id}`,
         method: 'post',
@@ -534,11 +541,11 @@ export const accounts = {
         data: payload,
       })
         .then((res) => {
-          // console.log('이미지 업데이트 res.data.data 보내기 전');
-          // console.log(res);
+          console.log('이미지 업데이트 res.data.data 보내기 전');
+          console.log(res.data);
           alert(res.data.message);
           // console.log(payload);
-          dispatch('setProfileImg', res.data);
+          dispatch('setProfileImg', res.data.data);
           dispatch('fetchProfileImg');
           // dispatch('fetchProfileImg', res.data);  // 이미지 바꾸고 바로 페치하고싶은데, 이미지 바꾼 게 완료된 후 하고싶은데
           // router.push({ name: 'MyPageMainView' });
@@ -565,24 +572,6 @@ export const accounts = {
           console.log(err);
         });
     },
-    // fetchCompete({ state, commit }) {
-    //   axios({
-    //     url: `https://i7c202.p.ssafy.io:8282/api/user/compete/${state.userInfo.id}`,
-    //     method: 'get',
-    //     headers: {
-    //       'X-AUTH-TOKEN': state.accessToken,
-    //       'REFRESH-TOKEN': state.refreshToken,
-    //     },
-    //   })
-    //     .then((res) => {
-    //       // console.log(res.data.message);
-    //       console.log(res.data.data);
-    //       commit('SET_COMPETE', res.data.data);
-    //     })
-    //     .catch((err) => {
-    //       console.log(err);
-    //     });
-    // },
     setGoal({ commit }, payload) {
       commit('SET_GOAL', payload);
     },
@@ -711,6 +700,26 @@ export const accounts = {
           console.log(err);
         });
     },
+    fetchPointPercent({ state, commit }) {
+      console.log(' fetchPercentage axios 전');
+      axios({
+        url: `https://i7c202.p.ssafy.io:8282/api/user/point/percentage/${state.userInfo.id}`,
+        method: 'get',
+        headers: {
+          'X-AUTH-TOKEN': state.accessToken,
+          'REFRESH-TOKEN': state.refreshToken,
+        },
+      })
+        .then((res) => {
+          console.log('fetchPointPercent응답');
+          console.log(res.data.message);
+          console.log(res.data.data);
+          commit('SET_POINT_PERCENT', res.data.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
     enterroom({ state }, payload) {
       console.log(payload.mode, payload.roomId);
       axios({
@@ -741,7 +750,7 @@ export const accounts = {
         .then((res) => {
           console.log('fetchAchievementRate 응답');
           console.log(res.data.message);
-          console.log(res.data.data);
+          console.log(res.data);
           commit('SET_ACHIEVEMENT_RATE', res.data.data);
         })
         .catch((err) => {
@@ -808,6 +817,7 @@ export const accounts = {
     roomList: (state) => state.roomList,
     percentage: (state) => state.percentage,
     achievementRate: (state) => state.achievementRate,
+    pointPercent: (state) => state.pointPercent,
     monthRecord: (state) => state.monthRecord,
     noFree: (state) => state.noFree,
     noGame: (state) => state.noGame,
