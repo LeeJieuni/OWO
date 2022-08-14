@@ -11,9 +11,9 @@
       <!-- eslint-disable-next-line -->
       <div class="myreaction" v-if="myReaction.connectionId == this.myconnectionId">{{myReaction.userEmoji}}</div>
       <p class="myname">&ensp;{{ clientData }}&ensp;</p>
-      <div>스쿼트 : {{ mySquat }} 회</div>
-      <div>런지 : {{ myLunge }} 회</div>
-      <div>버피테스트 : {{ myBurpee }} 회</div>
+      <div class="myexercise">{{ mySquat.userSquatCount }} 회</div>
+      <!-- <div class="myexercise">런지 : {{ myLunge.userLungeCount }} 회</div>
+      <div class="myexercise">버피테스트 : {{ myBurpee.userBurpeeCount }} 회</div> -->
     </div>
   </div>
 </template>
@@ -163,6 +163,15 @@ export default {
   background-color:#4e8aff;
   font-size:24px;
   border-radius: 20px 0px 10px 0px;
+  /* z-index:600; */
+}
+.myexercise {
+  position:absolute;
+  top:-2px;
+  right:-2px;
+  background-color:#4e8aff;
+  font-size:24px;
+  border-radius: 0px 20px 0px 10px;
   /* z-index:600; */
 }
 

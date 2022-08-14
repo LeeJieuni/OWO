@@ -408,7 +408,7 @@ export default {
       check: false,
       check2: false,
       count: 0,
-      gameType: undefined, // 1:squat, 2:lunge, 3:burpee
+      gameType: 1, // 1:squat, 2:lunge, 3:burpee
       ctx: undefined,
       // 각 운동의 카운트를 memberId와 함께 session.on으로 보내주고 데이터 받아서 저장한다.
       squatCount: 0,
@@ -431,9 +431,6 @@ export default {
     this.joinSession(this.sessionId);
     this.credentialsUser.memberId = this.userInfo.id;
     this.credentialsUser.meetingRoomId = this.mySessionId;
-    // console.log('메인', this.mainStreamManager);
-    // this.connectionId = this.mainStreamManager.stream.connection.connectionId;
-    // console.log('커넥션', this.connectionId);
   },
   moundted() {
     this.init();
@@ -472,11 +469,6 @@ export default {
   methods: {
     stopCam() {
       this.webcam.stop();
-    },
-    deletemodel() {
-      console.log('현재 웹캠', this.webcam);
-      this.webcam.deleteProperty('webcam', 'video');
-      console.log('현재 웹캠', this.webcam);
     },
     tempLeaveSession() {
       this.leaveSession();
@@ -687,9 +679,6 @@ export default {
             });
             this.mainStreamManager = publisher;
             this.connectionId = this.mainStreamManager.stream.session.connection.connectionId;
-            // console.log('마이커넥션 아이디는', connection.connectionId);
-            // this.connectionId = this.mainStreamManager.stream.connection.connectionId;
-            // console.log('커넥션아이디는', this.connectionId);
             this.publisher = publisher;
             // --- Publish your stream ---
             this.session.publish(this.publisher);
@@ -844,13 +833,11 @@ export default {
         setTimeout(() => {
           this.gameType = 1;
           this.init();
-          console.log('여기서 시작1');
+          this.init();
         }, 5000);
         setTimeout(() => {
           this.isStarted = false;
           this.$refs.setTimer3.pauseTimer();
-          console.log('여기서 시작2');
-          this.init();
         }, 6000);
         setTimeout(() => {
           this.startround2();
@@ -875,8 +862,6 @@ export default {
           this.isStarted = false;
           this.$refs.setTimer3.pauseTimer();
           this.gameType = 2;
-          // 여기에 런지 세는 함수가 시작되어야 한다.
-          // 숫자가 오를때마다 message를 보내서 숫자를 업데이트한다.
         }, 6000);
         setTimeout(() => {
           this.startround3();
@@ -901,25 +886,11 @@ export default {
           this.isStarted = false;
           this.$refs.setTimer3.pauseTimer();
           this.gameType = 3;
-          // 여기에 런지 세는 함수가 시작되어야 한다.
-          // 숫자가 오를때마다 message를 보내서 숫자를 업데이트한다.
         }, 6000);
         setTimeout(() => {
           this.isExercising = false;
-          alert('운동종료');
-          // 모달 띄우기
-          // 포인트 -> 순위 보여줘야함, 포인트 추가된 것 확인되어야함.
         }, 36000);
       });
-
-      // this.session.on('signal:leaveRoomMe', (event) => {
-      //   console.log(event.data);
-      //   for (let i = 0; i < this.subscribers.length; i += 1) {
-      //     if (this.subscribers[i].stream.connection.connectionId === event.data) {
-      //       this.subscribers.splice(this.subscribers[i], 1);
-      //     }
-      //   }
-      // });
     },
 
     sendEmoji() {
@@ -1143,8 +1114,6 @@ export default {
             this.timer = this.temp_timer;
           }, 2000);
         }
-        // if (this.timer === 0) {
-        // }
       }, 1000);
       this.temp_timer_2 = this.temp_timer;
     },
@@ -1158,7 +1127,6 @@ export default {
       event.preventDefault();
     },
     async setmodel() {
-      // console.log('setmodel');
       switch (this.gameType) {
         case 1: // 스쿼트
           this.URL = 'https://teachablemachine.withgoogle.com/models/mtTsf3dWh/';
@@ -1184,22 +1152,19 @@ export default {
 
     async init() {
       this.setmodel();
-
       const flip = false;
-      this.webcam = new tmPose.Webcam(500, 300, flip);
+      this.webcam = new tmPose.Webcam(500, 700, flip);
       await this.webcam.setup();
       await this.webcam.play();
       // console.log('init_webcam >> ', this.webcam);
       window.requestAnimationFrame(this.loop);
-
       const canvas2 = this.webcam.canvas;
       canvas2.width = 500;
-      canvas2.height = 300;
+      canvas2.height = 700;
       this.ctx = canvas2.getContext('2d');
     },
     async loop() {
       this.webcam.update();
-
       switch (this.gameType) {
         case 1:
           await this.squatpredict();
@@ -1217,8 +1182,6 @@ export default {
     },
 
     async squatpredict() {
-      this.check = false;
-      this.check2 = false;
       // Prediction #1: run input through posenet
       // estimatePose can take in an image, video or canvas html element
       // console.log('squat predict -> ', this.model);
@@ -1227,7 +1190,6 @@ export default {
       );
       // Prediction 2: run input through teachable machine classification model
       const prediction = await this.model.predict(posenetOutput);
-
       if (prediction[1].probability.toFixed(2) > 0.99) { // 스쿼트
         if (this.check) {
           this.squatCount += 1;
@@ -1249,10 +1211,8 @@ export default {
       } else if (prediction[0].probability.toFixed(2) > 0.99) { // 서 있는 자세
         // const countTemp = this.count;
         // this.count = countTemp + 1;
-
         // this.count += 1;
         // console.log('squat count : ', this.count);
-
         this.status = 'ready';
         // this.setState({ check: true });
         this.check = true;
@@ -1262,13 +1222,10 @@ export default {
     },
 
     async lungepredict() {
-      this.check = false;
-      this.check2 = false;
       const { pose, posenetOutput } = await this.model.estimatePose(
         this.webcam.canvas,
       );
       const prediction = await this.model.predict(posenetOutput);
-
       if (prediction[1].probability.toFixed(2) > 0.99) { // 런지
         if (this.check) {
           this.lungeCount += 1;
@@ -1295,13 +1252,10 @@ export default {
     },
 
     async burpeepredict() {
-      this.check = false;
-      this.check2 = false;
       const { pose, posenetOutput } = await this.model.estimatePose(
         this.webcam.canvas,
       );
       const prediction = await this.model.predict(posenetOutput);
-
       if (prediction[2].probability.toFixed(2) > 0.99) { // 서 있는 자세
         if (this.check && this.check2) {
           this.burpeeCount += 1;
