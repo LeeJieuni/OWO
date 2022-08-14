@@ -617,15 +617,6 @@ td {
   text-align: center;
   padding-bottom: 20px;
 }
-
-.people-title, .exercise-type-box {
-  text-align: center;
-  font-size: 18px;
-  font-weight: 700;
-}
-.people-img {
-  border-radius: 50%;
-}
 .memo-box {
   border: solid black 1px;
   margin: 20px;
