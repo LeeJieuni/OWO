@@ -231,7 +231,9 @@
         <button v-b-modal.after-exercise-modal class="mybtn6">
           <img class="menu_icon2" src="@/assets/icon/roomout.png" alt="leaveSession">
         </button>
-        <button v-if="!isStarted" class="mybtn5" @click="startround1">
+<!-- 여기에 방장 이름이 들어가야함 -->
+        <!-- eslint-disable-next-line -->
+        <button v-if="(!isExercising) & (this.subscribers.length >= 1)" class="mybtn5" @click="startround1">
           <img class="menu_icon4" src="@/assets/icon/start.png" alt="Start">
         </button>
         <!-- eslint-disable-next-line -->
@@ -316,7 +318,7 @@ const accounts = 'accounts';
 const meetingroom = 'meetingroom';
 const emojiIndex = new EmojiIndex(emojidata);
 const emoji = 'emoji';
-// const record = 'record';
+const exercise = 'exercise';
 
 const today = new Date();
 const year = today.getFullYear();
@@ -400,6 +402,7 @@ export default {
       mypictures: [],
       roomTime: null,
       isStarted: false,
+      isExercising: false,
       RoundStartTimer: null,
       // tm 영역
       webcam: undefined,
@@ -409,12 +412,9 @@ export default {
       check: false,
       check2: false,
       count: 0,
-      gameType: 2, // 1:squat, 2:lunge, 3:burpee
+      gameType: undefined, // 1:squat, 2:lunge, 3:burpee
       ctx: undefined,
       // 각 운동의 카운트를 memberId와 함께 session.on으로 보내주고 데이터 받아서 저장한다.
-      allSquatCountList: [],
-      allLungeCountList: [],
-      allburpeeCountList: [],
       squatCount: 0,
       LungeCount: 0,
       burpeeCount: 0,
@@ -471,7 +471,7 @@ export default {
     ...mapState(emoji, ['allEmojiList']),
     ...mapState(accounts, ['accessToken', 'userInfo']),
     ...mapState(openvidu, ['OPENVIDU_SERVER_URL', 'OPENVIDU_SERVER_SECRET']),
-    ...mapState(meetingroom, ['myRoomName', 'mySessionId', 'meetingRoomList', 'camera', 'mic']),
+    ...mapState(meetingroom, ['myRoomName', 'mySessionId', 'meetingRoomList', 'camera', 'mic', 'roomMasterId']),
   },
   methods: {
     stopCam() {
@@ -629,6 +629,11 @@ export default {
       'leaveMeetingRoom',
       'startMeetingRoom',
     ]),
+    ...mapActions(exercise, [
+      'changeSquatCountList',
+      'changeLungeCountList',
+      'changeBurpeeCountList',
+    ]),
     joinSession(sessionNum) {
       this.SET_SESSION_ID(sessionNum);
       console.log(`sessionID = ${sessionNum}`);
@@ -695,33 +700,6 @@ export default {
           });
       });
       // 사용자 정의 함수 영역
-      // this.session.on('signal:squatCount', (event) => {
-      //   const sendSquatCountData = event.data.split(',');
-      //   const obj = {
-      //     connectionId: sendSquatCountData[0],
-      //     allUserSquatCount: sendSquatCountData[1],
-      //   };
-      //   this.allSquatCountList = obj;
-      // });
-
-      // this.session.on('signal:lungeCount', (event) => {
-      //   const sendLungeCountData = event.data.split(',');
-      //   const obj = {
-      //     connectionId: sendLungeCountData[0],
-      //     allUserLungeCount: sendLungeCountData[1],
-      //   };
-      //   this.allLungeCountList = obj;
-      // });
-
-      // this.session.on('signal:burpeeCount', (event) => {
-      //   const sendBurpeeCountData = event.data.split(',');
-      //   const obj = {
-      //     connectionId: sendBurpeeCountData[0],
-      //     allUserBurpeeCount: sendBurpeeCountData[1],
-      //   };
-      //   this.allBurpeeCountList = obj;
-      // });
-
       this.session.on('signal:my-emoji', (event) => {
         const sendEmojiData = event.data.split(',');
         const obj = {
@@ -729,6 +707,33 @@ export default {
           userEmoji: sendEmojiData[1],
         };
         this.changeEmojiList(obj);
+      });
+
+      this.session.on('signal:squatCount', (event) => {
+        const sendSquatCountData = event.data.split(',');
+        const obj = {
+          connectionId: sendSquatCountData[0],
+          allUserSquatCount: sendSquatCountData[1],
+        };
+        this.changeSquatCountList(obj);
+      });
+
+      this.session.on('signal:lungeCount', (event) => {
+        const sendLungeCountData = event.data.split(',');
+        const obj = {
+          connectionId: sendLungeCountData[0],
+          allUserLungeCount: sendLungeCountData[1],
+        };
+        this.changeLungeCountList(obj);
+      });
+
+      this.session.on('signal:burpeeCount', (event) => {
+        const sendBurpeeCountData = event.data.split(',');
+        const obj = {
+          connectionId: sendBurpeeCountData[0],
+          allUserBurpeeCount: sendBurpeeCountData[1],
+        };
+        this.changeBurpeeCountList(obj);
       });
 
       this.session.on('signal:my-chat', (event) => {
@@ -747,6 +752,7 @@ export default {
         // eslint-disable-next-line
         const audio = new Audio(require('@/assets/music/round1.mp3'));
         audio.play();
+        this.isExercising = true;
         this.isStarted = true;
         this.round1Game = true;
         this.roundGameName = '스쿼트';
@@ -840,14 +846,19 @@ export default {
           }, 100);
         }, 2000);
         setTimeout(() => {
+          this.gameType = 1;
+          this.init();
+          console.log('여기서 시작1');
+        }, 5000);
+        setTimeout(() => {
           this.isStarted = false;
           this.$refs.setTimer3.pauseTimer();
-          // 여기에 스쿼트 세는 함수가 시작되어야 한다.
-          // 숫자가 오를때마다 message를 보내서 숫자를 업데이트한다.
+          console.log('여기서 시작2');
+          this.init();
         }, 6000);
         setTimeout(() => {
           this.startround2();
-        }, 16000);
+        }, 36000);
       });
 
       this.session.on('signal:startround2', () => {
@@ -867,12 +878,13 @@ export default {
         setTimeout(() => {
           this.isStarted = false;
           this.$refs.setTimer3.pauseTimer();
+          this.gameType = 2;
           // 여기에 런지 세는 함수가 시작되어야 한다.
           // 숫자가 오를때마다 message를 보내서 숫자를 업데이트한다.
         }, 6000);
         setTimeout(() => {
           this.startround3();
-        }, 16000);
+        }, 36000);
       });
 
       this.session.on('signal:startround3', () => {
@@ -892,14 +904,16 @@ export default {
         setTimeout(() => {
           this.isStarted = false;
           this.$refs.setTimer3.pauseTimer();
+          this.gameType = 3;
           // 여기에 런지 세는 함수가 시작되어야 한다.
           // 숫자가 오를때마다 message를 보내서 숫자를 업데이트한다.
         }, 6000);
         setTimeout(() => {
+          this.isExercising = false;
           alert('운동종료');
           // 모달 띄우기
           // 포인트 -> 순위 보여줘야함, 포인트 추가된 것 확인되어야함.
-        }, 16000);
+        }, 36000);
       });
 
       // this.session.on('signal:leaveRoomMe', (event) => {

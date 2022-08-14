@@ -42,15 +42,9 @@ export const record = {
     },
     SET_DAY_PICTURES: (state, payload) => {
       state.dayPictures = payload;
-    }
-    // SET_REAL_TIME_COUNT_LIST: (state, payload) => {
-    //   state.
-    // }
+    },
   },
   actions: {
-    // RealTimeCountList({ commit }, payload) {
-    //   commit('SET_REAL_TIME_COUNT_LIST', payload);
-    // },
     fetchSessions({ commit }) {
       let userInfo = sessionStorage.getItem('vuex');
       userInfo = JSON.parse(userInfo);

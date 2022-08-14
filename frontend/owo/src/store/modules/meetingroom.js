@@ -9,6 +9,7 @@ export const meetingroom = {
     meetingRoomList: [],
     camera: true,
     mic: true,
+    roomMasterId: '',
   },
   mutations: {
     SET_SESSION_ID: (state, mySessionId) => {
@@ -46,6 +47,7 @@ export const meetingroom = {
       })
         .then((res) => {
           // console.log(res.data);
+          this.roomMasterId = requestDto.memberId;
           const { roomId } = res.data.data;
           commit('SET_SESSION_ID', roomId);
           this.myRoomName = requestDto.roomName;

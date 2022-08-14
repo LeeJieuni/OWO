@@ -9,8 +9,11 @@
       <!-- eslint-disable-next-line -->
       <ov-video class="ov-video" :stream-manager="streamManager" />
       <!-- eslint-disable-next-line -->
-      <div class="myreaction" v-if="myreaction.connectionId == this.myconnectionId">{{myreaction.userEmoji}}</div>
+      <div class="myreaction" v-if="myReaction.connectionId == this.myconnectionId">{{myReaction.userEmoji}}</div>
       <p class="myname">&ensp;{{ clientData }}&ensp;</p>
+      <div>스쿼트 : {{ mySquat }} 회</div>
+      <div>런지 : {{ myLunge }} 회</div>
+      <div>버피테스트 : {{ myBurpee }} 회</div>
     </div>
   </div>
 </template>
@@ -20,6 +23,7 @@ import OvVideo from './OvVideo.vue';
 
 const emoji = 'emoji';
 const accounts = 'accounts';
+const exercise = 'exercise';
 
 export default {
   components: {
@@ -49,8 +53,13 @@ export default {
 
   computed: {
     ...mapState(emoji, ['allEmojiList']),
+    ...mapState(exercise, [
+      'allSquatCountList',
+      'allLungeCountList',
+      'allburpeeCountList',
+    ]),
     ...mapState(accounts, ['userInfo']),
-    myreaction() {
+    myReaction() {
       let myEmojiNow = '';
       for (let i = 0; i < this.allEmojiList.length; i += 1) {
         // eslint-disable-next-line
@@ -63,6 +72,48 @@ export default {
         }
       }
       return myEmojiNow;
+    },
+    mySquat() {
+      let mySquatNow = '';
+      for (let i = 0; i < this.allSquatCountList.length; i += 1) {
+        // eslint-disable-next-line
+        if (this.allSquatCountList[i].connectionId == this.myconnectionId) {
+          mySquatNow = {
+            connectionId: this.myconnectionId,
+            userSquatCount: this.allSquatCountList[i].allUserSquatCount,
+          };
+          break;
+        }
+      }
+      return mySquatNow;
+    },
+    myLunge() {
+      let myLungeNow = '';
+      for (let i = 0; i < this.allLungeCountList.length; i += 1) {
+        // eslint-disable-next-line
+        if (this.allLungeCountList[i].connectionId == this.myconnectionId) {
+          myLungeNow = {
+            connectionId: this.myconnectionId,
+            userLungeCount: this.allLungeCountList[i].allUserLungeCount,
+          };
+          break;
+        }
+      }
+      return myLungeNow;
+    },
+    myBurpee() {
+      let myBurpeeNow = '';
+      for (let i = 0; i < this.allburpeeCountList.length; i += 1) {
+        // eslint-disable-next-line
+        if (this.allburpeeCountList[i].connectionId == this.myconnectionId) {
+          myBurpeeNow = {
+            connectionId: this.myconnectionId,
+            userBurpeeCount: this.allburpeeCountList[i].allUserBurpeeCount,
+          };
+          break;
+        }
+      }
+      return myBurpeeNow;
     },
     clientData() {
       const { clientData } = this.getConnectionData();
