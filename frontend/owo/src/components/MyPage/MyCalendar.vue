@@ -1,12 +1,16 @@
 <template>
   <div class="calendar">
-    <div class="month-title">
-      <h2>
+    <div class="month-title container-fluid row p-0 m-0">
+      <div class="col-2">
         <a class="month-change-btn" href="#"
           @click.prevent="onClickPrev(currentMonth)">◀</a>
-          <span class="date-title">{{currentYear}}년 {{currentMonth}}월</span>
+      </div>
+      <div class="col-8">
+        <h2 class="date-title p-0 m-0">{{currentYear}}년 {{currentMonth}}월</h2>
+      </div>
+      <div class="col-2">
         <a class="month-change-btn" href="#" v-on:click.prevent="onClickNext(currentMonth)">▶</a>
-      </h2>
+      </div>
     </div>
     <div class="calendar-table">
       <table class="table table-hover">
@@ -41,55 +45,74 @@
       <router-link to="/slide">변화 한 눈에 보기</router-link>
 
       <b-modal id="myModal" size="lg" button-size="sm" scrollable ref="myModal"
-      class="myModal"
+      class="myModal" hide-footer
         :title="`${currentYear}년 ${currentMonth}월 ${day}일`" hide-header>
         <div class="carousel-box">
-          <div class="modal-title text-center">
-            <a class="month-change-btn" href="#"
-              @click.prevent="onClickPrevDay(currentYear, currentMonth, day)">◀</a>
-              <span class="lg-title">
-                {{currentYear}}년 {{currentMonth}}월 {{day}}일 운동 기록</span>
-            <a class="month-change-btn" href="#"
-              v-on:click.prevent="onClickNextDay(currentYear, currentMonth, day)">▶</a>
+          <div class="month-title modal-title text-center container-fluid row p-0 m-0 mb-3">
+            <div class="col-2">
+              <a class="day-change-btn" href="#"
+                @click.prevent="onClickPrevDay(currentYear, currentMonth, day)">◀</a>
+            </div>
+            <div class="col-8">
+              <h1 class="date-title p-0 m-0">{{currentYear}}년 {{currentMonth}}월 {{day}}일</h1>
+            </div>
+            <div class="col-2">
+              <a class="day-change-btn" href="#"
+                v-on:click.prevent="onClickNextDay(currentYear, currentMonth, day)">▶</a>
+            </div>
           </div>
-          {{ monthRecord }}
           <!--카로셀-->
           <div class="row">
+            <div class="no-record-day mt-5" v-if="dayExerciseList = []">이 날은 운동 기록이 없네요!</div>
+            <!-- {{ dayExerciseList }} -->
             <!-- <img :src="imageUrl" alt=""> -->
-            <div class="pt-5" v-for="(exercise, i) in dayExerciseList" :key="i">
+            <div class="p-0 m-0 mt-5 px-5" v-for="(exercise, i) in dayExerciseList" :key="i">
+              <div class="row record-number">
+                <span>
+                <!--eslint-disable-next-line-->
+                  <span class="record-idx">{{ i + 1 }}</span><span class="record-exercise">{{ exercise.exercise }}</span>
+                </span>
+              </div>
               <!-- recordId: {{ exercise.recordId }} <br> -->
               <!-- memberId: {{ exercise.memberId }} <br> -->
               <!-- meetingRoomId: {{ exercise.meetingRoomId }} <br> -->
 
-              <div class="picture-wrapper d-flex justify-content-center">
+              <div class="picture-wrapper d-flex justify-content-center mb-3">
                 <img class="picture" :src="dayPictures[i].fileUrl" alt="">
               </div>
 
               <!--태그-->
               <!-- tags: {{ exercise.tags }} <br> -->
-              <div class="tags row">
-                <button
-                  v-for="(tag, tagI) in exercise.tags"
-                  :key="tagI"
-                  class="tag"
-                >
-                  <p class="tag-name"># {{tag.tagContent}}</p>
-                </button>
+              <div class="tags d-flex justify-content-center">
+                <div class="d-flex justify-content-start" style="width: 400px;">
+                  <button
+                    v-for="(tag, tagI) in exercise.tags"
+                    :key="tagI"
+                    class="tag ">
+                    <p class="tag-name"># {{tag.tagContent}}</p>
+                  </button>
+                </div>
               </div>
 
-              <!-- 운동시간 -->
-              운동 시간 : {{ exercise.recordHour }}분 <br>
-
-              <!--운동 종류-->
-              <div class="exercise-type-box">
-                <p>{{ exercise.exercise }}</p>
+              <div class=" d-flex justify-content-center">
+                <div class="d-flex justify-content-between" style="width: 400px;">
+                  <div>
+                    <p class="record-exercise">{{ exercise.exercise }}</p>
+                  </div>
+                  <div>
+                    <p class="record-min">{{ exercise.recordHour }}분</p>
+                  </div>
+                </div>
               </div>
 
-              <!--메모-->
-              <div class="memo-box">
-                <p class="memo">
-                  {{ exercise.recordMemo }}
-                </p>
+              <div class=" d-flex justify-content-center">
+                <div class="d-flex justify-content-between">
+                  <div class="memo-box">
+                    <p class="memo">
+                      {{ exercise.recordMemo }}
+                    </p>
+                  </div>
+                </div>
               </div>
               <!-- recordSecret: {{ exercise.recordSecret }} <br> -->
               <hr>
@@ -97,21 +120,12 @@
           </div>
         </div>
 
-        <div class="btns">
-          <b-button
-            class="mt-3 modal-close"
-            variant="outline-danger" block
-            @click.prevent="hideModal">
-            Close Me
-          </b-button>
-        </div>
-
-        <template #modal-footer="{}">
+        <!-- <template #modal-footer="{}">
           <b-button size="sm"
             class="mt-3 modal-close" variant="outline-danger" block>
             Cancel
           </b-button>
-        </template>
+        </template> -->
       </b-modal>
     </div>
   </div>
@@ -124,7 +138,7 @@ export default {
   name: 'MyCalendar',
   data() {
     return {
-      weekNames: ['월', '화', '수', '목', '금', '토', '일'],
+      weekNames: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
       rootYear: 1904,
       rootDayOfWeekIndex: 4, // 2000년 1월 1일은 토요일
       currentYear: new Date().getFullYear(),
@@ -134,10 +148,10 @@ export default {
       currentMonthStartWeekIndex: null,
       currentCalendarMatrix: [],
       endOfDay: null,
-      memoDatas: [],
-      day: null,
-      tags: ['오운완', '상체', '등', '어깨', '복근'],
-      exerciseType: '헬스',
+      // memoDatas: [],
+      // day: null,
+      // tags: ['오운완', '상체', '등', '어깨', '복근'],
+      // exerciseType: '헬스',
     };
   },
   computed: {
@@ -238,7 +252,7 @@ export default {
       this.init();
       const payload = [this.currentYear, this.currentMonth];
       console.log(payload);
-      this.fetchMonthRecord(payload);
+      // this.fetchMonthRecord(payload);
     },
     onClickNext(month) {
       this.month += 1;
@@ -396,6 +410,10 @@ export default {
 </script>
 
 <style scoped>
+.calendar {
+  color: #2E2E2E;
+  max-width: 610px;
+}
 .my-calendar-title {
   text-align: left;
   padding-top: 50px;
@@ -406,19 +424,25 @@ export default {
 .date-title {
   font-family: 'Black Han Sans', sans-serif;
 }
-.calendar {
-  max-width: 600px;
-}
+
 .calendar-table {
   margin-left: 50px;
   margin-right: 50px;
 }
 .month-change-btn {
   text-decoration: none;
-  font-size: 18px;
+  font-size: 24px;
   color: gray;
 }
 .month-change-btn:hover {
+  color: #4E8AFF;
+}
+.day-change-btn {
+  text-decoration: none;
+  font-size: 28px;
+  color: gray;
+}
+.day-change-btn:hover {
   color: #4E8AFF;
 }
 .days {
@@ -429,14 +453,6 @@ export default {
 .today {
   color: #4E8AFF;
   text-decoration: none;
-}
-.rounded {
-  -moz-border-radius:20px 20px 20px 20px;
-  border-radius:20px 20px 20px 20px;
-  /* border:solid 1px #ffffff; */
-  background-color:#4E8AFF;
-  padding: 3px 6px;
-  color:#ffffff;
 }
 .carousel-box {
   margin: 50px;
@@ -469,26 +485,54 @@ export default {
   margin: 0 auto;
   Background-size : cover;
 }
+.record-number {
+  margin-left: 80px;
+}
+.record-idx {
+  font-size: 28px;
+  font-weight: 900;
+  margin-right: 20px;
+}
 .tags {
-  padding: 10px;
-  margin-bottom: 50px;
+  width: 100%;
+  /* padding: 10px; */
+  margin-bottom: 10px;
 }
 .tag {
   width: 80px;
   height: 26px;
   border: solid #828282 0px;
   display:inline-block;
-  border-radius: 10px;
-  /* padding: 4px; */
-  margin: 2px;
+  border-radius: 3px;
+  padding: .2em .5em .3em;
+  font-weight: 600;
+  margin: .25em .1em;
   font-size: 12px;
   font-weight: 700;
-  background-color:#4E8AFF;
+  background-color:#393939;
   /* padding-left: 10px; */
   line-height: 25px;
   color: white;
   letter-spacing: -1.5;
   text-align: center;
+  /* box-shadow: 3px 3px #898e97; */
+}
+.tag-name {
+  text-align: center;
+}
+.tag:hover {
+  background-color: #4E8AFF;
+  color: white;
+  transition: 0.2s;
+  cursor: pointer;
+}
+.record-min {
+  font-size: 12px;
+  font-weight: 400;
+}
+.record-exercise {
+  font-size: 15px;
+  font-weight: 900;
 }
 .stamp-div {
 }
@@ -508,19 +552,6 @@ export default {
   padding: 0 0 30px 0;
 }
 
-.tag-name {
-  text-align: center;
-}
-.tag:hover {
-  background-color: #DE7474;
-  color: white;
-  transition: 0.2s;
-  cursor: pointer;
-
-}
-.tag p {
-  /* text-align: left; */
-}
 .table {
   /* --bs-table-hover-bg: rgba(75, 172, 237, 0.08); */
 }
@@ -576,6 +607,9 @@ td {
   height: 100%;
   object-fit: cover;
   margin: auto;
+  border-radius: 15px;
+  border: 1px solid #DFDFDF;
+  box-shadow: 3px 3px 3px #DFDFDF;
 }
 .lg-title {
   font-weight: 900;
@@ -598,12 +632,18 @@ td {
   padding: 20px;
   margin-bottom: 50px;
   border-radius: 10px;
+  width: 400px;
 }
 .memo {
   text-align: justify;
   font-family: 'Fairytale_ddobak';
-  font-weight: 600;
+  font-weight: 400;
   font-size: 20px;
-  /* letter-spacing: 2; */
+  letter-spacing: -1.2;
+  margin-bottom: 4px;
+}
+.no-record-day {
+  font-weight: 700;
+  text-align: center;
 }
 </style>

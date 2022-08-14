@@ -6,27 +6,67 @@
       size="5em"
       />
     </div> -->
-    <b-modal id="image-upload" size="md" hide-footer hide-header centered>
+    <b-modal id="image-upload" size="lg" hide-footer hide-header centered>
       <div>
         <h3 class="modal-title text-center mt-4">프로필 이미지 업로드📷</h3>
+        <p class="text-center">프로필 이미지는 png 파일, 2mb 이하만 가능합니다.</p>
         <div class="wrapper">
           <div class="container">
-            <div class="row row-cols-3">
-              <div class="img-wrapper">
+            <div class="row">
+              <div class="img-wrapper col-4">
                 <img
                   class="profile-img"
-                  :src="state.preloadImgUrl"
+                  :src="!!state.preloadImgUrl ? state.preloadImgUrl : profileImg"
                   alt="프로필이미지"
                 >
               </div>
-              <form enctype="multipart/form-data" imgFormData>
-              <label for="profileImag">
-                <input class="input-image" accept="image/*" type="file"
-                  ref="profileImg" @change.prevent="uploadProfileImg($event)" id="profileImg">
-              </label>
-            </form>
+              <div class="col-8">
+                <form enctype="multipart/form-data" imgFormData>
+                  <label for="profileImag">
+                    <input class="input-image form-control" accept="image/*" type="file"
+                      ref="profileImg" @change.prevent="uploadProfileImg($event)" id="profileImg">
+                  </label>
+                </form>
+              </div>
             </div>
           </div>
+        </div>
+      </div>
+    </b-modal>
+
+    <b-modal id="slogan-update" size="md" hide-footer hide-header centered>
+      <div>
+        <h3 class="modal-title text-center mt-4">슬로건 변경 📝</h3>
+        <div class="wrapper">
+          <div class="container">
+            <div class="col col-3">
+              <img class="slogan-img" src="@/assets/icon/slogan.png" alt="">
+            </div>
+            <div class="col col-9">
+              <div class="d-flex flex-column ms-3">
+                <div class="row">
+                  <p class="p-tag">나만의 운동 목표, 슬로건을 작성해 주세요!</p><br>
+                </div>
+                <div class="row">
+                  <form id="sloganUpdate">
+                    <label for="slogan">
+                      <input class="slogan-input" type="text"
+                        id="slogan" v-model="state.sloganData.slogan">
+                      <!-- {{ state.sloganData.slogan }} -->
+                    </label>
+                    <!-- <button @click.prevent="updateSlogan($event)">변경</button> -->
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="d-flex justify-content-center">
+          <button
+            class="btn btn-outline-secondary"
+            form="sloganUpdate"
+            @click.prevent="updateSlogan()">변경
+          </button>
         </div>
       </div>
     </b-modal>
@@ -39,14 +79,8 @@
         </div>
         <div class="col-9 m-0 p-0 right">
           <div class="title text-center">
-            <h4>{{slogan}}</h4>
-            <form action="">
-              <label for="slogan">
-                <input type="text" id="slogan" v-model="state.sloganData.slogan">
-                <!-- {{ state.sloganData.slogan }} -->
-              </label>
-              <button @click.prevent="updateSlogan($event)">변경</button>
-            </form>
+            <!--eslint-disable-next-line-->
+            <h4>{{slogan}} <svg class="sloganUpdate" v-b-modal.slogan-update xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path d="M7.243 18H3v-4.243L14.435 2.322a1 1 0 0 1 1.414 0l2.829 2.829a1 1 0 0 1 0 1.414L7.243 18zM3 20h18v2H3v-2z" fill="rgba(114,114,114,1)"/></svg></h4>
           </div>
           <div>
             <router-view></router-view>
@@ -62,7 +96,9 @@
 import MySidebar from '@/components/MyPage/MySidebar.vue';
 import { useStore } from 'vuex';
 import { computed, reactive } from 'vue';
-// import multer from
+import swal from 'sweetalert2';
+
+window.Swal = swal;
 
 export default {
   name: 'MyPage',
@@ -73,6 +109,7 @@ export default {
     // store.dispatch('record/fetchPercentage');
     const slogan = computed(() => store.getters['accounts/slogan']);
     const user = computed(() => store.getters['accounts/userInfo']);
+    const profileImg = computed(() => store.getters['accounts/profileImg']);
     store.dispatch('accounts/fetchMypage');
     const state = reactive({
       sloganData: {
@@ -84,8 +121,8 @@ export default {
     });
 
     // Methods
-    const updateSlogan = function (e) {
-      e.preventDefault();
+    const updateSlogan = function () {
+      // e.preventDefault();
       console.log('보낸다');
       console.log(this.state.sloganData);
       store.dispatch('accounts/updateSlogan', this.state.sloganData);
@@ -105,10 +142,31 @@ export default {
       let img = e.target.files[0];
       console.log('파일사이즈 검사');
       if (img.size > (2 * 1024 * 1024)) {
-        alert('파일 사이즈가 2mb를 넘습니다.');
+        swal.fire({
+          title: '파일 사이즈가 너무 큽니다.',
+          icon: 'warning',
+          text: '파일 사이즈는 2mb 이하만 가능합니다.',
+        });
+        // this.$swal({
+        // title: '파일 사이즈는 2mb 이하만 가능합니다.',
+        // input: 'checkbox',
+        // inputPlaceholder: '일주일 간 보지 않기',
+        //   html:
+        //     'ㄴㄴ',
+        //   icon: 'info',
+        //   showCloseButton: true,
+        // }).then((res) => {
+        //   if (res.value === 1) {
+        //     this.setCookie();
+        //   }
+        // });
         img = null;
       } else if (img.type.indexOf('image/png') < 0) {
-        alert('이미지(png) 파일만 업로드 가능합니다.');
+        swal.fire({
+          title: '파일 타입이 다릅니다.',
+          icon: 'warning',
+          text: '.png 파일만 업로드 가능합니다.',
+        });
         img = null;
       } else {
         console.log('처리 후');
@@ -123,7 +181,7 @@ export default {
             alert('다시 선택해주세요.');
             img = null;
           }
-        }, 1000);
+        }, 500);
       }
       // const preview = URL.createObjectURL(file);
       // console.log(file);
@@ -181,6 +239,7 @@ export default {
       updateSlogan,
       updateProfileImg,
       uploadProfileImg,
+      profileImg,
       // fetchPercentage,
       // fetchGoal,
       // fetchAchievementRate,
@@ -201,6 +260,12 @@ export default {
 </script>
 
 <style scoped>
+  .mypageview {
+    color: #2E2E2E;
+  }
+  .mypageview::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
+  }
   a {
     text-decoration: none;
   }
@@ -281,5 +346,29 @@ export default {
   }
   .right {
     border-radius: 20px;
+  }
+  .sloganUpdate {
+    cursor: pointer;
+  }
+  .slogan-img {
+    max-width: 100px;
+  }
+  .p-tag {
+    font-weight: 800;
+    /* font-weight: 500; */
+  }
+  .slogan-input {
+    border: #DFDFDF 1px solid;
+    color:#5c5c5c;
+    border-radius: 15px;
+    padding-left: 10px;
+    font-weight: 500;
+    width: 300px;
+    height: 30px;
+  }
+  .slogan-input:visited {
+    border: #3f3f3f 1px solid;
+    color: black;
+    font-weight: 600;
   }
 </style>

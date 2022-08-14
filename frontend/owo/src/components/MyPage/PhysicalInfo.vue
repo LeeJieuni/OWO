@@ -44,7 +44,7 @@
               aria-valuemin="0" aria-valuemax="100">비만
             </div>
           </div>
-          <div v-if="state.notEnoughInfo ==='enough'" class="yes-bmi">
+          <div v-if="state.notEnoughInfo === 'enough'" class="yes-bmi">
           <div class="bmi-solution pt-2 text-start">
             <p>bmi 지수 : {{state.bmi}}</p>
             <p>{{ state.bmiText }}</p>
@@ -53,10 +53,9 @@
         <div v-else class="no-bmi">
           <div class="bmi-solution pt-2 text-start">
             <p class="rg-font">
-              {{state.text}}
               <router-link
                 to="/mypage/update"
-                class="link">{{state.notEnoughInfo}} 추가하기</router-link>
+                class="link">{{state.text}}</router-link>
             </p>
           </div>
         </div>
@@ -147,8 +146,12 @@ export default {
     };
   },
   created() {
-    console.log('created');
-    console.log(this.state.notEnoughInfo);
+    // console.log('created');
+    console.log(this.user);
+    console.log(this.physical);
+    console.log(this.state.bmi);
+    console.log(this.state.bmr);
+    console.log(this.state.caloriePerDay);
     // physical info 반올림
     this.state.bmi = Math.round(this.physical.bmi);
     this.state.bmr = Math.round(this.physical.bmr);
@@ -156,18 +159,39 @@ export default {
 
     // user 정보 부족 시 bmi, bmr, calorie 초기화
     // eslint-disable-next-line
-    if (!this.user.gender || !this.user.weight || !this.user.weight || !this.user.height || !this.user.activityLevel) {
+    if (!this.user.gender || !this.user.weight ||this.user.weight <= 0 || !this.user.age || this.user.age == 0 || !this.user.height ||!this.user.height <= 0 || !this.user.activityLevel || this.user.activityLevel == 0) {
       this.state.text = '신체정보를 추가해주세요!';
-      this.state.bmi = '';
-      this.state.bmr = '';
-      this.state.caloriePerDay = '';
-      if (!this.user.weight && this.user.height > 0) {
-        this.state.notEnoughInfo = '몸무게';
-      } else if (this.user.weight > 0 && !this.user.height) {
-        this.state.notEnoughInfo = '키';
-      } else if (!this.user.weight && !this.user.height) {
-        this.state.notEnoughInfo = '몸무게, 키';
-      }
+      this.state.notEnoughInfo = 'ㄴㄴ';
+      // this.state.bmi = '';
+      // this.state.bmr = '';
+      // this.state.caloriePerDay = '';
+      // const noDataList = [];
+      // if (!this.user.weight) {
+      //   noDataList.push('몸무게');
+      // }
+      // if (!this.user.height) {
+      //   noDataList.push('키');
+      // }
+      // if (!this.user.age) {
+      //   noDataList.push('나이');
+      // }
+      // for (let i = 0; i < noDataList.length; i += 1) {
+      //   if (this.state.notEnoughInfo) {
+      //     this.state.notEnoughInfo += ', ';
+      //   }
+      //   this.state.notEnoughInfo += noDataList[i];
+      // }
+      // if (!this.user.weight && this.user.height > 0 && this.user.age > 0) {
+      //   this.state.notEnoughInfo = '몸무게';
+      // } else if (this.user.weight > 0 && !this.user.height && this.user.age > 0) {
+      //   this.state.notEnoughInfo = '키';
+      // } else if (this.user.weight > 0 && this.user.height > 0 && !this.user.age) {
+      //   this.state.notEnoughInfo = '나이';
+      // } else if (this.user.weight > 0 && !this.user.height && !this.user.age) {
+      //   this.state.notEnoughInfo = '나이';
+      // } else if (!this.user.weight && !this.user.height) {
+      //   this.state.notEnoughInfo = '몸무게, 키, 나이';
+      // }
     }
 
     // 계산 공식들

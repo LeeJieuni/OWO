@@ -2,7 +2,7 @@
   <div class="navContainer">
     <!--오운완 내브바-->
     <div class="owo_nav">
-      <nav class="navbar sticky-top">
+      <nav class="navbar sticky-top fixed-top">
         <div class="container-fluid d-flex justify-content-between">
           <!--logo-->
           <div class="navbar-brand mb-0 h1">
@@ -111,7 +111,9 @@ export default {
   },
 };
 </script>
+<style>
 
+</style>
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Do+Hyeon&family=Jua&family=Nanum+Brush+Script&family=Noto+Sans+KR:wght@100;300;400;500;700;900&family=Stylish&display=swap');
 
@@ -124,6 +126,9 @@ a {
 
 li {
   list-style: none;
+}
+.navbar {
+  box-shadow: #DFDFDF 5px 0 10px;
 }
 
 .navContainer {

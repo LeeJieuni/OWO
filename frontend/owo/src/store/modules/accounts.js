@@ -65,6 +65,8 @@ export const accounts = {
     },
     pointPercent: '',
     monthRecord: '',
+    thisWeekHours: '',
+    lastingDay: '',
     workout: {
       유산소: 'AEROBIC',
       헬스: 'HEALTH',
@@ -202,6 +204,12 @@ export const accounts = {
     SET_MONTH_RECORD: (state, payload) => {
       state.monthRecord = payload;
     },
+    SET_THIS_WEEK_HOURS: (state, payload) => {
+      state.thisWeekHours = payload;
+    },
+    SET_LASTING_DAY: (state, payload) => {
+      state.lastingDay = payload;
+    },
   },
   actions: {
     saveAccessToken({ commit }, token) {
@@ -240,6 +248,8 @@ export const accounts = {
           dispatch('fetchProfileImg');
           dispatch('fetchAchievementRate');
           dispatch('fetchPointPercent');
+          dispatch('fetchThisWeekHours');
+          dispatch('fetchLastingDay');
           router.push({ name: 'mainpage' });
         })
         .catch((err) => {
@@ -303,6 +313,8 @@ export const accounts = {
           dispatch('fetchProfileImg');
           dispatch('fetchAchievementRate');
           dispatch('fetchPointPercent');
+          dispatch('fetchThisWeekHours');
+          dispatch('fetchLastingDay');
           console.log('-------state, accessToken-------');
           console.log(state.accessToken);
           console.log('-------state, refreshToken-------');
@@ -422,6 +434,8 @@ export const accounts = {
       dispatch('fetchGoal');
       dispatch('fetchAchievementRate');
       dispatch('fetchPointPercent');
+      dispatch('fetchThisWeekHours');
+      dispatch('fetchLastingDay');
     },
     fetchPhysicalInfo({ state, commit }) {
       axios({
@@ -477,7 +491,8 @@ export const accounts = {
           // console.log('res');
           console.log(res.data.message);
           dispatch('fetchSlogan');
-          alert('수정되었습니다.');
+          swal.fire('수정되었습니다.');
+          // alert('수정되었습니다.');
         })
         .catch((err) => {
           console.log(err);
@@ -497,7 +512,7 @@ export const accounts = {
       })
         .then((res) => {
           dispatch('setUserInfo', res.data.data);
-          alert('정보가 수정되었습니다.');
+          swal.fire('정보가 수정되었습니다.');
           dispatch('fetchPhysicalInfo');
           // router.push({ name: 'MyPageMainView' });
         })
@@ -543,7 +558,7 @@ export const accounts = {
         .then((res) => {
           console.log('이미지 업데이트 res.data.data 보내기 전');
           console.log(res.data);
-          alert(res.data.message);
+          swal.fire(res.data.message);
           // console.log(payload);
           dispatch('setProfileImg', res.data.data);
           dispatch('fetchProfileImg');
@@ -607,7 +622,7 @@ export const accounts = {
         .then((res) => {
           console.log('addgoal 응답');
           dispatch('setGoal', res.data.data);
-          alert('목표가 추가되었습니다.');
+          swal.fire('목표가 추가되었습니다.');
           dispatch('fetchGoal');
           dispatch('fetchAchievementRate');
         })
@@ -627,7 +642,7 @@ export const accounts = {
         .then((res) => {
           console.log(res.data.message);
           dispatch('setGoal', res.data.data);
-          alert('목표가 삭제되었습니다.');
+          swal.fire('목표가 삭제되었습니다.');
           dispatch('fetchGoal');
           dispatch('fetchAchievementRate');
           // router.push('/mypage/main');
@@ -777,6 +792,42 @@ export const accounts = {
           console.log(err);
         });
     },
+    fetchThisWeekHours({ state, commit }) {
+      console.log(' fetchThisWeekHours axios 전');
+      axios({
+        url: `https://i7c202.p.ssafy.io:8282/api/user/record/weekSum/${state.userInfo.id}`,
+        method: 'get',
+        headers: {
+          'X-AUTH-TOKEN': state.accessToken,
+          'REFRESH-TOKEN': state.refreshToken,
+        },
+      })
+        .then((res) => {
+          console.log('weekSum 응답');
+          console.log(res.data.data);
+          commit('SET_THIS_WEEK_HOURS', res.data.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    fetchLastingDay({ state, commit }) {
+      axios({
+        url: `https://i7c202.p.ssafy.io:8282/api/user/record/lastingDay/${state.userInfo.id}`,
+        method: 'get',
+        headers: {
+          'X-AUTH-TOKEN': state.accessToken,
+          'REFRESH-TOKEN': state.refreshToken,
+        },
+      })
+        .then((res) => {
+          console.log(res);
+          commit('SET_LASTING_DAY', res.data.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
     makeRoom({ state }, roomdata) {
       console.log('makeRoom_actions');
       console.log(roomdata);
@@ -819,6 +870,8 @@ export const accounts = {
     achievementRate: (state) => state.achievementRate,
     pointPercent: (state) => state.pointPercent,
     monthRecord: (state) => state.monthRecord,
+    thisWeekHours: (state) => state.thisWeekHours,
+    lastingDay: (state) => state.lastingDay,
     noFree: (state) => state.noFree,
     noGame: (state) => state.noGame,
     noStreaming: (state) => state.noStreaming,
