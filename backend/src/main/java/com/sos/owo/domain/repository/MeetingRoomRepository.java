@@ -5,6 +5,7 @@ import com.sos.owo.domain.Member;
 import com.sos.owo.domain.Mode;
 import com.sos.owo.domain.RoomStatus;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -62,6 +63,27 @@ public class MeetingRoomRepository {
         findRoom.setEndDate(LocalDateTime.now());
         em.persist(findRoom);
         em.flush();
+    }
+
+    public boolean checkSecret(int roomID, String password){
+        MeetingRoom findRoom = em.find(MeetingRoom.class, roomID);
+        if(!findRoom.isSecret()) return true;
+        else {
+            if(findRoom.getPassword().equals(password)){
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+
+    public boolean checkWAIT(int roomID){
+        MeetingRoom findRoom = em.find(MeetingRoom.class, roomID);
+        if(findRoom.getStatus() == RoomStatus.WAIT) {
+            return true;
+        } else{
+            return false;
+        }
     }
 
 }
