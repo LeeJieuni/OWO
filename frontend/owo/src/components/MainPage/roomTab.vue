@@ -1,4 +1,5 @@
  <template>
+ <div class="body">
   <div class="tabs">
     <div class="tab-menu d-flex">
       <b-button lg="4" size="lg" style="margin-right: 5px;"
@@ -172,6 +173,7 @@
         <h1>아직 운동중인 방이 없습니다!</h1>
       </div>
     </div>
+ </div>
 </template>
 
 <script>
@@ -247,11 +249,10 @@ export default {
 .tab-menu {
   margin-top: 50px;
 }
-
-/* 기본 구조 */
-.tabs{
+.body {
   height: 100vh;
 }
+/* 기본 구조 */
 .wrap {
   max-width: 100%;
   margin: 50px auto;
