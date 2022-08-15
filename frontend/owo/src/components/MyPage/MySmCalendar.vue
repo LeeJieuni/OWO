@@ -1,12 +1,12 @@
 <template>
-  <div class="calendar">
+  <div v-if="isLogin === true" class="calendar">
     <div class="month-title container-fluid row p-0 m-0 mb-3">
       <div class="col-2">
         <a class="month-change-btn" href="#"
           @click.prevent="onClickPrev(currentMonth)">◀</a>
       </div>
       <div class="col-8">
-        <h4 class="date-title p-0 m-0">{{currentYear}}년 {{currentMonth}}월</h4>
+        <p class="date-title p-0 m-0">{{currentYear}}년 {{currentMonth}}월</p>
       </div>
       <div class="col-2">
         <a class="month-change-btn" href="#" v-on:click.prevent="onClickNext(currentMonth)">▶</a>
@@ -120,6 +120,46 @@
       </b-modal>
     </div>
   </div>
+  <div v-else>
+    로그인
+    <!-- <div class="month-title container-fluid row p-0 m-0 mb-3">
+      <div class="col-2">
+        <a class="month-change-btn" href="#"
+          @click.prevent="onClickPrev(currentMonth)">◀</a>
+      </div>
+      <div class="col-8">
+        <h4 class="date-title p-0 m-0">{{currentYear}}년 {{currentMonth}}월</h4>
+      </div>
+      <div class="col-2">
+        <a class="month-change-btn" href="#" v-on:click.prevent="onClickNext(currentMonth)">▶</a>
+      </div>
+    </div>
+    <div class="calendar-table">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <td v-for="(weekName, index) in weekNames" v-bind:key="index">
+              {{weekName}}
+            </td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(row, index) in currentCalendarMatrix" :key="index">
+            <td class="day-td" v-for="(day, index2) in row" :key="index2">
+              <a v-if="isToday(currentYear, currentMonth, day)" class="today day-a" href="#"
+                @click="selectDay(currentYear, currentMonth, day)" v-b-modal="'myModal'">
+                {{day}}
+              </a>
+              <span v-else>
+                <a class="days day-a" href="#" @click="selectDay(currentYear, currentMonth, day)"
+                  v-b-modal="'myModal'">{{day}}</a>
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div> -->
+  </div>
 </template>
 
 <script>
@@ -147,10 +187,12 @@ export default {
   },
   computed: {
     ...mapGetters('record', ['dayExerciseList', 'dayPictures']),
-    ...mapGetters('accounts', ['monthRecord']),
+    ...mapGetters('accounts', ['monthRecord', 'isLogin']),
   },
   mounted() {
     this.init();
+    console.log('로그인여부');
+    console.log(this.isLogin);
   },
   methods: {
     ...mapActions('record', ['fetchDayExerciseList', 'fetchDayPictures']),
@@ -346,6 +388,9 @@ export default {
   width: 100%;
   margin: 0 auto;
 }
+.container-fluid {
+  height: 100%;
+}
 .calendar-table {
   /* margin-left: 10px;
   margin-right: 10px; */
@@ -438,6 +483,7 @@ export default {
 }
 .tag p {
   text-align: left;
+  /* font-size: 0.5vh; */
 }
 .record-min {
   font-size: 12px;
@@ -449,30 +495,32 @@ export default {
 }
 table {
   /* --bs-table-hover-bg: rgba(75, 172, 237, 0.08); */
-  width: 300px;
+  max-width: 28vw;
   margin: 0 auto;
 }
 td, th {
   padding: 0;
 }
 .day-a {
-  font-size: 16px;
+  font-size: 1.5vh;
   font-weight: 900;
   /* font-family: 'Righteous', cursive; */
   padding: 0;
   margin: 0;
 }
 .dot{
-  padding: 0 0 22px 0;
+  padding: 0 0 2vh 0;
   width: 4px;
 }
 .day-td  {
-  padding: 7px;
+  padding: 0.5vh;
+  /* width: 1vw; */
   --bs-table-hover-bg: #fafafa;
   border-bottom: 0;
 }
 .table > a {
   text-decoration: none;
+  font-size: 1vh;
 }
 .calendar-title {
   font-size: 18px;

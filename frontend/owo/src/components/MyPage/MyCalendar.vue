@@ -618,12 +618,14 @@ td {
   padding-bottom: 20px;
 }
 .memo-box {
-  border: solid black 1px;
+  border: solid #DFDFDF 1px;
+  box-shadow: 1px 1px 2px #DFDFDF;
   margin: 20px;
   padding: 20px;
   margin-bottom: 50px;
   border-radius: 10px;
   width: 400px;
+  /* color: #2E2E2E; */
 }
 .memo {
   text-align: justify;
@@ -632,6 +634,7 @@ td {
   font-size: 20px;
   letter-spacing: -1.2;
   margin-bottom: 4px;
+  /* color: #2E2E2E; */
 }
 .no-record-day {
   font-weight: 700;

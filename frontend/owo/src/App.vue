@@ -19,15 +19,23 @@ export default {
   components: {
     NavBar,
   },
+  methods: {
+    ...mapActions('mainpage', ['getMyRanking', 'getRankingList']),
+    ...mapActions('record', ['fetchPercentage', 'fetchAchievementRate']),
+    ...mapActions('accounts', ['fetchMypage']),
+  },
   computed: {
     ...mapState(meetingroom, ['mySessionId']),
+    // ...mapGetters('accounts', ['userInfo']),
   },
   beforeCreate() {
     console.log('app.vue befordCreate');
-    // this.fetchPercentage();
   },
   created() {
     console.log('app.vue created');
+    console.log('fetch rank');
+    this.getRankingList();
+    console.log('fetch mypage');
     this.fetchMypage();
   },
   // updated() {
@@ -35,10 +43,6 @@ export default {
   //   this.fetchGoal();
   //   this.fetchAchievementRate();
   // },
-  methods: {
-    ...mapActions('record', ['fetchPercentage', 'fetchAchievementRate']),
-    ...mapActions('accounts', ['fetchMypage']),
-  },
 };
 </script>
 

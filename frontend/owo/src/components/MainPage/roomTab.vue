@@ -205,6 +205,9 @@ export default {
 }
 
 /* 기본 구조 */
+.tabs{
+  height: 100vh;
+}
 .wrap {
   max-width: 100%;
   margin: 50px auto;
