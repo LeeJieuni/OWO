@@ -11,7 +11,7 @@
       <div id="session" v-if="session">
         <div>
           <div id="" class="row d-flex align-items-start justify-content-center">
-            <WebRTC id="" :stream-manager="mainStreamManager"/>
+            <WebRTC ref="webrtc" :stream-manager="mainStreamManager"/>
             <WebRTC :stream-manager="sub"
               v-for="sub in subscribers"
               :key="sub.stream.connection.connectionId"
@@ -268,6 +268,7 @@
       <button @click="init">start</button>
       <div>나의 카운트 : {{ count }} </div>
       <button @click="stopCam">캠 삭제</button>
+      <!-- <div>{{ this.$refs.webrtc.mySquat }}</div> -->
     </div>
   </div>
 </template>
@@ -388,7 +389,7 @@ export default {
       check: false,
       check2: false,
       count: 0,
-      gameType: 3, // 1:squat, 2:lunge, 3:burpee
+      gameType: undefined, // 1:squat, 2:lunge, 3:burpee
       ctx: undefined,
       // 각 운동의 카운트를 memberId와 함께 session.on으로 보내주고 데이터 받아서 저장한다.
       squatCount: 0,
@@ -602,9 +603,11 @@ export default {
       'changeExerciseName',
       'changeSquatCountList',
       'changeLungeCountList',
-      'changeSquatCountListSorted',
       'changeBurpeeCountList',
-      'resetallCountList',
+      'changeSquatCountListSorted',
+      'changeLungeCountListSorted',
+      'changeBurpeeCountListSorted',
+      'resetAllCountList',
     ]),
     joinSession(sessionNum) {
       this.SET_SESSION_ID(sessionNum);
@@ -735,6 +738,7 @@ export default {
         this.round1Game = true;
         this.roundGameName = '스쿼트';
         setTimeout(() => {
+          this.init();
           this.round1Game = false;
           // eslint-disable-next-line
           const audio = new Audio(require('@/assets/music/321.mp3'));
@@ -828,14 +832,10 @@ export default {
           this.changeExerciseName(1);
           this.init();
           this.init();
-          this.init();
-          this.init();
         }, 5000);
         setTimeout(() => {
           this.isStarted = false;
           this.$refs.setTimer3.pauseTimer();
-          this.init();
-          this.init();
           this.init();
           this.init();
         }, 6000);
@@ -843,16 +843,15 @@ export default {
           this.isExercising = false;
           this.restTime = true;
           this.$refs.setTimer4.pauseTimer();
-          this.webcam.stop();
-        }, 67000);
+          // this.webcam.stop();
+        }, 37000);
         setTimeout(() => {
           this.restTime = false;
-        }, 70000);
+        }, 42000);
         setTimeout(() => {
-          this.gameType = 2;
           this.isExercising = true;
           this.startround2();
-        }, 83000);
+        }, 57000);
       });
 
       this.session.on('signal:startround2', () => {
@@ -863,6 +862,7 @@ export default {
         this.round2Game = true;
         this.roundGameName = '런지';
         setTimeout(() => {
+          this.gameType = 2;
           this.round2Game = false;
           // eslint-disable-next-line
           const audio = new Audio(require('@/assets/music/321.mp3'));
@@ -870,7 +870,7 @@ export default {
           this.$refs.setTimer2.pauseTimer();
         }, 2000);
         setTimeout(() => {
-          this.webcam.play();
+          // this.webcam.play();
           this.isStarted = false;
           this.$refs.setTimer3.pauseTimer();
           this.changeExerciseName(2);
@@ -879,16 +879,16 @@ export default {
           this.isExercising = false;
           this.restTime = true;
           this.$refs.setTimer4.pauseTimer();
-          this.webcam.stop();
-        }, 67000);
+          this.gameType = 4;
+          // this.webcam.stop();
+        }, 37000);
         setTimeout(() => {
           this.restTime = false;
-        }, 70000);
+        }, 42000);
         setTimeout(() => {
-          this.gameType = 3;
           this.isExercising = true;
           this.startround3();
-        }, 83000);
+        }, 57000);
       });
 
       this.session.on('signal:startround3', () => {
@@ -899,6 +899,7 @@ export default {
         this.round3Game = true;
         this.roundGameName = '버피테스트';
         setTimeout(() => {
+          this.gameType = 3;
           this.round3Game = false;
           // eslint-disable-next-line
           const audio = new Audio(require('@/assets/music/321.mp3'));
@@ -906,19 +907,25 @@ export default {
           this.$refs.setTimer2.pauseTimer();
         }, 2000);
         setTimeout(() => {
-          this.webcam.play();
+          // this.webcam.play();
           this.isStarted = false;
           this.$refs.setTimer3.pauseTimer();
           this.changeExerciseName(3);
         }, 6000);
         setTimeout(() => {
           this.webcam.stop();
-        }, 67000);
-        setTimeout(() => {
           this.isExercising = false;
-          this.restTime = false;
           this.changeExerciseName(0);
-        }, 83000);
+          swal.fire({
+            icon: 'success',
+            // eslint-disable-next-line
+            html: `${this.userInfo.nick}님의 기록입니다.<br>
+            #Round 1. Squat : ${this.$refs.webrtc.mySquat}<br>
+            #Round 2. Lunge : ${this.$refs.webrtc.myLunge}<br>
+            #Round 3. Burpee : ${this.$refs.webrtc.myBurpee}`,
+          });
+          this.leaveSession();
+        }, 37000);
       });
     },
 
@@ -1260,11 +1267,11 @@ export default {
       const prediction = await this.model.predict(posenetOutput);
       if (prediction[1].probability.toFixed(2) > 0.99) { // 런지
         if (this.check) {
-          this.lungeCount += 1;
-          console.log('lungeCount', this.lungeCount);
+          this.LungeCount += 1;
+          console.log('lungeCount', this.LungeCount);
           this.session
             .signal({
-              data: `${this.connectionId},${this.lungeCount}`, // Any string (optional)
+              data: `${this.connectionId},${this.LungeCount}`, // Any string (optional)
               to: [], // Array of Connection objects (optional. Broadcast to everyone if empty)
               type: 'lungeCount', // The type of message (optional)
             })
@@ -1290,11 +1297,11 @@ export default {
       const prediction = await this.model.predict(posenetOutput);
       if (prediction[2].probability.toFixed(2) > 0.99) { // 서 있는 자세
         if (this.check && this.check2) {
-          this.burpeeCount += 1;
-          console.log('burpeeCount', this.burpeeCount);
+          this.BurpeeCount += 1;
+          console.log('burpeeCount', this.BurpeeCount);
           this.session
             .signal({
-              data: `${this.connectionId},${this.burpeeCount}`, // Any string (optional)
+              data: `${this.connectionId},${this.BurpeeCount}`, // Any string (optional)
               to: [], // Array of Connection objects (optional. Broadcast to everyone if empty)
               type: 'burpeeCount', // The type of message (optional)
             })

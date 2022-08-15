@@ -56,7 +56,7 @@ export default {
     },
     displayTimeLeft(timeLeft) { // displays time on the input
       const seconds = timeLeft % 60;
-      const displayString = `${seconds < 10 ? '0' : ''}${seconds}`;
+      const displayString = `${seconds}`;
       this.timesetting = displayString;
       this.update(timeLeft, this.wholeTime);
     },

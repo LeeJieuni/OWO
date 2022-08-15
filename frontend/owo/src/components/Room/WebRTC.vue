@@ -14,23 +14,31 @@
       <!-- eslint-disable-next-line -->
       <div v-if="exerciseName === 1">
         <div class="myexercise">&ensp;{{ mySquat.userSquatCount }} 회&ensp;</div>
-        <img v-if="mySquatRanking === 1" src="@/assets/icon/1st.png" class="mySquatRanking" alt="">
-        <img v-if="mySquatRanking === 2" src="@/assets/icon/2nd.png" class="mySquatRanking" alt="">
-        <img v-if="mySquatRanking === 3" src="@/assets/icon/3rd.png" class="mySquatRanking" alt="">
+      <!-- eslint-disable-next-line -->
+        <img v-if="mySquatRanking === 1" src="@/assets/icon/medal1.png" class="mySquatRanking" alt="">
+      <!-- eslint-disable-next-line -->
+        <img v-if="mySquatRanking === 2" src="@/assets/icon/medal2.png" class="mySquatRanking" alt="">
+      <!-- eslint-disable-next-line -->
+        <img v-if="mySquatRanking === 3" src="@/assets/icon/medal3.png" class="mySquatRanking" alt="">
       </div>
       <!-- eslint-disable-next-line -->
       <div v-if="exerciseName === 2">
         <div class="myexercise">&ensp;{{ myLunge.userLungeCount }} 회&ensp;</div>
-        <img v-if="myLungeRanking == 1" src="@/assets/icon/1st.png" class="myLungeRanking" alt="">
-        <img v-if="myLungeRanking == 2" src="@/assets/icon/2nd.png" class="myLungeRanking" alt="">
-        <img v-if="myLungeRanking == 3" src="@/assets/icon/3rd.png" class="myLungeRanking" alt="">
-      </div>
       <!-- eslint-disable-next-line -->
-      <div v-if="exerciseName === 3">   
+        <img v-if="myLungeRanking == 1" src="@/assets/icon/medal1.png" class="myLungeRanking" alt="">
+      <!-- eslint-disable-next-line -->
+        <img v-if="myLungeRanking == 2" src="@/assets/icon/medal2.png" class="myLungeRanking" alt="">
+      <!-- eslint-disable-next-line -->
+        <img v-if="myLungeRanking == 3" src="@/assets/icon/medal3.png" class="myLungeRanking" alt="">
+      </div>
+      <div v-if="exerciseName === 3">
         <div class="myexercise">&ensp;{{ myBurpee.userBurpeeCount }} 회&ensp;</div>
-        <img v-if="myBurpeeRanking == 1" src="@/assets/icon/1st.png" class="myBurpeeRanking" alt="">
-        <img v-if="myBurpeeRanking == 2" src="@/assets/icon/2nd.png" class="myBurpeeRanking" alt="">
-        <img v-if="myBurpeeRanking == 3" src="@/assets/icon/3rd.png" class="myBurpeeRanking" alt="">
+      <!-- eslint-disable-next-line -->
+        <img v-if="myBurpeeRanking == 1" src="@/assets/icon/medal1.png" class="myBurpeeRanking" alt="">
+      <!-- eslint-disable-next-line -->
+        <img v-if="myBurpeeRanking == 2" src="@/assets/icon/medal2.png" class="myBurpeeRanking" alt="">
+      <!-- eslint-disable-next-line -->
+        <img v-if="myBurpeeRanking == 3" src="@/assets/icon/medal3.png" class="myBurpeeRanking" alt="">
       </div>
     </div>
   </div>
@@ -125,12 +133,12 @@ export default {
     },
     myBurpee() {
       let myBurpeeNow = { userBurpeeCount: 0 };
-      for (let i = 0; i < this.allburpeeCountList.length; i += 1) {
+      for (let i = 0; i < this.allBurpeeCountList.length; i += 1) {
         // eslint-disable-next-line
-        if (this.allburpeeCountList[i].connectionId == this.myconnectionId) {
+        if (this.allBurpeeCountList[i].connectionId == this.myconnectionId) {
           myBurpeeNow = {
             connectionId: this.myconnectionId,
-            userBurpeeCount: this.allburpeeCountList[i].allUserBurpeeCount,
+            userBurpeeCount: this.allBurpeeCountList[i].allUserBurpeeCount,
           };
           break;
         }
@@ -159,7 +167,7 @@ export default {
       } else if (parseInt(this.myLunge.userLungeCount) === this.allLungeCountListSorted[1]) {
         return 2;
       // eslint-disable-next-line
-      } else if (parseInt(this.myLunge.userLungeCount) === this.allSquatCountListSorted[2]) {
+      } else if (parseInt(this.myLunge.userLungeCount) === this.allLungeCountListSorted[2]) {
         return 3;
       } else {
         return 99;
@@ -173,7 +181,7 @@ export default {
       } else if (parseInt(this.myBurpee.userBurpeeCount) === this.allBurpeeCountListSorted[1]) {
         return 2;
       // eslint-disable-next-line
-      } else if (parseInt(this.myBurpee.userBurpeeCount) === this.allSquatCountListSorted[2]) {
+      } else if (parseInt(this.myBurpee.userBurpeeCount) === this.allBurpeeCountListSorted[2]) {
         return 3;
       } else {
         return 99;
@@ -277,10 +285,12 @@ export default {
   position:absolute;
   top: 35px;
   left: -20px;
+  width:150px;
 }
 .myBurpeeRanking {
   position:absolute;
   top: 35px;
   left: -20px;
+  width:150px;
 }
 </style>

@@ -8,7 +8,7 @@ export const exercise = {
     allBurpeeCountListSorted: new Set(),
     allSquatCountList: [],
     allLungeCountList: [],
-    allburpeeCountList: [],
+    allBurpeeCountList: [],
   }),
 
   mutations: {
@@ -48,7 +48,7 @@ export const exercise = {
     },
     CHANGE_LUNGE_COUNT_LIST_SORTED: (state) => {
       state.allLungeCountListSorted = new Set();
-      async function myfunc() {
+      async function myfunc2() {
         for (let i = 0; i < state.allLungeCountList.length; i += 1) {
           // eslint-disable-next-line
           await state.allLungeCountListSorted.add(parseInt(state.allLungeCountList[i].allUserLungeCount));
@@ -56,20 +56,20 @@ export const exercise = {
         // eslint-disable-next-line
         state.allLungeCountListSorted = Array.from(state.allLungeCountListSorted).sort((a, b) => { return b - a ; });
       }
-      myfunc();
+      myfunc2();
     },
     CHANGE_BURPEE_COUNT_LIST: (state, payload) => {
-      for (let i = 0; i < state.allburpeeCountList.length; i += 1) {
+      for (let i = 0; i < state.allBurpeeCountList.length; i += 1) {
         // eslint-disable-next-line
-        if (state.allburpeeCountList[i].connectionId == payload.connectionId) {
-          state.allburpeeCountList.splice(i, 1);
+        if (state.allBurpeeCountList[i].connectionId == payload.connectionId) {
+          state.allBurpeeCountList.splice(i, 1);
         }
       }
-      state.allburpeeCountList.push(payload);
+      state.allBurpeeCountList.push(payload);
     },
     CHANGE_BURPEE_COUNT_LIST_SORTED: (state) => {
       state.allBurpeeCountListSorted = new Set();
-      async function myfunc() {
+      async function myfunc3() {
         for (let i = 0; i < state.allBurpeeCountList.length; i += 1) {
           // eslint-disable-next-line
           await state.allBurpeeCountListSorted.add(parseInt(state.allBurpeeCountList[i].allUserBurpeeCount));
@@ -77,7 +77,7 @@ export const exercise = {
         // eslint-disable-next-line
         state.allBurpeeCountListSorted = Array.from(state.allBurpeeCountListSorted).sort((a, b) => { return b - a ; });
       }
-      myfunc();
+      myfunc3();
     },
     RESET_ALL_COUNT_LIST: (state) => {
       state.allSquatCountList = [];
@@ -110,7 +110,7 @@ export const exercise = {
     changeBurpeeCountListSorted({ commit }) {
       commit('CHANGE_BURPEE_COUNT_LIST_SORTED');
     },
-    resetallCountList({ commit }) {
+    resetAllCountList({ commit }) {
       commit('RESET_ALL_COUNT_LIST');
     },
   },
