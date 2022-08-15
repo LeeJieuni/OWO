@@ -4,6 +4,7 @@ import com.sos.owo.domain.MeetingRoom;
 import com.sos.owo.domain.Member;
 import com.sos.owo.domain.Mode;
 import com.sos.owo.domain.RoomStatus;
+import com.sos.owo.error.Exception.custom.SomethingNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Repository;
@@ -30,6 +31,7 @@ public class MeetingRoomRepository {
 
     public MeetingRoom findOne(int id){
         MeetingRoom meetingRoom = em.find(MeetingRoom.class, id);
+        if(meetingRoom==null) throw new SomethingNotFoundException("meetingRoom(id:"+id+")");
         return meetingRoom;
     }
 
@@ -49,41 +51,34 @@ public class MeetingRoomRepository {
         em.flush();
     }
 
-    public void startRoom(int roomID){
-        MeetingRoom findRoom = em.find(MeetingRoom.class, roomID);
+    public void startRoom(int roomID) {
+        MeetingRoom findRoom = (MeetingRoom)this.em.find(MeetingRoom.class, roomID);
         findRoom.setStatus(RoomStatus.START);
         findRoom.setStartDate(LocalDateTime.now());
-        em.persist(findRoom);
-        em.flush();
+        this.em.persist(findRoom);
+        this.em.flush();
     }
 
-    public void endRoom(int roomID){
-        MeetingRoom findRoom = em.find(MeetingRoom.class, roomID);
+    public void endRoom(int roomID) {
+        MeetingRoom findRoom = (MeetingRoom)this.em.find(MeetingRoom.class, roomID);
         findRoom.setStatus(RoomStatus.END);
         findRoom.setEndDate(LocalDateTime.now());
-        em.persist(findRoom);
-        em.flush();
+        this.em.persist(findRoom);
+        this.em.flush();
     }
 
-    public boolean checkSecret(int roomID, String password){
-        MeetingRoom findRoom = em.find(MeetingRoom.class, roomID);
-        if(!findRoom.isSecret()) return true;
-        else {
-            if(findRoom.getPassword().equals(password)){
-                return true;
-            } else {
-                return false;
-            }
-        }
-    }
-
-    public boolean checkWAIT(int roomID){
-        MeetingRoom findRoom = em.find(MeetingRoom.class, roomID);
-        if(findRoom.getStatus() == RoomStatus.WAIT) {
+    public boolean checkSecret(int roomID, String password) {
+        MeetingRoom findRoom = (MeetingRoom)this.em.find(MeetingRoom.class, roomID);
+        if (!findRoom.isSecret()) {
             return true;
-        } else{
-            return false;
+        } else {
+            return findRoom.getPassword().equals(password);
         }
+    }
+
+    public boolean checkWAIT(int roomID) {
+        MeetingRoom findRoom = (MeetingRoom)this.em.find(MeetingRoom.class, roomID);
+        return findRoom.getStatus() == RoomStatus.WAIT;
     }
 
 }

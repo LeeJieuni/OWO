@@ -5,6 +5,7 @@ import com.sos.owo.domain.Mode;
 import com.sos.owo.domain.RoomStatus;
 import com.sos.owo.domain.repository.MeetingRoomRepository;
 import com.sos.owo.dto.MeetingRoomMakeRequestDto;
+import com.sos.owo.error.Exception.custom.SomethingNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,17 +41,17 @@ public class MeetingRoomService {
     }
 
     @Transactional
-    public void updateMeetingRoomEndStatus(int roomId){
+    public void updateMeetingRoomEndStatus(int roomId)throws SomethingNotFoundException{
         meetingRoomRepository.updateMeetingRoomEndStatus(roomId);
     }
 
     @Transactional
-    public void startRoom(int roomID){
+    public void startRoom(int roomID) throws SomethingNotFoundException {
         meetingRoomRepository.startRoom(roomID);
     }
 
     @Transactional
-    public void endRoom(int roomID){
+    public void endRoom(int roomID) throws SomethingNotFoundException{
         meetingRoomRepository.endRoom(roomID);
     }
 
@@ -59,4 +60,5 @@ public class MeetingRoomService {
 
     @Transactional
     public boolean checkWAIT(int roomID){return meetingRoomRepository.checkWAIT(roomID);}
+
 }
