@@ -177,36 +177,36 @@ public class MeetingRoomController {
     @PutMapping("/api/user/room/start/{roomId}")
     @ApiOperation(value = "방 시작",notes = "방 시작. status start로 변경. start_date 저장")
     @ApiImplicitParam(name = "roomId",value = "방의 번호",paramType = "path")
-    public ResponseEntity<?> startRoom(@PathVariable int roomId){//}, @RequestBody GameStartDto gameStartDto){
+    public ResponseEntity<?> startRoom(@PathVariable int roomId){
         Message message = new Message();
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(new MediaType("application","json", Charset.forName("UTF-8")));
-        try {
+//        try {
             roomService.startRoom(roomId);
             message.setStatus(StatusEnum.OK);
             message.setMessage("방 시작 성공");
             return new ResponseEntity<>(message,httpHeaders, HttpStatus.OK);
-        }catch (IllegalStateException e){
-            e.printStackTrace();
-            message.setStatus(StatusEnum.BAD_REQUEST);
-            message.setMessage("잘못된 요청(방이 존재하지 않음)");
-            return new ResponseEntity<>(message,httpHeaders, HttpStatus.BAD_REQUEST);
-        }catch (Exception e){
-            e.printStackTrace();
-            message.setStatus(StatusEnum.INTERNAL_SERVER_ERROR);
-            message.setMessage("내부 서버 에러");
-            return new ResponseEntity<>(message,httpHeaders,HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+//        }catch (IllegalStateException e){
+//            e.printStackTrace();
+//            message.setStatus(StatusEnum.BAD_REQUEST);
+//            message.setMessage("잘못된 요청(방이 존재하지 않음)");
+//            return new ResponseEntity<>(message,httpHeaders, HttpStatus.BAD_REQUEST);
+//        }catch (Exception e){
+//            e.printStackTrace();
+//            message.setStatus(StatusEnum.INTERNAL_SERVER_ERROR);
+//            message.setMessage("내부 서버 에러");
+//            return new ResponseEntity<>(message,httpHeaders,HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
     }
 
     @PutMapping("/api/user/room/end/{roomId}")
     @ApiOperation(value = "방 종료",notes = "방(운동) 끝. status end로 변경. end_date 저장")
     @ApiImplicitParam(name = "roomId",value = "방의 번호",paramType = "path")
-    public ResponseEntity<?> endRoom(@PathVariable("roomId") int roomId){//}, @RequestBody GameStartDto gameStartDto){
+    public ResponseEntity<?> endRoom(@PathVariable("roomId") int roomId){
         Message message = new Message();
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(new MediaType("application","json", Charset.forName("UTF-8")));
-        try {
+//        try {
             // status end, end date 저장
             roomService.endRoom(roomId);
 
@@ -218,17 +218,17 @@ public class MeetingRoomController {
             message.setStatus(StatusEnum.OK);
             message.setMessage("방 종료 성공");
             return new ResponseEntity<>(message, httpHeaders, HttpStatus.OK);
-        }catch (IllegalStateException e){
-            e.printStackTrace();
-            message.setStatus(StatusEnum.BAD_REQUEST);
-            message.setMessage("잘못된 요청(방이 존재하지 않음)");
-            return new ResponseEntity<>(message,httpHeaders, HttpStatus.BAD_REQUEST);
-        }catch (Exception e){
-            e.printStackTrace();
-            message.setStatus(StatusEnum.INTERNAL_SERVER_ERROR);
-            message.setMessage("내부 서버 에러");
-            return new ResponseEntity<>(message,httpHeaders,HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+//        }catch (IllegalStateException e){
+//            e.printStackTrace();
+//            message.setStatus(StatusEnum.BAD_REQUEST);
+//            message.setMessage("잘못된 요청(방이 존재하지 않음)");
+//            return new ResponseEntity<>(message,httpHeaders, HttpStatus.BAD_REQUEST);
+//        }catch (Exception e){
+//            e.printStackTrace();
+//            message.setStatus(StatusEnum.INTERNAL_SERVER_ERROR);
+//            message.setMessage("내부 서버 에러");
+//            return new ResponseEntity<>(message,httpHeaders,HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
     }
 
 

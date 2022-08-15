@@ -53,5 +53,8 @@ public class RecordResponseDto {
     @ApiParam(value = "운동 종류",type = "String")
     private String exercise;
 
+    @ApiModelProperty(example="1")
+    @ApiParam(value = "그 판의 등수",type = "int")
+    private int place;
 
 }
