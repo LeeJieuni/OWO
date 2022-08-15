@@ -1,4 +1,5 @@
 <template>
+<NavBar></NavBar>
   <div class="wrap">
     <!--나의 운동 레벨-->
     <div class="my-level">
@@ -35,6 +36,7 @@
 import MyExerciseLevel from '@/components/MyPage/MyExerciseLevel.vue';
 import MyExerciseRate from '@/components/MyPage/MyExerciseRate.vue';
 import MyWeeklyGoal from '@/components/MyPage/MyWeeklyGoal.vue';
+import NavBar from '@/components/NavBar.vue';
 // import PhysicalInfo from '@/components/MyPage/PhysicalInfo.vue';
 // import MyCalendar from '@/components/MyPage/MyCalendar.vue';
 
@@ -44,8 +46,7 @@ export default {
     MyExerciseLevel,
     MyWeeklyGoal,
     MyExerciseRate,
-    // PhysicalInfo,
-    // MyCalendar,
+    NavBar,
   },
   data() {
     return {
@@ -67,6 +68,7 @@ export default {
 /* 운동 비율 */
 .wrap {
   margin: 0;
+  /* border-radius: 20px; */
 }
 .my-level {
   height: 170px;

@@ -8,7 +8,7 @@
             <th class="th-1">닉네임</th>
               <th class="th-2">
               <label for="nick">
-                <input class="form-input text-center"
+                <input class="form-input"
                   type="text"
                   v-model.number="user.nick"
                   maxlength="9"
@@ -21,7 +21,7 @@
             <th class="th-1">나이</th>
             <th class="th-2">
               <label for="age">
-                <input class="form-input text-center"
+                <input class="form-input"
                   type="number" name="age"
                   v-model.number="user.age">
                 <span class="th-2-text"> 세</span>
@@ -33,7 +33,7 @@
             <th class="th-1">성별</th>
             <th class="th-2">
               <label for="gender">
-                <select class="form-select form-select-sm form-input text-center"
+                <select class="form-select form-select-sm form-input"
                   name="radio" id="gender"
                   v-model="user.gender">
                   <option value="FEMALE">여자</option>
@@ -47,7 +47,7 @@
             <th class="th-1">키</th>
             <th class="th-2">
               <label for="height">
-                <input class="form-input text-center text-center"
+                <input class="form-input"
                   type="number" name="height"
                   v-model.number="user.height"> cm
               </label>
@@ -58,7 +58,7 @@
             <th class="th-1">몸무게</th>
             <th class="th-2">
               <label for="weight">
-                <input class="form-input text-center"
+                <input class="form-input"
                   type="number" name="weight"
                   v-model.number="user.weight"> kg
               </label>
@@ -69,7 +69,7 @@
             <th class="th-1">활동량</th>
             <th class="th-2">
               <label for="activity-num">
-                <select class="form-select form-select-sm form-input text-center"
+                <select class="form-select form-select-sm form-input"
                   name="radio" id="activity"
                   v-model.number="user.activityLevel">
                   <option value="1">주로 앉아서 보냄</option>
@@ -84,7 +84,7 @@
         </tbody>
       </table>
       <div class="row buttons">
-        <button class="col btn btn-primary m-3" @click.prevent="update(user)">변경</button>
+        <button class="col btn change-btn m-3" @click.prevent="update(user)">변경</button>
         <button class="col btn btn-secondary m-3" >취소</button>
       </div>
       <!-- {{ state.options[0] }} -->
@@ -166,15 +166,6 @@ export default {
     color: white;
     letter-spacing: -1.5;
   }
-  .tag:hover {
-    background-color: #DE7474;
-    color: white;
-    transition: 0.2s;
-    cursor: pointer;
-  }
-  .tag p {
-    text-align: center;
-  }
   button {
     border-radius: 15px;
     height: 29px;
@@ -195,40 +186,49 @@ export default {
   }
   table {
     margin: auto;
-    border-spacing: 6px;
+    border-spacing: 14px;
     border-collapse: separate;
     line-height: 32px;
     text-align: left;
   }
   .form-input {
-    height: 30px;
+    height: 32px;
     width: 200px;
-    border:  solid rgb(165, 165, 165) 1px;
-    border-radius: 10px;
+    border: 0;
+    border-radius: 15px;
     /* padding: 10px; */
     margin: 3px;
-    font-size: 16px;
+    font-size: 15px;
+    font-weight: 700;
+    /* color: white; */
     /* text-indent: 10px; */
     align-items: center;
+    background-color: #e6e6e6;
+    padding-left: 20px;
+    font-family: 'NanumSquareRound';
   }
-  .form-input::-webkit-input-placeholder { text-align: center; }
-  .form-input::-moz-placeholder { text-align: center; }
-  .form-input:-ms-input-placeholder { text-align: center; }
-  .form-input:-moz-placeholder { text-align: center; }
-  .form-input::placeholder { text-align: center; }
+  label {
+    /* padding-top: 10px; */
+    margin-bottom: 0;
+  }
   select {
     height: 30px;
     width: 250px;
     font-size:16px;
     border:  solid rgb(165, 165, 165) 1px;
-    border-radius: 10px;
-    padding-left: 10px;
-    padding-top: 1px;
+    border-radius: 15px;
+    padding-left: 20px;
+    /* padding-top: 1px; */
+    /* line-height: 10px; */
   }
-
-  select:hover {
+.change-btn {
+  background-color: #4E8AFF;
+  color: white;
+  font-weight: 800;
+}
+  /* select:hover {
     cursor: pointer;
-  }
+  } */
 
   .form-label {
     width: 162px;
@@ -247,14 +247,14 @@ export default {
 
   .th-1 {
     text-align: right;
-    padding-right: 30px;
+    padding-right: 10px;
   }
 
   .th-2 {
     /* border-left: solid black 1px; */
     text-align: left;
     font-family: 'LeferiBaseType-RegularA';
-    width: 70%;
+    width: 80%;
     align-items: center;
     align-self: center;
   }

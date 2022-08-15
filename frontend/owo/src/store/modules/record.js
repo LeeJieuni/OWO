@@ -11,11 +11,16 @@ export const record = {
     userId: '',
     percentage: '',
     dayExerciseList: '',
+    achievementRate: '',
+    recordPicture: '',
+    dayPictures: '',
   }),
   getters: {
     percentage: (state) => state.percentage,
     userId: (state) => state.userId,
     dayExerciseList: (state) => state.dayExerciseList,
+    achievementRate: (state) => state.achievementRate,
+    dayPictures: (state) => state.dayPictures,
   },
   mutations: {
     SET_PERCENTAGE: (state, payload) => {
@@ -28,6 +33,15 @@ export const record = {
     },
     SET_DAY_EXERCISE_LIST: (state, payload) => {
       state.dayExerciseList = payload;
+    },
+    SET_ACHIEVEMENT_RATE: (state, payload) => {
+      state.achievementRate = payload;
+    },
+    SET_RECORD_PICTURE: (state, payload) => {
+      state.recordPicture = payload;
+    },
+    SET_DAY_PICTURES: (state, payload) => {
+      state.dayPictures = payload;
     },
   },
   actions: {
@@ -46,6 +60,26 @@ export const record = {
       console.log(payload);
       commit('SET_SESSIONS', payload);
     },
+    fetchAchievementRate({ state, commit }) {
+      console.log('fetchAchievementRate axios 전');
+      axios({
+        url: `https://i7c202.p.ssafy.io:8282/api/user/record/goal/do/${state.userId}`,
+        method: 'get',
+        headers: {
+          'X-AUTH-TOKEN': state.accessToken,
+          'REFRESH-TOKEN': state.refreshToken,
+        },
+      })
+        .then((res) => {
+          console.log('fetchAchievementRate 응답');
+          console.log(res.data.message);
+          console.log(res.data.data);
+          commit('SET_ACHIEVEMENT_RATE', res.data.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
     fetchPercentage({ state, commit }) {
       console.log(' fetchPercentage axios 전');
       // console.log(state.userId);
@@ -58,14 +92,15 @@ export const record = {
         },
       })
         .then((res) => {
+          console.log('fetchPercentage응답');
+          console.log(res.data.data);
           commit('SET_PERCENTAGE', res.data.data);
-          // console.log(state.percentage);
         })
         .catch((err) => {
           console.log(err);
         });
     },
-    fetchDayExerciseList({ state, commit }, date) {
+    fetchDayExerciseList({ state, dispatch, commit }, date) {
       console.log(' fetchDayExerciseList axios 전');
       // console.log(state.userId);
       axios({
@@ -78,8 +113,50 @@ export const record = {
         // data: date,
       })
         .then((res) => {
+          // for (let i = 0; i < res.data.data.length; i += 1) {
+          //   console.log(res.data.data[i].recordId);
+          //   dispatch('fetchRecordPicture', res.data.data[i].recordId);
+          // }
           commit('SET_DAY_EXERCISE_LIST', res.data.data);
-          // console.log(state.percentage);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    fetchDayPictures({ state, commit }, date) {
+      console.log(' fetchDayPictures axios 전');
+      // console.log(state.userId);
+      axios({
+        url: `https://i7c202.p.ssafy.io:8282/api/record/img/${state.userId}/${date}`,
+        method: 'get',
+        headers: {
+          'X-AUTH-TOKEN': state.accessToken,
+          'REFRESH-TOKEN': state.refreshToken,
+        },
+        // data: date,
+      })
+        .then((res) => {
+          console.log(res.data.data);
+          commit('SET_DAY_PICTURES', res.data.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    fetchRecordPicture({ state, commit }, recordId) {
+      console.log(' fetchDayExerciseList axios 전');
+      // console.log(state.userId);
+      axios({
+        url: `https://i7c202.p.ssafy.io:8282/api/user/record/img/${recordId}`,
+        method: 'get',
+        headers: {
+          'X-AUTH-TOKEN': state.accessToken,
+          'REFRESH-TOKEN': state.refreshToken,
+        },
+        // data: date,
+      })
+        .then((res) => {
+          commit('SET_RECORD_PICTURE', res.data.data);
         })
         .catch((err) => {
           console.log(err);

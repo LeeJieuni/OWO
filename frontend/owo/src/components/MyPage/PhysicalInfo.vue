@@ -44,18 +44,18 @@
               aria-valuemin="0" aria-valuemax="100">비만
             </div>
           </div>
-          <div v-if="state.notEnoughInfo ==='enough'" class="yes-bmi">
+          <div v-if="state.notEnoughInfo === 'enough'" class="yes-bmi">
           <div class="bmi-solution pt-2 text-start">
-            bmi 지수 : {{state.bmi}}
+            <p>bmi 지수 : {{state.bmi}}</p>
+            <p>{{ state.bmiText }}</p>
           </div>
         </div>
         <div v-else class="no-bmi">
           <div class="bmi-solution pt-2 text-start">
             <p class="rg-font">
-              {{state.text}}
               <router-link
                 to="/mypage/update"
-                class="link">{{state.notEnoughInfo}} 추가하기</router-link>
+                class="link">{{state.text}}</router-link>
             </p>
           </div>
         </div>
@@ -130,7 +130,7 @@ export default {
       bmi: 0,
       bmr: 0,
       caloriePerDay: 0,
-
+      bmiText: '',
       notEnoughInfo: 'enough',
       avgMinBmr: 0,
       avgMaxBmr: 0,
@@ -146,28 +146,56 @@ export default {
     };
   },
   created() {
-    console.log('created');
-    console.log(this.state.notEnoughInfo);
+    // console.log('created');
+    console.log(this.user);
+    console.log(this.physical);
     // physical info 반올림
     this.state.bmi = Math.round(this.physical.bmi);
     this.state.bmr = Math.round(this.physical.bmr);
     this.state.caloriePerDay = Math.round(this.physical.caloriePerDay);
+    console.log(this.state.bmi);
+    console.log(this.state.bmr);
+    console.log(this.state.caloriePerDay);
 
     // user 정보 부족 시 bmi, bmr, calorie 초기화
     // eslint-disable-next-line
-    if (this.user.gender === '' || this.user.weight === '' || this.user.weight === '' || this.user.height === '' || this.user.activityLevel === '') {
+    if (!this.user.gender || this.user.weight <= 0 || !this.user.age || this.user.age == 0 || !this.user.height ||this.user.height <= 0 || !this.user.activityLevel || this.user.activityLevel == 0) {
       this.state.text = '신체정보를 추가해주세요!';
-      this.state.bmi = '';
-      this.state.bmr = '';
-      this.state.caloriePerDay = '';
-      if (!this.user.weight && this.user.height > 0) {
-        this.state.notEnoughInfo = '몸무게';
-      } else if (this.user.weight > 0 && !this.user.height) {
-        this.state.notEnoughInfo = '키';
-      } else if (!this.user.weight && !this.user.height) {
-        this.state.notEnoughInfo = '몸무게, 키';
-      }
+      this.state.notEnoughInfo = 'ㄴㄴ';
+      // this.state.bmi = '';
+      // this.state.bmr = '';
+      // this.state.caloriePerDay = '';
+      // const noDataList = [];
+      // if (!this.user.weight) {
+      //   noDataList.push('몸무게');
+      // }
+      // if (!this.user.height) {
+      //   noDataList.push('키');
+      // }
+      // if (!this.user.age) {
+      //   noDataList.push('나이');
+      // }
+      // for (let i = 0; i < noDataList.length; i += 1) {
+      //   if (this.state.notEnoughInfo) {
+      //     this.state.notEnoughInfo += ', ';
+      //   }
+      //   this.state.notEnoughInfo += noDataList[i];
+      // }
+      // if (!this.user.weight && this.user.height > 0 && this.user.age > 0) {
+      //   this.state.notEnoughInfo = '몸무게';
+      // } else if (this.user.weight > 0 && !this.user.height && this.user.age > 0) {
+      //   this.state.notEnoughInfo = '키';
+      // } else if (this.user.weight > 0 && this.user.height > 0 && !this.user.age) {
+      //   this.state.notEnoughInfo = '나이';
+      // } else if (this.user.weight > 0 && !this.user.height && !this.user.age) {
+      //   this.state.notEnoughInfo = '나이';
+      // } else if (!this.user.weight && !this.user.height) {
+      //   this.state.notEnoughInfo = '몸무게, 키, 나이';
+      // }
     }
+    console.log('운동분석test');
+    console.log(this.state.bmi);
+    console.log(this.state.notEnoughInfo);
 
     // 계산 공식들
     // 성별에 따른 기초대사량 계산 (미플린-지어(Mifflin-St.Jeor)공식)
@@ -234,12 +262,16 @@ export default {
     // // bmi 진단 -> 일단 그래프 색깔 활성화만
     if (this.physical.bmi && this.physical.bmi < 18.5) {
       this.state.opacityActive.underWeight = '';
+      this.state.bmiText = '저체중입니다.';
     } else if (this.physical.bmi >= 18.5 && this.physical.bmi < 23) {
       this.state.opacityActive.normalWeight = '';
+      this.state.bmiText = '정상입니다.';
     } else if (this.physical.bmi >= 23 && this.physical.bmi < 25) {
       this.state.opacityActive.overWeight = '';
+      this.state.bmiText = '과체중입니다.';
     } else {
       this.state.opacityActive.obesity = '';
+      this.state.bmiText = '비만입니다.';
     }
   },
   moundted() {},

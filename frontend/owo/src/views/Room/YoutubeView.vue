@@ -1,99 +1,1738 @@
 <template>
-<div>
-  <div class="container-wrap d-flex justify-content-center">
-    <div>
-      <div class="d-flex justify-content-between align-items-center"
-      style="height:80px;">
-        <h3 class="m-0">방 이름</h3>
-        <Timer/>
+  <!-- eslint-disable-next-line -->
+  <div class="d-flex justify-content-center" style="width: 100%; height:100vh; background-color:#ffdddd;">
+    <div style="width:1600px;" class="viewsetting">
+      <!-- eslint-disable-next-line -->
+      <div class="d-flex justify-content-center align-items-center" style="width: 100%; height: 80px;">
+      <!-- eslint-disable-next-line -->
+        <h3 class="game-name m-0 mb-5" style="font-size:3rem;">{{ myRoomName }}<span v-if="roundGameName"> : {{ roundGameName }}</span></h3>
       </div>
-      <div class="d-flex">
+      <!-- 세션 -->
+      <div id="session" v-if="session">
         <div>
-          <div class="d-flex align-items-start justify-content-start mx-1 mb-5"
-          style="background-color:aqua; width:911px; height:592px">
-          <iframe width="100%" height="100%" :src="youtubeURL"
-          title="YouTube video player" frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media;
-          gyroscope; picture-in-picture"
-          allowfullscreen></iframe>
+          <div id="" class="row d-flex align-items-start justify-content-center">
+            <WebRTC id="" :stream-manager="mainStreamManager"/>
+            <WebRTC :stream-manager="sub"
+              v-for="sub in subscribers"
+              :key="sub.stream.connection.connectionId"
+            />
+            <!-- <WebRTC :stream-manager="sub"
+              v-for="sub in subscribers"
+              :key="sub.stream.connection.connectionId"
+              @click="updateMainVideoStreamManager(sub)"
+            /> -->
+            <div v-show="this.subscribers.length <= 0" class="webrtcetc col-4 m0p0 my-2 mx-2"></div>
+            <div v-show="this.subscribers.length <= 1" class="webrtcetc col-4 m0p0 my-2 mx-2"></div>
+            <div v-show="this.subscribers.length <= 2" class="webrtcetc col-4 m0p0 my-2 mx-2"></div>
+            <div v-show="this.subscribers.length <= 3" class="webrtcetc col-4 m0p0 my-2 mx-2"></div>
+            <div v-show="this.subscribers.length <= 4" class="webrtcetc col-4 m0p0 my-2 mx-2"></div>
           </div>
         </div>
-        <div style="width:30%; max-height:592px; overflow-y:auto;">
-          <WebRTCYoutube></WebRTCYoutube>
-          <WebRTCYoutube></WebRTCYoutube>
-          <WebRTCYoutube></WebRTCYoutube>
-          <WebRTCYoutube></WebRTCYoutube>
-          <WebRTCYoutube></WebRTCYoutube>
-          <WebRTCYoutube></WebRTCYoutube>
+      </div>
+      <!-- 운동 종료 모달 -->
+      <div>
+        <div class="d-flex justify-content-center align-items-center">
+          <!-- eslint-disable-next-line -->
+          <b-modal id="after-exercise-modal" size="xl" no-close-on-esc no-close-on-backdrop hide-footer hide-header>
+            <form @submit.prevent="sendRecord(credentials, credentialsUser)">
+              <div class="checkboxposition">
+                <h1 class="title text-center mt-4">🏃‍♂️운동 일지</h1>
+                <label for="my-checkbox m-0" class="secretcheckbox d-flex align-items-center">
+                  <input v-model="credentials.secret" type="checkbox">
+                  <div v-show="credentials.secret">
+                    <!-- eslint-disable-next-line -->
+                    &ensp;&ensp;<span style="color:#de7474;">비공개</span>&ensp;<img class="menu_icon1" src="@/assets/icon/lock.png" alt="">
+                  </div>
+                  <div  v-show="!credentials.secret">
+                    <!-- eslint-disable-next-line -->
+                    &ensp;&ensp;&ensp;&ensp;<span style="color:#4e8aff;">공개</span>&ensp;<img class="menu_icon1" src="@/assets/icon/unlock.png" alt="">
+                  </div>
+                  <!-- eslint-disable-next-line -->
+                </label>
+              </div>
+              <div>
+                <br>
+                <!-- 운동일지, 사진 -->
+                <div>
+                  <div class="md-title2 text-center">📷오늘의 운동 사진 1장을 골라주세요!(필수)</div>
+                  <br>
+                    <!-- eslint-disable-next-line -->
+                </div>
+                <div class="row d-flex align-items-start justify-content-center">
+                  <!-- eslint-disable-next-line -->
+                  <button @click.prevent="pickmyImg(`${mypicture}`)" v-for="(mypicture, i) in mypictures" :key="i" class="col-4 m0p0 mx-1 my-1" style="padding:0px; margin:0px; width:330px;">
+                    <img :src="mypicture" alt="img" style="width:328px;">
+                  </button>
+                </div>
+                <!-- 메모 남기기 버튼 -->
+                <div>
+                  <div class="md-title">
+                    <div class="text-center">운동 종류</div>
+                    <div>
+                      <div class="d-flex justify-content-center" style="flex-flow:row wrap;">
+                        <!-- eslint-disable-next-line -->
+                        <button @click.prevent="myTagList('#유산소')" id="#유산소" class="mybutton btn btn-secondary m-2 p-2">&ensp;#유산소&ensp;</button>
+                        <!-- eslint-disable-next-line -->
+                        <button @click.prevent="myTagList('#헬스')" id="#헬스" class="mybutton btn btn-secondary m-2 p-2">&ensp;#헬스&ensp;</button>
+                        <!-- eslint-disable-next-line -->
+                        <button @click.prevent="myTagList('#스트레칭')" id="#스트레칭" class="mybutton btn btn-secondary m-2 p-2">&ensp;#스트레칭&ensp;</button>
+                        <!-- eslint-disable-next-line -->
+                        <button @click.prevent="myTagList('#맨몸운동')" id="#맨몸운동" class="mybutton btn btn-secondary m-2 p-2">&ensp;#맨몸운동&ensp;</button>
+                        <!-- eslint-disable-next-line -->
+                        <button @click.prevent="myTagList('#요가')" id="#요가" class="mybutton btn btn-secondary m-2 p-2">&ensp;#요가&ensp;</button>
+                        <!-- eslint-disable-next-line -->
+                        <button @click.prevent="myTagList('#필라테스')" id="#필라테스" class="mybutton btn btn-secondary m-2 p-2">&ensp;#필라테스&ensp;</button>
+                        <!-- eslint-disable-next-line -->
+                        <button @click.prevent="myTagList('#기타')" id="#기타" class="mybutton btn btn-secondary m-2 p-2">&ensp;#기타&ensp;</button>
+                      </div>
+                      <!-- eslint-disable-next-line -->
+                      <div class="d-flex justify-content-center" style="flex-flow:row wrap;">
+                        <!-- eslint-disable-next-line -->
+                        <div v-for="(myTag, i) in myTags" :key="i" class="m-0 d-flex">
+                          <!-- eslint-disable-next-line -->
+                          <button @click.prevent="myTagList(`${myTag}`)" v-bind:id="`${myTag}`" class="mybutton btn btn-secondary m-2 p-2">&ensp;#{{myTag}}&ensp;</button><button @click.prevent="deletemyTagList(`${myTag}`)" class="mybutton">X</button>
+                        </div>
+                        <form @submit.prevent="newtag(newTagContent)">
+                            <!-- eslint-disable-next-line -->
+                          <button class="mybutton btn btn-secondary m-2 p-2 d-flex align-items-center" type="submit">
+                            <!-- eslint-disable-next-line -->
+                            <label for="my-tag" class="m-0 p-0" style="width:100% - 120px;">
+                              <!-- eslint-disable-next-line -->
+                              <input id="myTagInput" v-model="newTagContent" type="text" style="text-align: center; width:100px; color:white; border: none; border-bottom:1px solid white; background: transparent;" placeholder="#나만의태그">
+                            </label>&ensp;추가&ensp;
+                          </button>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <div class="md-title text-center">메모 남기기</div>
+                  <!-- eslint-disable-next-line -->
+                  <div class="bytepositionsub d-flex justify-content-center" style="width:100%;">
+                    <label for="exerciseMemo" class="d-flex justify-content-center">
+                      <!-- eslint-disable-next-line -->
+                      <textarea v-model="credentials.recordMemo" id="exerciseMemo" rows="4" style="width:95%" @keyup="fn_checkByte(this)"></textarea>
+                    </label>
+                    <div class="btyeposition">(<span id="nowByte">0</span>/200bytes)</div>
+                  </div>
+                </div>
+                <div class="d-flex justify-content-center">
+                  <!-- eslint-disable-next-line -->
+                  <b-button type="submit" class="mybutton btn btn-success m-2 p-2">&ensp;작성 완료&ensp;</b-button>
+                  <!-- eslint-disable-next-line -->
+                  <button @click="tempLeaveSession()" class="mybutton btn btn-danger m-2 p-2">저장하지않고 마치기(임시)</button>
+                </div>
+              </div>
+              <br>
+              <div class="d-flex justify-content-center">
+                <!-- eslint-disable-next-line -->
+                <div style="width: 95%; text-align: right; color:red;">강제 종료 / 새로 고침하면 기록이 저장되지 않아요!</div>
+              </div>
+            </form>
+          {{ credentials }}
+          </b-modal>
         </div>
       </div>
-      <RoomButton></RoomButton>
+      <!-- 채팅 -->
+      <div v-if="this.session">
+        <button v-show="chatONOFF" @click="chatoff" class="chat">
+          <img class="chatimg" src="@/assets/icon/speak.png" alt="">
+        </button>
+        <button v-show="!chatONOFF" @click="chaton" class="chat">
+          <img class="chatimg" src="@/assets/icon/speak.png" alt="">
+        </button>
+        <div v-if="chatONOFF" class="achat d-flex justify-content-center align-items-center">
+          <div class="d-flex align-items-center achat-submit">
+            <label class="m-0" for="chatting">
+              <textarea @keyup.enter="sendMassage" id="mychat"
+              name="chatting" type="text"
+              v-model="myChat" style="resize:none; border:none;
+              border-radius:5px;" placeholder=" 채팅 입력"
+              rows="2" cols="25"></textarea>
+            </label>
+            <button @click="sendMassage" style="color:#4e8aff;" class="btn btn-light achat-submit2">
+            전송</button>
+          </div>
+          <div id="chattingList" class="fluid achat-content"
+          style="overflow:auto; height:490px;">
+            <div v-for="(allchatting, i) in allchattingList" :key="i">
+              <div class="mychatting p-0" style="margin-top:0px; margin-bottom:10px;
+              margin-left:auto; margin-right:30px; width:220px; height:90px;"
+              v-if="allchatting.userId == this.credentialsUser.memberId">
+                <div style="text-align:left; margin-top:5px; margin-left:5px; font-size:large;">
+                  <strong>{{allchatting.userNickName}}</strong>
+                </div>
+                <div style="word-wrap:break-word; text-align:left; margin-top:5px;
+                margin-left:5px; font-size:medium;">
+                  {{allchatting.userChat}}
+                </div>
+              </div>
+              <div class="yourchatting p-0" style="margin-top:0px; margin-bottom:10px;
+              margin-right:auto; margin-left:30px; width:220px; height:90px;"
+              v-if="allchatting.userId != this.credentialsUser.memberId">
+                <div style="text-align:left; margin-top:5px; margin-left:5px; font-size:large;">
+                  <strong>{{allchatting.userNickName}}</strong>
+                </div>
+                <div style="word-wrap:break-word; text-align:left; margin-top:5px;
+                margin-left:5px; font-size:medium;">
+                  {{allchatting.userChat}}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 버튼 -->
+      <div>
+        <button @click="open_emoji" class="open_emoji">
+          <img class="menu_icon2" src="@/assets/icon/emoji.png" alt="emoji">
+        </button>
+        <button class="mybtn1" @click="mic_off" v-show="mic">
+          <img class="menu_icon2" src="@/assets/icon/mic_on.png" alt="mic_off">
+          <div style="color:#4e8aff; font-size:12px;">
+            음소거
+          </div>
+        </button>
+        <button class="mybtn1" @click="mic_on" v-show="!mic">
+          <img class=" menu_icon2" src="@/assets/icon/mic_off.png" alt="mic_on">
+          <div style="color:#de7474; font-size:12px;">
+            음소거
+          </div>
+          <div style="color:#de7474; font-size:12px; line-height:0.8;">
+            해제
+          </div>
+        </button>
+        <button class="mybtn2" @click="video_off" v-show="video">
+          <img class="menu_icon2" src="@/assets/icon/video_off.png" alt="video_on">
+          <div style="color:#de7474; font-size:12px;" >
+            비디오
+          </div>
+          <div style="color:#de7474; font-size:12px; line-height:0.8;">
+            시작
+          </div>
+        </button>
+        <button class="mybtn2" @click="video_on" v-show="!video">
+          <img class="menu_icon2" src="@/assets/icon/video_on.png" alt="video_off">
+          <div style="color:#4e8aff; font-size:12px;">
+            비디오
+          </div>
+          <div style="color:#4e8aff; font-size:12px; line-height:0.8;">
+            중지
+          </div>
+        </button>
+        <button class="mybtn3" @click="take_photo">
+          <img class="menu_icon2" src="@/assets/icon/photo.png" alt="photo">
+          <div style="color:#4e8aff; font-size:12px;">
+            사진
+          </div>
+        </button>
+        <button v-b-modal.after-exercise-modal class="mybtn6">
+          <img class="menu_icon2" src="@/assets/icon/roomout.png" alt="leaveSession">
+        </button>
+<!-- 여기에 방장 이름이 들어가야함 -->
+        <!-- eslint-disable-next-line -->
+        <!-- <button v-if="(!isExercising) & (this.subscribers.length >= 1)" class="mybtn5" @click="startround1"> -->
+        <button v-if="!isExercising" class="mybtn5" @click="startround1">
+          <img class="menu_icon4" src="@/assets/icon/start.png" alt="Start">
+        </button>
+        <!-- eslint-disable-next-line -->
+        <button class="mybtn4 dropdown dropright dropright-toggle-no-caret text-decoration-none" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <img class="menu_icon2" src="@/assets/icon/setTimer.png" alt="photo">
+          <div style="color:#4e8aff; font-size:12px;">
+            타이머
+          </div>
+        </button>
+        <ul class="dropdown-menu" role="menu" style="width:50px;">
+        <!-- eslint-disable-next-line -->
+          <li role="presentation" style="width:100%;"><button @click="set_timer_3" class="dropdown-item text-center" type="button" target="_self">3초</button></li>
+        <!-- eslint-disable-next-line -->
+          <li role="presentation" style="width:100%;"><button @click="set_timer_5" class="dropdown-item text-center" type="button" target="_self">5초</button></li>
+        <!-- eslint-disable-next-line -->
+          <li role="presentation" style="width:100%;"><button @click="set_timer_10" class="dropdown-item text-center" type="button" target="_self">10초</button></li>
+        </ul>
+      </div>
+      <!-- 이모티콘 -->
+      <div class="emoji_position" v-if="Emoji_ONOFF">
+        <div class="row">
+          <!-- apple, google, twitter, facebook -->
+          <Picker :data="emojiIndex" set="twitter" @select="showEmoji" />
+        </div>
+      </div>
+      <!-- 타이머 -->
+      <div class="setTimer2position">
+        <setTimer3 ref="setTimer3" />
+        <setTimer4 ref="setTimer4" />
+      </div>
+      <div v-show="isStarted" class="myBackGroundSetting">
+        <setTimer2 ref="setTimer2"/>
+      </div>
+      <!-- 사진 양식 -->
+      <div class="d-flex justify-content-center align-items-center"
+      v-if="is_take_photo" id="take_photo_background"></div>
+      <div class="d-flex justify-content-center align-items-center text-white"
+      v-if="is_take_photo">
+        <!-- eslint-disable-next-line -->
+        <div id="take_photo_WebRTC_warning">&ensp;사진은 최신 3장까지 저장됩니다!&ensp;</div>
+        <WebRTCPhoto id="take_photo_WebRTC" :stream-manager="mainStreamManager"/>
+        <img v-if="this.photoDisplay" id="take_photo_WebRTC_photo" :src="this.mypictures[0]" alt="">
+      </div>
+      <!-- eslint-disable-next-line -->
+      <div class="d-flex justify-content-center align-items-center text-white mt-4" v-if="is_take_photo" id="take_photo_timer">
+        {{ temp_timer_2 }}
+      </div>
+      <!-- eslint-disable-next-line -->
+      <div v-if="round1Game" class="roundGame" style="font-size:5rem; color:white;">#Round1&ensp;:&ensp;{{ roundGameName }}</div>
+      <!-- eslint-disable-next-line -->
+      <div v-if="round2Game" class="roundGame" style="font-size:5rem; color:white;">#Round2&ensp;:&ensp;{{ roundGameName }}</div>
+      <!-- eslint-disable-next-line -->
+      <div v-if="round3Game" class="roundGame" style="font-size:5rem; color:white;">#Final Round&ensp;:&ensp;{{ roundGameName }}</div>
+      <!-- eslint-disable-next-line -->
+      <div v-if="restTime" class="roundGame" style="font-size:5rem; color:white;">휴식시간</div>
+      <button @click="init">start</button>
+      <div>나의 카운트 : {{ count }} </div>
+      <button @click="stopCam">캠 삭제</button>
     </div>
   </div>
-    <div>
-      <br>
-      <br>
-      <button v-if="chatONOFF" @click="chatoff" class="chat">
-        <img class="chatimg" src="@/assets/icon/commentoff.png" alt="">
-      </button>
-      <button v-if="!chatONOFF" @click="chaton" class="chat">
-        <img class="chatimg" src="@/assets/icon/commenton.png" alt="">
-      </button>
-      <br>
-      <br>
-      <!-- <AChat v-if="chatONOFF"></AChat> -->
-    </div>
-</div>
 </template>
 <script>
-import Timer from '@/components/SetTimer.vue';
-import RoomButton from '@/components/Room/RoomButton.vue';
-// import AChat from '@/components/Room/AChat.vue';
-import WebRTCYoutube from '../../components/Room/WebRTCYoutube.vue';
+import html2canvas from 'html2canvas';
+import WebRTC from '@/components/Room/WebRTC.vue';
+import WebRTCPhoto from '@/components/Room/WebRTCPhoto.vue';
+import setTimer2 from '@/components/Room/setTimer2.vue';
+import setTimer3 from '@/components/Room/setTimer3.vue';
+import setTimer4 from '@/components/Room/setTimer4.vue';
+import axios from 'axios';
+import { OpenVidu } from 'openvidu-browser';
+import emojidata from 'emoji-mart-vue-fast/data/all.json';
+import 'emoji-mart-vue-fast/css/emoji-mart.css';
+import { Picker, EmojiIndex } from 'emoji-mart-vue-fast/src';
+import { mapState, mapActions, mapMutations } from 'vuex';
+import swal from 'sweetalert2';
+// eslint-disable-next-line
+import * as tf from '@tensorflow/tfjs';
+import * as tmPose from '@teachablemachine/pose';
+
+window.Swal = swal;
+
+axios.defaults.headers.post['Content-Type'] = 'application/json';
+
+const openvidu = 'openvidu';
+const accounts = 'accounts';
+const meetingroom = 'meetingroom';
+const emojiIndex = new EmojiIndex(emojidata);
+const emoji = 'emoji';
+const exercise = 'exercise';
+
+const today = new Date();
+const year = today.getFullYear();
+const month = today.getMonth() + 1;
+const day = today.getDate();
+// eslint-disable-next-line
+const format = year + '-' + (('00' + month.toString()).slice(-2)) + '-' +
+((`00${day.toString()}`).slice(-2));
 
 export default {
-  name: 'YoutubeView',
+  name: 'CompetitionView',
+  metaInfo: {
+  },
   components: {
-    Timer,
-    WebRTCYoutube,
-    RoomButton,
-    // AChat,
+    WebRTC,
+    WebRTCPhoto,
+    Picker,
+    setTimer2,
+    setTimer3,
+    setTimer4,
   },
   data() {
     return {
+      // 타이머 셋팅
+      timer: 3,
+      temp_timer: 3,
+      temp_timer_2: 3,
+      take_photo_timer: null,
+      is_take_photo: false,
+      // 이모지 셋팅
+      myemoji: '',
+      emojiIndex,
+      Emoji_ONOFF: null,
+      emojiList: [],
+      // 채팅
+      myChat: '',
+      allchattingList: [],
       chatONOFF: false,
-      youtubeURL: 'https://www.youtube.com/embed/gTowV_F07uI',
+      // openvidu 셋팅
+      OV: undefined,
+      session: undefined,
+      video: false,
+      mic: true,
+      mainStreamManager: undefined,
+      publisher: undefined,
+      subscribers: [],
+      // 방 설정
+      startTime: undefined,
+      photoDisplay: false,
+      youtubeURL: '',
+      lockroomcheck: false,
+      isMaster: true,
+      roommode: 'GAME',
+      mode: ['FRIEND', 'YOUTUBE', 'GAME'],
+      sessionId: null,
+      connectionId: null,
+      // roomName: '붙어보자!',
+      gameName: ['스쿼트', '런지', '버피테스트'],
+      roundGameName: '',
+      round1Game: undefined,
+      round2Game: undefined,
+      round3Game: undefined,
+      restTime: undefined,
+      credentials: {
+        fileOriName: '',
+        fileUrl: '',
+        recordDatetime: format,
+        recordMemo: null,
+        recordTime: 30,
+        secret: false,
+        tagList: [],
+      },
+      credentialsUser: {
+        memberId: null,
+        meetingRoomId: null,
+      },
+      newTagContent: '',
+      myTags: [],
+      mypictures: [],
+      roomTime: null,
+      isStarted: false,
+      isExercising: false,
+      RoundStartTimer: null,
+      // tm 영역
+      webcam: undefined,
+      URL: undefined,
+      model: undefined,
+      status: 'ready',
+      check: false,
+      check2: false,
+      count: 0,
+      gameType: 1, // 1:squat, 2:lunge, 3:burpee
+      ctx: undefined,
+      // 각 운동의 카운트를 memberId와 함께 session.on으로 보내주고 데이터 받아서 저장한다.
+      squatCount: 0,
+      LungeCount: 0,
+      burpeeCount: 0,
+      // 운동이 끝나면 count는 서버에 보내고, counts에 따라 임의의 score를 저장한다.
+      squatScore: undefined,
+      burpeeScore: undefined,
+      Lungescore: undefined,
+      // score의 합산으로 다시 정렬해서 순위별 등수를 매겨로 포인트를 부여한다.
+      myscore: undefined,
+      // mypoints를 서버에 보낸다.
+      mypoints: undefined,
     };
   },
-  setup() {},
-  created() {},
-  moundted() {},
-  unmounted() {},
+  setup() {
+  },
+  created() {
+    this.sessionId = this.$route.params.sessionId;
+    this.joinSession(this.sessionId);
+    this.credentialsUser.memberId = this.userInfo.id;
+    this.credentialsUser.meetingRoomId = this.mySessionId;
+    document.body.style.backgroundColor = '#ffdddd';
+  },
+  moundted() {
+  },
+  unmounted() {
+    this.leaveSession();
+    document.body.style.backgroundColor = 'white';
+  },
+  watch: {
+    mySessionId() {},
+    camera() {
+      if (this.publisher !== undefined) {
+        if (this.camera) {
+          this.publisher.publishVideo(true);
+        } else {
+          this.publisher.publishVideo(false);
+        }
+      }
+    },
+    mic() {
+      if (this.publisher !== undefined) {
+        if (this.mic) {
+          this.publisher.publishAudio(true);
+        } else {
+          this.publisher.publishAudio(false);
+        }
+      }
+    },
+  },
+
+  computed: {
+    ...mapState(emoji, ['allEmojiList']),
+    ...mapState(accounts, ['accessToken', 'userInfo']),
+    ...mapState(openvidu, ['OPENVIDU_SERVER_URL', 'OPENVIDU_SERVER_SECRET']),
+    ...mapState(meetingroom, ['myRoomName', 'mySessionId', 'meetingRoomList', 'camera', 'mic', 'roomMasterId']),
+  },
   methods: {
+    stopCam() {
+      this.webcam.stop();
+    },
+    tempLeaveSession() {
+      this.leaveSession();
+      document.body.removeAttribute('data-bs-overflow');
+      document.body.removeAttribute('data-bs-padding-right');
+      document.body.removeAttribute('class');
+      document.body.removeAttribute('style');
+      document.getElementsByClassName('modal-backdrop')[0].remove();
+      document.getElementsByClassName('modal-backdrop')[0].remove();
+      document.getElementsByClassName('modal-backdrop')[0].remove();
+    },
+    drawPose(pose) {
+      if (this.webcam.canvas) {
+        this.ctx.drawImage(this.webcam.canvas, 0, 0);
+        if (pose) {
+          const minPartConfidence = 0.5;
+          tmPose.drawKeypoints(pose.keypoints, minPartConfidence, this.ctx);
+          tmPose.drawSkeleton(pose.keypoints, minPartConfidence, this.ctx);
+        }
+      }
+    },
+    pickmyImg(Img) {
+      this.credentials.fileOriName = `${this.userInfo.nick}_${format}.png`;
+      this.credentials.fileUrl = Img;
+    },
+    // roomOut() {
+    //   console.log(this.$bvModal);
+    //   this.$bvModal.show('after-exercise-modal');
+    //   this.leaveSession();
+    //   if (this.roomTime < 1) {
+    //     this.leaveSession();
+    //   } else if (this.roomTime < 5) {
+    //     swal.fire({
+    //       title: '퇴장하실건가요?',
+    //       text: "5분 미만 운동 시 기록이 저장되지 않습니다.",
+    //       icon: 'warning',
+    //       showCancelButton: true,
+    //       confirmButtonColor: '#d33',
+    //       confirmButtonText: '그래도 나갈게요.',
+    //       cancelButtonColor: '#3085d6',
+    //       denyButtonText: `더 운동할께요!`,
+    //     }).then(() => {
+    //       this.leaveSession();
+    //     })
+    //   } else {
+    //   };
+    //   }
+    fn_checkByte() {
+      const maxByte = 200; // 최대 200바이트
+      const textVal = document.getElementById('exerciseMemo').value; // 입력한 문자
+      const textLen = textVal.length; // 입력한 문자수
+      let totalByte = 0;
+
+      for (let i = 0; i < textLen; i += 1) {
+        const eachChar = textVal.charAt(i);
+        const uniChar = escape(eachChar); // 유니코드 형식으로 변환
+        if (uniChar.length > 4) {
+          totalByte += 2; // 한글 : 2Byte
+        } else {
+          totalByte += 1; // 영문,숫자,특수문자 : 1Byte
+        }
+      }
+      if (totalByte > maxByte) {
+        swal.fire({
+          icon: 'warning',
+          title: '알림',
+          text: '최대 200bytes까지 입력가능해요!',
+        });
+        document.getElementById('exerciseMemo').value = document.getElementById('exerciseMemo').value.substr(0, 200);
+        document.getElementById('nowByte').innerText = totalByte;
+        document.getElementById('nowByte').style.color = 'red';
+      } else {
+        document.getElementById('nowByte').innerText = totalByte;
+        document.getElementById('nowByte').style.color = 'green';
+      }
+    },
+    newtag(newTagContent) {
+      if (this.myTags.length >= 5) {
+        swal.fire({
+          icon: 'warning',
+          title: '알림',
+          text: '추가 태그는 5개까지 가능해요!',
+          closeOnEsc: true,
+        });
+      } else {
+        if (newTagContent.replace(/ /gi, '').replace(/#/gi, '') !== '') {
+          if (this.myTags.indexOf(newTagContent.replace(/ /gi, '').replace(/#/gi, '')) < 0) {
+            this.myTags.push(newTagContent.replace(/ /gi, '').replace(/#/gi, ''));
+            this.newTagContent = '';
+            this.myTagList(this.myTags[this.myTags.length - 1]);
+          }
+          this.newTagContent = '';
+        }
+        this.newTagContent = '';
+      }
+    },
+    deletemyTagList(newTagContent) {
+      this.myTags.splice(this.myTags.indexOf(newTagContent.replace(/ /gi, '').replace(/#/gi, '')), 1);
+      if (this.credentials.tagList.indexOf(newTagContent.replace(/ /gi, '').replace(/#/gi, '')) >= 0) {
+        this.credentials.tagList.splice(this.credentials.tagList.indexOf(newTagContent.replace(/ /gi, '').replace(/#/gi, '')), 1);
+      }
+    },
+    myTagList(tag) {
+      if (this.credentials.tagList.indexOf(tag) >= 0) {
+        document.getElementById(`${tag}`).classList.add('btn-secondary');
+        document.getElementById(`${tag}`).classList.remove('btn-primary');
+        this.credentials.tagList.splice(this.credentials.tagList.indexOf(tag), 1);
+      } else {
+        document.getElementById(`${tag}`).classList.add('btn-primary');
+        document.getElementById(`${tag}`).classList.remove('btn-secondary');
+        this.credentials.tagList.push(tag);
+      }
+    },
+    async sendRecord(credentials, credentialsUser) {
+      this.credentialsUser.memberId = encodeURI(this.credentialsUser.memberId);
+      this.credentialsUser.meetingRoomId = encodeURI(this.credentialsUser.meetingRoomId);
+      await axios({
+        url: `https://i7c202.p.ssafy.io:8282/api/user/record/finish/${credentialsUser.memberId}/${credentialsUser.meetingRoomId}`,
+        method: 'post',
+        headers: {
+          'X-AUTH-TOKEN': this.accessToken,
+        },
+        data: {
+          fileOriName: credentials.fileOriName, //
+          fileUrl: credentials.fileUrl, //
+          recordDatetime: credentials.recordDatetime, //
+          recordMemo: credentials.recordMemo, //
+          recordTime: credentials.recordTime, // time만 양식에 맞춰서 반영하면 될듯?
+          secret: credentials.secret,
+          tagList: credentials.tagList,
+        },
+      })
+        .then(() => {
+          this.tempLeaveSession();
+          document.getElementsByClassName('modal-backdrop')[0].remove();
+          document.getElementsByClassName('modal-open')[0].removeAttribute('style');
+          document.getElementsByClassName('modal-open')[0].classList.remove('modal-open');
+        });
+    },
+    ...mapActions(emoji, ['changeEmojiList', 'removeEmojiList']),
+    ...mapMutations(meetingroom, ['SET_SESSION_ID']),
+    ...mapActions(meetingroom, [
+      'makeSession',
+      'getMeetingRoomList',
+      'enterMeetingRoom',
+      'leaveMeetingRoom',
+      'startMeetingRoom',
+    ]),
+    ...mapActions(exercise, [
+      'changeExerciseName',
+      'changeSquatCountList',
+      'changeLungeCountList',
+      'changeBurpeeCountList',
+    ]),
+    joinSession(sessionNum) {
+      this.SET_SESSION_ID(sessionNum);
+      console.log(`sessionID = ${sessionNum}`);
+      const requestDto = {
+        accesstoken: this.accessToken,
+        roomId: String(sessionNum),
+      };
+      this.enterMeetingRoom(requestDto);
+      // --- Get an OpenVidu object ---
+      this.OV = new OpenVidu();
+
+      // --- Init a session ---
+      this.session = this.OV.initSession();
+
+      // On every new Stream received...
+      this.session.on('streamCreated', ({ stream }) => {
+        const subscriber = this.session.subscribe(stream);
+        this.subscribers.push(subscriber);
+      });
+
+      // On every Stream destroyed...
+      this.session.on('streamDestroyed', ({ stream }) => {
+        const index = this.subscribers.indexOf(stream.streamManager, 0);
+        if (index >= 0) {
+          this.subscribers.splice(index, 1);
+        }
+      });
+
+      // On every asynchronous exception...
+      // this.session.on('exception', ({ exception }) => {
+      //   console.warn(exception);
+      // });
+
+      // --- Connect to the session with a valid user token ---
+
+      // 'getToken' method is simulating what your server-side should do.
+      // 'token' parameter should be retrieved and returned by your own backend
+      this.getToken(this.mySessionId).then((token) => {
+        this.session
+          .connect(token, { clientData: this.userInfo.nick })
+          .then(() => {
+            // --- Get your own camera stream with the desired properties ---
+            const publisher = this.OV.initPublisher(undefined, {
+              audioSource: undefined, // The source of audio. If undefined default microphone
+              videoSource: undefined, // The source of video. If undefined default webcam
+              publishAudio: true,
+              // Whether you want to start publishing with your audio unmuted or not
+              publishVideo: true,
+              // Whether you want to start publishing with your video enabled or not
+              resolution: '260x180', // The resolution of your video
+              frameRate: 60, // The frame rate of your video
+              insertMode: 'APPEND',
+              // How the video is inserted in the target element 'video-container'
+              mirror: false, // Whether to mirror your local video or not
+            });
+            this.mainStreamManager = publisher;
+            this.connectionId = this.mainStreamManager.stream.session.connection.connectionId;
+            this.publisher = publisher;
+            // --- Publish your stream ---
+            this.session.publish(this.publisher);
+          });
+      });
+      // 사용자 정의 함수 영역
+      this.session.on('signal:my-emoji', (event) => {
+        const sendEmojiData = event.data.split(',');
+        const obj = {
+          connectionId: sendEmojiData[0],
+          userEmoji: sendEmojiData[1],
+        };
+        this.changeEmojiList(obj);
+      });
+
+      this.session.on('signal:squatCount', (event) => {
+        const sendSquatCountData = event.data.split(',');
+        const obj = {
+          connectionId: sendSquatCountData[0],
+          allUserSquatCount: sendSquatCountData[1],
+        };
+        this.changeSquatCountList(obj);
+      });
+
+      this.session.on('signal:lungeCount', (event) => {
+        const sendLungeCountData = event.data.split(',');
+        const obj = {
+          connectionId: sendLungeCountData[0],
+          allUserLungeCount: sendLungeCountData[1],
+        };
+        this.changeLungeCountList(obj);
+      });
+
+      this.session.on('signal:burpeeCount', (event) => {
+        const sendBurpeeCountData = event.data.split(',');
+        const obj = {
+          connectionId: sendBurpeeCountData[0],
+          allUserBurpeeCount: sendBurpeeCountData[1],
+        };
+        this.changeBurpeeCountList(obj);
+      });
+
+      this.session.on('signal:my-chat', (event) => {
+        const chatdata = event.data.split(',');
+        const obj = {
+          userId: String(chatdata[0]),
+          userNickName: chatdata[1],
+          userChat: chatdata[2],
+        };
+        this.allchattingList.push(obj);
+        const chat = document.querySelector('#chattingList');
+        chat.scrollTop = chat.scrollHeight;
+      });
+
+      this.session.on('signal:startround1', () => {
+        // eslint-disable-next-line
+        const audio = new Audio(require('@/assets/music/round1.mp3'));
+        audio.play();
+        this.isExercising = true;
+        this.isStarted = true;
+        this.round1Game = true;
+        this.roundGameName = '스쿼트';
+        setTimeout(() => {
+          this.round1Game = false;
+          // eslint-disable-next-line
+          const audio = new Audio(require('@/assets/music/321.mp3'));
+          audio.play();
+          this.$refs.setTimer2.pauseTimer();
+          document.getElementsByClassName('webrtcetc')[0].remove();
+          document.getElementsByClassName('webrtcetc')[0].remove();
+          document.getElementsByClassName('webrtcetc')[0].remove();
+          document.getElementsByClassName('webrtcetc')[0].remove();
+          document.getElementsByClassName('webrtcetc')[0].remove();
+          // setTimeout(() => {
+          const el = document.getElementsByClassName('webrtctag');
+          switch (el.length) {
+            case 2:
+              document.getElementsByClassName('webrtctag')[0].style.width = '49%';
+              document.getElementsByClassName('webrtctag')[0].style.height = '50%';
+              document.getElementsByClassName('webrtctag')[0].style.backgroundColor = 'transparent';
+              document.getElementsByClassName('webrtctag')[0].style.border = 'none';
+              document.getElementsByClassName('webrtctag')[1].style.width = '49%';
+              document.getElementsByClassName('webrtctag')[1].style.height = '50%';
+              document.getElementsByClassName('webrtctag')[1].style.backgroundColor = 'transparent';
+              document.getElementsByClassName('webrtctag')[1].style.border = 'none';
+              break;
+            case 3:
+              document.getElementsByClassName('webrtctag')[0].style.width = '33%';
+              document.getElementsByClassName('webrtctag')[0].style.height = '33%';
+              document.getElementsByClassName('webrtctag')[0].style.backgroundColor = 'transparent';
+              document.getElementsByClassName('webrtctag')[0].style.border = 'none';
+              document.getElementsByClassName('webrtctag')[1].style.width = '33%';
+              document.getElementsByClassName('webrtctag')[1].style.height = '33%';
+              document.getElementsByClassName('webrtctag')[1].style.backgroundColor = 'transparent';
+              document.getElementsByClassName('webrtctag')[1].style.border = 'none';
+              document.getElementsByClassName('webrtctag')[2].style.width = '33%';
+              document.getElementsByClassName('webrtctag')[2].style.height = '33%';
+              document.getElementsByClassName('webrtctag')[2].style.backgroundColor = 'transparent';
+              document.getElementsByClassName('webrtctag')[2].style.border = 'none';
+              break;
+            case 4:
+              document.getElementsByClassName('webrtctag')[0].style.width = '33%';
+              document.getElementsByClassName('webrtctag')[0].style.height = '33%';
+              document.getElementsByClassName('webrtctag')[0].style.backgroundColor = 'transparent';
+              document.getElementsByClassName('webrtctag')[0].style.border = 'none';
+              document.getElementsByClassName('webrtctag')[1].style.width = '33%';
+              document.getElementsByClassName('webrtctag')[1].style.height = '33%';
+              document.getElementsByClassName('webrtctag')[1].style.backgroundColor = 'transparent';
+              document.getElementsByClassName('webrtctag')[1].style.border = 'none';
+              document.getElementsByClassName('webrtctag')[2].style.width = '33%';
+              document.getElementsByClassName('webrtctag')[2].style.height = '33%';
+              document.getElementsByClassName('webrtctag')[2].style.backgroundColor = 'transparent';
+              document.getElementsByClassName('webrtctag')[2].style.border = 'none';
+              document.getElementsByClassName('webrtctag')[3].style.width = '33%';
+              document.getElementsByClassName('webrtctag')[3].style.height = '33%';
+              document.getElementsByClassName('webrtctag')[3].style.backgroundColor = 'transparent';
+              document.getElementsByClassName('webrtctag')[3].style.border = 'none';
+              break;
+            case 5:
+              document.getElementsByClassName('webrtctag')[0].style.backgroundColor = 'transparent';
+              document.getElementsByClassName('webrtctag')[0].style.border = 'none';
+              document.getElementsByClassName('webrtctag')[1].style.backgroundColor = 'transparent';
+              document.getElementsByClassName('webrtctag')[1].style.border = 'none';
+              document.getElementsByClassName('webrtctag')[2].style.backgroundColor = 'transparent';
+              document.getElementsByClassName('webrtctag')[2].style.border = 'none';
+              document.getElementsByClassName('webrtctag')[3].style.backgroundColor = 'transparent';
+              document.getElementsByClassName('webrtctag')[3].style.border = 'none';
+              document.getElementsByClassName('webrtctag')[4].style.backgroundColor = 'transparent';
+              document.getElementsByClassName('webrtctag')[4].style.border = 'none';
+              break;
+            case 6:
+              document.getElementsByClassName('webrtcetc')[0].style.width = 0;
+              document.getElementsByClassName('webrtcetc')[0].style.height = 0;
+              document.getElementsByClassName('webrtctag')[0].style.backgroundColor = 'transparent';
+              document.getElementsByClassName('webrtctag')[0].style.border = 'none';
+              document.getElementsByClassName('webrtctag')[1].style.backgroundColor = 'transparent';
+              document.getElementsByClassName('webrtctag')[1].style.border = 'none';
+              document.getElementsByClassName('webrtctag')[2].style.backgroundColor = 'transparent';
+              document.getElementsByClassName('webrtctag')[2].style.border = 'none';
+              document.getElementsByClassName('webrtctag')[3].style.backgroundColor = 'transparent';
+              document.getElementsByClassName('webrtctag')[3].style.border = 'none';
+              document.getElementsByClassName('webrtctag')[4].style.backgroundColor = 'transparent';
+              document.getElementsByClassName('webrtctag')[4].style.border = 'none';
+              document.getElementsByClassName('webrtctag')[5].style.backgroundColor = 'transparent';
+              document.getElementsByClassName('webrtctag')[5].style.border = 'none';
+              break;
+            default:
+              break;
+          }
+          // }, 100);
+        }, 2000);
+        setTimeout(() => {
+          this.gameType = 1;
+          this.changeExerciseName(1);
+          this.init();
+        }, 5000);
+        setTimeout(() => {
+          this.isStarted = false;
+          this.$refs.setTimer3.pauseTimer();
+        }, 6000);
+        setTimeout(() => {
+          this.restTime = true;
+          this.$refs.setTimer4.pauseTimer();
+          this.webcam.stop();
+        }, 67000);
+        setTimeout(() => {
+          this.webcam.start();
+          this.restTime = false;
+          this.startround2();
+        }, 83000);
+      });
+
+      this.session.on('signal:startround2', () => {
+        // eslint-disable-next-line
+        const audio = new Audio(require('@/assets/music/round2.mp3'));
+        audio.play();
+        this.isStarted = true;
+        this.round2Game = true;
+        this.roundGameName = '런지';
+        setTimeout(() => {
+          this.round2Game = false;
+          // eslint-disable-next-line
+          const audio = new Audio(require('@/assets/music/321.mp3'));
+          audio.play();
+          this.$refs.setTimer2.pauseTimer();
+        }, 2000);
+        setTimeout(() => {
+          this.isStarted = false;
+          this.$refs.setTimer3.pauseTimer();
+          this.gameType = 2;
+          this.changeExerciseName(2);
+        }, 6000);
+        setTimeout(() => {
+          this.restTime = true;
+          this.$refs.setTimer4.pauseTimer();
+          this.webcam.stop();
+        }, 67000);
+        setTimeout(() => {
+          this.webcam.start();
+          this.restTime = false;
+          this.startround3();
+        }, 83000);
+      });
+
+      this.session.on('signal:startround3', () => {
+        // eslint-disable-next-line
+        const audio = new Audio(require('@/assets/music/roundfinal.mp3'));
+        audio.play();
+        this.isStarted = true;
+        this.round3Game = true;
+        this.roundGameName = '버피테스트';
+        setTimeout(() => {
+          this.round3Game = false;
+          // eslint-disable-next-line
+          const audio = new Audio(require('@/assets/music/321.mp3'));
+          audio.play();
+          this.$refs.setTimer2.pauseTimer();
+        }, 2000);
+        setTimeout(() => {
+          this.isStarted = false;
+          this.$refs.setTimer3.pauseTimer();
+          this.gameType = 3;
+          this.changeExerciseName(3);
+        }, 6000);
+        setTimeout(() => {
+          this.webcam.stop();
+        }, 67000);
+        setTimeout(() => {
+          this.isExercising = false;
+          this.restTime = false;
+          this.changeExerciseName(0);
+        }, 83000);
+      });
+    },
+
+    sendEmoji() {
+      this.session
+        .signal({
+          data: `${this.connectionId},${this.myemoji}`,
+          to: [],
+          type: 'my-emoji',
+        });
+    },
+    sendMassage() {
+      this.session
+        .signal({
+          data: `${this.credentialsUser.memberId},${this.userInfo.nick},${this.myChat}`,
+          to: [],
+          type: 'my-chat',
+        })
+        .then(() => {
+          const resetText = document.querySelector('#mychat');
+          resetText.value = '';
+          const chat = document.querySelector('#chattingList');
+          chat.scrollTop = chat.scrollHeight + 1000000;
+          this.myChat = '';
+        });
+    },
+
+    startround1() {
+      this.session
+        .signal({
+          data: '', // Any string (optional)
+          to: [], // Array of Connection objects (optional. Broadcast to everyone if empty)
+          type: 'startround1', // The type of message (optional)
+        });
+    },
+    startround2() {
+      this.session
+        .signal({
+          data: '', // Any string (optional)
+          to: [], // Array of Connection objects (optional. Broadcast to everyone if empty)
+          type: 'startround2', // The type of message (optional)
+        });
+    },
+    startround3() {
+      this.session
+        .signal({
+          data: '', // Any string (optional)
+          to: [], // Array of Connection objects (optional. Broadcast to everyone if empty)
+          type: 'startround3', // The type of message (optional)
+        });
+    },
+
+    async leaveSession() {
+      this.changeExerciseName(0);
+      this.removeEmojiList();
+      this.removeEmoji();
+      // --- Leave the session by calling 'disconnect' method over the Session object ---
+      if (this.session) this.session.disconnect();
+      const requestDto = {
+        accesstoken: this.accessToken,
+        roomId: this.mySessionId,
+      };
+      await this.leaveMeetingRoom(requestDto);
+      this.session = undefined;
+      this.mainStreamManager = undefined;
+      this.publisher = undefined;
+      this.subscribers = [];
+      this.OV = undefined;
+      this.SET_SESSION_ID('');
+      this.$router.push('/');
+    },
+
+    // updateMainVideoStreamManager(stream) {
+    //   if (this.mainStreamManager === stream) return;
+    //   this.mainStreamManager = stream;
+    // },
+
+    /**
+     * --------------------------
+     * SERVER-SIDE RESPONSIBILITY
+     * --------------------------
+     * These methods retrieve the mandatory user token from OpenVidu Server.
+     * This behavior MUST BE IN YOUR SERVER-SIDE IN PRODUCTION (by using
+     * the API REST, openvidu-java-client or openvidu-node-client):
+     *   1) Initialize a Session in OpenVidu Server(POST /openvidu/api/sessions)
+     *   2) Create a Connection in OpenVidu Server
+     * (POST /openvidu/api/sessions/<SESSION_ID>/connection)
+     *   3) The Connection.token must be consumed in Session.connect() method
+     */
+
+    getToken(mySessionId) {
+      return this.createSession(mySessionId).then((sessionId) => this.createToken(sessionId));
+    },
+    // See https://docs.openvidu.io/en/stable/reference-docs/REST-API/#post-session
+    createSession(sessionId) {
+      return new Promise((resolve, reject) => {
+        axios
+          .post(
+            `${this.OPENVIDU_SERVER_URL}/openvidu/api/sessions`,
+            JSON.stringify({
+              customSessionId: sessionId,
+            }),
+            {
+              auth: {
+                username: 'OPENVIDUAPP',
+                password: this.OPENVIDU_SERVER_SECRET,
+              },
+            },
+          )
+          .then((response) => response.data)
+          .then((data) => resolve(data.id))
+          .catch((error) => {
+            if (error.response.status === 409) {
+              resolve(sessionId);
+            } else {
+              if (
+                window.confirm(
+                  `No connection to OpenVidu Server. This may be a certificate error at ${this.OPENVIDU_SERVER_URL}\n\nClick OK to navigate and accept it. If no certificate warning is shown, then check that your OpenVidu Server is up and running at "${this.OPENVIDU_SERVER_URL}"`,
+                )
+              ) {
+                window.location.assign(`${this.OPENVIDU_SERVER_URL}/accept-certificate`);
+              }
+              reject(error.response);
+            }
+          });
+      });
+    },
+
+    // See https://docs.openvidu.io/en/stable/reference-docs/REST-API/#post-connection
+    createToken(sessionId) {
+      return new Promise((resolve, reject) => {
+        axios
+          .post(
+            `${this.OPENVIDU_SERVER_URL}/openvidu/api/sessions/${sessionId}/connection`,
+            {},
+            {
+              auth: {
+                username: 'OPENVIDUAPP',
+                password: this.OPENVIDU_SERVER_SECRET,
+              },
+            },
+          )
+          .then((response) => response.data)
+          .then((data) => resolve(data.token))
+          .catch((error) => reject(error.response));
+      });
+    },
     chatoff() {
       this.chatONOFF = false;
+      const chat = document.querySelector('#chattingList');
+      chat.scrollTop = chat.scrollHeight + 10000000;
     },
     chaton() {
       this.chatONOFF = true;
+      const chat = document.querySelector('#chattingList');
+      chat.scrollTop = chat.scrollHeight + 10000000;
+    },
+    open_emoji() {
+      this.Emoji_ONOFF = !this.Emoji_ONOFF;
+    },
+    showEmoji(e) {
+      this.myemoji = e.native;
+      this.sendEmoji();
+      this.open_emoji();
+    },
+    removeEmoji() {
+      this.emojiList = [];
+    },
+    ...mapMutations(meetingroom, ['SET_CAMERA', 'SET_MIC']),
+    mic_on() {
+      this.mic = true;
+      this.SET_MIC(false);
+    },
+    mic_off() {
+      this.mic = false;
+      this.SET_MIC(true);
+    },
+    video_on() {
+      this.video = true;
+      this.SET_CAMERA(false);
+    },
+    video_off() {
+      this.video = false;
+      this.SET_CAMERA(true);
+    },
+    take_photo() {
+      this.temp_timer = this.timer;
+      this.temp_timer2 = this.timer;
+      this.is_take_photo = true;
+      // eslint-disable-next-line
+      const audio3 = new Audio(require('@/assets/music/10seconds.mp3'));
+      audio3.play();
+      setTimeout(() => {
+        audio3.pause();
+      }, this.timer * 1000);
+      this.take_photo_timer = setInterval(() => {
+        this.timer -= 1;
+        this.temp_timer_2 -= 1;
+        if (this.timer === 0) {
+          const el = document.querySelector('#take_photo_WebRTC');
+          el.style.opacity = '0';
+          this.temp_timer_2 = '';
+          // eslint-disable-next-line
+          const audio2 = new Audio(require('@/assets/music/takePhoto.mp3'));
+          audio2.play();
+        }
+        if (this.timer === -1) {
+          this.temp_timer_2 = '';
+        }
+        if (this.timer === -1) {
+          const el = document.querySelector('#take_photo_WebRTC');
+          html2canvas(el).then((canvas) => {
+            this.mypictures.unshift(canvas.toDataURL('image/png', 1.0));
+            this.photoDisplay = true;
+            setTimeout(() => {
+              this.photoDisplay = false;
+            }, 2000);
+          });
+          if (this.mypictures.length >= 3) { this.mypictures.pop(); }
+          clearInterval(this.take_photo_timer);
+          setTimeout(() => {
+            this.is_take_photo = false;
+            this.timer = this.temp_timer;
+          }, 2000);
+        }
+      }, 1000);
+      this.temp_timer_2 = this.temp_timer;
+    },
+    set_timer_3() { this.timer = 3; },
+    set_timer_5() { this.timer = 5; },
+    set_timer_10() { this.timer = 10; },
+    lockroom() {
+      this.lockroomcheck = !this.lockroomcheck;
+    },
+    exerciseJournalSubmit(event) {
+      event.preventDefault();
+    },
+    async setmodel() {
+      switch (this.gameType) {
+        case 1: // 스쿼트
+          this.URL = 'https://teachablemachine.withgoogle.com/models/mtTsf3dWh/';
+          break;
+        case 2: // 런지
+          this.URL = 'https://teachablemachine.withgoogle.com/models/rX6NKe6V_/';
+          break;
+        case 3: // 버피
+          this.URL = 'https://teachablemachine.withgoogle.com/models/bLxzzIAS3/';
+          break;
+        default:
+          break;
+      }
+      const modelURL = `${this.URL}model.json`;
+      const metadataURL = `${this.URL}metadata.json`;
+      // console.log('model set before');
+      // this.model = await tmPose.load(modelURL, metadataURL);
+      this.model = Object.freeze(await tmPose.load(modelURL, metadataURL));
+      // console.log('model set -> ', this.model);
+      // const mymodel = await tf.loadGraphModel(modelURL);
+      // mymodel.dispose();
+    },
+
+    async init() {
+      this.setmodel();
+      const flip = false;
+      this.webcam = new tmPose.Webcam(800, 700, flip);
+      await this.webcam.setup();
+      await this.webcam.play();
+      await window.requestAnimationFrame(this.loop);
+      const canvas2 = this.webcam.canvas;
+      canvas2.width = 800;
+      canvas2.height = 700;
+      this.ctx = canvas2.getContext('2d');
+    },
+    async loop() {
+      await this.webcam.update();
+      switch (this.gameType) {
+        case 1:
+          await this.squatpredict();
+          break;
+        case 2:
+          await this.lungepredict();
+          break;
+        case 3:
+          await this.burpeepredict();
+          break;
+        default:
+          break;
+      }
+      await window.requestAnimationFrame(this.loop);
+    },
+
+    async squatpredict() {
+      // Prediction #1: run input through posenet
+      // estimatePose can take in an image, video or canvas html element
+      // console.log('squat predict -> ', this.model);
+      const { pose, posenetOutput } = await this.model.estimatePose(
+        this.webcam.canvas,
+      );
+      // Prediction 2: run input through teachable machine classification model
+      const prediction = await this.model.predict(posenetOutput);
+      if (prediction[1].probability.toFixed(2) > 0.99) { // 스쿼트
+        if (this.check) {
+          this.squatCount += 1;
+          console.log('squatCount', this.squatCount);
+          this.session
+            .signal({
+              data: `${this.connectionId},${this.squatCount}`, // Any string (optional)
+              to: [], // Array of Connection objects (optional. Broadcast to everyone if empty)
+              type: 'squatCount', // The type of message (optional)
+            })
+            .then(() => {
+              // this.setState({ check: false });
+              this.check = false;
+            })
+            .catch(() => {});
+        }
+        this.status = 'squat';
+        // this.setState({ status: 'ready' });
+      } else if (prediction[0].probability.toFixed(2) > 0.99) { // 서 있는 자세
+        // const countTemp = this.count;
+        // this.count = countTemp + 1;
+        // this.count += 1;
+        // console.log('squat count : ', this.count);
+        this.status = 'ready';
+        // this.setState({ check: true });
+        this.check = true;
+      }
+      // console.log('squat finish');
+      this.drawPose(pose);
+    },
+
+    async lungepredict() {
+      const { pose, posenetOutput } = await this.model.estimatePose(
+        this.webcam.canvas,
+      );
+      const prediction = await this.model.predict(posenetOutput);
+      if (prediction[1].probability.toFixed(2) > 0.99) { // 런지
+        if (this.check) {
+          this.lungeCount += 1;
+          console.log('lungeCount', this.lungeCount);
+          this.session
+            .signal({
+              data: `${this.connectionId},${this.lungeCount}`, // Any string (optional)
+              to: [], // Array of Connection objects (optional. Broadcast to everyone if empty)
+              type: 'lungeCount', // The type of message (optional)
+            })
+            .then(() => {
+              // this.setState({ check: false });
+              this.check = false;
+            })
+            .catch(() => {});
+        }
+        this.status = 'lunge';
+        // this.setState({ status: 'ready' });
+      } else if (prediction[0].probability.toFixed(2) > 0.99) { // 서 있는 자세
+        this.status = 'ready';
+        this.check = true;
+      }
+      this.drawPose(pose);
+    },
+
+    async burpeepredict() {
+      const { pose, posenetOutput } = await this.model.estimatePose(
+        this.webcam.canvas,
+      );
+      const prediction = await this.model.predict(posenetOutput);
+      if (prediction[2].probability.toFixed(2) > 0.99) { // 서 있는 자세
+        if (this.check && this.check2) {
+          this.burpeeCount += 1;
+          console.log('burpeeCount', this.burpeeCount);
+          this.session
+            .signal({
+              data: `${this.connectionId},${this.burpeeCount}`, // Any string (optional)
+              to: [], // Array of Connection objects (optional. Broadcast to everyone if empty)
+              type: 'burpeeCount', // The type of message (optional)
+            })
+            .then(() => {
+              // this.setState({ check: false });
+              this.check = false;
+              this.check2 = false;
+            })
+            .catch(() => {});
+        }
+        this.status = 'go';
+        // this.setState({ status: 'ready' });
+      } else if (prediction[1].probability.toFixed(2) > 0.99) { // 쪼그려 앉아 있는 자세
+        this.status = 'ready';
+        if (this.check) {
+          this.check = true;
+        }
+      } else if (prediction[0].probability.toFixed(2) > 0.99) { // 엎드려 있는 자세
+        this.status = 'set';
+        this.check2 = true;
+      }
+      this.drawPose(pose);
     },
   },
 };
 </script>
 <style scoped>
-.container {
-  width:100vw;
-}
 div {
-  color:black;
+  color: black;
+}
+
+.menu_icon1 {
+  width:30px;
+}
+
+.menu_icon2 {
+  width:50px;
+}
+
+.menu_icon3 {
+  height:40px;
+  width:40px;
+}
+
+.menu_icon4 {
+  width:100px;
+}
+
+.emoji_position {
+  position:fixed;
+  bottom: 100px;
+  left: 20px;
+  /* z-index:1000; */
+}
+
+.open_emoji {
+  background-color:transparent;
+  border:none;
+  position:fixed;
+  bottom: 30px;
+  left: 30px;
 }
 
 .chat {
+  border:none;
+  background-color:transparent;
   position:fixed;
-  bottom: 30px;
+  bottom: 29px;
   right: 30px;
 }
 
 .chatimg {
   width:50px;
+}
+
+.achat {
+  position:fixed;
+  border: 1px solid white;
+  border-radius: 30px;
+  width:320px;
+  height:600px;
+  background: rgb(206,223,255);
+  background: radial-gradient(circle, rgba(206,223,255,1) 0%,
+  rgba(78,138,255,1) 95%, rgba(39,76,149,1) 100%);
+  bottom: 100px;
+  right: 20px;
+}
+
+.achat-content {
+  position:fixed;
+  border: 1px solid white;
+  width:320px;
+  height:490px;
+  background-color: #c5a180;
+  bottom: 180px;
+  right: 20px;
+}
+
+.achat-submit {
+  position:fixed;
+  width:300px;
+  height:70px;
+  bottom: 105px;
+  right: 19px;
+}
+
+.achat-submit2 {
+  position: fixed;
+  bottom: 124px;
+  right: 40px;
+}
+
+#mychat:focus {
+  outline:1px solid #4e8aff;
+}
+
+.mychatting {position:relative; margin: 50px; padding: 20px; width:180px; height:90px;
+border:1px solid #4e8aff; border-radius: 10px; background-color:  #4e8aff;}
+.mychatting:after {content:""; position: absolute; top: 21px; right: -28px; border-left: 28px
+solid  #4e8aff; border-top: 10px solid transparent; border-bottom: 10px solid transparent;}
+
+.yourchatting {position:relative; margin: 50px; padding: 20px; width:180px; height:90px;
+border:1px solid #cedfff; border-radius: 10px; background-color: #cedfff;}
+.yourchatting:after {content:""; position: absolute; top: 21px; left: -28px; border-right: 28px
+solid #cedfff; border-top: 10px solid transparent; border-bottom: 10px solid transparent;}
+
+.webrtcetc {
+  /* width: 30%;
+  height:100%; */
+  width:520px;
+  height:360px;
+  text-align:center;
+  vertical-align: middle;
+  background-image: url('../../assets/icon/Loading2.gif');
+  background-position: center;
+  background-size: 30px 30px;
+  background-repeat: no-repeat;
+  border-radius: 20px;
+  border: 4px solid #4e8aff;
+  background-color:white;
+  transition-property: width, height;
+  transition-duration: 2s;
+}
+
+.Emoji {
+  position:fixed;
+  top:100px;
+  left:100px;
+  /* z-index: 103; */
+}
+
+.m0p0 {
+  margin:0;
+  padding:0;
+}
+
+.row { display: flex; }
+.row > * { margin: auto; }
+
+#take_photo_background {
+    background-color: black;
+    position: fixed;
+    overflow: hidden;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* z-index: 600; */
+    opacity: 0.7;
+    font-size:599px;
+}
+
+#take_photo_WebRTC {
+  background-color:transparent;
+  transition-property: opacity;
+  transition-duration: 2s;
+  transition-timing-function: ease;
+  position: fixed;
+  width: 60%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  /* height: 80%; */
+  /* z-index: 601; */
+  opacity: 1;
+}
+
+#take_photo_WebRTC_photo {
+  background-color:transparent;
+  position: fixed;
+  width: 60%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  /* height: 80%; */
+  /* z-index: 602; */
+}
+
+#take_photo_WebRTC_warning {
+  position:fixed;
+  font-size:30px;
+  top: 5%;
+  left: 50%;
+  transform: translate(-50%, 0);
+  color:white;
+  padding:3px;
+  margin:3px;
+  background-color:#4e8aff;
+  /* z-index:603; */
+  border-radius: 10px;
+}
+
+#take_photo_timer {
+    position:fixed;
+    top: 0%;
+    left: 0%;
+    width: 100%;
+    height: 100%;
+    /* z-index: 602; */
+    font-size:300px;
+}
+
+.after-exercise {
+    width:600px;
+    margin:auto;
+}
+
+.mybutton {
+  padding: 0;
+  border: none;
+}
+
+#after-exercise-modal {
+  font-family: 'NanumSquareRound', 'Noto Sans KR', sans-serif;
+  /* width: 900px; */
+}
+
+.title {
+  font-weight: 900;
+}
+
+.md-title {
+  font-size: 24px;
+  font-weight: 800;
+  margin: 20px 0;
+}
+
+.md-title2 {
+  font-size: 24px;
+  font-weight: 800;
+  margin: 0;
+}
+
+.mycontainer {
+  width: 100%;
+}
+
+.photo-row {
+  /* width:100%; */
+}
+
+.photo {
+  /* border: solid 1px black; */
+  /* padding: 0 10px; */
+  /* margin: 10px; */
+  /* background-color:gray; */
+  /* width:10%; */
+  /* width: 100px;
+  height:100px; */
+}
+
+.exerciseMemo {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.socialbtn {
+  margin-top: 20px;
+}
+
+.input_email {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.input_password {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.alreadyUser {
+  text-align: center;
+  font-size: 20px;
+}
+
+.buttons {
+  margin-top: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.form-check-input {
+  position:relative;
+  top:6px;
+  left:0px;
+}
+
+.form-password-input {
+  position:relative;
+  top:7px;
+  left:0px;
+}
+
+.mybtn1 {
+  background-color:transparent;
+  border:none;
+  position:fixed;
+  top:10%;
+  left:30px;
+  /* z-index: 500; */
+}
+
+.mybtn2 {
+  background-color:transparent;
+  border:none;
+  position:fixed;
+  top:20%;
+  left:30px;
+  /* z-index: 500; */
+}
+
+.mybtn3 {
+  background-color:transparent;
+  border:none;
+  position:fixed;
+  top:30%;
+  left:30px;
+  /* z-index: 500; */
+}
+
+.mybtn4 {
+  background-color:transparent;
+  border:none;
+  position:fixed;
+  top:40%;
+  left:30px;
+  /* z-index: 500; */
+}
+
+.mybtn5 {
+  background-color:transparent;
+  border:none;
+  position:fixed;
+  top: 6px;
+  right: 120px;
+  /* z-index: 500; */
+}
+
+.mybtn6 {
+  background-color:transparent;
+  border:none;
+  position:fixed;
+  top: 30px;
+  right: 30px;
+  /* z-index: 500; */
+}
+
+.setTimer2position {
+  position:fixed;
+  top:90px;
+  right:30px;
+  /* z-index:500; */
+}
+
+.startbtnpositionsub {
+  position:relative;
+}
+
+.startbtnposition {
+  position: absolute;
+  top: 50%;
+  right:20px;
+  transform: translate(0, -50%);
+}
+
+.checkboxposition {
+  position:relative;
+}
+
+.secretcheckbox {
+  position: absolute;
+  top: 50%;
+  right:20px;
+  transform: translate(0, -50%);
+  /* line-height: 0.8; */
+}
+
+::placeholder {
+  color:white;
+  text-align: center;
+}
+
+.bytepositionsub {
+  position: relative;
+}
+
+.btyeposition {
+  position: absolute;
+  bottom:15px;
+  right:35px;
+}
+
+.viewsetting {
+  margin:auto;
+}
+
+.myBackGroundSetting {
+  background-color: #000000;
+  position:fixed;
+  top: 0%;
+  left: 0%;
+  width: 100%;
+  height: 100%;
+  /* z-index:900; */
+  opacity: 0.7;
+}
+
+.roundGame {
+  font-size:5rem;
+  color:white;
+  background-color:#4e8aff;
+  position: absolute;
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  width:100%;
+  height:40%;
+  top: 50%;
+  left:0%;
+  transform: translate(0, -50%);
+  opacity: 0.9;
 }
 </style>

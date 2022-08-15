@@ -1,12 +1,16 @@
 <template>
-  <div class="calendar">
-    <div class="month-title">
-      <h2>
+  <div v-if="isLogin === true" class="calendar">
+    <div class="month-title container-fluid row p-0 m-0 mb-3">
+      <div class="col-2">
         <a class="month-change-btn" href="#"
-          @click.prevent="onClickPrev(currentMonth)"
-        >◀</a><span class="calendar-title">{{currentYear}}년 {{currentMonth}}월</span><a
-          class="month-change-btn" href="#" v-on:click.prevent="onClickNext(currentMonth)">▶</a>
-      </h2>
+          @click.prevent="onClickPrev(currentMonth)">◀</a>
+      </div>
+      <div class="col-8">
+        <p class="date-title p-0 m-0">{{currentYear}}년 {{currentMonth}}월</p>
+      </div>
+      <div class="col-2">
+        <a class="month-change-btn" href="#" v-on:click.prevent="onClickNext(currentMonth)">▶</a>
+      </div>
     </div>
     <div class="calendar-table">
       <table class="table table-hover">
@@ -20,15 +24,19 @@
         <tbody>
           <tr v-for="(row, index) in currentCalendarMatrix" :key="index">
             <td class="day-td" v-for="(day, index2) in row" :key="index2">
-              <a href="#" v-if="isToday(currentYear, currentMonth, day)"
-                class="rounded days"
-                @click="selectDay(currentMonth, day)" v-b-modal="'myModal'">
+              <a v-if="isToday(currentYear, currentMonth, day)" class="today day-a" href="#"
+                @click="selectDay(currentYear, currentMonth, day)" v-b-modal="'myModal'">
                 {{day}}
               </a>
+              <!-- <a>
+                <img class="stamp" src="@/assets/icon/stamps/evaluate1.png" alt=""></img>
+              </a> -->
               <span v-else>
-                <a class="days" href="#" @click="selectDay(currentMonth, day)"
+                <a class="days day-a" href="#" @click="selectDay(currentYear, currentMonth, day)"
                   v-b-modal="'myModal'">{{day}}</a>
               </span>
+              <img v-if="day"
+              class="dot" src="@/assets/icon/dot.png" alt="">
             </td>
           </tr>
         </tbody>
@@ -37,118 +45,163 @@
       class="myModal"
         :title="`${currentYear}년 ${currentMonth}월 ${day}일`" hide-header>
         <div class="carousel-box">
-          <div class="modal-title">
-            <p class="lg-title">{{currentYear}}년 {{currentMonth}}월 {{day}}일</p>
+          <div class="month-title modal-title text-center container-fluid row p-0 m-0 mb-3">
+            <div class="col-2">
+              <a class="day-change-btn" href="#"
+                @click.prevent="onClickPrevDay(currentYear, currentMonth, day)">◀</a>
+            </div>
+            <div class="col-8">
+              <h1 class="date-title p-0 m-0">{{currentYear}}년 {{currentMonth}}월 {{day}}일</h1>
+            </div>
+            <div class="col-2">
+              <a class="day-change-btn" href="#"
+                v-on:click.prevent="onClickNextDay(currentYear, currentMonth, day)">▶</a>
+            </div>
           </div>
           <!--카로셀-->
-          <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
-            <div class="carousel-inner">
-              <div class="carousel-item active">
-                <img src="https://phantom-marca.unidadeditorial.es/746e69f29df0fa7da1f9df1cffc2af10/crop/0x20/1499x861/resize/1320/f/jpg/assets/multimedia/imagenes/2022/01/12/16419960151339.jpg" class="d-block w-100" alt="">
+          <div class="row">
+            <div class="no-record-day mt-5"
+              v-if="dayExerciseList.length <= 0">이 날은 운동 기록이 없네요!</div>
+            <!-- {{ dayExerciseList }} -->
+            <!-- <img :src="imageUrl" alt=""> -->
+            <div class="p-0 m-0 mt-5 px-5" v-for="(exercise, i) in dayExerciseList" :key="i">
+              <div class="row record-number">
+                <span>
+                <!--eslint-disable-next-line-->
+                  <span class="record-idx">{{ i + 1 }}</span><span class="record-exercise">{{ exercise.exercise }}</span>
+                </span>
               </div>
-              <div class="carousel-item">
-                <img src="https://cdn.pixabay.com/photo/2016/11/14/03/38/achieve-1822503__480.jpg" class="d-block w-100" alt="">
+              <!-- recordId: {{ exercise.recordId }} <br> -->
+              <!-- memberId: {{ exercise.memberId }} <br> -->
+              <!-- meetingRoomId: {{ exercise.meetingRoomId }} <br> -->
+
+              <div class="picture-wrapper d-flex justify-content-center mb-3">
+                <img class="picture" :src="dayPictures[i].fileUrl" alt="">
               </div>
-              <div class="carousel-item">
-                <img src="https://cdn.pixabay.com/photo/2018/02/06/14/07/ease-3134828__340.jpg" class="d-block w-100" alt="">
+
+              <!--태그-->
+              <!-- tags: {{ exercise.tags }} <br> -->
+              <div class="tags d-flex justify-content-center">
+                <div class="d-flex justify-content-start" style="width: 400px;">
+                  <button
+                    v-for="(tag, tagI) in exercise.tags"
+                    :key="tagI"
+                    class="tag ">
+                    <p class="tag-name"># {{tag.tagContent}}</p>
+                  </button>
+                </div>
               </div>
-            </div>
-            <button class="carousel-control-prev" type="button"
-              data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-              <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button"
-              data-bs-target="#carouselExampleControls" data-bs-slide="next">
-              <span class="carousel-control-next-icon" aria-hidden="true"></span>
-              <span class="visually-hidden">Next</span>
-            </button>
-          </div>
 
-          <!--태그-->
-          <div class="tags row">
-            <button
-              v-for="(tag, tagI) in tags"
-              :key="tagI"
-              class="tag"
-            >
-              <p class="tag-name"># {{tag}}</p>
-            </button>
-          </div>
+              <div class=" d-flex justify-content-center">
+                <div class="d-flex justify-content-between" style="width: 400px;">
+                  <div>
+                    <p class="record-exercise">{{ exercise.exercise }}</p>
+                  </div>
+                  <div>
+                    <p class="record-min">{{ exercise.recordHour }}분</p>
+                  </div>
+                </div>
+              </div>
 
-          <!--운동 종류-->
-          <div class="exercise-type-box">
-            <p>{{ exerciseType }}</p>
-          </div>
-
-          <!--메모-->
-          <div class="memo-box">
-            <p class="memo">
-              사레레 10*20*3 , 밀리터리 프레스 10*20*3 , 프레 10*20*3 , 벤치프레스 10*20*3 , 스쿼트 40*20*3 ,
-              레그레이즈 20*3 함. 힘들다.. 그래도 친구들이랑 같이 해서 재밌었다!
-            </p>
-          </div>
-
-          <!--함께 운동한 사람-->
-          <div class="people-list">
-            <p class="people-title">함께 운동한 사람</p>
-            <div class="d-flex container-fluid people-img-div justify-content-evenly">
-              <img v-for="(profile, recordI) in record.profiles"
-                :key="recordI" src="https://picsum.photos/50" alt="" class="people-img">
+              <div class=" d-flex justify-content-center">
+                <div class="d-flex justify-content-between">
+                  <div class="memo-box">
+                    <p class="memo">
+                      {{ exercise.recordMemo }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <!-- recordSecret: {{ exercise.recordSecret }} <br> -->
+              <hr>
             </div>
           </div>
         </div>
-
-        <div class="btns">
-          <b-button
-            class="mt-3 modal-close"
-            variant="outline-danger" block
-            @click.prevent="hideModal">
-            Close Me
-          </b-button>
-        </div>
-
-        <template #modal-footer="{}">
-          <b-button size="sm"
-            class="mt-3 modal-close" variant="outline-danger" block>
-            Cancel
-          </b-button>
-        </template>
       </b-modal>
+    </div>
+  </div>
+  <div v-else>
+    <div class="month-title container-fluid row p-0 m-0 mb-3">
+      <div class="col-2">
+        <a class="month-change-btn" href="#"
+          @click.prevent="onClickPrev(currentMonth)">◀</a>
+      </div>
+      <div class="col-8">
+        <h4 class="date-title p-0 m-0">{{currentYear}}년 {{currentMonth}}월</h4>
+      </div>
+      <div class="col-2">
+        <a class="month-change-btn" href="#" v-on:click.prevent="onClickNext(currentMonth)">▶</a>
+      </div>
+    </div>
+    <div class="calendar-table">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <td v-for="(weekName, index) in weekNames" v-bind:key="index">
+              {{weekName}}
+            </td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(row, index) in currentCalendarMatrix" :key="index">
+            <td class="day-td" v-for="(day, index2) in row" :key="index2">
+              <a v-if="isToday(currentYear, currentMonth, day)"
+                style="cursor:default;"
+                class="today day-a" href="#" v-b-modal="'myModal'">
+                {{day}}
+              </a>
+              <span v-else>
+                <a class="days day-a" href="#" style="cursor:default;"
+                  v-b-modal="'myModal'">{{day}}</a>
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="text">
+      <router-link to="/login">
+        <p>로그인하고 운동기록을 확인해 보세요!</p>
+      </router-link>
     </div>
   </div>
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex';
+
 export default {
   name: 'MySmCalendar',
   data() {
     return {
-      weekNames: ['월', '화', '수', '목', '금', '토', '일'],
+      weekNames: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
       rootYear: 1904,
       rootDayOfWeekIndex: 4, // 2000년 1월 1일은 토요일
       currentYear: new Date().getFullYear(),
       currentMonth: new Date().getMonth() + 1,
       currentDay: new Date().getDate(),
+      stringDate: '',
       currentMonthStartWeekIndex: null,
       currentCalendarMatrix: [],
       endOfDay: null,
-      memoDatas: [],
-      day: null,
-      tags: ['오운완', '상체', '등', '어깨', '복근'],
-      exerciseType: '헬스',
-      record: {
-        profiles: [
-          'https://picsum.photos/50', 'https://picsum.photos/50', 'https://picsum.photos/50', 'https://picsum.photos/50', 'https://picsum.photos/50', 'https://picsum.photos/50',
-        ],
-      },
-      memo: '사레레 10*20*3 , 사레레 10*20*3 , 사레레 10*20*3 , 사레레 10*20*3 , 사레레 10*20*3 , 사레레 10*20*3 함. 개힘들었다 정말... 내일도 해야하는데 정말 미쳐버리겠다 운동을 좋아서 하는 사람들은 대체 어떤 사람',
+      // memoDatas: [],
+      // day: null,
+      // tags: ['오운완', '상체', '등', '어깨', '복근'],
+      // exerciseType: '헬스',
     };
+  },
+  computed: {
+    ...mapGetters('record', ['dayExerciseList', 'dayPictures']),
+    ...mapGetters('accounts', ['monthRecord', 'isLogin']),
   },
   mounted() {
     this.init();
+    console.log('로그인여부');
+    console.log(this.isLogin);
   },
   methods: {
+    ...mapActions('record', ['fetchDayExerciseList', 'fetchDayPictures']),
+    ...mapActions('accounts', ['fetchMonthRecord']),
     hideModal() {
       console.log(this.$refs.myModal);
       this.$refs.myModal.hide();
@@ -225,6 +278,7 @@ export default {
         }
       }
     },
+    // 캘린더에서 월 변경
     onClickPrev(month) {
       this.month -= 1;
       if (month <= 0) {
@@ -234,6 +288,9 @@ export default {
         this.currentMonth -= 1;
       }
       this.init();
+      const payload = [this.currentYear, this.currentMonth];
+      console.log(payload);
+      // this.fetchMonthRecord(payload);
     },
     onClickNext(month) {
       this.month += 1;
@@ -245,12 +302,83 @@ export default {
       }
       this.init();
     },
+    // 모달 내에서 날짜 변경
+    onClickPrevDay(year, month, day) {
+      const date = new Date(year, month - 1, day);
+      date.setDate(date.getDate() - 1);
+      this.currentYear = date.getFullYear();
+      this.currentMonth = date.getMonth() + 1;
+      this.day = date.getDate();
+      // axios로 보낼 문자열 날짜 (예.20220820)
+      const stringYear = String(this.currentYear);
+      let stringMonth;
+      if (this.currentMonth >= 10) {
+        stringMonth = String(this.currentMonth);
+      } else {
+        stringMonth = String(0) + String(this.currentMonth);
+      }
+      let stringDay;
+      if (this.day >= 10) {
+        stringDay = String(this.day);
+      } else {
+        stringDay = String(0) + String(this.day);
+      }
+      this.stringDate = stringYear + stringMonth + stringDay;
+      // console.log(stringMonth);
+      // console.log(stringDay);
+      // console.log(this.stringDate);
+      this.fetchDayExerciseList(this.stringDate);
+      this.fetchDayPictures(this.stringDate);
+    },
+    onClickNextDay(year, month, day) {
+      const date = new Date(year, month - 1, day);
+      date.setDate(date.getDate() + 1);
+      this.currentYear = date.getFullYear();
+      this.currentMonth = date.getMonth() + 1;
+      this.day = date.getDate();
+      // axios로 보낼 문자열 날짜 (예.20220820)
+      const stringYear = String(this.currentYear);
+      let stringMonth;
+      if (this.currentMonth >= 10) {
+        stringMonth = String(this.currentMonth);
+      } else {
+        stringMonth = String(0) + String(this.currentMonth);
+      }
+      let stringDay;
+      if (this.day >= 10) {
+        stringDay = String(this.day);
+      } else {
+        stringDay = String(0) + String(this.day);
+      }
+      this.stringDate = stringYear + stringMonth + stringDay;
+      this.fetchDayExerciseList(this.stringDate);
+      this.fetchDayPictures(this.stringDate);
+    },
+
     isToday(year, month, day) {
       const date = new Date();
       return year === date.getFullYear() && month === date.getMonth() + 1 && day === date.getDate();
     },
-    selectDay(currentMonth, day) {
+    selectDay(year, month, day) {
+      this.currentYear = year;
+      this.currentMonth = month;
       this.day = day;
+      const stringYear = String(this.currentYear);
+      let stringMonth;
+      if (this.currentMonth >= 10) {
+        stringMonth = String(this.currentMonth);
+      } else {
+        stringMonth = String(0) + String(this.currentMonth);
+      }
+      let stringDay;
+      if (this.day >= 10) {
+        stringDay = String(this.day);
+      } else {
+        stringDay = String(0) + String(this.day);
+      }
+      this.stringDate = stringYear + stringMonth + stringDay;
+      this.fetchDayExerciseList(this.stringDate);
+      this.fetchDayPictures(this.stringDate);
     },
     cancle() {
       const modal = document.querySelector('.modal');
@@ -261,9 +389,17 @@ export default {
 </script>
 
 <style scoped>
+.text {
+  bottom: 2vh;
+  left: 10%;
+  position: absolute;
+}
 .calendar {
   width: 100%;
   margin: 0 auto;
+}
+.container-fluid {
+  height: 100%;
 }
 .calendar-table {
   /* margin-left: 10px;
@@ -277,32 +413,27 @@ export default {
 .month-change-btn:hover {
   color: #4E8AFF;
 }
+.day-change-btn {
+  text-decoration: none;
+  font-size: 28px;
+  color: gray;
+}
+.day-change-btn:hover {
+  color: #4E8AFF;
+}
 .days {
   text-decoration: none;
   color: black;
   padding: 3px;
 }
-.rounded {
-  -moz-border-radius:20px 20px 20px 20px;
-  border-radius:20px 20px 20px 20px;
-  border:solid 1px #ffffff;
-  background-color:#4E8AFF;
-  padding: 5px 7px;
-  color:#ffffff;
+.today {
+  color: #4E8AFF;
+  text-decoration: none;
 }
 .carousel-box {
   margin: 50px;
 }
 
-/* 캐러셀(이미지슬라이드) 이미지 크기변경 */
-.carousel-inner{
-  width:auto;
-  height:400px; /* 이미지 높이 변경 */
-}
-.carousel-item{
-  width: auto;
-  height:100%;
-}
 .d-block {
   display:block;
   width: auto;
@@ -319,55 +450,144 @@ export default {
   margin: 0 auto;
   Background-size : cover;
 }
+.record-number {
+  margin-left: 80px;
+}
+.record-idx {
+  font-size: 28px;
+  font-weight: 900;
+  margin-right: 20px;
+}
 .tags {
-  padding: 10px;
-  margin-bottom: 50px;
+  width: 100%;
+  /* padding: 10px; */
+  margin-bottom: 10px;
 }
 .tag {
   width: 80px;
   height: 26px;
   border: solid #828282 0px;
   display:inline-block;
-  border-radius: 10px;
-  margin: 2px;
+  border-radius: 3px;
+  padding: .2em .5em .3em;
+  font-weight: 600;
+  margin: .25em .1em;
   font-size: 12px;
   font-weight: 700;
-  background-color:#4E8AFF;
+  background-color:#393939;
+  /* padding-left: 10px; */
   line-height: 25px;
   color: white;
   letter-spacing: -1.5;
   text-align: center;
+  /* box-shadow: 3px 3px #898e97; */
 }
 .tag-name {
   text-align: center;
 }
 .tag:hover {
-  background-color: #DE7474;
+  background-color: #4E8AFF;
   color: white;
   transition: 0.2s;
   cursor: pointer;
-
 }
 .tag p {
   text-align: left;
+  /* font-size: 0.5vh; */
+}
+.record-min {
+  font-size: 12px;
+  font-weight: 400;
+}
+.record-exercise {
+  font-size: 15px;
+  font-weight: 900;
 }
 table {
   /* --bs-table-hover-bg: rgba(75, 172, 237, 0.08); */
-  width: 300px;
+  max-width: 28vw;
   margin: 0 auto;
 }
 td, th {
   padding: 0;
 }
+.day-a {
+  font-size: 1.5vh;
+  font-weight: 900;
+  /* font-family: 'Righteous', cursive; */
+  padding: 0;
+  margin: 0;
+}
+.dot{
+  padding: 0 0 2vh 0;
+  width: 4px;
+}
 .day-td  {
-  padding: 7px;
-  --bs-table-hover-bg: rgba(0, 6, 10, 0.08);
+  padding: 0.5vh;
+  /* width: 1vw; */
+  --bs-table-hover-bg: #fafafa;
   border-bottom: 0;
 }
 .table > a {
   text-decoration: none;
+  font-size: 1vh;
 }
 .calendar-title {
   font-size: 18px;
+}
+/* 모달 스타일링 */
+.modal-dialog-scrollable .modal-body::-webkit-scrollbar {
+  width: 10px;
+  background-color: black;
+}
+.myModal a, .myModal p:not(.memo) {
+  font-family: 'NanumSquareRound';
+}
+.picture-wrapper {
+  position: relative;
+  width: 400px;
+  height: 277px;
+  margin: 0 auto;
+}
+.picture-wrapper img {
+  /* border-radius: 50%; */
+  /* margin: 0 auto; */
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translate(50, 50);
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  margin: auto;
+  border-radius: 15px;
+  border: 1px solid #DFDFDF;
+  box-shadow: 3px 3px 3px #DFDFDF;
+}
+.lg-title {
+  font-weight: 900;
+  font-size: 30px;
+  text-align: center;
+  padding-bottom: 20px;
+}
+.memo-box {
+  border: solid black 1px;
+  margin: 20px;
+  padding: 20px;
+  margin-bottom: 50px;
+  border-radius: 10px;
+  width: 400px;
+}
+.memo {
+  text-align: justify;
+  font-family: 'Fairytale_ddobak';
+  font-weight: 400;
+  font-size: 20px;
+  letter-spacing: -1.2;
+  margin-bottom: 4px;
+}
+.no-record-day {
+  font-weight: 700;
+  text-align: center;
 }
 </style>

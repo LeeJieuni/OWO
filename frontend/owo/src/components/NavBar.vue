@@ -2,7 +2,7 @@
   <div class="navContainer">
     <!--오운완 내브바-->
     <div class="owo_nav">
-      <nav class="navbar sticky-top">
+      <nav class="navbar sticky-top fixed-top">
         <div class="container-fluid d-flex justify-content-between">
           <!--logo-->
           <div class="navbar-brand mb-0 h1">
@@ -10,7 +10,7 @@
               <img id="logo2" src="../assets/logo/logo2.png" alt="">
             </router-link>
           </div>
-          <div v-if="!isLogin" class="d-flex">
+          <div v-if="!isLogin" class="d-flex justify-content-center">
             <!--dropdows1-rooms-->
             <li class="menu1 mypages nav-item dropdown">
               <a class="nav-link dropdown-toggle pe-3"
@@ -32,7 +32,7 @@
                 </li>
               </ul>
             </li>
-            <router-link to="/login">
+            <router-link to="/login" style="text-align:center;">
               <li class="menu1">login</li>
             </router-link>
             <router-link to="/register">
@@ -62,16 +62,19 @@
               </li>
               <div class="navbar-brand mb-0 h1">
                 <span>안녕하세요
-                <router-link to="/mypage/main"><span class="nickToMypage">{{ userInfo.nick }}</span>
+                <router-link to="/mypage/main"><span
+                  v-once class="nickToMypage">{{ userInfo.nick }}</span>
                 </router-link> 님,
                   반갑습니다!</span>
               </div>
             </div>
             <div class="dropdown">
-              <img class="profile-img " src="https://picsum.photos/150" alt="">
+              <div class="img-wrapper">
+                <img class="profile-img" :src="profileImg" alt="">
+              </div>
               <div class="dropdown-content">
                 <router-link to="/mypage/main">
-                  <li>마이페이지</li>
+                  <li @click="fetchMypage" @keyup.enter="fetchMypage">마이페이지</li>
                 </router-link>
                   <button class="logout-btn" @click="logout()">로그아웃</button>
               </div>
@@ -97,13 +100,20 @@ export default {
     ...mapActions({
       logout: 'logout',
     }),
+    // ...mapActions('record', ['fetchPercentage', 'fetchAchievementRate']),
+    ...mapActions('accounts', ['fetchMypage']),
+    // mypageFetch() {
+    //   this.fetchMypage();
+    // },
   },
   computed: {
-    ...mapGetters(['isLogin', 'userInfo']),
+    ...mapGetters(['isLogin', 'userInfo', 'profileImg']),
   },
 };
 </script>
+<style>
 
+</style>
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Do+Hyeon&family=Jua&family=Nanum+Brush+Script&family=Noto+Sans+KR:wght@100;300;400;500;700;900&family=Stylish&display=swap');
 
@@ -116,6 +126,9 @@ a {
 
 li {
   list-style: none;
+}
+.navbar {
+  box-shadow: #DFDFDF 5px 0 10px;
 }
 
 .navContainer {
@@ -178,7 +191,8 @@ li {
 }
 
 .menu1 {
-  margin-left: 2em;
+  margin-left: 1em;
+  margin-right: 1em;
   font-size: 1rem;
   text-align: center;
 }
@@ -240,11 +254,6 @@ li {
   display: block;
 }
 
-.profile-img {
-  border-radius: 50%;
-  height: 50px;
-}
-
 .dropdown-content li {
   padding: 5px;
 }
@@ -252,6 +261,17 @@ li {
   border: none;
   background-color: #F9F9F9
 }
-li, router-link {
+.img-wrapper {
+  width: 50px;
+  height: 50px;
+  overflow:hidden;
+  margin:0 auto;
+}
+.profile-img {
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  border-radius: 50%;
+  border: #DFDFDF 0.2px solid;
 }
 </style>

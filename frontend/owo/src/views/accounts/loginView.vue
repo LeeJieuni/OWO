@@ -1,8 +1,7 @@
 <template>
-  <div>
     <div class="login">
       <div class="container">
-        <img src="../../assets/logo/logo2.png" alt="" style="width: 700px">
+        <img src="../../assets/logo/logo2.png" alt="" style="width: 500px">
         <form @submit.prevent="login(credentials)" class="loginForm">
           <h1 style="font-weight: bold; margin-bottom: 20px;">Login</h1>
           <div class="input">
@@ -43,7 +42,6 @@
         </form>
       </div>
     </div>
-  </div>
 </template>
 
 <script>
