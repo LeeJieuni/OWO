@@ -77,7 +77,7 @@
           <h5 class="card-title">나의 운동 기록</h5>
           <MySmCalendar/>
         </b-card>
-      </b-card-group>
+      </b-card-group> -->
   </div>
 </template>
 
