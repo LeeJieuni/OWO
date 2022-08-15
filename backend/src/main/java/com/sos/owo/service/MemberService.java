@@ -11,6 +11,7 @@ import com.sos.owo.dto.MemberBodyDto;
 import com.sos.owo.dto.MemberLoginResponseDto;
 import com.sos.owo.dto.MemberSloganDto;
 import com.sos.owo.dto.MemberUpdateDto;
+import com.sos.owo.error.Exception.custom.SomethingNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -166,7 +167,7 @@ public class MemberService {
     }
 
     @Transactional
-    public double getPointPercentage(int memberid) throws Exception {
+    public double getPointPercentage(int memberid) throws Exception{
         int rank = memberRepository2.findRanking(memberid);
         int allCnt = memberRepository2.findMemberCnt();
         double percentage = ((double) rank / allCnt) * 100;
@@ -177,12 +178,15 @@ public class MemberService {
     @Transactional
     public int getMemberPoint(int memberId){
         Member findMember = memberRepository.findOne(memberId);
+        if(findMember == null) throw new SomethingNotFoundException("member(id:"+memberId+")");
         return findMember.getPoint();
     }
 
     @Transactional
     public MemberBodyDto getMemberBodyInformation(int memberId) throws IllegalStateException {
         Member findMember = memberRepository.findOne(memberId);
+        if(findMember == null) throw new SomethingNotFoundException("member(id:"+memberId+")");
+
         MemberBodyDto memberBodyDto = new MemberBodyDto();
         if(findMember.getHeight() == 0 || findMember.getWeight() == 0 || findMember.getAge() == 0 || findMember.getActivityLevel() == 0 || findMember.getGender() == null){
             throw new IllegalStateException("신체 정보가 입력되지 않았습니다.");
@@ -217,7 +221,7 @@ public class MemberService {
     public MemberLoginResponseDto getMember(String accessToken) throws Exception {
         String email = jwtTokenProvider.getUserPk(accessToken);
         Member member = memberRepository.findByEmail(email);
-
+        if(member == null) throw new SomethingNotFoundException("member(email:"+email+")");
         // 리프레쉬 토큰 발급
         MemberLoginResponseDto memberDto = MemberLoginResponseDto.builder()
                 .email(email)
