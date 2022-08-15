@@ -156,14 +156,14 @@ export default {
   },
   computed: {
     ...mapGetters('record', ['dayExerciseList', 'dayPictures']),
-    ...mapGetters('accounts', ['monthRecord']),
+    // ...mapGetters('accounts', ['monthRecord']),
   },
   mounted() {
     this.init();
   },
   methods: {
     ...mapActions('record', ['fetchDayExerciseList', 'fetchDayPictures']),
-    ...mapActions('accounts', ['fetchMonthRecord']),
+    // ...mapActions('accounts', ['fetchMonthRecord']),
     hideModal() {
       console.log(this.$refs.myModal);
       this.$refs.myModal.hide();
@@ -410,6 +410,9 @@ export default {
 </script>
 
 <style scoped>
+.container-fluid {
+  height: 100%;
+}
 .calendar {
   color: #2E2E2E;
   max-width: 610px;
@@ -553,7 +556,7 @@ export default {
 }
 
 .table {
-  /* --bs-table-hover-bg: rgba(75, 172, 237, 0.08); */
+  margin-top: 20px;
 }
 .day-td  {
   --bs-table-hover-bg: rgba(0, 6, 10, 0.08);

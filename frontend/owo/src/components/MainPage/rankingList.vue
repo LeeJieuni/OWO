@@ -44,14 +44,19 @@
     <b-card-group deck class="d-flex justify-content-evenly" v-if="isLogin === false">
         <b-card class="rounded-5 cards">
           <h5 class="card-title"> 저번 주 운동왕</h5>
-          <div v-for="(ranking, i) in rankingList" :key="i" class="ranking">
-            <button class="button">{{ i + 1 }}위 {{ ranking.name }}</button>
+          <div v-for="(ranking, i) in rankingList" :key="i"
+            class="ranking d-flex justify-content-center">
+            <button class="button d-flex justify-content-between"
+              :style="{backgroundColor: backColors[i]}">
+              <span><img :src="require(`@/assets/icon/tier${i+1}.png`)"
+                style="width: 30px;" alt=""></span>
+              <span>{{i+1}}위</span><span>{{ ranking.name }}</span>
+            <span>{{ ranking.score }}분</span></button>
           </div>
           <hr />
-          <div class="myranking">
+          <div class="myranking text">
             <router-link to="/login">
-              <button class="button" block pill size='lg'
-                variant="outline-danger">내 랭킹을 확인해 볼까요?</button>
+              <p>내 랭킹을 확인해 볼까요?</p>
             </router-link>
           </div>
         </b-card>
@@ -62,7 +67,11 @@
             <circle-progress class="progress-bar" :percent="achievement"
             :show-percent="true" :viewport="true" :size="130"/>
           </div>
-          <p class="card-bottom">나의 운동 기록을 확인해 볼까요?</p>
+          <div class="text">
+            <router-link to="/login">
+              <p>내 운동 목표 달성률을 확인해 볼까요?</p>
+            </router-link>
+          </div>
         </b-card>
         <b-card class="rounded-5 cards">
           <h5 class="card-title">나의 운동 기록</h5>
@@ -131,9 +140,15 @@ p {
 }
 
 .cards {
+  position: relative;
   max-width: 25vw;
   height: 25vw;
   max-height: 50vh
+}
+.text {
+  bottom: 2vh;
+  left: 10%;
+  position: absolute;
 }
 
 .title {

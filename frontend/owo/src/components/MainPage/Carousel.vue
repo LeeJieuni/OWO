@@ -162,7 +162,7 @@ export default defineComponent({
 }
 .btn-12 span {
   background: rgb(0,172,238);
-  background: linear-gradient(0deg, rgb(154, 179, 255) 0%, rgba(2,126,251,1) 100%);
+  background: linear-gradient(0deg, rgb(191, 180, 231) 0%, rgb(87, 42, 251) 100%);
   display: block;
   position: absolute;
   width: 200px;

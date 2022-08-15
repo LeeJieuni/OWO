@@ -121,8 +121,7 @@
     </div>
   </div>
   <div v-else>
-    로그인
-    <!-- <div class="month-title container-fluid row p-0 m-0 mb-3">
+    <div class="month-title container-fluid row p-0 m-0 mb-3">
       <div class="col-2">
         <a class="month-change-btn" href="#"
           @click.prevent="onClickPrev(currentMonth)">◀</a>
@@ -146,19 +145,25 @@
         <tbody>
           <tr v-for="(row, index) in currentCalendarMatrix" :key="index">
             <td class="day-td" v-for="(day, index2) in row" :key="index2">
-              <a v-if="isToday(currentYear, currentMonth, day)" class="today day-a" href="#"
-                @click="selectDay(currentYear, currentMonth, day)" v-b-modal="'myModal'">
+              <a v-if="isToday(currentYear, currentMonth, day)"
+                style="cursor:default;"
+                class="today day-a" href="#" v-b-modal="'myModal'">
                 {{day}}
               </a>
               <span v-else>
-                <a class="days day-a" href="#" @click="selectDay(currentYear, currentMonth, day)"
+                <a class="days day-a" href="#" style="cursor:default;"
                   v-b-modal="'myModal'">{{day}}</a>
               </span>
             </td>
           </tr>
         </tbody>
       </table>
-    </div> -->
+    </div>
+    <div class="text">
+      <router-link to="/login">
+        <p>로그인하고 운동기록을 확인해 보세요!</p>
+      </router-link>
+    </div>
   </div>
 </template>
 
@@ -384,6 +389,11 @@ export default {
 </script>
 
 <style scoped>
+.text {
+  bottom: 2vh;
+  left: 10%;
+  position: absolute;
+}
 .calendar {
   width: 100%;
   margin: 0 auto;
