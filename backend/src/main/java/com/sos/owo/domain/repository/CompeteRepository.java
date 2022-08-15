@@ -16,6 +16,7 @@ public class CompeteRepository {
 
     @PersistenceContext
     private final EntityManager em;
+    private final MemberRepository memberRepository;
 
 
     //경쟁모드의 사용자 최고기록 조회
@@ -25,13 +26,13 @@ public class CompeteRepository {
                         , Compete.class)
                 .setParameter("memberId", memberId);
 
-        List<Object[]> bestScore = findCompete.getResultList();
+        List<Compete> bestScore = findCompete.getResultList();
 
         int first = 0, second = 0, third = 0;
-        for(Object[] row : bestScore){
-            first = (Integer)row[1];
-            second = (Integer)row[2];
-            third = (Integer)row[3];
+        for(Compete c : bestScore){
+            first = c.getCompeteScore1();
+            second = c.getCompeteScore2();
+            third = c.getCompeteScore3();
         }
 
         List<Integer> result = new ArrayList<>();
@@ -42,8 +43,34 @@ public class CompeteRepository {
         return result;
     }
 
+    //경쟁모드의 사용자 최고기록 조회
+    public Compete checkBestScore(int memberId){
+        Query findCompete = em.createQuery("select c from Compete c join c.member m" +
+                        " where m.id = :memberId "
+                , Compete.class)
+                .setParameter("memberId", memberId);
+
+        List<Compete> bestScore = findCompete.getResultList();
+
+       if(bestScore.size() == 0 || bestScore == null || bestScore.get(0) == null){
+           return null;
+       }
+        return bestScore.get(0);
+    }
 
 
+
+
+    //경쟁모드의 사용자 최고기록 조회
+    public void saveBestScore(int memberId, int score1, int score2, int score3){
+        Compete compete = new Compete();
+        compete.setMember(memberRepository.findOne(memberId));
+        compete.setCompeteScore1(score1);
+        compete.setCompeteScore2(score2);
+        compete.setCompeteScore3(score3);
+        em.persist(compete);
+        return;
+    }
 
 
 }

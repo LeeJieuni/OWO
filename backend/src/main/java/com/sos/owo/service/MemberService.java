@@ -1,6 +1,7 @@
 package com.sos.owo.service;
 
 import com.sos.owo.config.security.JwtTokenProvider;
+import com.sos.owo.domain.Compete;
 import com.sos.owo.domain.Gender;
 import com.sos.owo.domain.Member;
 import com.sos.owo.domain.repository.CompeteRepository;
@@ -247,5 +248,24 @@ public class MemberService {
         memberRepository.socialLogin(email, refreshToken);
     }
 
+    @Transactional
+    public void saveBestScore(int memberId, int score1, int score2, int score3){
+        Compete compete = competeRepository.checkBestScore(memberId);
+        if(compete == null){
+            competeRepository.saveBestScore(memberId, score1, score2, score3);
+        } else {
+            if(score1 > compete.getCompeteScore1()){
+                compete.updateCompeteScore1(score1);
+            }
 
+            if(score2 > compete.getCompeteScore2()){
+                compete.updateCompeteScore2(score2);
+            }
+
+            if(score3 > compete.getCompeteScore3()){
+                compete.updateCompeteScore3(score3);
+            }
+        }
+        return;
+    }
 }
