@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <NavBar v-show="!mySessionId" />
+  <div class="body">
+    <!-- <NavBar v-show="!mySessionId" /> -->
     <div class="main-container">
       <router-view/>
     </div>
@@ -10,18 +10,39 @@
 
 <script>
 // import TeleportExample from '@/components/MyPage/teleport/TeleportExample.vue';
-import { mapState } from 'vuex';
-import NavBar from './components/NavBar.vue';
+import { mapState, mapActions } from 'vuex';
+// import NavBar from './components/NavBar.vue';
 
 const meetingroom = 'meetingroom';
 
 export default {
   components: {
-    NavBar,
+    // NavBar,
+  },
+  methods: {
+    ...mapActions('mainpage', ['getMyRanking', 'getRankingList']),
+    ...mapActions('record', ['fetchPercentage', 'fetchAchievementRate']),
+    ...mapActions('accounts', ['fetchMypage']),
   },
   computed: {
     ...mapState(meetingroom, ['mySessionId']),
+    // ...mapGetters('accounts', ['userInfo']),
   },
+  beforeCreate() {
+    console.log('app.vue befordCreate');
+  },
+  created() {
+    console.log('app.vue created');
+    console.log('fetch rank');
+    this.getRankingList();
+    console.log('fetch mypage');
+    this.fetchMypage();
+  },
+  // updated() {
+  //   this.fetchPercentage();
+  //   this.fetchGoal();
+  //   this.fetchAchievementRate();
+  // },
 };
 </script>
 
@@ -36,9 +57,26 @@ export default {
   height: 100%;
   letter-spacing : -0.05em;
   padding-bottom: 100px;
-  line-height: 1.6;
+  /* line-height: 1.6; */
   padding: 0;
   margin: 0;
+  scrollbar-color: #D4AA70 #e4e4e4;
+}
+::-webkit-scrollbar {
+  width: 16px;
+}
+::-webkit-scrollbar-track {
+  background-color: #F6F7F9;
+  border-radius: 100px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #d4aa70;
+  border-radius: 100px;
+}
+::-webkit-scrollbar-thumb {
+  background-image: linear-gradient(180deg, #4E8AFF 0%, #b08b8b 99%);
+  box-shadow: inset 2px 2px 5px 0 rgba(#fff, 0.5);
+  border-radius: 100px;
 }
 * {
   margin: 0;
@@ -106,4 +144,5 @@ font-family: 'NanumSquareRoundExtraBold';
   Background2: 383838 투명도 60% === background-color: #38383899;
   ddd
 */
+html, body {margin-left: 150px; margin-right: 150px; }
 </style>

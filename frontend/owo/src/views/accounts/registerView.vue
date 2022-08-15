@@ -2,7 +2,7 @@
   <div>
     <div class="register">
       <div class="container">
-      <img src="../../assets/logo/logo2.png" alt="" style="width: 700px">
+      <img src="../../assets/logo/logo2.png" alt="" style="width: 500px">
       <form @submit.prevent="register(credentials)"
       class="registerForm">
       <h1 style="font-weight: bold; margin-bottom: 20px;">SignUp</h1>
@@ -112,7 +112,7 @@ export default {
   height: 500px;
   padding: 50px;
   border: solid 1px rgb(177, 177, 181);
-  border-radius: 40px;
+  border-radius: 10%;
   box-shadow: 2px 2px 2px 2px rgb(154, 152, 152);
 }
 label {

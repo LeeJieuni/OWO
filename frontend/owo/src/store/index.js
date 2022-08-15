@@ -7,6 +7,7 @@ import { room } from '@/store/modules/room';
 import { record } from '@/store/modules/record';
 import { emoji } from '@/store/modules/emoji';
 import { mainpage } from '@/store/modules/mainpage';
+import { exercise } from '@/store/modules/exercise';
 // export interface RootState {
 //   Accounts: AccountsState;
 // }
@@ -20,6 +21,7 @@ const store = new Vuex.Store({
     record,
     emoji,
     mainpage,
+    exercise,
   },
   plugins: [
     createPersistedState({

@@ -1,12 +1,16 @@
 <template>
   <div class="calendar">
-    <div class="month-title">
-      <h2>
+    <div class="month-title container-fluid row p-0 m-0">
+      <div class="col-2">
         <a class="month-change-btn" href="#"
           @click.prevent="onClickPrev(currentMonth)">◀</a>
-          <span class="date-title">{{currentYear}}년 {{currentMonth}}월</span>
+      </div>
+      <div class="col-8">
+        <h2 class="date-title p-0 m-0">{{currentYear}}년 {{currentMonth}}월</h2>
+      </div>
+      <div class="col-2">
         <a class="month-change-btn" href="#" v-on:click.prevent="onClickNext(currentMonth)">▶</a>
-      </h2>
+      </div>
     </div>
     <div class="calendar-table">
       <table class="table table-hover">
@@ -31,6 +35,8 @@
                 <a class="days day-a" href="#" @click="selectDay(currentYear, currentMonth, day)"
                   v-b-modal="'myModal'">{{day}}</a>
               </span>
+              <img v-if="day"
+              class="dot" src="@/assets/icon/dot.png" alt="">
             </td>
           </tr>
         </tbody>
@@ -39,84 +45,87 @@
       <router-link to="/slide">변화 한 눈에 보기</router-link>
 
       <b-modal id="myModal" size="lg" button-size="sm" scrollable ref="myModal"
-      class="myModal"
+      class="myModal" hide-footer
         :title="`${currentYear}년 ${currentMonth}월 ${day}일`" hide-header>
         <div class="carousel-box">
-          <div class="modal-title">
-            <a class="month-change-btn" href="#"
-              @click.prevent="onClickPrevDay(currentYear, currentMonth, day)">◀</a>
-              <span class="lg-title">{{currentYear}}년 {{currentMonth}}월 {{day}}일 운동 기록</span>
-            <a class="month-change-btn" href="#"
-              v-on:click.prevent="onClickNextDay(currentYear, currentMonth, day)">▶</a>
+          <div class="month-title modal-title text-center container-fluid row p-0 m-0 mb-3">
+            <div class="col-2">
+              <a class="day-change-btn" href="#"
+                @click.prevent="onClickPrevDay(currentYear, currentMonth, day)">◀</a>
+            </div>
+            <div class="col-8">
+              <h1 class="date-title p-0 m-0">{{currentYear}}년 {{currentMonth}}월 {{day}}일</h1>
+            </div>
+            <div class="col-2">
+              <a class="day-change-btn" href="#"
+                v-on:click.prevent="onClickNextDay(currentYear, currentMonth, day)">▶</a>
+            </div>
           </div>
           <!--카로셀-->
-          <div>
-            <!-- <img :src="recordPicture" alt=""> -->
-          </div>
-
           <div class="row">
-            <div v-for="(exercise, i) in dayExerciseList" :key="i">
-              recordId: {{ exercise.recordId }} <br>
-              memberId: {{ exercise.memberId }} <br>
-              meetingRoomId: {{ exercise.meetingRoomId }} <br>
-              tags: {{ exercise.tags }} <br>
-              recordHour: {{ exercise.recordHour }} <br>
-              recordMemo: {{ exercise.recordMemo }} <br>
-              datetime: {{ exercise.datetime }} <br>
-              recordSecret: {{ exercise.recordSecret }} <br>
-              exercise: {{ exercise.exercise }} <hr>
-            </div>
-          </div>
+            <div class="no-record-day mt-5" v-if="dayExerciseList = []">이 날은 운동 기록이 없네요!</div>
+            <!-- {{ dayExerciseList }} -->
+            <!-- <img :src="imageUrl" alt=""> -->
+            <div class="p-0 m-0 mt-5 px-5" v-for="(exercise, i) in dayExerciseList" :key="i">
+              <div class="row record-number">
+                <span>
+                <!--eslint-disable-next-line-->
+                  <span class="record-idx">{{ i + 1 }}</span><span class="record-exercise">{{ exercise.exercise }}</span>
+                </span>
+              </div>
+              <!-- recordId: {{ exercise.recordId }} <br> -->
+              <!-- memberId: {{ exercise.memberId }} <br> -->
+              <!-- meetingRoomId: {{ exercise.meetingRoomId }} <br> -->
 
-          <!--태그-->
-          <div class="tags row">
-            <button
-              v-for="(tag, tagI) in tags"
-              :key="tagI"
-              class="tag"
-            >
-              <p class="tag-name"># {{tag}}</p>
-            </button>
-          </div>
+              <div class="picture-wrapper d-flex justify-content-center mb-3">
+                <img class="picture" :src="dayPictures[i].fileUrl" alt="">
+              </div>
 
-          <!--운동 종류-->
-          <div class="exercise-type-box">
-            <p>{{ exerciseType }}</p>
-          </div>
+              <!--태그-->
+              <!-- tags: {{ exercise.tags }} <br> -->
+              <div class="tags d-flex justify-content-center">
+                <div class="d-flex justify-content-start" style="width: 400px;">
+                  <button
+                    v-for="(tag, tagI) in exercise.tags"
+                    :key="tagI"
+                    class="tag ">
+                    <p class="tag-name"># {{tag.tagContent}}</p>
+                  </button>
+                </div>
+              </div>
 
-          <!--메모-->
-          <div class="memo-box">
-            <p class="memo">
-              사레레 10*20*3 , 밀리터리 프레스 10*20*3 , 프레 10*20*3 , 벤치프레스 10*20*3 , 스쿼트 40*20*3 ,
-              레그레이즈 20*3 함. 힘들다.. 그래도 친구들이랑 같이 해서 재밌었다!
-            </p>
-          </div>
+              <div class=" d-flex justify-content-center">
+                <div class="d-flex justify-content-between" style="width: 400px;">
+                  <div>
+                    <p class="record-exercise">{{ exercise.exercise }}</p>
+                  </div>
+                  <div>
+                    <p class="record-min">{{ exercise.recordHour }}분</p>
+                  </div>
+                </div>
+              </div>
 
-          <!--함께 운동한 사람-->
-          <div class="people-list">
-            <p class="people-title">함께 운동한 사람</p>
-            <div class="d-flex container-fluid people-img-div justify-content-evenly">
-              <img v-for="(profile, recordI) in record.profiles"
-                :key="recordI" src="https://picsum.photos/50" alt="" class="people-img">
+              <div class=" d-flex justify-content-center">
+                <div class="d-flex justify-content-between">
+                  <div class="memo-box">
+                    <p class="memo">
+                      {{ exercise.recordMemo }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <!-- recordSecret: {{ exercise.recordSecret }} <br> -->
+              <hr>
             </div>
           </div>
         </div>
 
-        <div class="btns">
-          <b-button
-            class="mt-3 modal-close"
-            variant="outline-danger" block
-            @click.prevent="hideModal">
-            Close Me
-          </b-button>
-        </div>
-
-        <template #modal-footer="{}">
+        <!-- <template #modal-footer="{}">
           <b-button size="sm"
             class="mt-3 modal-close" variant="outline-danger" block>
             Cancel
           </b-button>
-        </template>
+        </template> -->
       </b-modal>
     </div>
   </div>
@@ -129,7 +138,7 @@ export default {
   name: 'MyCalendar',
   data() {
     return {
-      weekNames: ['월', '화', '수', '목', '금', '토', '일'],
+      weekNames: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
       rootYear: 1904,
       rootDayOfWeekIndex: 4, // 2000년 1월 1일은 토요일
       currentYear: new Date().getFullYear(),
@@ -139,27 +148,22 @@ export default {
       currentMonthStartWeekIndex: null,
       currentCalendarMatrix: [],
       endOfDay: null,
-      memoDatas: [],
-      day: null,
-      tags: ['오운완', '상체', '등', '어깨', '복근'],
-      exerciseType: '헬스',
-      record: {
-        profiles: [
-          'https://picsum.photos/50', 'https://picsum.photos/50', 'https://picsum.photos/50', 'https://picsum.photos/50', 'https://picsum.photos/50', 'https://picsum.photos/50',
-        ],
-      },
-      memo: '사레레 10*20*3 , 사레레 10*20*3 , 사레레 10*20*3 , 사레레 10*20*3 , 사레레 10*20*3 , 사레레 10*20*3 함. 개힘들었다 정말... 내일도 해야하는데 정말 미쳐버리겠다 운동을 좋아서 하는 사람들은 대체 어떤 사람',
-      // dayExerciseList: '',
+      // memoDatas: [],
+      // day: null,
+      // tags: ['오운완', '상체', '등', '어깨', '복근'],
+      // exerciseType: '헬스',
     };
   },
   computed: {
-    ...mapGetters('record', ['dayExerciseList']),
+    ...mapGetters('record', ['dayExerciseList', 'dayPictures']),
+    // ...mapGetters('accounts', ['monthRecord']),
   },
   mounted() {
     this.init();
   },
   methods: {
-    ...mapActions('record', ['fetchDayExerciseList']),
+    ...mapActions('record', ['fetchDayExerciseList', 'fetchDayPictures']),
+    // ...mapActions('accounts', ['fetchMonthRecord']),
     hideModal() {
       console.log(this.$refs.myModal);
       this.$refs.myModal.hide();
@@ -246,6 +250,9 @@ export default {
         this.currentMonth -= 1;
       }
       this.init();
+      const payload = [this.currentYear, this.currentMonth];
+      console.log(payload);
+      // this.fetchMonthRecord(payload);
     },
     onClickNext(month) {
       this.month += 1;
@@ -283,6 +290,7 @@ export default {
       // console.log(stringDay);
       // console.log(this.stringDate);
       this.fetchDayExerciseList(this.stringDate);
+      this.fetchDayPictures(this.stringDate);
     },
     onClickNextDay(year, month, day) {
       const date = new Date(year, month - 1, day);
@@ -306,6 +314,7 @@ export default {
       }
       this.stringDate = stringYear + stringMonth + stringDay;
       this.fetchDayExerciseList(this.stringDate);
+      this.fetchDayPictures(this.stringDate);
     },
 
     isToday(year, month, day) {
@@ -331,6 +340,7 @@ export default {
       }
       this.stringDate = stringYear + stringMonth + stringDay;
       this.fetchDayExerciseList(this.stringDate);
+      this.fetchDayPictures(this.stringDate);
     },
     cancle() {
       const modal = document.querySelector('.modal');
@@ -400,6 +410,13 @@ export default {
 </script>
 
 <style scoped>
+.container-fluid {
+  height: 100%;
+}
+.calendar {
+  color: #2E2E2E;
+  max-width: 610px;
+}
 .my-calendar-title {
   text-align: left;
   padding-top: 50px;
@@ -410,19 +427,25 @@ export default {
 .date-title {
   font-family: 'Black Han Sans', sans-serif;
 }
-.calendar {
-  max-width: 600px;
-}
+
 .calendar-table {
   margin-left: 50px;
   margin-right: 50px;
 }
 .month-change-btn {
   text-decoration: none;
-  font-size: 18px;
+  font-size: 24px;
   color: gray;
 }
 .month-change-btn:hover {
+  color: #4E8AFF;
+}
+.day-change-btn {
+  text-decoration: none;
+  font-size: 28px;
+  color: gray;
+}
+.day-change-btn:hover {
   color: #4E8AFF;
 }
 .days {
@@ -433,14 +456,6 @@ export default {
 .today {
   color: #4E8AFF;
   text-decoration: none;
-}
-.rounded {
-  -moz-border-radius:20px 20px 20px 20px;
-  border-radius:20px 20px 20px 20px;
-  /* border:solid 1px #ffffff; */
-  background-color:#4E8AFF;
-  padding: 3px 6px;
-  color:#ffffff;
 }
 .carousel-box {
   margin: 50px;
@@ -473,26 +488,54 @@ export default {
   margin: 0 auto;
   Background-size : cover;
 }
+.record-number {
+  margin-left: 80px;
+}
+.record-idx {
+  font-size: 28px;
+  font-weight: 900;
+  margin-right: 20px;
+}
 .tags {
-  padding: 10px;
-  margin-bottom: 50px;
+  width: 100%;
+  /* padding: 10px; */
+  margin-bottom: 10px;
 }
 .tag {
   width: 80px;
   height: 26px;
   border: solid #828282 0px;
   display:inline-block;
-  border-radius: 10px;
-  /* padding: 4px; */
-  margin: 2px;
+  border-radius: 3px;
+  padding: .2em .5em .3em;
+  font-weight: 600;
+  margin: .25em .1em;
   font-size: 12px;
   font-weight: 700;
-  background-color:#4E8AFF;
+  background-color:#393939;
   /* padding-left: 10px; */
   line-height: 25px;
   color: white;
   letter-spacing: -1.5;
   text-align: center;
+  /* box-shadow: 3px 3px #898e97; */
+}
+.tag-name {
+  text-align: center;
+}
+.tag:hover {
+  background-color: #4E8AFF;
+  color: white;
+  transition: 0.2s;
+  cursor: pointer;
+}
+.record-min {
+  font-size: 12px;
+  font-weight: 400;
+}
+.record-exercise {
+  font-size: 15px;
+  font-weight: 900;
 }
 .stamp-div {
 }
@@ -505,30 +548,22 @@ export default {
   font-size: 20px;
   font-weight: 900;
   font-family: 'Righteous', cursive;
+  padding: 0;
+  margin: 0;
+}
+.dot{
+  padding: 0 0 30px 0;
 }
 
-.tag-name {
-  text-align: center;
-}
-.tag:hover {
-  background-color: #DE7474;
-  color: white;
-  transition: 0.2s;
-  cursor: pointer;
-
-}
-.tag p {
-  /* text-align: left; */
-}
 .table {
-  /* --bs-table-hover-bg: rgba(75, 172, 237, 0.08); */
+  margin-top: 20px;
 }
 .day-td  {
   --bs-table-hover-bg: rgba(0, 6, 10, 0.08);
   padding: 20px;
 }
 td {
-  border: 0.5px solid #c5c5c5;
+  /* border: 0.5px solid #c5c5c5; */
   /* text-align: left; */
   height: 70px;
   width: 70px;
@@ -551,8 +586,33 @@ td {
 }
 
 /* 모달 스타일링 */
+.modal-dialog-scrollable .modal-body::-webkit-scrollbar {
+  width: 10px;
+  background-color: black;
+}
 .myModal a, .myModal p:not(.memo) {
   font-family: 'NanumSquareRound';
+}
+.picture-wrapper {
+  position: relative;
+  width: 400px;
+  height: 277px;
+  margin: 0 auto;
+}
+.picture-wrapper img {
+  /* border-radius: 50%; */
+  /* margin: 0 auto; */
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translate(50, 50);
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  margin: auto;
+  border-radius: 15px;
+  border: 1px solid #DFDFDF;
+  box-shadow: 3px 3px 3px #DFDFDF;
 }
 .lg-title {
   font-weight: 900;
@@ -560,27 +620,27 @@ td {
   text-align: center;
   padding-bottom: 20px;
 }
-
-.people-title, .exercise-type-box {
-  text-align: center;
-  font-size: 18px;
-  font-weight: 700;
-}
-.people-img {
-  border-radius: 50%;
-}
 .memo-box {
-  border: solid black 1px;
+  border: solid #DFDFDF 1px;
+  box-shadow: 1px 1px 2px #DFDFDF;
   margin: 20px;
   padding: 20px;
   margin-bottom: 50px;
   border-radius: 10px;
+  width: 400px;
+  /* color: #2E2E2E; */
 }
 .memo {
   text-align: justify;
   font-family: 'Fairytale_ddobak';
-  font-weight: 600;
+  font-weight: 400;
   font-size: 20px;
-  /* letter-spacing: 2; */
+  letter-spacing: -1.2;
+  margin-bottom: 4px;
+  /* color: #2E2E2E; */
+}
+.no-record-day {
+  font-weight: 700;
+  text-align: center;
 }
 </style>

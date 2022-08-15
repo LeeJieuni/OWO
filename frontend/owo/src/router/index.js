@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import swal from 'sweetalert2';
 import mainPageView from '../views/MainPage/mainPageView.vue';
 import MyPageView from '../views/MyPage/MyPageView.vue';
 import MyPageMainView from '../views/MyPage/MyPageMainView.vue';
@@ -82,12 +83,12 @@ const routes = [
     component: CompetitionView,
   },
   {
-    path: '/room/friend',
+    path: '/room/friend/:sessionId',
     name: 'friend',
     component: FriendView,
   },
   {
-    path: '/room/youtube',
+    path: '/room/youtube/:sessionId',
     name: 'Youtube',
     component: YoutubeView,
   },
@@ -107,7 +108,11 @@ router.beforeEach((to, from, next) => {
   if (to.matched.some((record) => record.meta.unauthorized || token)) {
     return next();
   }
-  alert('로그인이 필요한 서비스입니다.');
+  swal.fire(
+    '#오운완',
+    '로그인이 필요한 서비스입니다.',
+    'warning',
+  );
   return next('/login');
 });
 export default router;

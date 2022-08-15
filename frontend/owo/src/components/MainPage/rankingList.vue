@@ -2,35 +2,37 @@
   <div class="body container-fluid">
     <h1 class="title">오늘의 운동왕은 누구?</h1>
     <b-card-group deck class="d-flex justify-content-evenly"
-    v-if="isLogin === true">
+      v-if="isLogin === true">
       <b-card class="rounded-5 cards">
-        <h5 class="card-title">어제 운동왕</h5>
-        <div class="ranking" v-for="(rank, index) in rankingList" :key="index">
-          <b-button block pill size='lg' variant="outline-primary"
-          class="d-flex justify-content-between button">
-            <span>{{index+1}}위 : </span><span>{{ rank.name }}</span>
+        <h1 class="card-title">어제 운동왕</h1>
+        <div class="ranking d-flex justify-content-center"
+          v-for="(rank, index) in rankingList" :key="index">
+          <button :style="{backgroundColor: backColors[index]}"
+            class="d-flex justify-content-between button">
+            <span>{{index+1}}위</span><span>{{ rank.name }}</span>
             <span>{{ rank.score }}분</span>
-          </b-button>
+          </button>
         </div>
         <hr />
         <div class="myranking">
-          <b-button class="button" block pill size='lg'
+          <button class="button" block pill size='lg'
           variant="outline-danger" v-if="isLogin && getMyRanking()">
-            나의 랭킹 : {{ myranking }}위</b-button>
-          <b-button class="button" block pill size='lg'
+            나의 랭킹 : {{ myranking }}위</button>
+          <button class="button" block pill size='lg'
           variant="outline-danger" v-if="
           !isLogin">
-            로그인 해주세요</b-button>
+            로그인 해주세요</button>
         </div>
       </b-card>
       <!--운동왕의 레코드  -->
       <b-card class="rounded-5 cards">
         <h5 class="card-title">{{ rankingList[0].name }}님의 record</h5>
-        <div class="d-flex justify-content-center" sytle="margin-bottom: 10px">
-          <circle-progress class="progress-bar" :percent="80"
-          :show-percent="true" :viewport="true" :size="220" />
+        <div class="d-flex justify-content-center align-items-center"
+          style="margin-bottom: 10px">
+          <circle-progress class="progress-bar" :percent="achievement"
+          :show-percent="true" :viewport="true" :size="160" />
         </div>
-        <h5 class="card-bottom">연속 {{ lastingDay.data }}일 동안 운동하고 있어요!</h5>
+        <h5 class="card-bottom">연속 {{ lastingDay }}일 동안 운동하고 있어요!</h5>
       </b-card>
       <b-card class="rounded-5 cards">
         <h5 class="card-title">나의 운동 기록</h5>
@@ -38,45 +40,44 @@
       </b-card>
     </b-card-group>
     <!--로그인 전  화면 부분-->
-    <a v-if="isLogin === false"><router-link to="/login">로그인 후 이용해주세요.</router-link></a>
+    <!-- <a v-if="isLogin === false"><router-link to="/login">로그인 후 이용해주세요.</router-link></a> -->
     <b-card-group deck class="d-flex justify-content-evenly" v-if="isLogin === false">
         <b-card class="rounded-5 cards">
           <h5 class="card-title"> 저번 주 운동왕</h5>
-          <div class="ranking">
-            <b-button block pill size='lg' variant="outline-primary"
-            class="button">1위 #오운완
-            </b-button>
-          </div>
-          <div class="ranking">
-            <b-button block pill size='lg' variant="outline-primary"
-            class="button">2위 #오운미완
-            </b-button>
-          </div>
-          <div class="ranking">
-            <b-button block pill size='lg' variant="outline-primary"
-            class="button">3위 #오운완자
-            </b-button>
+          <div v-for="(ranking, i) in rankingList" :key="i"
+            class="ranking d-flex justify-content-center">
+            <button class="button d-flex justify-content-between"
+              :style="{backgroundColor: backColors[i]}">
+              <span><img :src="require(`@/assets/icon/tier${i+1}.png`)"
+                style="width: 30px;" alt=""></span>
+              <span>{{i+1}}위</span><span>{{ ranking.name }}</span>
+            <span>{{ ranking.score }}분</span></button>
           </div>
           <hr />
-          <div class="myranking">
-            <b-button class="button" block pill size='lg'
-            variant="outline-danger">로그인 해주세요.</b-button>
+          <div class="myranking text">
+            <router-link to="/login">
+              <p>내 랭킹을 확인해 볼까요?</p>
+            </router-link>
           </div>
         </b-card>
         <b-card class="rounded-5 cards">
-          <h5 class="card-title">오운완님의 record</h5>
+          <h5 class="card-title">Records</h5>
           <div class="d-flex row justify-content-center" sytle="margin-bottom: 10px">
-            <p style="font-size: 20px">목표 대비 달성률</p>
-            <circle-progress class="progress-bar" :percent="0"
-            :show-percent="true" :viewport="true" :size="220"/>
+            <p>목표 대비 달성률</p>
+            <circle-progress class="progress-bar" :percent="achievement"
+            :show-percent="true" :viewport="true" :size="130"/>
           </div>
-          <h5 class="card-bottom">연속 5일 동안 운동하고 있어요!</h5>
+          <div class="text">
+            <router-link to="/login">
+              <p>내 운동 목표 달성률을 확인해 볼까요?</p>
+            </router-link>
+          </div>
         </b-card>
         <b-card class="rounded-5 cards">
           <h5 class="card-title">나의 운동 기록</h5>
           <MySmCalendar/>
         </b-card>
-      </b-card-group>
+      </b-card-group> -->
   </div>
 </template>
 
@@ -90,8 +91,16 @@ const mainpage = 'mainpage';
 const accounts = 'accounts';
 
 export default {
+  beforeCreate() {
+  },
   created() {
-    this.getRankingList();
+    console.log('days');
+    console.log(this.lastingDay);
+  },
+  data() {
+    return {
+      backColors: ['#274C95', '#4E8AFF', '#98BBFF'],
+    };
   },
   methods: {
     ...mapActions(mainpage, ['getMyRanking', 'getRankingList']),
@@ -101,48 +110,60 @@ export default {
     MySmCalendar,
   },
   computed: {
-    ...mapState(mainpage, ['rankingList', 'myranking', 'lastingDay']),
-    ...mapGetters(accounts, ['isLogin']),
+    ...mapState(mainpage, ['rankingList', 'myranking']),
+    ...mapGetters(accounts, ['isLogin', 'userInfo', 'lastingDay']),
+    ...mapGetters(mainpage, ['achievement']),
   },
-
 };
 </script>
 
 <style scoped>
 .body {
-  background-color: #CEDFFF;
-  height: 700px;
+  background-color: #642afb;
+  height: 100vh;
 }
-
+p {
+  font-size: 1.5vh;
+}
 /* .b-card-group {
   display: flex;
   justify-content: center;
 } */
 .card-title {
-  font-size: 24px;
+  font-size: 1vw;
   font-weight: 700;
-  margin-bottom: 30px;
+  padding-top: 2vh;
+  margin-bottom: 2vh;
 }
-
 .card-bottom {
   margin-top: 10px;
 }
 
 .cards {
-  max-width: 400px;
-  max-height: 400px;
+  position: relative;
+  max-width: 25vw;
+  height: 25vw;
+  max-height: 50vh
+}
+.text {
+  bottom: 2vh;
+  left: 10%;
+  position: absolute;
 }
 
 .title {
-  padding: 30px 0 50px 0;
+  padding: 3vh 0 10vh 0;
+  color: white;
+  font-family: 'LeferiPoint-BlackObliqueA';
+  font-size: 4vh;
 }
 
 .ranking {
-  padding: 10px;
+  padding: 1vh;
 }
 
 .myranking {
-  padding: 10px;
+  padding: 1vh;
 }
 
 .progress-bar {
@@ -151,24 +172,18 @@ export default {
 }
 
 .button {
-  font-size: 20px;
-  font-weight: bold;
-  width: 100%;
+  font-size: 1vw;
+  font-weight: 400;
+  width: 20vw;
+  height: 5vh;
   text-align: center;
-}
-a {
-  line-height: 400px;
-  font-size: 80px;
+  border: none;
+  border-radius: 5px;
+  padding-left: 1.5vw;
+  padding-right: 1.5vw;
+  background-color: #246dfe;
   color: white;
-  text-decoration: none;
-  text-align: center;
-  display: block;
-  position: relative;
-  background: rgba(0, 0, 0, 0.4);
-  border-radius: 30px;
-  width: 100%;
-  height: 400px;
-  margin-bottom: -400px;
-  z-index: 1;
 }
+.button span{
+  line-height: 5vh;}
 </style>
