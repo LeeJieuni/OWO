@@ -394,7 +394,7 @@ export default {
       // 각 운동의 카운트를 memberId와 함께 session.on으로 보내주고 데이터 받아서 저장한다.
       squatCount: 0,
       LungeCount: 0,
-      burpeeCount: 0,
+      BurpeeCount: 0,
       // 운동이 끝나면 count는 서버에 보내고, counts에 따라 임의의 score를 저장한다.
       squatScore: undefined,
       burpeeScore: undefined,
@@ -739,6 +739,7 @@ export default {
         this.roundGameName = '스쿼트';
         setTimeout(() => {
           this.init();
+          this.init();
           this.round1Game = false;
           // eslint-disable-next-line
           const audio = new Audio(require('@/assets/music/321.mp3'));
@@ -844,14 +845,14 @@ export default {
           this.restTime = true;
           this.$refs.setTimer4.pauseTimer();
           // this.webcam.stop();
-        }, 37000);
+        }, 36000);
         setTimeout(() => {
           this.restTime = false;
-        }, 42000);
+        }, 41000);
         setTimeout(() => {
           this.isExercising = true;
           this.startround2();
-        }, 57000);
+        }, 51000);
       });
 
       this.session.on('signal:startround2', () => {
@@ -863,6 +864,7 @@ export default {
         this.roundGameName = '런지';
         setTimeout(() => {
           this.gameType = 2;
+          this.changeExerciseName(2);
           this.round2Game = false;
           // eslint-disable-next-line
           const audio = new Audio(require('@/assets/music/321.mp3'));
@@ -873,22 +875,21 @@ export default {
           // this.webcam.play();
           this.isStarted = false;
           this.$refs.setTimer3.pauseTimer();
-          this.changeExerciseName(2);
         }, 6000);
         setTimeout(() => {
           this.isExercising = false;
           this.restTime = true;
           this.$refs.setTimer4.pauseTimer();
-          this.gameType = 4;
+          // this.gameType = 4;
           // this.webcam.stop();
-        }, 37000);
+        }, 36000);
         setTimeout(() => {
           this.restTime = false;
-        }, 42000);
+        }, 41000);
         setTimeout(() => {
           this.isExercising = true;
           this.startround3();
-        }, 57000);
+        }, 51000);
       });
 
       this.session.on('signal:startround3', () => {
@@ -900,6 +901,7 @@ export default {
         this.roundGameName = '버피테스트';
         setTimeout(() => {
           this.gameType = 3;
+          this.changeExerciseName(3);
           this.round3Game = false;
           // eslint-disable-next-line
           const audio = new Audio(require('@/assets/music/321.mp3'));
@@ -910,7 +912,6 @@ export default {
           // this.webcam.play();
           this.isStarted = false;
           this.$refs.setTimer3.pauseTimer();
-          this.changeExerciseName(3);
         }, 6000);
         setTimeout(() => {
           this.webcam.stop();
@@ -920,12 +921,12 @@ export default {
             icon: 'success',
             // eslint-disable-next-line
             html: `${this.userInfo.nick}님의 기록입니다.<br>
-            #Round 1. Squat : ${this.$refs.webrtc.mySquat}<br>
-            #Round 2. Lunge : ${this.$refs.webrtc.myLunge}<br>
-            #Round 3. Burpee : ${this.$refs.webrtc.myBurpee}`,
+            #Round 1. Squat : ${this.$refs.webrtc.mySquat.userSquatCount}회/<br>
+            #Round 2. Lunge : ${this.$refs.webrtc.myLunge.userLungeCount}회/<br>
+            #Round 3. Burpee : ${this.$refs.webrtc.myBurpee.userBurpeeCount}회/`,
           });
           this.leaveSession();
-        }, 37000);
+        }, 36000);
       });
     },
 
@@ -979,7 +980,7 @@ export default {
     },
 
     async leaveSession() {
-      this.resetallCountList();
+      this.resetAllCountList();
       this.changeExerciseName(0);
       this.removeEmojiList();
       this.removeEmoji();

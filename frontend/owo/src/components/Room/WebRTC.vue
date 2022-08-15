@@ -85,8 +85,8 @@ export default {
       'allSquatCountListSorted',
       'allLungeCountList',
       'allLungeCountListSorted',
-      'allburpeeCountList',
-      'allburpeeCountListSorted',
+      'allBurpeeCountList',
+      'allBurpeeCountListSorted',
     ]),
     ...mapState(accounts, ['userInfo']),
     myReaction() {
