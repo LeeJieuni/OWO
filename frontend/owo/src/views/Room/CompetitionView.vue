@@ -224,18 +224,18 @@
             중지
           </div>
         </button>
-        <button v-if="!isExercising" @click="leaveSession" class="mybtn6">
+        <button v-if="!this.gameType" @click="leaveSession" class="mybtn6">
           <img class="menu_icon2" src="@/assets/icon/roomout.png" alt="leaveSession">
         </button>
-<!-- 여기에 방장 이름이 들어가야함 -->
         <!-- eslint-disable-next-line -->
         <!-- <button v-if="(!isExercising) & (this.subscribers.length >= 1)" class="mybtn5" @click="startround1"> -->
-        <button v-if="!isExercising" class="mybtn5" @click="startround1">
+        <!-- eslint-disable-next-line -->
+        <button v-if="(this.credentialsUser.memberId === this.roomMasterId) & !this.gameType & (this.subscribers.length >= 1)" class="mybtn5" @click="startround1">
           <img class="menu_icon4" src="@/assets/icon/start.png" alt="Start">
         </button>
       </div>
       <!-- 이모티콘 -->
-      <div class="emoji_position" v-if="Emoji_ONOFF & !isExercising">
+      <div class="emoji_position" v-if="Emoji_ONOFF & !this.isExercising">
         <div class="row">
           <!-- apple, google, twitter, facebook -->
           <Picker :data="emojiIndex" set="twitter" @select="showEmoji" />
@@ -260,15 +260,13 @@
       <br>
       <br>
       <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
       <button @click="init">start</button>
       <div>나의 카운트 : {{ count }} </div>
       <button @click="stopCam">캠 삭제</button>
-      <!-- <div>{{ this.$refs.webrtc.mySquat }}</div> -->
+      <div>크레덴셜멤버아이디{{ this.credentialsUser.memberId }}</div>
+      <div>룸마스터아이디{{ this.roomMasterId }}</div>
+      <div>게임타입{{ this.gameType }}</div>
+      <div>관객 수 {{ this.subscribers.length }}</div>
     </div>
   </div>
 </template>
@@ -831,6 +829,8 @@ export default {
         this.roundGameName = '스쿼트';
         setTimeout(() => {
           this.init();
+          this.gameType = 1;
+          this.changeExerciseName(1);
           this.round1Game = false;
           // eslint-disable-next-line
           const audio = new Audio(require('@/assets/music/321.mp3'));
@@ -920,8 +920,6 @@ export default {
           // }, 100);
         }, 2000);
         setTimeout(() => {
-          this.gameType = 1;
-          this.changeExerciseName(1);
           this.init();
         }, 5000);
         setTimeout(() => {
@@ -1180,6 +1178,7 @@ export default {
               'X-AUTH-TOKEN': this.accesstoken,
             },
           }).then(
+            this.gameType = undefined,
             this.leaveSession(),
           );
         }, 37000);

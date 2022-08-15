@@ -200,13 +200,13 @@ export default {
         return 2;
       // eslint-disable-next-line
       } else if (parseInt(this.myBurpee.userBurpeeCount) === this.allBurpeeCountListSorted[2]) {
-        return 4;
+        return 3;
       // eslint-disable-next-line
       } else if (parseInt(this.myBurpee.userBurpeeCount) === this.allBurpeeCountListSorted[3]) {
-        return 5;
+        return 4;
       // eslint-disable-next-line
       } else if (parseInt(this.myBurpee.userBurpeeCount) === this.allBurpeeCountListSorted[4]) {
-        return 6;
+        return 5;
       // eslint-disable-next-line
       } else if (parseInt(this.myBurpee.userBurpeeCount) === this.allBurpeeCountListSorted[5]) {
         return 6;
