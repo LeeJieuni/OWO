@@ -91,10 +91,35 @@ public class MemberController {
         httpHeaders.setContentType(new MediaType("application","json", Charset.forName("UTF-8")));
         try {
             List<Integer> bestScore = memberService.findBestScore(memberId);
-            model.addAttribute("bestScores", bestScore);
             message.setStatus(StatusEnum.OK);
             message.setMessage("경쟁모드 최고기록 조회 성공");
+            message.setData(bestScore);
             //return new ResponseEntity<List<Integer>>( memberService.findBestScore(memberId), HttpStatus.OK);
+            return new ResponseEntity<>( message, httpHeaders, HttpStatus.OK);
+        } catch (IllegalStateException e){
+            e.printStackTrace();
+            message.setStatus(StatusEnum.BAD_REQUEST);
+            message.setMessage("잘못된 요청");
+            return new ResponseEntity<>(message,httpHeaders,HttpStatus.BAD_REQUEST);
+        } catch (Exception e){
+            e.printStackTrace();
+            message.setStatus(StatusEnum.INTERNAL_SERVER_ERROR);
+            message.setMessage("내부 서버 에러");
+            return new ResponseEntity<>(message,httpHeaders,HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
+
+    @ApiOperation(value = "경쟁모드 최고기록 저장",notes = "memberId를 받아서 해당 사용자의 종목별 최고기록을 갱신한다.")
+    @PostMapping("/api/user/compete")
+    public ResponseEntity<?> saveBestScore(@RequestBody ScoreSaveDto scoreSaveDto){
+        Message message = new Message();
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(new MediaType("application","json", Charset.forName("UTF-8")));
+        try {
+            message.setStatus(StatusEnum.OK);
+            memberService.saveBestScore(scoreSaveDto.getMemberId(), scoreSaveDto.getScore1(), scoreSaveDto.getScore2(), scoreSaveDto.getScore3());
+            message.setMessage("경쟁모드 최고기록 저장 성공");
             return new ResponseEntity<>( message, httpHeaders, HttpStatus.OK);
         } catch (IllegalStateException e){
             e.printStackTrace();
