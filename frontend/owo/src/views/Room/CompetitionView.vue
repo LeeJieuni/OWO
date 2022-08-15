@@ -230,7 +230,8 @@
         <!-- eslint-disable-next-line -->
         <!-- <button v-if="(!isExercising) & (this.subscribers.length >= 1)" class="mybtn5" @click="startround1"> -->
         <!-- eslint-disable-next-line -->
-        <button v-if="(this.credentialsUser.memberId === this.roomMasterId) & !this.gameType & (this.subscribers.length >= 1)" class="mybtn5" @click="startround1">
+        <!-- <button v-if="(this.credentialsUser.memberId === this.roomMasterId) & !this.gameType & (this.subscribers.length >= 1)" class="mybtn5" @click="startround1"> -->
+        <button class="mybtn5" @click="startround1">
           <img class="menu_icon4" src="@/assets/icon/start.png" alt="Start">
         </button>
       </div>
@@ -826,11 +827,12 @@ export default {
         this.isExercising = true;
         this.isStarted = true;
         this.round1Game = true;
-        this.roundGameName = '스쿼트';
+        this.roundGameName = '버피';
         setTimeout(() => {
+          this.gameType = 3;
           this.init();
-          this.gameType = 1;
-          this.changeExerciseName(1);
+          this.init();
+          this.changeExerciseName(3);
           this.round1Game = false;
           // eslint-disable-next-line
           const audio = new Audio(require('@/assets/music/321.mp3'));
@@ -921,10 +923,12 @@ export default {
         }, 2000);
         setTimeout(() => {
           this.init();
+          this.init();
         }, 5000);
         setTimeout(() => {
           this.isStarted = false;
           this.$refs.setTimer3.pauseTimer();
+          this.init();
           this.init();
         }, 6000);
         setTimeout(() => {
@@ -986,7 +990,7 @@ export default {
               this.Score -= 30;
             }
           }
-        }, 51000);
+        }, 46000);
       });
 
       this.session.on('signal:startround2', () => {
@@ -1070,7 +1074,7 @@ export default {
               this.Score -= 30;
             }
           }
-        }, 51000);
+        }, 46000);
       });
 
       this.session.on('signal:startround3', () => {
@@ -1079,10 +1083,10 @@ export default {
         audio.play();
         this.isStarted = true;
         this.round3Game = true;
-        this.roundGameName = '버피테스트';
+        this.roundGameName = '스쿼트';
         setTimeout(() => {
-          this.gameType = 3;
-          this.changeExerciseName(3);
+          this.gameType = 1;
+          this.changeExerciseName(1);
           this.round3Game = false;
           // eslint-disable-next-line
           const audio = new Audio(require('@/assets/music/321.mp3'));
@@ -1150,23 +1154,28 @@ export default {
             url: 'https://i7c202.p.ssafy.io:8282/api/user/compete',
             method: 'post',
             data: {
+              // eslint-disable-next-line
               memberId: this.credentialsUser.memberId,
-              score1: this.$refs.webrtc.mySquat.userSquatCount,
-              score2: this.$refs.webrtc.myLunge.userLungeCount,
-              score3: this.$refs.webrtc.myBurpee.userBurpeeCount,
+              // eslint-disable-next-line
+              score1: parseInt(this.$refs.webrtc.mySquat.userSquatCount),
+              // eslint-disable-next-line
+              score2: parseInt(this.$refs.webrtc.myLunge.userLungeCount),
+              // eslint-disable-next-line
+              score3: parseInt(this.$refs.webrtc.myBurpee.userBurpeeCount),
             },
             headers: {
               'X-AUTH-TOKEN': this.accesstoken,
             },
           }).then(
+            // eslint-disable-next-line
+            console.log(this.credentialsUser.memberId, parseInt(this.$refs.webrtc.myLunge.userLungeCount)),
             swal.fire({
               icon: 'success',
               // eslint-disable-next-line
               html: `${this.userInfo.nick}님의 기록입니다.<br>
-              #Round 1. Squat : ${this.$refs.webrtc.mySquat.userSquatCount}회/최고 기록 : ${this.myBestSquatCount}회<br>
-              #Round 2. Lunge : ${this.$refs.webrtc.myLunge.userLungeCount}회/최고 기록 : ${this.myBestLungeCount}회<br>
-              #Round 3. Burpee : ${this.$refs.webrtc.myBurpee.userBurpeeCount}회/최고 기록 : ${this.myBestBurpeeCount}회<br>
-              기록 갱신을 위해서 조금만 기다려주세요..`,
+              #Round 1. Burpee : ${this.$refs.webrtc.myBurpee.userBurpeeCount}회 / 최고 기록 : ${this.myBestBurpeeCount}회<br>
+              #Round 2. Lunge  : ${this.$refs.webrtc.myLunge.userLungeCount}회 / 최고 기록 : ${this.myBestLungeCount}회<br>
+              #Round 3. Squat  : ${this.$refs.webrtc.mySquat.userSquatCount}회 / 최고 기록 : ${this.myBestSquatCount}회<br>`,
             }),
           );
         }, 36000);
@@ -1579,9 +1588,7 @@ export default {
         // this.setState({ status: 'ready' });
       } else if (prediction[1].probability.toFixed(2) > 0.99) { // 쪼그려 앉아 있는 자세
         this.status = 'ready';
-        if (this.check) {
-          this.check = true;
-        }
+        this.check = true;
       } else if (prediction[0].probability.toFixed(2) > 0.99) { // 엎드려 있는 자세
         this.status = 'set';
         this.check2 = true;
