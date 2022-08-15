@@ -4,7 +4,7 @@
     <b-card-group deck class="d-flex justify-content-evenly"
       v-if="isLogin === true">
       <b-card class="rounded-5 cards">
-        <h5 class="card-title">어제 운동왕</h5>
+        <h1 class="card-title">어제 운동왕</h1>
         <div class="ranking d-flex justify-content-center"
           v-for="(rank, index) in rankingList" :key="index">
           <button :style="{backgroundColor: backColors[index]}"
@@ -185,6 +185,5 @@ p {
   color: white;
 }
 .button span{
-  line-height: 5vh;
-}
+  line-height: 5vh;}
 </style>

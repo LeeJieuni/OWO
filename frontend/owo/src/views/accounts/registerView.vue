@@ -2,7 +2,7 @@
   <div>
     <div class="register">
       <div class="container">
-      <img src="../../assets/logo/logo2.png" alt="" style="width: 700px">
+      <img src="../../assets/logo/logo2.png" alt="" style="width: 500px">
       <form @submit.prevent="register(credentials)"
       class="registerForm">
       <h1 style="font-weight: bold; margin-bottom: 20px;">SignUp</h1>

@@ -1,6 +1,6 @@
 <template>
   <div class="body">
-    <NavBar v-show="!mySessionId" />
+    <!-- <NavBar v-show="!mySessionId" /> -->
     <div class="main-container">
       <router-view/>
     </div>
@@ -11,13 +11,13 @@
 <script>
 // import TeleportExample from '@/components/MyPage/teleport/TeleportExample.vue';
 import { mapState, mapActions } from 'vuex';
-import NavBar from './components/NavBar.vue';
+// import NavBar from './components/NavBar.vue';
 
 const meetingroom = 'meetingroom';
 
 export default {
   components: {
-    NavBar,
+    // NavBar,
   },
   methods: {
     ...mapActions('mainpage', ['getMyRanking', 'getRankingList']),

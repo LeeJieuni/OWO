@@ -20,6 +20,8 @@ export const accounts = {
       gameRoomList: '',
       streamingRoomList: '',
     },
+    masterId: '', // 객체형식으로 만들고...키와 멤버아이디를 할당하면?
+    roomName: '',
     signupInfo: {
       signupErr: false,
       message: '',
@@ -90,6 +92,13 @@ export const accounts = {
     },
   }),
   mutations: {
+    SET_ROOM_NAME: (state, payload) => {
+      state.roomName = payload;
+    },
+    SET_MASTER_ID: (state, payload) => {
+      state.masterId = payload; // list 형식으로 들어옴. -> roomID : memberId 객체형태로 저장하고싶음..
+      console.log(state.masterId);
+    },
     SET_FREE_SIGNAL: (state, payload) => {
       state.noFree = !payload;
     },
@@ -839,7 +848,7 @@ export const accounts = {
           console.log(err);
         });
     },
-    makeRoom({ state }, roomdata) {
+    makeRoom({ state, commit }, roomdata) {
       console.log('makeRoom_actions');
       console.log(roomdata);
       axios({
@@ -860,6 +869,8 @@ export const accounts = {
       })
         .then((res) => {
           console.log(res.data);
+          commit('SET_MASTER_ID', state.userInfo.id);
+          commit('SET_ROOM_NAME', roomdata.roomName);
           router.push(`/room/${state.enter_mode[state.make_mode[roomdata.mode]]}/${res.data.data.roomId}`);
         })
         .catch((err) => {

@@ -84,14 +84,23 @@
     <div v-if="!noStreaming" class="tab-content wrap">
       <div v-show="currentTab == 0" class="scroll__wrap">
         <div v-for="(room, i) in roomList.streamingRoomList" :key="i" class="scroll--element">
-          <b-card img-src="https://placekitten.com/200/100" img-top class="rooms">
-            <h3>{{ room.roomName }}</h3>
-            <p v-if="!room.secret"><img src="@/assets/icon/lock1.png" alt="" style="width:20px"></p>
-            <p v-if="room.secret"><img src="@/assets/icon/lock2.png" alt="" style="width:20px"></p>
-            <p>인원수 : {{ room.person }} / 6</p>
-            <p>운동 : {{ workout_reverse[room.type] }}</p>
-            <div v-show="room.secret === true" style="width: 55%">
-              <b-input-group prepend="P/W" class="roomdata_input">
+            <div class='darkness' v-if="!room.person === 6 "><p>
+             모든 인원이 꽉 찼습니다.</p></div>
+              <b-card img-src="https://placekitten.com/200/100" img-top class="rooms">
+                <div class="d-flex">
+                    <p align="left" class="workoutType"
+                    style="width:50%">{{ workout_reverse[room.type] }}</p>
+                    <p align="right" class="workoutPerson"><img src="@/assets/icon/workout.png"
+                      alt="" style="width:20px"> {{ room.person }} / 6</p>
+                </div>
+            <div class="cardTitle d-flex align-items-center">
+              <p style="font-size: 0.7em">{{ room.roomName }}</p>
+            <span v-if="!room.secret"><img src="@/assets/icon/lock1.png"
+            alt="" style="width:30px"></span>
+            <p v-if="room.secret"><img src="@/assets/icon/lock2.png" alt="" style="width:35px"></p>
+            </div>
+            <div v-show="room.secret === true" class="align-items-center">
+              <b-input-group prepend="PW" class="roomdata_input" style="width: 70%">
                 <b-form-input
                 type="password"
                 v-model="enterPassword"
@@ -100,8 +109,7 @@
               </b-input-group>
             </div>
             <div v-if="room.secret === false">
-              <p style="padding: 27px">
-              </p>
+                  <p style="padding: 27px"></p>
             </div>
             <b-button size="lg" class="rooms_btn" variant="primary"
               @click="enterroom({ password: enterPassword, roomId: room.roomId, mode: room.mode })">
@@ -246,11 +254,21 @@ export default {
 </script>
 
 <style scope>
-.tab-menu {
-  margin-top: 50px;
+.workoutPerson {
+  align-items: right;
 }
-.body {
-  height: 100vh;
+.workoutType {
+  text-align: left;
+  background-color: rgba(244, 165, 96, 0.492);
+  color: gray;
+  border-radius: 5px;
+  padding: 5px;
+}
+.cardTitle {
+  font-size: 3em;
+}
+.tab-menu {
+  margin-top: 25px;
 }
 /* 기본 구조 */
 .wrap {
@@ -270,9 +288,10 @@ export default {
 .scroll--element {
   display: inline-block;
   line-height: 15px;
-  width: 33%;
+  width: 25%;
   height: 100%;
   padding-left: 10px;
+
 }
 
 .scroll--element+scroll--element {
@@ -312,5 +331,24 @@ export default {
 
 input {
   margin-left: 50px;
+}
+.darkness {
+  line-height: 470px;
+  font-size: 30px;
+  border: none;
+  /* padding-left: 1.5vw;
+  padding-right: 1.5vw; */
+  background-color: #246dfe;
+  color: white;
+  text-decoration: none;
+  text-align: center;
+  display: block;
+  position: relative;
+  background: rgba(0, 0, 0, 0.8);
+  width: 100%;
+  height: 100%;
+  margin-bottom: -485px;
+  z-index: 1;
+  border-radius: 10px;
 }
 </style>
