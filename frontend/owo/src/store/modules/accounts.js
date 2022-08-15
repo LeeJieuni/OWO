@@ -219,8 +219,29 @@ export const accounts = {
     SET_LASTING_DAY: (state, payload) => {
       state.lastingDay = payload;
     },
+    SET_IMAGE: (state, payload) => {
+      state.image = payload;
+    },
   },
   actions: {
+    // getImage({ commit }) {
+    //   axios({
+    //     url: 'https://i7c202.p.ssafy.io:8282/api/record/img/main',
+    //     method: 'get',
+    //     headers: {
+    //       'X-AUTH-TOKEN': state.accessToken,
+    //       'REFRESH-TOKEN': state.refreshToken,
+    //     },
+    //   })
+    //     .then((res) => {
+    //       commit('SET_IMAGE', res.data.data);
+    //       console.log(res);
+
+    //     })
+    //     .catch((err) => {
+    //       console.log(err);
+    //     })
+    // },
     saveAccessToken({ commit }, token) {
       sessionStorage.setItem('accessToken', token);
       commit('SET_ACCESS_TOKEN', token);

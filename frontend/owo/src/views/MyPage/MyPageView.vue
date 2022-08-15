@@ -1,4 +1,5 @@
 <template>
+  <NavBar/>
   <div class="mypageview">
     <!-- <div class="spinner-div" v-if="isLoading">
       <q-spinner-cube
@@ -97,12 +98,16 @@ import MySidebar from '@/components/MyPage/MySidebar.vue';
 import { useStore } from 'vuex';
 import { computed, reactive } from 'vue';
 import swal from 'sweetalert2';
+import NavBar from '@/components/NavBar.vue';
 
 window.Swal = swal;
 
 export default {
   name: 'MyPage',
-  components: { MySidebar },
+  components: {
+    MySidebar,
+    NavBar,
+  },
   setup() {
     const store = useStore();
     store.dispatch('record/fetchSessions');

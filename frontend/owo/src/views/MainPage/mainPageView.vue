@@ -80,6 +80,7 @@ export default {
     }
     const mode = ['FREE', 'GAME', 'STREAMING'];
     for (let i = 0; i < mode.length; i += 1) {
+      console.log('실행중이다 getroomList');
       this.getRoomList(mode[i]);
     }
   },
