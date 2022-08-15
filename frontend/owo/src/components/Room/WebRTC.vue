@@ -11,9 +11,27 @@
       <!-- eslint-disable-next-line -->
       <div class="myreaction" v-if="myReaction.connectionId == this.myconnectionId">{{myReaction.userEmoji}}</div>
       <p class="myname">&ensp;{{ clientData }}&ensp;</p>
-      <div class="myexercise">{{ mySquat.userSquatCount }} 회</div>
-      <!-- <div class="myexercise">런지 : {{ myLunge.userLungeCount }} 회</div>
-      <div class="myexercise">버피테스트 : {{ myBurpee.userBurpeeCount }} 회</div> -->
+      <!-- eslint-disable-next-line -->
+      <div v-if="exerciseName === 1">
+        <div class="myexercise">&ensp;{{ mySquat.userSquatCount }} 회&ensp;</div>
+        <img v-if="mySquatRanking === 1" src="@/assets/icon/1st.png" class="mySquatRanking" alt="">
+        <img v-if="mySquatRanking === 2" src="@/assets/icon/2nd.png" class="mySquatRanking" alt="">
+        <img v-if="mySquatRanking === 3" src="@/assets/icon/3rd.png" class="mySquatRanking" alt="">
+      </div>
+      <!-- eslint-disable-next-line -->
+      <div v-if="exerciseName === 2">
+        <div class="myexercise">&ensp;{{ myLunge.userLungeCount }} 회&ensp;</div>
+        <img v-if="myLungeRanking == 1" src="@/assets/icon/1st.png" class="myLungeRanking" alt="">
+        <img v-if="myLungeRanking == 2" src="@/assets/icon/2nd.png" class="myLungeRanking" alt="">
+        <img v-if="myLungeRanking == 3" src="@/assets/icon/3rd.png" class="myLungeRanking" alt="">
+      </div>
+      <!-- eslint-disable-next-line -->
+      <div v-if="exerciseName === 3">   
+        <div class="myexercise">&ensp;{{ myBurpee.userBurpeeCount }} 회&ensp;</div>
+        <img v-if="myBurpeeRanking == 1" src="@/assets/icon/1st.png" class="myBurpeeRanking" alt="">
+        <img v-if="myBurpeeRanking == 2" src="@/assets/icon/2nd.png" class="myBurpeeRanking" alt="">
+        <img v-if="myBurpeeRanking == 3" src="@/assets/icon/3rd.png" class="myBurpeeRanking" alt="">
+      </div>
     </div>
   </div>
 </template>
@@ -54,9 +72,13 @@ export default {
   computed: {
     ...mapState(emoji, ['allEmojiList']),
     ...mapState(exercise, [
+      'exerciseName',
       'allSquatCountList',
+      'allSquatCountListSorted',
       'allLungeCountList',
+      'allLungeCountListSorted',
       'allburpeeCountList',
+      'allburpeeCountListSorted',
     ]),
     ...mapState(accounts, ['userInfo']),
     myReaction() {
@@ -74,7 +96,7 @@ export default {
       return myEmojiNow;
     },
     mySquat() {
-      let mySquatNow = '';
+      let mySquatNow = { userSquatCount: 0 };
       for (let i = 0; i < this.allSquatCountList.length; i += 1) {
         // eslint-disable-next-line
         if (this.allSquatCountList[i].connectionId == this.myconnectionId) {
@@ -88,7 +110,7 @@ export default {
       return mySquatNow;
     },
     myLunge() {
-      let myLungeNow = '';
+      let myLungeNow = { userLungeCount: 0 };
       for (let i = 0; i < this.allLungeCountList.length; i += 1) {
         // eslint-disable-next-line
         if (this.allLungeCountList[i].connectionId == this.myconnectionId) {
@@ -102,7 +124,7 @@ export default {
       return myLungeNow;
     },
     myBurpee() {
-      let myBurpeeNow = '';
+      let myBurpeeNow = { userBurpeeCount: 0 };
       for (let i = 0; i < this.allburpeeCountList.length; i += 1) {
         // eslint-disable-next-line
         if (this.allburpeeCountList[i].connectionId == this.myconnectionId) {
@@ -114,6 +136,48 @@ export default {
         }
       }
       return myBurpeeNow;
+    },
+    mySquatRanking() {
+      // eslint-disable-next-line
+      if (parseInt(this.mySquat.userSquatCount) === this.allSquatCountListSorted[0]) {
+        return 1;
+      // eslint-disable-next-line
+      } else if (parseInt(this.mySquat.userSquatCount) === this.allSquatCountListSorted[1]) {
+        return 2;
+      // eslint-disable-next-line
+      } else if (parseInt(this.mySquat.userSquatCount) === this.allSquatCountListSorted[2]) {
+        return 3;
+      } else {
+        return 99;
+      }
+    },
+    myLungeRanking() {
+      // eslint-disable-next-line
+      if (parseInt(this.myLunge.userLungeCount) === this.allLungeCountListSorted[0]) {
+        return 1;
+      // eslint-disable-next-line
+      } else if (parseInt(this.myLunge.userLungeCount) === this.allLungeCountListSorted[1]) {
+        return 2;
+      // eslint-disable-next-line
+      } else if (parseInt(this.myLunge.userLungeCount) === this.allSquatCountListSorted[2]) {
+        return 3;
+      } else {
+        return 99;
+      }
+    },
+    myBurpeeRanking() {
+      // eslint-disable-next-line
+      if (parseInt(this.myBurpee.userBurpeeCount) === this.allBurpeeCountListSorted[0]) {
+        return 1;
+      // eslint-disable-next-line
+      } else if (parseInt(this.myBurpee.userBurpeeCount) === this.allBurpeeCountListSorted[1]) {
+        return 2;
+      // eslint-disable-next-line
+      } else if (parseInt(this.myBurpee.userBurpeeCount) === this.allSquatCountListSorted[2]) {
+        return 3;
+      } else {
+        return 99;
+      }
     },
     clientData() {
       const { clientData } = this.getConnectionData();
@@ -158,20 +222,22 @@ export default {
 
 .myname {
   position:absolute;
-  top:-2px;
-  left:-2px;
+  top:-1px;
+  left:-1px;
   background-color:#4e8aff;
   font-size:24px;
-  border-radius: 20px 0px 10px 0px;
+  border-radius: 15px 0px 10px 0px;
   /* z-index:600; */
 }
 .myexercise {
   position:absolute;
-  top:-2px;
-  right:-2px;
+  top:-1px;
+  right:-1px;
+  font-size:24px;
+  text-align:right;
   background-color:#4e8aff;
   font-size:24px;
-  border-radius: 0px 20px 0px 10px;
+  border-radius: 0px 15px 0px 10px;
   /* z-index:600; */
 }
 
@@ -199,5 +265,22 @@ export default {
   right:10px;
   font-size:15px;
   width:50px;
+}
+
+.mySquatRanking {
+  position:absolute;
+  top: 35px;
+  left: -18px;
+  width:150px;
+}
+.myLungeRanking {
+  position:absolute;
+  top: 35px;
+  left: -20px;
+}
+.myBurpeeRanking {
+  position:absolute;
+  top: 35px;
+  left: -20px;
 }
 </style>

@@ -27,7 +27,7 @@ export default {
     return {
       intervalTimer: null,
       timeLeft: null,
-      wholeTime: 30,
+      wholeTime: 60,
       isPaused: false,
       isStarted: false,
       length: Math.PI * 2 * 100,
@@ -66,7 +66,6 @@ export default {
       this.displayTimeLeft(seconds);
       this.intervalTimer = setInterval(() => {
         this.timeLeft = Math.round((remainTime - Date.now()) / 1000);
-        console.log(this.timeLeft);
         if (this.timeLeft < 0) {
           clearInterval(this.intervalTimer);
           this.isStarted = false;

@@ -27,8 +27,6 @@
             <div v-show="this.subscribers.length <= 3" class="webrtcetc col-4 m0p0 my-2 mx-2"></div>
             <div v-show="this.subscribers.length <= 4" class="webrtcetc col-4 m0p0 my-2 mx-2"></div>
           </div>
-          <!-- eslint-disable-next-line -->
-          <div v-for="sub in subscribers" :key="sub.stream.connection.connectionId"> {{sub.stream.connection.connectionId}} </div>
         </div>
       </div>
       <!-- 운동 종료 모달 -->
@@ -132,52 +130,56 @@
                 <div style="width: 95%; text-align: right; color:red;">강제 종료 / 새로 고침하면 기록이 저장되지 않아요!</div>
               </div>
             </form>
+          {{ credentials }}
           </b-modal>
         </div>
       </div>
       <!-- 채팅 -->
       <div v-if="this.session">
-        <button v-show="chatONOFF" @click="chatoff" class="chat">
-          <img class="chatimg" src="@/assets/icon/speak.png" alt="">
-        </button>
-        <button v-show="!chatONOFF" @click="chaton" class="chat">
-          <img class="chatimg" src="@/assets/icon/speak.png" alt="">
-        </button>
-        <div v-if="chatONOFF" class="achat d-flex justify-content-center align-items-center">
-          <div class="d-flex align-items-center achat-submit">
-            <label class="m-0" for="chatting">
-              <textarea @keyup.enter="sendMassage" id="mychat"
-              name="chatting" type="text"
-              v-model="myChat" style="resize:none; border:none;
-              border-radius:5px;" placeholder=" 채팅 입력"
-              rows="2" cols="25"></textarea>
-            </label>
-            <button @click="sendMassage" style="color:#4e8aff;" class="btn btn-light achat-submit2">
-            전송</button>
-          </div>
-          <div id="chattingList" class="fluid achat-content"
-          style="overflow:auto; height:490px;">
-            <div v-for="(allchatting, i) in allchattingList" :key="i">
-              <div class="mychatting p-0" style="margin-top:0px; margin-bottom:10px;
-              margin-left:auto; margin-right:30px; width:220px; height:90px;"
-              v-if="allchatting.userId == this.credentialsUser.memberId">
-                <div style="text-align:left; margin-top:5px; margin-left:5px; font-size:large;">
-                  <strong>{{allchatting.userNickName}}</strong>
+        <div v-if="!isExercising">
+          <button v-show="chatONOFF" @click="chatoff" class="chat">
+            <img class="chatimg" src="@/assets/icon/speak.png" alt="">
+          </button>
+          <button v-show="!chatONOFF" @click="chaton" class="chat">
+            <img class="chatimg" src="@/assets/icon/speak.png" alt="">
+          </button>
+          <div v-if="chatONOFF" class="achat d-flex justify-content-center align-items-center">
+            <div class="d-flex align-items-center achat-submit">
+              <label class="m-0" for="chatting">
+                <textarea @keyup.enter="sendMassage" id="mychat"
+                name="chatting" type="text"
+                v-model="myChat" style="resize:none; border:none;
+                border-radius:5px;" placeholder=" 채팅 입력"
+                rows="2" cols="25"></textarea>
+              </label>
+              <!-- eslint-disable-next-line -->
+              <button @click="sendMassage" style="color:#4e8aff;" class="btn btn-light achat-submit2">
+              전송</button>
+            </div>
+            <div id="chattingList" class="fluid achat-content"
+            style="overflow:auto; height:490px;">
+              <div v-for="(allchatting, i) in allchattingList" :key="i">
+                <div class="mychatting p-0" style="margin-top:0px; margin-bottom:10px;
+                margin-left:auto; margin-right:30px; width:220px; height:90px;"
+                v-if="allchatting.userId == this.credentialsUser.memberId">
+                  <div style="text-align:left; margin-top:5px; margin-left:5px; font-size:large;">
+                    <strong>{{allchatting.userNickName}}</strong>
+                  </div>
+                  <div style="word-wrap:break-word; text-align:left; margin-top:5px;
+                  margin-left:5px; font-size:medium;">
+                    {{allchatting.userChat}}
+                  </div>
                 </div>
-                <div style="word-wrap:break-word; text-align:left; margin-top:5px;
-                margin-left:5px; font-size:medium;">
-                  {{allchatting.userChat}}
-                </div>
-              </div>
-              <div class="yourchatting p-0" style="margin-top:0px; margin-bottom:10px;
-              margin-right:auto; margin-left:30px; width:220px; height:90px;"
-              v-if="allchatting.userId != this.credentialsUser.memberId">
-                <div style="text-align:left; margin-top:5px; margin-left:5px; font-size:large;">
-                  <strong>{{allchatting.userNickName}}</strong>
-                </div>
-                <div style="word-wrap:break-word; text-align:left; margin-top:5px;
-                margin-left:5px; font-size:medium;">
-                  {{allchatting.userChat}}
+                <div class="yourchatting p-0" style="margin-top:0px; margin-bottom:10px;
+                margin-right:auto; margin-left:30px; width:220px; height:90px;"
+                v-if="allchatting.userId != this.credentialsUser.memberId">
+                  <div style="text-align:left; margin-top:5px; margin-left:5px; font-size:large;">
+                    <strong>{{allchatting.userNickName}}</strong>
+                  </div>
+                  <div style="word-wrap:break-word; text-align:left; margin-top:5px;
+                  margin-left:5px; font-size:medium;">
+                    {{allchatting.userChat}}
+                  </div>
                 </div>
               </div>
             </div>
@@ -186,7 +188,7 @@
       </div>
       <!-- 버튼 -->
       <div>
-        <button @click="open_emoji" class="open_emoji">
+        <button v-if="!isExercising" @click="open_emoji" class="open_emoji">
           <img class="menu_icon2" src="@/assets/icon/emoji.png" alt="emoji">
         </button>
         <button class="mybtn1" @click="mic_off" v-show="mic">
@@ -222,38 +224,18 @@
             중지
           </div>
         </button>
-        <button class="mybtn3" @click="take_photo">
-          <img class="menu_icon2" src="@/assets/icon/photo.png" alt="photo">
-          <div style="color:#4e8aff; font-size:12px;">
-            사진
-          </div>
-        </button>
-        <button v-b-modal.after-exercise-modal class="mybtn6">
+        <button v-if="!isExercising" @click="leaveSession" class="mybtn6">
           <img class="menu_icon2" src="@/assets/icon/roomout.png" alt="leaveSession">
         </button>
 <!-- 여기에 방장 이름이 들어가야함 -->
         <!-- eslint-disable-next-line -->
-        <button v-if="(!isExercising) & (this.subscribers.length >= 1)" class="mybtn5" @click="startround1">
+        <!-- <button v-if="(!isExercising) & (this.subscribers.length >= 1)" class="mybtn5" @click="startround1"> -->
+        <button v-if="!isExercising" class="mybtn5" @click="startround1">
           <img class="menu_icon4" src="@/assets/icon/start.png" alt="Start">
         </button>
-        <!-- eslint-disable-next-line -->
-        <button class="mybtn4 dropdown dropright dropright-toggle-no-caret text-decoration-none" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-          <img class="menu_icon2" src="@/assets/icon/setTimer.png" alt="photo">
-          <div style="color:#4e8aff; font-size:12px;">
-            타이머
-          </div>
-        </button>
-        <ul class="dropdown-menu" role="menu" style="width:50px;">
-        <!-- eslint-disable-next-line -->
-          <li role="presentation" style="width:100%;"><button @click="set_timer_3" class="dropdown-item text-center" type="button" target="_self">3초</button></li>
-        <!-- eslint-disable-next-line -->
-          <li role="presentation" style="width:100%;"><button @click="set_timer_5" class="dropdown-item text-center" type="button" target="_self">5초</button></li>
-        <!-- eslint-disable-next-line -->
-          <li role="presentation" style="width:100%;"><button @click="set_timer_10" class="dropdown-item text-center" type="button" target="_self">10초</button></li>
-        </ul>
       </div>
       <!-- 이모티콘 -->
-      <div class="emoji_position" v-if="Emoji_ONOFF">
+      <div class="emoji_position" v-if="Emoji_ONOFF & !isExercising">
         <div class="row">
           <!-- apple, google, twitter, facebook -->
           <Picker :data="emojiIndex" set="twitter" @select="showEmoji" />
@@ -262,30 +244,27 @@
       <!-- 타이머 -->
       <div class="setTimer2position">
         <setTimer3 ref="setTimer3" />
+        <setTimer4 ref="setTimer4" />
       </div>
       <div v-show="isStarted" class="myBackGroundSetting">
         <setTimer2 ref="setTimer2"/>
       </div>
-      <!-- 사진 양식 -->
-      <div class="d-flex justify-content-center align-items-center"
-      v-if="is_take_photo" id="take_photo_background"></div>
-      <div class="d-flex justify-content-center align-items-center text-white"
-      v-if="is_take_photo">
-        <!-- eslint-disable-next-line -->
-        <div id="take_photo_WebRTC_warning">&ensp;사진은 최신 3장까지 저장됩니다!&ensp;</div>
-        <WebRTCPhoto id="take_photo_WebRTC" :stream-manager="mainStreamManager"/>
-        <img v-if="this.photoDisplay" id="take_photo_WebRTC_photo" :src="this.mypictures[0]" alt="">
-      </div>
       <!-- eslint-disable-next-line -->
-      <div class="d-flex justify-content-center align-items-center text-white mt-4" v-if="is_take_photo" id="take_photo_timer">
-        {{ temp_timer_2 }}
-      </div>
+      <div v-if="round1Game" class="roundGame" style="font-size:5rem; color:white;">#Round1&ensp;:&ensp;{{ roundGameName }}</div>
       <!-- eslint-disable-next-line -->
-      <div v-if="round1Game" class="round1Game" style="font-size:5rem; color:white;">#Round1&ensp;:&ensp;<span>{{ roundGameName }}</span></div>
+      <div v-if="round2Game" class="roundGame" style="font-size:5rem; color:white;">#Round2&ensp;:&ensp;{{ roundGameName }}</div>
       <!-- eslint-disable-next-line -->
-      <div v-if="round2Game" class="round2Game" style="font-size:5rem; color:white;">#Round2&ensp;:&ensp;<span>{{ roundGameName }}</span></div>
+      <div v-if="round3Game" class="roundGame" style="font-size:5rem; color:white;">#Final Round&ensp;:&ensp;{{ roundGameName }}</div>
       <!-- eslint-disable-next-line -->
-      <div v-if="round3Game" class="round3Game" style="font-size:5rem; color:white;">#Final Round&ensp;:&ensp;<span>{{ roundGameName }}</span></div>
+      <div v-if="restTime" class="roundGame" style="font-size:5rem; color:white;">휴식시간</div>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
       <button @click="init">start</button>
       <div>나의 카운트 : {{ count }} </div>
       <button @click="stopCam">캠 삭제</button>
@@ -295,9 +274,9 @@
 <script>
 import html2canvas from 'html2canvas';
 import WebRTC from '@/components/Room/WebRTC.vue';
-import WebRTCPhoto from '@/components/Room/WebRTCPhoto.vue';
 import setTimer2 from '@/components/Room/setTimer2.vue';
 import setTimer3 from '@/components/Room/setTimer3.vue';
+import setTimer4 from '@/components/Room/setTimer4.vue';
 import axios from 'axios';
 import { OpenVidu } from 'openvidu-browser';
 import emojidata from 'emoji-mart-vue-fast/data/all.json';
@@ -334,10 +313,10 @@ export default {
   },
   components: {
     WebRTC,
-    WebRTCPhoto,
     Picker,
     setTimer2,
     setTimer3,
+    setTimer4,
   },
   data() {
     return {
@@ -380,6 +359,7 @@ export default {
       round1Game: undefined,
       round2Game: undefined,
       round3Game: undefined,
+      restTime: undefined,
       credentials: {
         fileOriName: '',
         fileUrl: '',
@@ -431,12 +411,13 @@ export default {
     this.joinSession(this.sessionId);
     this.credentialsUser.memberId = this.userInfo.id;
     this.credentialsUser.meetingRoomId = this.mySessionId;
+    document.body.style.backgroundColor = '#eaf1ff';
   },
   moundted() {
-    this.init();
   },
   unmounted() {
     this.leaveSession();
+    document.body.style.backgroundColor = 'white';
   },
   watch: {
     mySessionId() {},
@@ -618,9 +599,12 @@ export default {
       'startMeetingRoom',
     ]),
     ...mapActions(exercise, [
+      'changeExerciseName',
       'changeSquatCountList',
       'changeLungeCountList',
+      'changeSquatCountListSorted',
       'changeBurpeeCountList',
+      'resetallCountList',
     ]),
     joinSession(sessionNum) {
       this.SET_SESSION_ID(sessionNum);
@@ -700,7 +684,14 @@ export default {
           connectionId: sendSquatCountData[0],
           allUserSquatCount: sendSquatCountData[1],
         };
+        // async function myfunction() {
+        //   await this.changeSquatCountList(obj);
+        // }
+        // myfunction().then(
+          //   this.changeSquatCountListSorted(),
+        // );
         this.changeSquatCountList(obj);
+        this.changeSquatCountListSorted();
       });
 
       this.session.on('signal:lungeCount', (event) => {
@@ -710,6 +701,7 @@ export default {
           allUserLungeCount: sendLungeCountData[1],
         };
         this.changeLungeCountList(obj);
+        this.changeLungeCountListSorted();
       });
 
       this.session.on('signal:burpeeCount', (event) => {
@@ -719,6 +711,7 @@ export default {
           allUserBurpeeCount: sendBurpeeCountData[1],
         };
         this.changeBurpeeCountList(obj);
+        this.changeBurpeeCountListSorted();
       });
 
       this.session.on('signal:my-chat', (event) => {
@@ -752,96 +745,114 @@ export default {
           document.getElementsByClassName('webrtcetc')[0].remove();
           document.getElementsByClassName('webrtcetc')[0].remove();
           document.getElementsByClassName('webrtcetc')[0].remove();
-          setTimeout(() => {
-            const el = document.getElementsByClassName('webrtctag');
-            switch (el.length) {
-              case 2:
-                document.getElementsByClassName('webrtctag')[0].style.width = '49%';
-                document.getElementsByClassName('webrtctag')[0].style.height = '50%';
-                document.getElementsByClassName('webrtctag')[0].style.backgroundColor = 'transparent';
-                document.getElementsByClassName('webrtctag')[0].style.border = 'none';
-                document.getElementsByClassName('webrtctag')[1].style.width = '49%';
-                document.getElementsByClassName('webrtctag')[1].style.height = '50%';
-                document.getElementsByClassName('webrtctag')[1].style.backgroundColor = 'transparent';
-                document.getElementsByClassName('webrtctag')[1].style.border = 'none';
-                break;
-              case 3:
-                document.getElementsByClassName('webrtctag')[0].style.width = '33%';
-                document.getElementsByClassName('webrtctag')[0].style.height = '33%';
-                document.getElementsByClassName('webrtctag')[0].style.backgroundColor = 'transparent';
-                document.getElementsByClassName('webrtctag')[0].style.border = 'none';
-                document.getElementsByClassName('webrtctag')[1].style.width = '33%';
-                document.getElementsByClassName('webrtctag')[1].style.height = '33%';
-                document.getElementsByClassName('webrtctag')[1].style.backgroundColor = 'transparent';
-                document.getElementsByClassName('webrtctag')[1].style.border = 'none';
-                document.getElementsByClassName('webrtctag')[2].style.width = '33%';
-                document.getElementsByClassName('webrtctag')[2].style.height = '33%';
-                document.getElementsByClassName('webrtctag')[2].style.backgroundColor = 'transparent';
-                document.getElementsByClassName('webrtctag')[2].style.border = 'none';
-                break;
-              case 4:
-                document.getElementsByClassName('webrtctag')[0].style.width = '33%';
-                document.getElementsByClassName('webrtctag')[0].style.height = '33%';
-                document.getElementsByClassName('webrtctag')[0].style.backgroundColor = 'transparent';
-                document.getElementsByClassName('webrtctag')[0].style.border = 'none';
-                document.getElementsByClassName('webrtctag')[1].style.width = '33%';
-                document.getElementsByClassName('webrtctag')[1].style.height = '33%';
-                document.getElementsByClassName('webrtctag')[1].style.backgroundColor = 'transparent';
-                document.getElementsByClassName('webrtctag')[1].style.border = 'none';
-                document.getElementsByClassName('webrtctag')[2].style.width = '33%';
-                document.getElementsByClassName('webrtctag')[2].style.height = '33%';
-                document.getElementsByClassName('webrtctag')[2].style.backgroundColor = 'transparent';
-                document.getElementsByClassName('webrtctag')[2].style.border = 'none';
-                document.getElementsByClassName('webrtctag')[3].style.width = '33%';
-                document.getElementsByClassName('webrtctag')[3].style.height = '33%';
-                document.getElementsByClassName('webrtctag')[3].style.backgroundColor = 'transparent';
-                document.getElementsByClassName('webrtctag')[3].style.border = 'none';
-                break;
-              case 5:
-                document.getElementsByClassName('webrtctag')[0].style.backgroundColor = 'transparent';
-                document.getElementsByClassName('webrtctag')[0].style.border = 'none';
-                document.getElementsByClassName('webrtctag')[1].style.backgroundColor = 'transparent';
-                document.getElementsByClassName('webrtctag')[1].style.border = 'none';
-                document.getElementsByClassName('webrtctag')[2].style.backgroundColor = 'transparent';
-                document.getElementsByClassName('webrtctag')[2].style.border = 'none';
-                document.getElementsByClassName('webrtctag')[3].style.backgroundColor = 'transparent';
-                document.getElementsByClassName('webrtctag')[3].style.border = 'none';
-                document.getElementsByClassName('webrtctag')[4].style.backgroundColor = 'transparent';
-                document.getElementsByClassName('webrtctag')[4].style.border = 'none';
-                break;
-              case 6:
-                document.getElementsByClassName('webrtcetc')[0].style.width = 0;
-                document.getElementsByClassName('webrtcetc')[0].style.height = 0;
-                document.getElementsByClassName('webrtctag')[0].style.backgroundColor = 'transparent';
-                document.getElementsByClassName('webrtctag')[0].style.border = 'none';
-                document.getElementsByClassName('webrtctag')[1].style.backgroundColor = 'transparent';
-                document.getElementsByClassName('webrtctag')[1].style.border = 'none';
-                document.getElementsByClassName('webrtctag')[2].style.backgroundColor = 'transparent';
-                document.getElementsByClassName('webrtctag')[2].style.border = 'none';
-                document.getElementsByClassName('webrtctag')[3].style.backgroundColor = 'transparent';
-                document.getElementsByClassName('webrtctag')[3].style.border = 'none';
-                document.getElementsByClassName('webrtctag')[4].style.backgroundColor = 'transparent';
-                document.getElementsByClassName('webrtctag')[4].style.border = 'none';
-                document.getElementsByClassName('webrtctag')[5].style.backgroundColor = 'transparent';
-                document.getElementsByClassName('webrtctag')[5].style.border = 'none';
-                break;
-              default:
-                break;
-            }
-          }, 100);
+          // setTimeout(() => {
+          const el = document.getElementsByClassName('webrtctag');
+          switch (el.length) {
+            case 2:
+              document.getElementsByClassName('webrtctag')[0].style.width = '49%';
+              document.getElementsByClassName('webrtctag')[0].style.height = '50%';
+              document.getElementsByClassName('webrtctag')[0].style.backgroundColor = 'transparent';
+              document.getElementsByClassName('webrtctag')[0].style.border = 'none';
+              document.getElementsByClassName('webrtctag')[1].style.width = '49%';
+              document.getElementsByClassName('webrtctag')[1].style.height = '50%';
+              document.getElementsByClassName('webrtctag')[1].style.backgroundColor = 'transparent';
+              document.getElementsByClassName('webrtctag')[1].style.border = 'none';
+              break;
+            case 3:
+              document.getElementsByClassName('webrtctag')[0].style.width = '33%';
+              document.getElementsByClassName('webrtctag')[0].style.height = '33%';
+              document.getElementsByClassName('webrtctag')[0].style.backgroundColor = 'transparent';
+              document.getElementsByClassName('webrtctag')[0].style.border = 'none';
+              document.getElementsByClassName('webrtctag')[1].style.width = '33%';
+              document.getElementsByClassName('webrtctag')[1].style.height = '33%';
+              document.getElementsByClassName('webrtctag')[1].style.backgroundColor = 'transparent';
+              document.getElementsByClassName('webrtctag')[1].style.border = 'none';
+              document.getElementsByClassName('webrtctag')[2].style.width = '33%';
+              document.getElementsByClassName('webrtctag')[2].style.height = '33%';
+              document.getElementsByClassName('webrtctag')[2].style.backgroundColor = 'transparent';
+              document.getElementsByClassName('webrtctag')[2].style.border = 'none';
+              break;
+            case 4:
+              document.getElementsByClassName('webrtctag')[0].style.width = '33%';
+              document.getElementsByClassName('webrtctag')[0].style.height = '33%';
+              document.getElementsByClassName('webrtctag')[0].style.backgroundColor = 'transparent';
+              document.getElementsByClassName('webrtctag')[0].style.border = 'none';
+              document.getElementsByClassName('webrtctag')[1].style.width = '33%';
+              document.getElementsByClassName('webrtctag')[1].style.height = '33%';
+              document.getElementsByClassName('webrtctag')[1].style.backgroundColor = 'transparent';
+              document.getElementsByClassName('webrtctag')[1].style.border = 'none';
+              document.getElementsByClassName('webrtctag')[2].style.width = '33%';
+              document.getElementsByClassName('webrtctag')[2].style.height = '33%';
+              document.getElementsByClassName('webrtctag')[2].style.backgroundColor = 'transparent';
+              document.getElementsByClassName('webrtctag')[2].style.border = 'none';
+              document.getElementsByClassName('webrtctag')[3].style.width = '33%';
+              document.getElementsByClassName('webrtctag')[3].style.height = '33%';
+              document.getElementsByClassName('webrtctag')[3].style.backgroundColor = 'transparent';
+              document.getElementsByClassName('webrtctag')[3].style.border = 'none';
+              break;
+            case 5:
+              document.getElementsByClassName('webrtctag')[0].style.backgroundColor = 'transparent';
+              document.getElementsByClassName('webrtctag')[0].style.border = 'none';
+              document.getElementsByClassName('webrtctag')[1].style.backgroundColor = 'transparent';
+              document.getElementsByClassName('webrtctag')[1].style.border = 'none';
+              document.getElementsByClassName('webrtctag')[2].style.backgroundColor = 'transparent';
+              document.getElementsByClassName('webrtctag')[2].style.border = 'none';
+              document.getElementsByClassName('webrtctag')[3].style.backgroundColor = 'transparent';
+              document.getElementsByClassName('webrtctag')[3].style.border = 'none';
+              document.getElementsByClassName('webrtctag')[4].style.backgroundColor = 'transparent';
+              document.getElementsByClassName('webrtctag')[4].style.border = 'none';
+              break;
+            case 6:
+              document.getElementsByClassName('webrtcetc')[0].style.width = 0;
+              document.getElementsByClassName('webrtcetc')[0].style.height = 0;
+              document.getElementsByClassName('webrtctag')[0].style.backgroundColor = 'transparent';
+              document.getElementsByClassName('webrtctag')[0].style.border = 'none';
+              document.getElementsByClassName('webrtctag')[1].style.backgroundColor = 'transparent';
+              document.getElementsByClassName('webrtctag')[1].style.border = 'none';
+              document.getElementsByClassName('webrtctag')[2].style.backgroundColor = 'transparent';
+              document.getElementsByClassName('webrtctag')[2].style.border = 'none';
+              document.getElementsByClassName('webrtctag')[3].style.backgroundColor = 'transparent';
+              document.getElementsByClassName('webrtctag')[3].style.border = 'none';
+              document.getElementsByClassName('webrtctag')[4].style.backgroundColor = 'transparent';
+              document.getElementsByClassName('webrtctag')[4].style.border = 'none';
+              document.getElementsByClassName('webrtctag')[5].style.backgroundColor = 'transparent';
+              document.getElementsByClassName('webrtctag')[5].style.border = 'none';
+              break;
+            default:
+              break;
+          }
+          // }, 100);
         }, 2000);
         setTimeout(() => {
           this.gameType = 1;
+          this.changeExerciseName(1);
+          this.init();
+          this.init();
           this.init();
           this.init();
         }, 5000);
         setTimeout(() => {
           this.isStarted = false;
           this.$refs.setTimer3.pauseTimer();
+          this.init();
+          this.init();
+          this.init();
+          this.init();
         }, 6000);
         setTimeout(() => {
+          this.isExercising = false;
+          this.restTime = true;
+          this.$refs.setTimer4.pauseTimer();
+          this.webcam.stop();
+        }, 67000);
+        setTimeout(() => {
+          this.restTime = false;
+        }, 70000);
+        setTimeout(() => {
+          this.gameType = 2;
+          this.isExercising = true;
           this.startround2();
-        }, 36000);
+        }, 83000);
       });
 
       this.session.on('signal:startround2', () => {
@@ -859,13 +870,25 @@ export default {
           this.$refs.setTimer2.pauseTimer();
         }, 2000);
         setTimeout(() => {
+          this.webcam.play();
           this.isStarted = false;
           this.$refs.setTimer3.pauseTimer();
-          this.gameType = 2;
+          this.changeExerciseName(2);
         }, 6000);
         setTimeout(() => {
+          this.isExercising = false;
+          this.restTime = true;
+          this.$refs.setTimer4.pauseTimer();
+          this.webcam.stop();
+        }, 67000);
+        setTimeout(() => {
+          this.restTime = false;
+        }, 70000);
+        setTimeout(() => {
+          this.gameType = 3;
+          this.isExercising = true;
           this.startround3();
-        }, 36000);
+        }, 83000);
       });
 
       this.session.on('signal:startround3', () => {
@@ -883,13 +906,19 @@ export default {
           this.$refs.setTimer2.pauseTimer();
         }, 2000);
         setTimeout(() => {
+          this.webcam.play();
           this.isStarted = false;
           this.$refs.setTimer3.pauseTimer();
-          this.gameType = 3;
+          this.changeExerciseName(3);
         }, 6000);
         setTimeout(() => {
+          this.webcam.stop();
+        }, 67000);
+        setTimeout(() => {
           this.isExercising = false;
-        }, 36000);
+          this.restTime = false;
+          this.changeExerciseName(0);
+        }, 83000);
       });
     },
 
@@ -943,6 +972,8 @@ export default {
     },
 
     async leaveSession() {
+      this.resetallCountList();
+      this.changeExerciseName(0);
       this.removeEmojiList();
       this.removeEmoji();
       // --- Leave the session by calling 'disconnect' method over the Session object ---
@@ -1068,10 +1099,12 @@ export default {
     },
     video_on() {
       this.video = true;
+      // this.webcam.play();
       this.SET_CAMERA(false);
     },
     video_off() {
       this.video = false;
+      // this.webcam.stop();
       this.SET_CAMERA(true);
     },
     take_photo() {
@@ -1153,18 +1186,17 @@ export default {
     async init() {
       this.setmodel();
       const flip = false;
-      this.webcam = new tmPose.Webcam(500, 700, flip);
+      this.webcam = new tmPose.Webcam(800, 700, flip);
       await this.webcam.setup();
       await this.webcam.play();
-      // console.log('init_webcam >> ', this.webcam);
-      window.requestAnimationFrame(this.loop);
+      await window.requestAnimationFrame(this.loop);
       const canvas2 = this.webcam.canvas;
-      canvas2.width = 500;
+      canvas2.width = 800;
       canvas2.height = 700;
       this.ctx = canvas2.getContext('2d');
     },
     async loop() {
-      this.webcam.update();
+      await this.webcam.update();
       switch (this.gameType) {
         case 1:
           await this.squatpredict();
@@ -1178,7 +1210,7 @@ export default {
         default:
           break;
       }
-      window.requestAnimationFrame(this.loop);
+      await window.requestAnimationFrame(this.loop);
     },
 
     async squatpredict() {
@@ -1691,7 +1723,7 @@ solid #cedfff; border-top: 10px solid transparent; border-bottom: 10px solid tra
   opacity: 0.7;
 }
 
-.round1Game {
+.roundGame {
   font-size:5rem;
   color:white;
   background-color:#4e8aff;
@@ -1704,39 +1736,6 @@ solid #cedfff; border-top: 10px solid transparent; border-bottom: 10px solid tra
   top: 50%;
   left:0%;
   transform: translate(0, -50%);
-  /* z-index:901; */
-  opacity: 0.9;
-}
-.round2Game {
-  font-size:5rem;
-  color:white;
-  background-color:#4e8aff;
-  position: absolute;
-  display:flex;
-  align-items: center;
-  justify-content: center;
-  width:100%;
-  height:40%;
-  top: 50%;
-  left:0%;
-  transform: translate(0, -50%);
-  /* z-index:901; */
-  opacity: 0.9;
-}
-.round3Game {
-  font-size:5rem;
-  color:white;
-  background-color:#4e8aff;
-  position: absolute;
-  display:flex;
-  align-items: center;
-  justify-content: center;
-  width:100%;
-  height:40%;
-  top: 50%;
-  left:0%;
-  transform: translate(0, -50%);
-  /* z-index:901; */
   opacity: 0.9;
 }
 </style>

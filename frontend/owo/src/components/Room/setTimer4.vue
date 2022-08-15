@@ -1,20 +1,20 @@
 <template>
 <div style="position:relative">
-  <div v-show="isStarted" class="circle">
-    <svg width="700" style="background-color:translate; border-radius: 50%;" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg">
+  <div v-show="isStarted" class="circle4">
+    <svg width="150" style="background-color:transparent; border-radius: 50%;" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg">
       <g transform="translate(110,110)">
-        <circle r="100" class="e-c-base"/>
+        <circle r="100" class="e-c-base4"/>
         <g transform="rotate(-90)">
-          <circle r="100" class="e-c-progress"/>
-          <g id="e-pointer">
-            <circle cx="100" cy="0" r="8" class="e-c-pointer"/>
+          <circle r="100" class="e-c-progress4"/>
+          <g id="e-pointer4">
+            <circle cx="100" cy="0" r="8" class="e-c-pointer4"/>
           </g>
         </g>
       </g>
     </svg>
   </div>
-  <div v-show="isStarted" class="controlls">
-    <div class="display-remain-time" style="font-size:300px;">{{timesetting}}</div>
+  <div v-show="isStarted" class="controlls4">
+    <div class="display-remain-time4">{{timesetting}}</div>
   </div>
 </div>
 </template>
@@ -27,7 +27,7 @@ export default {
     return {
       intervalTimer: null,
       timeLeft: null,
-      wholeTime: 3,
+      wholeTime: 15,
       isPaused: false,
       isStarted: false,
       length: Math.PI * 2 * 100,
@@ -40,7 +40,7 @@ export default {
   unmounted() {},
   methods: {
     pauseTimer() {
-      const progressBar = document.querySelector('.e-c-progress');
+      const progressBar = document.querySelector('.e-c-progress4');
       progressBar.style.strokeDasharray = this.length;
       if (this.isStarted === false) {
         this.timer(this.wholeTime);
@@ -49,15 +49,15 @@ export default {
     },
     update(value, timePercent) {
       const offset = (+this.length) - (this.length * value) / (timePercent);
-      const progressBar = document.querySelector('.e-c-progress');
+      const progressBar = document.querySelector('.e-c-progress4');
       progressBar.style.strokeDashoffset = offset;
-      const pointer = document.getElementById('e-pointer');
+      const pointer = document.getElementById('e-pointer4');
       pointer.style.transform = `rotate(${(360 * value) / (timePercent)}deg)`;
     },
     displayTimeLeft(timeLeft) { // displays time on the input
       const seconds = timeLeft % 60;
-      const displayString = `${seconds}`;
-      this.timesetting = displayString === '0' ? 'GO!' : displayString;
+      const displayString = `${seconds < 10 ? '0' : ''}${seconds}`;
+      this.timesetting = displayString;
       this.update(timeLeft, this.wholeTime);
     },
     timer(seconds) { // counts time, takes seconds
@@ -82,50 +82,40 @@ export default {
 <style scoped>
 @import url('https://fonts.googleapis.com/css?family=Roboto:100,300');
 
-.controlls {
-  position: fixed;
+.controlls4 {
+  position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index:1500;
 }
 
-.display-remain-time {
+.display-remain-time4 {
   font-family: 'Roboto';
   font-weight: 100;
   font-size: 40px;
-  color: white;
+  color: #4E8Aff;
 }
 
-.e-c-base {
+.e-c-base4 {
   fill: none;
-  stroke: white;
+  stroke: #B6B6B6;
   stroke-width: 4px
 }
 
-.e-c-progress {
+.e-c-progress4 {
   fill: none;
   stroke: #4E8Aff;
   stroke-width: 4px;
   transition: stroke-dashoffset 0.7s;
 }
 
-.e-c-pointer {
+.e-c-pointer4 {
   fill: #FFF;
   stroke: #4E8Aff;
   stroke-width: 2px;
 }
 
-#e-pointer { transition: transform 0.7s; }
+#e-pointer4 { transition: transform 0.7s; }
 h1 { margin-top:150px; text-align:center;}
 body { background-color:#f7f7f7;}
-
-.circle {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index:1000;
-}
-
 </style>

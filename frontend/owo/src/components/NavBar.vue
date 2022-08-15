@@ -10,7 +10,7 @@
               <img id="logo2" src="../assets/logo/logo2.png" alt="">
             </router-link>
           </div>
-          <div v-if="!isLogin" class="d-flex">
+          <div v-if="!isLogin" class="d-flex justify-content-center">
             <!--dropdows1-rooms-->
             <li class="menu1 mypages nav-item dropdown">
               <a class="nav-link dropdown-toggle pe-3"
@@ -32,7 +32,7 @@
                 </li>
               </ul>
             </li>
-            <router-link to="/login">
+            <router-link to="/login" style="text-align:center;">
               <li class="menu1">login</li>
             </router-link>
             <router-link to="/register">
@@ -191,7 +191,8 @@ li {
 }
 
 .menu1 {
-  margin-left: 2em;
+  margin-left: 1em;
+  margin-right: 1em;
   font-size: 1rem;
   text-align: center;
 }
