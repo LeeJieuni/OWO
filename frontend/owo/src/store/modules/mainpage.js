@@ -78,6 +78,7 @@ export const mainpage = {
         },
       })
         .then((res) => {
+          console.log('getlastingDay');
           console.log(res);
           commit('SET_LASTING_DAY', res.data);
         })
@@ -85,7 +86,7 @@ export const mainpage = {
           console.log(err);
         });
     },
-    getAchievement({ commit, state }, KingID) {
+    getAchievement({ commit }, KingID) {
       let userInfo = sessionStorage.getItem('vuex');
       userInfo = JSON.parse(userInfo);
       // eslint-disable-next-line
@@ -98,10 +99,8 @@ export const mainpage = {
         },
       })
         .then((res) => {
-          console.log(res.data.data);
           if (res.data.data === {}) {
             commit('SET_ACHIEVEMENT', 0);
-            console.log(state.achievement);
           }
           commit('SET_ACHIEVEMENT', res.data.data);
         })

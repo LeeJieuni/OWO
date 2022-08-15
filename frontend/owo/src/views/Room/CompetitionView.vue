@@ -408,7 +408,7 @@ export default {
       check: false,
       check2: false,
       count: 0,
-      gameType: 1, // 1:squat, 2:lunge, 3:burpee
+      gameType: 3, // 1:squat, 2:lunge, 3:burpee
       ctx: undefined,
       // 각 운동의 카운트를 memberId와 함께 session.on으로 보내주고 데이터 받아서 저장한다.
       squatCount: 0,

@@ -19,24 +19,37 @@
       <div class="d-flex justify-content-center">
         <form class="makesessionForm">
              <div class="roomdata">
-               <b-input-group prepend="방 이름" class="roomdata_input">
-                 <b-form-input type="text" v-model="roomdatas.roomName"></b-form-input>
-               </b-input-group>
-               <b-input-group prepend="모드" class="roomdata_input">
-                 <b-form-select :options="Object.keys(mode)"
-                 v-model="roomdatas.mode"></b-form-select>
-               </b-input-group>
-               <b-input-group prepend="운동 종류" class="roomdata_input">
-                  <b-form-select :options="Object.keys(workout)"
+                <b-input-group prepend="방 이름" class="roomdata_input">
+                  <b-form-input type="text" v-model="roomdatas.roomName"></b-form-input>
+                </b-input-group>
+                <b-input-group prepend="모드" class="roomdata_input">
+                  <b-form-select :options="Object.keys(mode)"
+                  v-model="roomdatas.mode"></b-form-select>
+                </b-input-group>
+                <b-input-group v-if="roomdatas.mode === '운동'"
+                prepend="운동 종류" class="roomdata_input">
+                   <b-form-select :options="Object.keys(workout)"
+                   v-model="roomdatas.type"></b-form-select>
+                </b-input-group>
+                <b-input-group v-if="roomdatas.mode === '자유'"
+                prepend="운동 종류" class="roomdata_input">
+                   <b-form-select :options="Object.keys(workout)"
+                   v-model="roomdatas.type"></b-form-select>
+                </b-input-group>
+               <b-input-group v-if="roomdatas.mode === '경쟁'"
+               prepend="운동 종류" class="roomdata_input">
+                  <b-form-select :options="Object.keys(competition_option)"
                   v-model="roomdatas.type"></b-form-select>
                </b-input-group>
-                 <b-input-group v-if="roomdatas.secret" prepend="비밀번호" class="roomdata_input">
-                   <b-form-input type="password" v-model="roomdatas.password"></b-form-input>
-                 </b-input-group>
-                &ensp; <label for="checkbox">
-                     <input type="checkbox" v-model="roomdatas.secret"
-                     style="padding:10px; margin-top: 10px"> 비밀방 생성
-                   </label>
+                <div>
+                  <b-input-group v-if="roomdatas.secret" prepend="비밀번호" class="roomdata_input">
+                    <b-form-input type="password" v-model="roomdatas.password"></b-form-input>
+                  </b-input-group>
+                  &ensp; <label for="checkbox">
+                       <input type="checkbox" v-model="roomdatas.secret"
+                       style="padding:10px; margin-top: 10px"> 비밀방 생성
+                     </label>
+                </div>
               <div class="btns d-flex row justify-content-center" style="margin-top: 20px;">
                 <b-button variant="primary"
                 @click="moveRoom(roomdatas)"
@@ -57,7 +70,8 @@
             <p>인원수 : {{ room.person }} / 6</p>
             <p>운동 : {{ workout_reverse[room.type] }}</p>
             <b-button class="rooms_btn" variant="primary"
-            @click="enterroom({mode: room.mode, roomId: room.roomId})">들어가기</b-button>
+            @click="enterroom({password: room.password, roomId: room.roomId, mode: room.mode})">
+            들어가기</b-button>
           </b-card>
         </div>
       </div>
@@ -79,7 +93,9 @@
             <p>인원수 : {{ room.person }} / 6</p>
             <p>운동 : {{ workout_reverse[room.type] }}</p>
             <b-button class="rooms_btn" variant="primary"
-            @click="enterroom({mode: room.mode, roomId: room.roomId})">들어가기</b-button>
+            @click="
+            enterroom({password: room.password, roomId: room.roomId, mode: room.mode})">
+            들어가기</b-button>
           </b-card>
         </div>
       </div>
@@ -101,7 +117,8 @@
             <p>운동 : {{ workout_reverse[room.type] }}</p>
             <!-- <p>방장 :{{room.memberId}}</p> -->
             <b-button class="rooms_btn" variant="primary"
-            @click="enterroom({mode: room.mode, roomId: room.roomId})">들어가기</b-button>
+            @click="enterroom({password: room.password, roomId: room.roomId, mode: room.mode})"
+            >들어가기</b-button>
           </b-card>
         </div>
       </div>
@@ -156,11 +173,14 @@ export default {
       },
       roomdatas: {
         secret: false,
-        password: 'string',
+        password: '',
         mode: '',
         roomName: '',
         type: '',
         link: '~~~',
+      },
+      competition_option: {
+        게임: 'GAME',
       },
     };
   },
