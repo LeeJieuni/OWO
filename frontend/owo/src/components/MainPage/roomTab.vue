@@ -3,7 +3,7 @@
     <div class="tab-menu d-flex">
       <b-button lg="4" size="lg" style="margin-right: 5px;"
       v-b-modal.modal-makeSession variant="outline-primary"
-      v-if="isLogin"> 방 만들기
+        v-if="isLogin"> 방 만들기
       </b-button>
       <b-button-group class="mx-1" v-for="(tab, index) in tabs" :key="index"
         v-bind:class="{ active: currentTab === index }">
@@ -11,55 +11,75 @@
         variant="outline-primary">{{ tab }}
         </b-button>
       </b-button-group>
-
-      <b-modal id="modal-makeSession"
-      title="#오운완의 운동방 생성하기"
-      hide-footer="true"
-      >
-      <div class="d-flex justify-content-center">
-        <form class="makesessionForm">
-             <div class="roomdata">
-                <b-input-group prepend="방 이름" class="roomdata_input">
-                  <b-form-input type="text" v-model="roomdatas.roomName"></b-form-input>
+      <b-modal id="modal-makeSession" title="#오운완의 운동방 생성하기" hide-footer="true">
+        <div class="d-flex justify-content-center">
+          <form class="makesessionForm">
+            <div class="roomdata">
+              <!--기본 입력폼-->
+              <b-input-group prepend="방 이름" class="roomdata_input">
+                <b-form-input type="text" v-model="roomdatas.roomName"></b-form-input>
+              </b-input-group>
+              <b-input-group prepend="모드" class="roomdata_input">
+                <b-form-select :options="Object.keys(mode)"
+                v-model="roomdatas.mode"></b-form-select>
+              </b-input-group>
+              <!--모드 === 운동-->
+              <div v-if="roomdatas.mode === '운동'">
+                <b-input-group prepend="운동 종류" class="roomdata_input">
+                  <b-form-select :options="Object.keys(workout)"
+                  v-model="roomdatas.type"></b-form-select>
                 </b-input-group>
-                <b-input-group prepend="모드" class="roomdata_input">
-                  <b-form-select :options="Object.keys(mode)"
-                  v-model="roomdatas.mode"></b-form-select>
+                <b-input-group prepend="링크" class="roomdata_input">
+                <b-form-input type="link" v-model="roomdatas.link"></b-form-input>
+              </b-input-group>
+                <b-input-group v-if="roomdatas.secret" prepend="비밀번호" class="roomdata_input">
+                  <b-form-input type="password" v-model="roomdatas.password"></b-form-input>
                 </b-input-group>
-                <b-input-group v-if="roomdatas.mode === '운동'"
-                prepend="운동 종류" class="roomdata_input">
-                   <b-form-select :options="Object.keys(workout)"
-                   v-model="roomdatas.type"></b-form-select>
+                &ensp; <label for="checkbox">
+                  <input type="checkbox" v-model="roomdatas.secret"
+                  style="padding:10px; margin-top: 10px"> 비밀방 생성
+                </label>
+                <div class="btns d-flex row justify-content-center" style="margin-top: 20px;">
+                  <b-button variant="primary"
+                  @click="moveRoom(roomdatas)" style="width: 80%">운동하기</b-button>
+                </div>
+              </div>
+              <!--모드 === 자유-->
+              <div v-if="roomdatas.mode === '자유'">
+                <b-input-group prepend="운동 종류" class="roomdata_input">
+                  <b-form-select :options="Object.keys(workout)"
+                  v-model="roomdatas.type"></b-form-select>
                 </b-input-group>
-                <b-input-group v-if="roomdatas.mode === '자유'"
-                prepend="운동 종류" class="roomdata_input">
-                   <b-form-select :options="Object.keys(workout)"
-                   v-model="roomdatas.type"></b-form-select>
+                <b-input-group v-if="roomdatas.secret" prepend="비밀번호" class="roomdata_input">
+                  <b-form-input type="password" v-model="roomdatas.password"></b-form-input>
                 </b-input-group>
-               <b-input-group v-if="roomdatas.mode === '경쟁'"
-               prepend="운동 종류" class="roomdata_input">
+                &ensp; <label for="checkbox">
+                  <input type="checkbox" v-model="roomdatas.secret"
+                  style="padding:10px; margin-top: 10px"> 비밀방 생성
+                </label>
+                <div class="btns d-flex row justify-content-center" style="margin-top: 20px;">
+                  <b-button variant="primary" @click="moveRoom(roomdatas)"
+                  style="width: 80%">운동하기</b-button>
+                </div>
+              </div>
+              <!--모드 === 경쟁-->
+              <div v-if="roomdatas.mode === '경쟁'">
+                <b-input-group prepend="운동 종류" class="roomdata_input">
                   <b-form-select :options="Object.keys(competition_option)"
                   v-model="roomdatas.type"></b-form-select>
-               </b-input-group>
-                <div>
-                  <b-input-group v-if="roomdatas.secret" prepend="비밀번호" class="roomdata_input">
-                    <b-form-input type="password" v-model="roomdatas.password"></b-form-input>
-                  </b-input-group>
-                  &ensp; <label for="checkbox">
-                       <input type="checkbox" v-model="roomdatas.secret"
-                       style="padding:10px; margin-top: 10px"> 비밀방 생성
-                     </label>
+                </b-input-group>
+                <div class="btns d-flex row justify-content-center" style="margin-top: 20px;">
+                  <b-button variant="primary" @click="moveRoom(roomdatas)"
+                  style="width: 80%">운동하기</b-button>
                 </div>
-              <div class="btns d-flex row justify-content-center" style="margin-top: 20px;">
-                <b-button variant="primary"
-                @click="moveRoom(roomdatas)"
-                style="width: 80%">운동하기</b-button>
               </div>
-             </div>
-           </form>
-      </div>
-    </b-modal>
+            </div>
+          </form>
+        </div>
+      </b-modal>
     </div>
+  </div>
+  <!--운동방 -->
     <div v-if="!noStreaming" class="tab-content wrap">
       <div v-show="currentTab == 0" class="scroll__wrap">
         <div v-for="(room, i) in roomList.streamingRoomList" :key="i" class="scroll--element">
@@ -69,9 +89,22 @@
             <p v-if="room.secret"><img src="@/assets/icon/lock2.png" alt="" style="width:20px"></p>
             <p>인원수 : {{ room.person }} / 6</p>
             <p>운동 : {{ workout_reverse[room.type] }}</p>
-            <b-button class="rooms_btn" variant="primary"
-            @click="enterroom({password: room.password, roomId: room.roomId, mode: room.mode})">
-            들어가기</b-button>
+            <div v-show="room.secret === true" style="width: 55%">
+              <b-input-group prepend="P/W" class="roomdata_input">
+                <b-form-input
+                type="password"
+                v-model="enterPassword"
+                >
+                </b-form-input>
+              </b-input-group>
+            </div>
+            <div v-if="room.secret === false">
+              <p style="padding: 27px">
+              </p>
+            </div>
+            <b-button size="lg" class="rooms_btn" variant="primary"
+              @click="enterroom({ password: enterPassword, roomId: room.roomId, mode: room.mode })">
+              들어가기</b-button>
           </b-card>
         </div>
       </div>
@@ -81,6 +114,7 @@
         <h1>아직 운동중인 방이 없습니다!</h1>
       </div>
     </div>
+      <!--자유방  -->
     <div v-if="!noFree" class="tab-content wrap">
       <div v-show="currentTab == 1" class="scroll__wrap">
         <div v-for="(room, i) in roomList.freeRoomList" :key="i" class="scroll--element">
@@ -88,14 +122,25 @@
             <h3>{{ room.roomName }}</h3>
             <p v-if="!room.secret"><img src="@/assets/icon/lock1.png" alt="" style="width:20px"></p>
             <p v-if="room.secret"><img src="@/assets/icon/lock2.png" alt="" style="width:20px"></p>
-            <!-- <p>비번 : {{room.password}}</p> -->
-            <!-- <p>방장 :{{room.memberId}}</p> -->
             <p>인원수 : {{ room.person }} / 6</p>
             <p>운동 : {{ workout_reverse[room.type] }}</p>
-            <b-button class="rooms_btn" variant="primary"
-            @click="
-            enterroom({password: room.password, roomId: room.roomId, mode: room.mode})">
-            들어가기</b-button>
+            <div v-if="room.secret === true" style="width: 50%">
+              <b-input-group prepend="P/W" class="roomdata_input">
+                <b-form-input
+                type="password"
+                v-model="enterPassword"
+                >
+                </b-form-input>
+              </b-input-group>
+            </div>
+            <div v-if="room.secret === false">
+              <p style="padding: 27px">
+              </p>
+            </div>
+            <b-button
+            size="lg" class="rooms_btn" variant="primary" @click="
+            enterroom({ password:enterPassword, roomId: room.roomId, mode: room.mode })">
+              들어가기</b-button>
           </b-card>
         </div>
       </div>
@@ -105,6 +150,7 @@
         <h1>아직 운동중인 방이 없습니다!</h1>
       </div>
     </div>
+      <!--경쟁방 -->
     <div v-if="!noGame" class="tab-content wrap">
       <div v-show="currentTab == 2" class="scroll__wrap">
         <div v-for="(room, i) in roomList.gameRoomList" :key="i" class="scroll--element">
@@ -112,13 +158,11 @@
             <h3>{{ room.roomName }}</h3>
             <p v-if="!room.secret"><img src="@/assets/icon/lock1.png" alt="" style="width:20px"></p>
             <p v-if="room.secret"><img src="@/assets/icon/lock2.png" alt="" style="width:20px"></p>
-            <!-- <p>비번 : {{room.password}}</p> -->
             <p>인원수 : {{ room.person }} / 6</p>
             <p>운동 : {{ workout_reverse[room.type] }}</p>
-            <!-- <p>방장 :{{room.memberId}}</p> -->
-            <b-button class="rooms_btn" variant="primary"
-            @click="enterroom({password: room.password, roomId: room.roomId, mode: room.mode})"
-            >들어가기</b-button>
+            <b-button class="rooms_btn" variant="primary" size="lg"
+              @click="enterroom({ password: enterPassword, roomId: room.roomId, mode: room.mode })">
+              들어가기</b-button>
           </b-card>
         </div>
       </div>
@@ -128,7 +172,6 @@
         <h1>아직 운동중인 방이 없습니다!</h1>
       </div>
     </div>
-  </div>
 </template>
 
 <script>
@@ -142,6 +185,7 @@ export default {
   },
   data() {
     return {
+      enterPassword: '',
       tabs: ['운동방', '자유방', '경쟁방'],
       currentTab: 0,
       mode: {
@@ -177,7 +221,7 @@ export default {
         mode: '',
         roomName: '',
         type: '',
-        link: '~~~',
+        link: '--',
       },
       competition_option: {
         게임: 'GAME',
@@ -248,18 +292,23 @@ export default {
   margin-top: 20px;
   width: 45%;
 }
+
 .roomdata {
   display: justify-content-center;
 }
+
 .makeSessionForm {
   width: 50%;
 }
+
 .roomdata_input {
   padding: 10px;
 }
+
 .form-check {
   padding: 10px;
 }
+
 input {
   margin-left: 50px;
 }

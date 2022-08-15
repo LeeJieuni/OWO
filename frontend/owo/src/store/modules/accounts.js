@@ -756,7 +756,10 @@ export const accounts = {
           router.push(`/room/${state.enter_mode[payload.mode]}/${payload.roomId}`);
         })
         .catch((err) => {
-          console.log(err);
+          swal.fire(
+            '#오운완',
+            err.response.data.message,
+          );
         });
     },
     fetchAchievementRate({ state, commit }) {
@@ -856,8 +859,8 @@ export const accounts = {
         },
       })
         .then((res) => {
+          console.log(res.data);
           router.push(`/room/${state.enter_mode[state.make_mode[roomdata.mode]]}/${res.data.data.roomId}`);
-          console.log(res);
         })
         .catch((err) => {
           console.log(err);
