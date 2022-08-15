@@ -3,12 +3,14 @@ export const exercise = {
   namespaced: true,
   state: () => ({
     exerciseName: undefined,
-    allSquatCountListSorted: new Set(),
-    allLungeCountListSorted: new Set(),
-    allBurpeeCountListSorted: new Set(),
     allSquatCountList: [],
     allLungeCountList: [],
     allBurpeeCountList: [],
+    allScoreList: [],
+    allSquatCountListSorted: new Set(),
+    allLungeCountListSorted: new Set(),
+    allBurpeeCountListSorted: new Set(),
+    allScoreListSorted: new Set(),
   }),
 
   mutations: {
@@ -87,6 +89,21 @@ export const exercise = {
       state.allBurpeeCountList = [];
       state.allBurpeeCountListSorted = new Set();
     },
+    CHANGE_SCORE_LIST: (state, payload) => {
+      state.allScoreList.push(payload);
+    },
+    CHANGE_SCORE_LIST_SORTED: (state) => {
+      state.allScoreListSorted = new Set();
+      async function myfunc4() {
+        for (let i = 0; i < state.allScoreList.length; i += 1) {
+          // eslint-disable-next-line
+          await state.allScoreListSorted.add(parseInt(state.allScoreList[i].userScore));
+        }
+        // eslint-disable-next-line
+        state.allScoreListSorted = Array.from(state.allScoreListSorted).sort((a, b) => { return b - a ; });
+      }
+      myfunc4();
+    },
   },
   actions: {
     changeExerciseName({ commit }, payload) {
@@ -112,6 +129,12 @@ export const exercise = {
     },
     resetAllCountList({ commit }) {
       commit('RESET_ALL_COUNT_LIST');
+    },
+    changeScoreList({ commit }, payload) {
+      commit('CHANGE_SCORE_LIST', payload);
+    },
+    changeScoreListSorted({ commit }) {
+      commit('CHANGE_SCORE_LIST_SORTED');
     },
   },
 };

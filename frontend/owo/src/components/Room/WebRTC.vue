@@ -155,6 +155,15 @@ export default {
       // eslint-disable-next-line
       } else if (parseInt(this.mySquat.userSquatCount) === this.allSquatCountListSorted[2]) {
         return 3;
+      // eslint-disable-next-line
+      } else if (parseInt(this.mySquat.userSquatCount) === this.allSquatCountListSorted[3]) {
+        return 4;
+      // eslint-disable-next-line
+      } else if (parseInt(this.mySquat.userSquatCount) === this.allSquatCountListSorted[4]) {
+        return 5;
+      // eslint-disable-next-line
+      } else if (parseInt(this.mySquat.userSquatCount) === this.allSquatCountListSorted[5]) {
+        return 6;
       } else {
         return 99;
       }
@@ -169,6 +178,15 @@ export default {
       // eslint-disable-next-line
       } else if (parseInt(this.myLunge.userLungeCount) === this.allLungeCountListSorted[2]) {
         return 3;
+      // eslint-disable-next-line
+      } else if (parseInt(this.myLunge.userLungeCount) === this.allLungeCountListSorted[3]) {
+        return 4;
+      // eslint-disable-next-line
+      } else if (parseInt(this.myLunge.userLungeCount) === this.allLungeCountListSorted[4]) {
+        return 5;
+      // eslint-disable-next-line
+      } else if (parseInt(this.myLunge.userLungeCount) === this.allLungeCountListSorted[5]) {
+        return 6;
       } else {
         return 99;
       }
@@ -182,7 +200,16 @@ export default {
         return 2;
       // eslint-disable-next-line
       } else if (parseInt(this.myBurpee.userBurpeeCount) === this.allBurpeeCountListSorted[2]) {
-        return 3;
+        return 4;
+      // eslint-disable-next-line
+      } else if (parseInt(this.myBurpee.userBurpeeCount) === this.allBurpeeCountListSorted[3]) {
+        return 5;
+      // eslint-disable-next-line
+      } else if (parseInt(this.myBurpee.userBurpeeCount) === this.allBurpeeCountListSorted[4]) {
+        return 6;
+      // eslint-disable-next-line
+      } else if (parseInt(this.myBurpee.userBurpeeCount) === this.allBurpeeCountListSorted[5]) {
+        return 6;
       } else {
         return 99;
       }

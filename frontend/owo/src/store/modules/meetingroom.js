@@ -110,26 +110,4 @@ export const meetingroom = {
         });
     },
   },
-  // startMeetingRoom({ commit }, requestDto) {
-  //   console.log('=============*******************');
-  //   console.log(requestDto);
-  //   console.log(requestDto.accesstoken);
-  //   console.log(requestDto.roomId);
-  //   axios({
-  //     url: `http://localhost:9000/api/room/start/${Number(requestDto.roomId)}`,
-  //     method: 'put',
-  //     headers: {
-  //       'X-AUTH-TOKEN': requestDto.accesstoken,
-  //     },
-  //   })
-  //     .then((res) => {
-  //       console.log(res.data);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // },
-// getters: {
-//   sessionId: (state) => state.mySessionId,
-// },
 };

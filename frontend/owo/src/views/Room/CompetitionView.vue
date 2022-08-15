@@ -393,16 +393,13 @@ export default {
       ctx: undefined,
       // 각 운동의 카운트를 memberId와 함께 session.on으로 보내주고 데이터 받아서 저장한다.
       squatCount: 0,
-      LungeCount: 0,
-      BurpeeCount: 0,
+      lungeCount: 0,
+      burpeeCount: 0,
+      myBestSquatCount: 0,
+      myBestLungeCount: 0,
+      myBestBurpeeCount: 0,
       // 운동이 끝나면 count는 서버에 보내고, counts에 따라 임의의 score를 저장한다.
-      squatScore: undefined,
-      burpeeScore: undefined,
-      Lungescore: undefined,
-      // score의 합산으로 다시 정렬해서 순위별 등수를 매겨로 포인트를 부여한다.
-      myscore: undefined,
-      // mypoints를 서버에 보낸다.
-      mypoints: undefined,
+      Score: 0,
     };
   },
   setup() {
@@ -444,11 +441,93 @@ export default {
 
   computed: {
     ...mapState(emoji, ['allEmojiList']),
-    ...mapState(accounts, ['accessToken', 'userInfo']),
+    ...mapState(accounts, ['accessToken', 'userInfo', 'refreshToken']),
     ...mapState(openvidu, ['OPENVIDU_SERVER_URL', 'OPENVIDU_SERVER_SECRET']),
     ...mapState(meetingroom, ['myRoomName', 'mySessionId', 'meetingRoomList', 'camera', 'mic', 'roomMasterId']),
+    ...mapState(exercise, ['allSquatCountListSorted', 'allLungeCountListSorted', 'allBurpeeCountListSorted', 'allScoreListSorted', 'allScoreList']),
+    myExercisePoints() {
+      // eslint-disable-next-line
+      if (this.allScoreList.length === 2) {
+        if (this.Score === this.allScoreListSorted[0]) {
+          return 5;
+        }
+        if (this.Score === this.allScoreListSorted[1]) {
+          return -5;
+        }
+      } else if (this.allScoreList.length === 3) {
+        if (this.Score === this.allScoreListSorted[0]) {
+          return 10;
+        }
+        if (this.Score === this.allScoreListSorted[2]) {
+          return -10;
+        }
+      } else if (this.allScoreList.length === 4) {
+        if (this.Score === this.allScoreListSorted[0]) {
+          return 20;
+        }
+        if (this.Score === this.allScoreListSorted[1]) {
+          return 10;
+        }
+        if (this.Score === this.allScoreListSorted[2]) {
+          return -10;
+        }
+        if (this.Score === this.allScoreListSorted[3]) {
+          return -20;
+        }
+      } else if (this.allScoreList.length === 5) {
+        if (this.Score === this.allScoreListSorted[0]) {
+          return 20;
+        }
+        if (this.Score === this.allScoreListSorted[1]) {
+          return 10;
+        }
+        if (this.Score === this.allScoreListSorted[3]) {
+          return -10;
+        }
+        if (this.Score === this.allScoreListSorted[4]) {
+          return -20;
+        }
+      } else if (this.allScoreList.length === 6) {
+        if (this.Score === this.allScoreListSorted[0]) {
+          return 30;
+        }
+        if (this.Score === this.allScoreListSorted[1]) {
+          return 20;
+        }
+        if (this.Score === this.allScoreListSorted[2]) {
+          return 10;
+        }
+        if (this.Score === this.allScoreListSorted[3]) {
+          return -10;
+        }
+        if (this.Score === this.allScoreListSorted[4]) {
+          return -20;
+        }
+        if (this.Score === this.allScoreListSorted[5]) {
+          return -30;
+        }
+      }
+      return 0;
+    },
   },
   methods: {
+    myBestRecord(memberId) {
+      axios({
+        url: `https://i7c202.p.ssafy.io:8282/api/user/compete/${memberId}`,
+        method: 'get',
+        headers: {
+          'X-AUTH-TOKEN': this.accessToken,
+          'REFRESH-TOKEN': this.refreshToken,
+        },
+      }).then((res) => {
+        // eslint-disable-next-line
+        this.myBestSquatCount = res.data.data[0];
+        // eslint-disable-next-line
+        this.myBestLungeCount = res.data.data[1];
+        // eslint-disable-next-line
+        this.myBestBurpeeCount = res.data.data[2];
+      });
+    },
     stopCam() {
       this.webcam.stop();
     },
@@ -608,6 +687,8 @@ export default {
       'changeLungeCountListSorted',
       'changeBurpeeCountListSorted',
       'resetAllCountList',
+      'changeScoreList',
+      'changeScoreListSorted',
     ]),
     joinSession(sessionNum) {
       this.SET_SESSION_ID(sessionNum);
@@ -672,6 +753,16 @@ export default {
           });
       });
       // 사용자 정의 함수 영역
+      this.session.on('signal:myScore', (event) => {
+        const sendScoreData = event.data.split(',');
+        const obj = {
+          connectionId: sendScoreData[0],
+          userScore: sendScoreData[1],
+        };
+        this.changeScoreList(obj);
+        this.changeScoreListSorted(obj);
+      });
+
       this.session.on('signal:my-emoji', (event) => {
         const sendEmojiData = event.data.split(',');
         const obj = {
@@ -730,6 +821,7 @@ export default {
       });
 
       this.session.on('signal:startround1', () => {
+        this.myBestRecord(this.credentialsUser.memberId);
         // eslint-disable-next-line
         const audio = new Audio(require('@/assets/music/round1.mp3'));
         audio.play();
@@ -738,7 +830,6 @@ export default {
         this.round1Game = true;
         this.roundGameName = '스쿼트';
         setTimeout(() => {
-          this.init();
           this.init();
           this.round1Game = false;
           // eslint-disable-next-line
@@ -832,12 +923,10 @@ export default {
           this.gameType = 1;
           this.changeExerciseName(1);
           this.init();
-          this.init();
         }, 5000);
         setTimeout(() => {
           this.isStarted = false;
           this.$refs.setTimer3.pauseTimer();
-          this.init();
           this.init();
         }, 6000);
         setTimeout(() => {
@@ -848,10 +937,57 @@ export default {
         }, 36000);
         setTimeout(() => {
           this.restTime = false;
-        }, 41000);
+        }, 39000);
         setTimeout(() => {
           this.isExercising = true;
           this.startround2();
+          if (this.allSquatCountListSorted.length === 2) {
+            if (this.$refs.webrtc.mySquatRanking === 1) {
+              this.Score += 5;
+            } else if (this.$refs.webrtc.mySquatRanking === 2) {
+              this.Score -= 5;
+            }
+          } else if (this.allSquatCountListSorted.length === 3) {
+            if (this.$refs.webrtc.mySquatRanking === 1) {
+              this.Score += 10;
+            } else if (this.$refs.webrtc.mySquatRanking === 3) {
+              this.Score -= 10;
+            }
+          } else if (this.allSquatCountListSorted.length === 4) {
+            if (this.$refs.webrtc.mySquatRanking === 1) {
+              this.Score += 20;
+            } else if (this.$refs.webrtc.mySquatRanking === 2) {
+              this.Score += 10;
+            } else if (this.$refs.webrtc.mySquatRanking === 3) {
+              this.Score -= 10;
+            } else if (this.$refs.webrtc.mySquatRanking === 4) {
+              this.Score -= 20;
+            }
+          } else if (this.allSquatCountListSorted.length === 5) {
+            if (this.$refs.webrtc.mySquatRanking === 1) {
+              this.Score += 20;
+            } else if (this.$refs.webrtc.mySquatRanking === 2) {
+              this.Score += 10;
+            } else if (this.$refs.webrtc.mySquatRanking === 4) {
+              this.Score -= 10;
+            } else if (this.$refs.webrtc.mySquatRanking === 5) {
+              this.Score -= 20;
+            }
+          } else if (this.allSquatCountListSorted.length === 6) {
+            if (this.$refs.webrtc.mySquatRanking === 1) {
+              this.Score += 30;
+            } else if (this.$refs.webrtc.mySquatRanking === 2) {
+              this.Score += 20;
+            } else if (this.$refs.webrtc.mySquatRanking === 3) {
+              this.Score += 10;
+            } else if (this.$refs.webrtc.mySquatRanking === 4) {
+              this.Score -= 10;
+            } else if (this.$refs.webrtc.mySquatRanking === 5) {
+              this.Score -= 20;
+            } else if (this.$refs.webrtc.mySquatRanking === 6) {
+              this.Score -= 30;
+            }
+          }
         }, 51000);
       });
 
@@ -885,10 +1021,57 @@ export default {
         }, 36000);
         setTimeout(() => {
           this.restTime = false;
-        }, 41000);
+        }, 39000);
         setTimeout(() => {
           this.isExercising = true;
           this.startround3();
+          if (this.allLungeCountListSorted.length === 2) {
+            if (this.$refs.webrtc.myLungeRanking === 1) {
+              this.Score += 5;
+            } else if (this.$refs.webrtc.myLungeRanking === 2) {
+              this.Score -= 5;
+            }
+          } else if (this.allLungeCountListSorted.length === 3) {
+            if (this.$refs.webrtc.myLungeRanking === 1) {
+              this.Score += 10;
+            } else if (this.$refs.webrtc.myLungeRanking === 3) {
+              this.Score -= 10;
+            }
+          } else if (this.allLungeCountListSorted.length === 4) {
+            if (this.$refs.webrtc.myLungeRanking === 1) {
+              this.Score += 20;
+            } else if (this.$refs.webrtc.myLungeRanking === 2) {
+              this.Score += 10;
+            } else if (this.$refs.webrtc.myLungeRanking === 3) {
+              this.Score -= 10;
+            } else if (this.$refs.webrtc.myLungeRanking === 4) {
+              this.Score -= 20;
+            }
+          } else if (this.allLungeCountListSorted.length === 5) {
+            if (this.$refs.webrtc.myLungeRanking === 1) {
+              this.Score += 20;
+            } else if (this.$refs.webrtc.myLungeRanking === 2) {
+              this.Score += 10;
+            } else if (this.$refs.webrtc.myLungeRanking === 4) {
+              this.Score -= 10;
+            } else if (this.$refs.webrtc.myLungeRanking === 5) {
+              this.Score -= 20;
+            }
+          } else if (this.allLungeCountListSorted.length === 6) {
+            if (this.$refs.webrtc.myLungeRanking === 1) {
+              this.Score += 30;
+            } else if (this.$refs.webrtc.myLungeRanking === 2) {
+              this.Score += 20;
+            } else if (this.$refs.webrtc.myLungeRanking === 3) {
+              this.Score += 10;
+            } else if (this.$refs.webrtc.myLungeRanking === 4) {
+              this.Score -= 10;
+            } else if (this.$refs.webrtc.myLungeRanking === 5) {
+              this.Score -= 20;
+            } else if (this.$refs.webrtc.myLungeRanking === 6) {
+              this.Score -= 30;
+            }
+          }
         }, 51000);
       });
 
@@ -914,22 +1097,102 @@ export default {
           this.$refs.setTimer3.pauseTimer();
         }, 6000);
         setTimeout(() => {
+          if (this.allBurpeeCountListSorted.length === 2) {
+            if (this.$refs.webrtc.myBurpeeRanking === 1) {
+              this.Score += 5;
+            } else if (this.$refs.webrtc.myBurpeeRanking === 2) {
+              this.Score -= 5;
+            }
+          } else if (this.allBurpeeCountListSorted.length === 3) {
+            if (this.$refs.webrtc.myBurpeeRanking === 1) {
+              this.Score += 10;
+            } else if (this.$refs.webrtc.myBurpeeRanking === 3) {
+              this.Score -= 10;
+            }
+          } else if (this.allBurpeeCountListSorted.length === 4) {
+            if (this.$refs.webrtc.myBurpeeRanking === 1) {
+              this.Score += 20;
+            } else if (this.$refs.webrtc.myBurpeeRanking === 2) {
+              this.Score += 10;
+            } else if (this.$refs.webrtc.myBurpeeRanking === 3) {
+              this.Score -= 10;
+            } else if (this.$refs.webrtc.myBurpeeRanking === 4) {
+              this.Score -= 20;
+            }
+          } else if (this.allBurpeeCountListSorted.length === 5) {
+            if (this.$refs.webrtc.myBurpeeRanking === 1) {
+              this.Score += 20;
+            } else if (this.$refs.webrtc.myBurpeeRanking === 2) {
+              this.Score += 10;
+            } else if (this.$refs.webrtc.myBurpeeRanking === 4) {
+              this.Score -= 10;
+            } else if (this.$refs.webrtc.myBurpeeRanking === 5) {
+              this.Score -= 20;
+            }
+          } else if (this.allBurpeeCountListSorted.length === 6) {
+            if (this.$refs.webrtc.myBurpeeRanking === 1) {
+              this.Score += 30;
+            } else if (this.$refs.webrtc.myBurpeeRanking === 2) {
+              this.Score += 20;
+            } else if (this.$refs.webrtc.myBurpeeRanking === 3) {
+              this.Score += 10;
+            } else if (this.$refs.webrtc.myBurpeeRanking === 4) {
+              this.Score -= 10;
+            } else if (this.$refs.webrtc.myBurpeeRanking === 5) {
+              this.Score -= 20;
+            } else if (this.$refs.webrtc.myBurpeeRanking === 6) {
+              this.Score -= 30;
+            }
+          }
+          this.sendScore();
           this.webcam.stop();
           this.isExercising = false;
           this.changeExerciseName(0);
-          swal.fire({
-            icon: 'success',
-            // eslint-disable-next-line
-            html: `${this.userInfo.nick}님의 기록입니다.<br>
-            #Round 1. Squat : ${this.$refs.webrtc.mySquat.userSquatCount}회/<br>
-            #Round 2. Lunge : ${this.$refs.webrtc.myLunge.userLungeCount}회/<br>
-            #Round 3. Burpee : ${this.$refs.webrtc.myBurpee.userBurpeeCount}회/`,
-          });
-          this.leaveSession();
+          axios({
+            url: 'https://i7c202.p.ssafy.io:8282/api/user/compete',
+            method: 'post',
+            data: {
+              memberId: this.credentialsUser.memberId,
+              score1: this.$refs.webrtc.mySquat.userSquatCount,
+              score2: this.$refs.webrtc.myLunge.userLungeCount,
+              score3: this.$refs.webrtc.myBurpee.userBurpeeCount,
+            },
+            headers: {
+              'X-AUTH-TOKEN': this.accesstoken,
+            },
+          }).then(
+            swal.fire({
+              icon: 'success',
+              // eslint-disable-next-line
+              html: `${this.userInfo.nick}님의 기록입니다.<br>
+              #Round 1. Squat : ${this.$refs.webrtc.mySquat.userSquatCount}회/최고 기록 : ${this.myBestSquatCount}회<br>
+              #Round 2. Lunge : ${this.$refs.webrtc.myLunge.userLungeCount}회/최고 기록 : ${this.myBestLungeCount}회<br>
+              #Round 3. Burpee : ${this.$refs.webrtc.myBurpee.userBurpeeCount}회/최고 기록 : ${this.myBestBurpeeCount}회<br>
+              기록 갱신을 위해서 조금만 기다려주세요..`,
+            }),
+          );
         }, 36000);
+        setTimeout(() => {
+          axios({
+            url: `https://i7c202.p.ssafy.io:8282/api/user/exp/${this.myExercisePoints}/${this.credentialsUser.memberId}`,
+            method: 'put',
+            headers: {
+              'X-AUTH-TOKEN': this.accesstoken,
+            },
+          }).then(
+            this.leaveSession(),
+          );
+        }, 37000);
       });
     },
-
+    sendScore() {
+      this.session
+        .signal({
+          data: `${this.connectionId},${this.Score}`,
+          to: [],
+          type: 'myScore',
+        });
+    },
     sendEmoji() {
       this.session
         .signal({
@@ -1268,11 +1531,11 @@ export default {
       const prediction = await this.model.predict(posenetOutput);
       if (prediction[1].probability.toFixed(2) > 0.99) { // 런지
         if (this.check) {
-          this.LungeCount += 1;
-          console.log('lungeCount', this.LungeCount);
+          this.lungeCount += 1;
+          console.log('lungeCount', this.lungeCount);
           this.session
             .signal({
-              data: `${this.connectionId},${this.LungeCount}`, // Any string (optional)
+              data: `${this.connectionId},${this.lungeCount}`, // Any string (optional)
               to: [], // Array of Connection objects (optional. Broadcast to everyone if empty)
               type: 'lungeCount', // The type of message (optional)
             })
@@ -1298,11 +1561,11 @@ export default {
       const prediction = await this.model.predict(posenetOutput);
       if (prediction[2].probability.toFixed(2) > 0.99) { // 서 있는 자세
         if (this.check && this.check2) {
-          this.BurpeeCount += 1;
-          console.log('burpeeCount', this.BurpeeCount);
+          this.burpeeCount += 1;
+          console.log('burpeeCount', this.burpeeCount);
           this.session
             .signal({
-              data: `${this.connectionId},${this.BurpeeCount}`, // Any string (optional)
+              data: `${this.connectionId},${this.burpeeCount}`, // Any string (optional)
               to: [], // Array of Connection objects (optional. Broadcast to everyone if empty)
               type: 'burpeeCount', // The type of message (optional)
             })
