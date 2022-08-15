@@ -117,7 +117,7 @@ public class MeetingRoomController {
         }
     }
 
-    @GetMapping("/api/user/room/enter")
+    @PostMapping("/api/user/room/enter")
     @ApiOperation(value="방 입장 처리에 대한 API", notes = "특정 방번호(roomId)를 통해 방 입장에 대한 요청 처리를 수행합니다.")
     public ResponseEntity<?> enterMeetingRoom(@RequestBody EnterRoomDto enterRoomDto) throws OpenViduJavaClientException, OpenViduHttpException {
         Message message = new Message();
