@@ -8,6 +8,7 @@ window.Swal = swal;
 export const accounts = {
   namespaced: true,
   state: () => ({
+    image: '',
     LoginErr: '',
     isLoginErr: false,
     accessToken: null,
@@ -43,7 +44,6 @@ export const accounts = {
       bmr: null,
       caloriePerDay: null,
     },
-    image: '',
     record: {
       point: '', // 경쟁
       exp: '', // 자유, 영상 경험치
@@ -224,24 +224,22 @@ export const accounts = {
     },
   },
   actions: {
-    // getImage({ commit }) {
-    //   axios({
-    //     url: 'https://i7c202.p.ssafy.io:8282/api/record/img/main',
-    //     method: 'get',
-    //     headers: {
-    //       'X-AUTH-TOKEN': state.accessToken,
-    //       'REFRESH-TOKEN': state.refreshToken,
-    //     },
-    //   })
-    //     .then((res) => {
-    //       commit('SET_IMAGE', res.data.data);
-    //       console.log(res);
-
-    //     })
-    //     .catch((err) => {
-    //       console.log(err);
-    //     })
-    // },
+    getImage({ commit, state }) {
+      axios({
+        url: 'https://i7c202.p.ssafy.io:8282/api/record/img/main',
+        method: 'get',
+        headers: {
+          'X-AUTH-TOKEN': state.accessToken,
+        },
+      })
+        .then((res) => {
+          console.log(res);
+          commit('SET_IMAGE', res.data.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
     saveAccessToken({ commit }, token) {
       sessionStorage.setItem('accessToken', token);
       commit('SET_ACCESS_TOKEN', token);

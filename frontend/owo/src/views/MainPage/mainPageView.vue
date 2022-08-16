@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="margin-left: 150px; margin-right: 150px">
     <NavBar/>
     <div v-if="!isLogin">
       <Carousel></Carousel>
@@ -42,7 +42,7 @@ export default {
     setCookie() {
       this.$cookies.set('nosee', 'Y', '7d');
     },
-    ...mapActions(accounts, ['getRoomList']),
+    ...mapActions(accounts, ['getRoomList', 'getImage']),
   },
   created() {
     const check = this.$cookies.get('nosee');
@@ -85,6 +85,7 @@ export default {
       console.log('실행중이다 getroomList');
       this.getRoomList(mode[i]);
     }
+    this.getImage();
   },
 };
 </script>
