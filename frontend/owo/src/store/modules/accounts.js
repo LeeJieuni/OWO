@@ -768,7 +768,7 @@ export const accounts = {
           console.log(err);
         });
     },
-    enterroom({ state }, payload) {
+    enterroom({ state, commit }, payload) {
       console.log(payload);
       axios({
         url: 'https://i7c202.p.ssafy.io:8282/api/user/room/enter',
@@ -782,6 +782,7 @@ export const accounts = {
         },
       })
         .then((res) => {
+          commit('SET_ROOM_NAME', payload.roomName);
           console.log(res);
           router.push(`/room/${state.enter_mode[payload.mode]}/${payload.roomId}`);
         })

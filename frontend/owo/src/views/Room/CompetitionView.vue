@@ -5,7 +5,7 @@
       <!-- eslint-disable-next-line -->
       <div class="d-flex justify-content-center align-items-center" style="width: 100%; height: 80px;">
       <!-- eslint-disable-next-line -->
-        <h3 class="game-name m-0 mb-5" style="font-size:3rem;">{{ myRoomName }}<span v-if="roundGameName"> : {{ roundGameName }}</span></h3>
+        <h3 class="game-name m-0" style="font-size:3rem;">{{ roomName }}<span v-if="roundGameName"> : {{ roundGameName }}</span></h3>
       </div>
       <!-- 세션 -->
       <div id="session" v-if="session">
@@ -229,9 +229,9 @@
         </button>
         <!-- eslint-disable-next-line -->
         <!-- <button v-if="(!isExercising) & (this.subscribers.length >= 1)" class="mybtn5" @click="startround1"> -->
+        <!-- <button class="mybtn5" @click="startround1"> -->
         <!-- eslint-disable-next-line -->
-        <!-- <button v-if="(this.credentialsUser.memberId === this.roomMasterId) & !this.gameType & (this.subscribers.length >= 1)" class="mybtn5" @click="startround1"> -->
-        <button class="mybtn5" @click="startround1">
+        <button v-if="(this.credentialsUser.memberId === this.masterId) & !this.gameType & (this.subscribers.length >= 1)" class="mybtn5" @click="startround1">
           <img class="menu_icon4" src="@/assets/icon/start.png" alt="Start">
         </button>
       </div>
@@ -261,13 +261,6 @@
       <br>
       <br>
       <br>
-      <button @click="init">start</button>
-      <div>나의 카운트 : {{ count }} </div>
-      <button @click="stopCam">캠 삭제</button>
-      <div>크레덴셜멤버아이디{{ this.credentialsUser.memberId }}</div>
-      <div>룸마스터아이디{{ this.roomMasterId }}</div>
-      <div>게임타입{{ this.gameType }}</div>
-      <div>관객 수 {{ this.subscribers.length }}</div>
     </div>
   </div>
 </template>
@@ -440,9 +433,9 @@ export default {
 
   computed: {
     ...mapState(emoji, ['allEmojiList']),
-    ...mapState(accounts, ['accessToken', 'userInfo', 'refreshToken']),
+    ...mapState(accounts, ['accessToken', 'userInfo', 'refreshToken', 'roomName', 'masterId']),
     ...mapState(openvidu, ['OPENVIDU_SERVER_URL', 'OPENVIDU_SERVER_SECRET']),
-    ...mapState(meetingroom, ['myRoomName', 'mySessionId', 'meetingRoomList', 'camera', 'mic', 'roomMasterId']),
+    ...mapState(meetingroom, ['mySessionId', 'meetingRoomList', 'camera', 'mic']),
     ...mapState(exercise, ['allSquatCountListSorted', 'allLungeCountListSorted', 'allBurpeeCountListSorted', 'allScoreListSorted', 'allScoreList']),
     myExercisePoints() {
       // eslint-disable-next-line
@@ -510,6 +503,37 @@ export default {
     },
   },
   methods: {
+    sendMyRecords() {
+      axios({
+        url: 'https://i7c202.p.ssafy.io:8282/api/user/compete',
+        method: 'post',
+        headers: {
+          'X-AUTH-TOKEN': this.accessToken,
+          'REFRESH-TOKEN': this.refreshToken,
+        },
+        data: {
+          memberId: parseInt(this.credentialsUser.memberId, 10),
+          score1: parseInt(this.$refs.webrtc.mySquat.userSquatCount, 10),
+          score2: parseInt(this.$refs.webrtc.myLunge.userLungeCount, 10),
+          score3: parseInt(this.$refs.webrtc.myBurpee.userBurpeeCount, 10),
+        },
+      });
+    },
+    sendMyPoints() {
+      axios({
+        url: `https://i7c202.p.ssafy.io:8282/api/user/exp/${this.myExercisePoints}/${this.credentialsUser.memberId}`,
+        method: 'put',
+        headers: {
+          'X-AUTH-TOKEN': this.accessToken,
+        },
+      }).then(() => {
+        console.log('마이엑서사이즈포인츠제출', this.myExercisePoints);
+        this.gameType = undefined;
+        this.leaveSession();
+      }).catch(
+        console.log('액서사이즈포인츠제출실패!!!'),
+      );
+    },
     myBestRecord(memberId) {
       axios({
         url: `https://i7c202.p.ssafy.io:8282/api/user/compete/${memberId}`,
@@ -818,7 +842,6 @@ export default {
         const chat = document.querySelector('#chattingList');
         chat.scrollTop = chat.scrollHeight;
       });
-
       this.session.on('signal:startround1', () => {
         this.myBestRecord(this.credentialsUser.memberId);
         // eslint-disable-next-line
@@ -830,7 +853,6 @@ export default {
         this.roundGameName = '버피';
         setTimeout(() => {
           this.gameType = 3;
-          this.init();
           this.init();
           this.changeExerciseName(3);
           this.round1Game = false;
@@ -923,13 +945,10 @@ export default {
         }, 2000);
         setTimeout(() => {
           this.init();
-          this.init();
         }, 5000);
         setTimeout(() => {
           this.isStarted = false;
           this.$refs.setTimer3.pauseTimer();
-          this.init();
-          this.init();
         }, 6000);
         setTimeout(() => {
           this.isExercising = false;
@@ -1147,49 +1166,22 @@ export default {
             }
           }
           this.sendScore();
-          this.webcam.stop();
           this.isExercising = false;
           this.changeExerciseName(0);
-          axios({
-            url: 'https://i7c202.p.ssafy.io:8282/api/user/compete',
-            method: 'post',
-            data: {
-              // eslint-disable-next-line
-              memberId: this.credentialsUser.memberId,
-              // eslint-disable-next-line
-              score1: parseInt(this.$refs.webrtc.mySquat.userSquatCount),
-              // eslint-disable-next-line
-              score2: parseInt(this.$refs.webrtc.myLunge.userLungeCount),
-              // eslint-disable-next-line
-              score3: parseInt(this.$refs.webrtc.myBurpee.userBurpeeCount),
-            },
-            headers: {
-              'X-AUTH-TOKEN': this.accesstoken,
-            },
-          }).then(
+          this.sendMyRecords();
+          swal.fire({
+            icon: 'success',
             // eslint-disable-next-line
-            console.log(this.credentialsUser.memberId, parseInt(this.$refs.webrtc.myLunge.userLungeCount)),
-            swal.fire({
-              icon: 'success',
-              // eslint-disable-next-line
-              html: `${this.userInfo.nick}님의 기록입니다.<br>
-              #Round 1. Burpee : ${this.$refs.webrtc.myBurpee.userBurpeeCount}회 / 최고 기록 : ${this.myBestBurpeeCount}회<br>
-              #Round 2. Lunge  : ${this.$refs.webrtc.myLunge.userLungeCount}회 / 최고 기록 : ${this.myBestLungeCount}회<br>
-              #Round 3. Squat  : ${this.$refs.webrtc.mySquat.userSquatCount}회 / 최고 기록 : ${this.myBestSquatCount}회<br>`,
-            }),
-          );
+            html: `${this.userInfo.nick}님의 기록입니다.<br>
+            #Round 1. Burpee : ${this.$refs.webrtc.myBurpee.userBurpeeCount}회 / 최고 기록 : ${this.myBestBurpeeCount}회<br>
+            #Round 2. Lunge  : ${this.$refs.webrtc.myLunge.userLungeCount}회 / 최고 기록 : ${this.myBestLungeCount}회<br>
+            #Round 3. Squat  : ${this.$refs.webrtc.mySquat.userSquatCount}회 / 최고 기록 : ${this.myBestSquatCount}회<br>`,
+          });
         }, 36000);
         setTimeout(() => {
-          axios({
-            url: `https://i7c202.p.ssafy.io:8282/api/user/exp/${this.myExercisePoints}/${this.credentialsUser.memberId}`,
-            method: 'put',
-            headers: {
-              'X-AUTH-TOKEN': this.accesstoken,
-            },
-          }).then(
-            this.gameType = undefined,
-            this.leaveSession(),
-          );
+          console.log('포인트 보낼 데이터', this.myExercisePoints, this.credentialsUser.memberId);
+          this.sendMyPoints();
+          this.webcam.stop();
         }, 37000);
       });
     },

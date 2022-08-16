@@ -91,7 +91,7 @@
               </p>
           </div>
               <b-card class="rooms" footer-tag="footer">
-               <div class="img_sport">
+                <div class="img_sport">
               <div v-if="room.type === 'GAME'">
                   <img src="@/assets/sport/game.png" alt="">
                 </div>
@@ -225,7 +225,7 @@
               roomName: room.roomName,
               })">
               들어가기</b-button>
-               <template #footer>
+                <template #footer>
               <div class="d-flex justify-content-end">
                   <b-input-group prepend="PW" class="roomdata_input" v-show="room.secret===true"
                   style="width: 100%; padding: 0px;">
@@ -330,7 +330,7 @@
         <h1>아직 운동중인 방이 없습니다!</h1>
       </div>
     </div>
- </div>
+  </div>
 </template>
 
 <script>

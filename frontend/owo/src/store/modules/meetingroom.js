@@ -95,13 +95,14 @@ export const meetingroom = {
     },
     leaveMeetingRoom({ commit }, requestDto) {
       axios({
-        url: `https://i7c202.p.ssafy.io:8282/api/room/exit/${requestDto.roomId}`,
+        url: `https://i7c202.p.ssafy.io:8282/api/user/room/exit/${requestDto.roomId}`,
         method: 'put',
         headers: {
           'X-AUTH-TOKEN': requestDto.accesstoken,
         },
       })
         .then((res) => {
+          console.log('방나가기성공');
           console.log(res.data);
           commit('SET_SESSION_ID', null);
         })
