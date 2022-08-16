@@ -1,6 +1,6 @@
 <template>
   <div class="body container-fluid">
-    <h1 class="title">오늘의 운동왕은 누구?</h1>
+    <h1 class="title">오늘의 운동왕 ✨</h1>
     <b-card-group deck class="d-flex justify-content-evenly"
       v-if="isLogin === true">
       <b-card class="rounded-5 cards">
@@ -48,7 +48,7 @@
             class="ranking d-flex justify-content-center">
             <button class="button d-flex justify-content-between"
               :style="{backgroundColor: backColors[i]}">
-              <span><img :src="require(`@/assets/icon/tier${i+1}.png`)"
+              <span><img :src="require(`@/assets/icon/medal${i+1}.png`)"
                 style="width: 30px;" alt=""></span>
               <span>{{i+1}}위</span><span>{{ ranking.name }}</span>
             <span>{{ ranking.score }}분</span></button>
@@ -77,7 +77,7 @@
           <h5 class="card-title">나의 운동 기록</h5>
           <MySmCalendar/>
         </b-card>
-      </b-card-group> -->
+      </b-card-group>
   </div>
 </template>
 
@@ -120,15 +120,12 @@ export default {
 <style scoped>
 .body {
   background-color: #642afb;
-  height: 80vh;
+  /* height: 700px; */
+  color: black;
 }
 p {
   font-size: 1.5vh;
 }
-/* .b-card-group {
-  display: flex;
-  justify-content: center;
-} */
 .card-title {
   font-size: 1vw;
   font-weight: 700;
@@ -152,10 +149,11 @@ p {
 }
 
 .title {
-  padding: 3vh 0 10vh 0;
+  padding: 8vh 0 5vh 5vh;
   color: white;
   font-family: 'LeferiPoint-BlackObliqueA';
   font-size: 4vh;
+  text-align: left;
 }
 
 .ranking {
@@ -182,7 +180,7 @@ p {
   padding-left: 1.5vw;
   padding-right: 1.5vw;
   background-color: #246dfe;
-  color: white;
+  /* color: white; */
 }
 .button span{
   line-height: 5vh;}

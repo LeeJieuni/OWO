@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import swal from 'sweetalert2';
 import mainPageView from '../views/MainPage/mainPageView.vue';
+import RoomTabView from '../views/MainPage/RoomTabView.vue';
 import MyPageView from '../views/MyPage/MyPageView.vue';
 import MyPageMainView from '../views/MyPage/MyPageMainView.vue';
 import MyPageAnalysView from '../views/MyPage/MyPageAnalysView.vue';
@@ -21,6 +22,12 @@ const routes = [
     name: 'mainpage',
     component: mainPageView,
     meta: { unauthorized: true },
+  },
+  {
+    path: '/rooms',
+    name: 'roomTabView',
+    component: RoomTabView,
+    // meta: { unauthorized: true },
   },
   {
     path: '/login',
@@ -63,7 +70,7 @@ const routes = [
       },
       {
         path: 'schedule',
-        // name: 'MyPageScheduleView',
+        name: 'MyPageScheduleView',
         component: MyPageScheduleView,
       },
     ],

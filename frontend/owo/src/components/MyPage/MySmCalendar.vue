@@ -87,7 +87,7 @@
                     v-for="(tag, tagI) in exercise.tags"
                     :key="tagI"
                     class="tag ">
-                    <p class="tag-name"># {{tag.tagContent}}</p>
+                    <p class="tag-name">{{tag.tagContent}}</p>
                   </button>
                 </div>
               </div>
@@ -535,11 +535,12 @@ table {
   max-width: 28vw;
   margin: 0 auto;
 }
-td, th {
+td {
   padding: 0;
+  /* padding-bottom: 6px; */
 }
 .day-a {
-  font-size: 1.5vh;
+  font-size: 18px;
   font-weight: 900;
   /* font-family: 'Righteous', cursive; */
   padding: 0;
@@ -550,9 +551,9 @@ td, th {
   width: 4px;
 }
 .day-td  {
-  padding: 0.5vh;
+  padding: 10px;
   /* width: 1vw; */
-  --bs-table-hover-bg: #fafafa;
+  --bs-table-hover-bg: #e0e5f3;
   border-bottom: 0;
 }
 .table > a {

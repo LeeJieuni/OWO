@@ -1,40 +1,44 @@
 <template>
-<div class="container-fluid">
-  <div class="title">
-    <h3 class="lg-title" style="text-align: left; margin-left: 5px;">
-      실제<span class="owo-text">#오운완</span>을 사용하시는 회원님입니다.
-    </h3>
-  </div>
-  <div class="carousel">
-    <Carousel :autoplay="2000" :items-to-show="2.5" :wrap-around="true">
-      <Slide v-for="(image, i) in images" :key="i" style="padding: 5px;">
-        <div class="carousel__item"><img :src="image" alt=""
-        style="width: 100%; height: 100%;"></div>
-      </Slide>
-      <template #addons>
-      </template>
-    </Carousel>
-  </div>
-    <div class="content">
-      <h1 class="h1-rem"><span class="owo"># 오운완</span>과 함께 시작해볼까요?</h1>
-      <!-- <p class="first-intro-text fs-4"><span class="owo"># 오운완</span>과 함께 하신 회원님들입니다!</p> -->
-      <p class="first-intro-text">집 밖으로 나가기는 귀찮지만 자기관리는 놓치고 싶지 않다면?</p>
-      <p class="first-intro-text">사람들과 함께 운동하고 경쟁하며 즐기는 <span class="owo"># 오운완</span> !</p>
-      <p class="first-intro-text">여러분들도 재미있게 운동을 즐기실 수 있습니다!</p>
-      <!-- <div class="btns"> -->
-      <div class="btns">
-        <router-link v-if="!isLogin" to="/login">
-          <button class="start-btn btn-12">
-            <span>Login</span><span>Start With Us!</span>
-          </button>
-        </router-link>
-        <router-link v-else to="/mypage/main">
-          <button class="start-btn btn-12">
-            <span>Mypage</span><span>Start With Us!</span>
-          </button>
-        </router-link>
+<div class="m-0 p-0 background">
+  <div class="container">
+    <div class="container-fluid">
+      <div class="title">
+        <p class="lg-title">
+          실제<span class="owo-text"> #오운완 </span>을 사용하시는 회원님입니다.
+        </p>
       </div>
-    <!-- </div> -->
+      <div class="carousel">
+        <Carousel :autoplay="2500" :items-to-show="2.5" :wrap-around="true">
+          <Slide v-for="(image, i) in images" :key="i" style="padding: 5px;">
+            <div class="carousel__item"><img :src="image" alt=""
+            style="width: 100%; height: 100%;"></div>
+          </Slide>
+          <template #addons>
+          </template>
+        </Carousel>
+      </div>
+        <div class="content">
+          <h1 class="h1-rem">운동 사진을 찍어 나만의 캘린더에 보관하세요!</h1>
+          <!-- <p class="first-intro-text fs-4">오운완과 함께 하신 회원님들입니다!</p> -->
+          <p class="text">오운완을 통해 운동하면 편하게 운동 사진을 보관할 수 있어요.</p>
+          <p class="text">최근 사진들은 메인 화면에 자랑할 수 있답니다!</p>
+          <p class="text">이제부터는 번거롭게 인증사진을 찍으러 갈 필요가 없어요!</p>
+          <!-- <div class="btns"> -->
+          <div class="btns">
+            <router-link v-if="!isLogin" to="/login">
+              <button class="start-btn btn-12">
+                <span>Login</span><span>Start With Us!</span>
+              </button>
+            </router-link>
+            <router-link v-else to="/mypage/main">
+              <button class="start-btn btn-12">
+                <span>Mypage</span><span>Start With Us!</span>
+              </button>
+            </router-link>
+          </div>
+        <!-- </div> -->
+      </div>
+    </div>
   </div>
 </div>
 </template>
@@ -57,14 +61,6 @@ export default defineComponent({
     const isLogin = computed(() => store.getters['accounts/isLogin']);
     const images = computed(() => store.getters['accounts/images']);
     const state = reactive({
-      selected: '',
-      options: [
-        { text: '없음', value: '1' },
-        { text: '약간', value: '2' },
-        { text: '중간', value: '3' },
-        { text: '많음', value: '4' },
-        { text: '매우 많음', value: '5' },
-      ],
     });
     return {
       state,
@@ -75,45 +71,26 @@ export default defineComponent({
 });
 </script>
 
-<style scope>
-.owo-text {
-  /* color: #4E8AFF; */
-  font-size: 32px;
+<style scoped>
+.background {
+  /* background-color:#642AFB; */
+  /* background-color:#DFDFDF; */
 }
-.owo {
-  /* color: #4E8AFF; */
-  font-weight: 600;
-  text-shadow: #7b7b7b 1px 1px;
-}
-.container-fluid {
-  padding-top: 30px;
-  height: 100vh;
-}
-.carousel {
-  /* padding-top: 10px; */
-  padding-bottom: 10px;
-}
-.carousel__item {
-  /* min-height: 300px; */
-  height: 37vh;
-  width: 99%;
-  background-color: var(--vc-clr-primary);
-  color:  var(--vc-clr-white);
-  font-size: 20px;
-  border-radius: 8px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.lg-title {
-  font-weight: 800;
-  font-size: 28px;
+  .container {
+    min-width: 80vw;
+  }
+    .container-fluid {
+      padding-top: 30px;
+      height: 100vh;
+    }
+.title {
+  font-family: 'Recipekorea';
+  margin-top: 3vh;
 }
 
-.carousel__prev,
-.carousel__next {
-  box-sizing: content-box;
-  /* border: 5px solid white; */
+.owo-text {
+  color: #642AFB;
+  font-size: 3vh;;
 }
 .content {
   padding: 1.2em;
@@ -122,21 +99,52 @@ export default defineComponent({
 .h1-rem {
   font-size: 4vh;
   padding: 2vh;
+  font-family: 'Recipekorea';
 }
-.first-intro-text {
-  font-size: 1.7vh;
-  line-height: 1.7vh;
+.text {
+  font-size: 2vh;
+  line-height: 1.2vh;
   padding: 0.3em;
+}
+.lg-title {
+  font-weight: 800;
+  font-size: 2.5vh;
+  text-align: left;
+}
+
+.carousel {
+  /* padding-top: 10px; */
+  padding-bottom: 10px;
+}
+.carousel__item {
+  /* min-height: 300px; */
+  height: 37vh;
+  width: 99%;
+  /* background-color: var(--vc-clr-primary); */
+  color:  var(--vc-clr-white);
+  font-size: 20px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* border-radius: 20px; */
+}
+
+.carousel__prev,
+.carousel__next {
+  box-sizing: content-box;
+  /* border: 5px solid white; */
 }
 
 .start-btn {
+  font-family: 'yg-jalnan';
   margin-top: 1vh;
   width: 200px;
   height: 50px;
   color: #fff;
   border-radius: 30px;
   padding: 10px 25px;
-  font-family: 'Lato', sans-serif;
+  /* font-family: 'Lato', sans-serif; */
   font-weight: 400;
   font-size: 20px;
   background: transparent;

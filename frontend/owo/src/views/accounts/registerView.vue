@@ -2,7 +2,10 @@
   <div>
     <div class="register">
       <div class="container">
-      <img src="../../assets/logo/logo2.png" alt="" style="width: 500px; margin-right: 20px;">
+      <router-link to="/">
+          <img src="../../assets/logo/logo2.png" alt=""
+          style="width: 500px; margin-right: 20px;">
+        </router-link>
       <form @submit.prevent="register(credentials)"
       class="registerForm">
       <h1 style="font-weight: bold; margin-bottom: 20px;

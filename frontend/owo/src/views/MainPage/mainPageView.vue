@@ -1,25 +1,24 @@
 <template>
-  <div style="margin-left: 150px; margin-right: 150px">
-    <NavBar/>
-    <div v-if="!isLogin">
-      <Carousel></Carousel>
-      <rankingList/>
-      <roomTab></roomTab>
-    </div>
-    <div v-if="isLogin">
-      <Carousel></Carousel>
-      <rankingList/>
-      <roomTab></roomTab>
-    </div>
+  <div class="main">
+    <NavBar class="sticky-top"/>
+    <Intro/>
+    <Intro2/>
+    <Carousel></Carousel>
+    <!-- <rankingList style="height: 80vh;"/> -->
+    <!-- <roomTab class="room"></roomTab> -->
+    <FooFooter style="height: 20vh;"/>
   </div>
 </template>
 
 <script>
 // import { useStore } from 'vuex';
 // import { reactive, computed } from 'vue';
+import Intro from '@/components/MainPage/Intro.vue';
+import Intro2 from '@/components/MainPage/Intro2.vue';
 import Carousel from '@/components/MainPage/Carousel.vue';
-import rankingList from '@/components/MainPage/rankingList.vue';
-import roomTab from '@/components/MainPage/roomTab.vue';
+// import rankingList from '@/components/MainPage/rankingList.vue';
+// import roomTab from '@/components/MainPage/roomTab.vue';
+import FooFooter from '@/components/FooFooter.vue';
 import swal from 'sweetalert2';
 import { mapGetters, mapActions } from 'vuex';
 import NavBar from '@/components/NavBar.vue';
@@ -31,9 +30,12 @@ const accounts = 'accounts';
 export default {
   components: {
     Carousel,
-    rankingList,
-    roomTab,
+    // rankingList,
+    // roomTab,
     NavBar,
+    Intro,
+    Intro2,
+    FooFooter,
   },
   computed: {
     ...mapGetters(accounts, ['userInfo', 'isLogin']),
@@ -91,6 +93,10 @@ export default {
 </script>
 
 <style scoped>
+.main {
+  overflow-x:hidden;
+  overflow-y:auto;
+}
 .start-btn {
     margin-right: 30px;
 }

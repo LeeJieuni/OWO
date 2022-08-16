@@ -113,12 +113,28 @@ font-family: 'NanumSquareRoundExtraBold';
     font-style: normal;
 }
 
+/* 여기어때 잘난체 */
+@font-face {
+    font-family: 'yg-jalnan';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.2/JalnanOTF00.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
 /* 동화또박 */
 @font-face {
   font-family: 'Fairytale_ddobak';
   src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/naverfont_03@1.0/Fairytale_ddobak.woff') format('woff');
   font-weight: normal;
   font-style: normal;
+}
+
+/* 레코체 (제목용) */
+@font-face {
+    font-family: 'Recipekorea';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/Recipekorea.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
 }
 
 /* 숫자용 google RIGHTEOUS */

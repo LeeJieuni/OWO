@@ -1,7 +1,10 @@
 <template>
     <div class="login">
       <div class="container">
-        <img src="../../assets/logo/logo2.png" alt="" style="width: 500px; margin-right: 20px;">
+        <router-link to="/">
+          <img src="../../assets/logo/logo2.png" alt=""
+          style="width: 500px; margin-right: 20px;">
+        </router-link>
         <form @submit.prevent="login(credentials)" class="loginForm">
           <h1 style="font-weight: bold; margin-bottom: 20px;
           font-family: 'LeferiPoint-BlackObliqueA';">Login</h1>

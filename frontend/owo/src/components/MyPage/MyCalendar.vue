@@ -63,7 +63,8 @@
           </div>
           <!--카로셀-->
           <div class="row">
-            <div class="no-record-day mt-5" v-if="dayExerciseList = []">이 날은 운동 기록이 없네요!</div>
+            <div class="no-record-day mt-5"
+              v-if="dayExerciseList.length <= 0">이 날은 운동 기록이 없네요!</div>
             <!-- {{ dayExerciseList }} -->
             <!-- <img :src="imageUrl" alt=""> -->
             <div class="p-0 m-0 mt-5 px-5" v-for="(exercise, i) in dayExerciseList" :key="i">
@@ -89,7 +90,7 @@
                     v-for="(tag, tagI) in exercise.tags"
                     :key="tagI"
                     class="tag ">
-                    <p class="tag-name"># {{tag.tagContent}}</p>
+                    <p class="tag-name">{{tag.tagContent}}</p>
                   </button>
                 </div>
               </div>
@@ -115,7 +116,7 @@
                 </div>
               </div>
               <!-- recordSecret: {{ exercise.recordSecret }} <br> -->
-              <hr>
+              <hr class="hr">
             </div>
           </div>
         </div>
@@ -617,5 +618,8 @@ td {
 .no-record-day {
   font-weight: 700;
   text-align: center;
+}
+.hr {
+  margin: 50px;
 }
 </style>

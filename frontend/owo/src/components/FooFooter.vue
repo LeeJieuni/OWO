@@ -1,8 +1,8 @@
 <template>
   <div class="wrapper">
-    <p>
-      icons : <a target="_blank" href="https://icons8.com/icon/85962/pencil">Pencil icon by Icons8</a>
-    </p>
+    <div>
+      <span class="bold"># 오운완</span>
+    </div>
   </div>
 </template>
 <script>
@@ -24,7 +24,13 @@ export default {
 
 <style scoped>
 .wrapper {
-  background-color: blue;
-  height: 200px;
+  background-color: rgb(86, 86, 86);
+  /* height: 200px; */
+  color: white;
+  padding: 20px;
+}
+.bold {
+  font-size: 14px;
+  font-weight: 600;
 }
 </style>
