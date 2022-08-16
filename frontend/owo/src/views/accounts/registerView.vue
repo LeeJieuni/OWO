@@ -2,10 +2,11 @@
   <div>
     <div class="register">
       <div class="container">
-      <img src="../../assets/logo/logo2.png" alt="" style="width: 500px">
+      <img src="../../assets/logo/logo2.png" alt="" style="width: 500px; margin-right: 20px;">
       <form @submit.prevent="register(credentials)"
       class="registerForm">
-      <h1 style="font-weight: bold; margin-bottom: 20px;">SignUp</h1>
+      <h1 style="font-weight: bold; margin-bottom: 20px;
+        font-family: 'LeferiPoint-BlackObliqueA';">SignUp</h1>
       <div class="input">
         <label for="email">아이디<input
           v-model="credentials.email"
@@ -38,7 +39,7 @@
         /></label>
       </div>
       <small v-if="passwordErr">비밀번호가 일치하지 않습니다.</small>
-      <div>
+      <div class="mt-2">
        오운완 회원이신가요?
        <b-button Style="font-size: 15px" variant="link" @click="moveToLogin">로그인</b-button>
       </div>
@@ -54,8 +55,8 @@
       style="width: 50%; border-radius:50px">
         회원가입
       </b-button>
-      <div class="socialLogin" style="padding: 20px">
-            <p>다른 사이트로 로그인</p>
+      <div class="socialLogin" style="padding: 20px; padding-top:10px;">
+            <hr>
             <div class="socialbtn">
               <!--eslint--disable-next-line-->
               <a href="https://i7c202.p.ssafy.io:8282/oauth2/authorization/google?redirect_uri=https://i7c202.p.ssafy.io:443/oauth/redirect">
@@ -66,7 +67,7 @@
               </a>
               <a href="https://i7c202.p.ssafy.io:8282/oauth2/authorization/naver?redirect_uri=https://i7c202.p.ssafy.io:443/oauth/redirect">
                 <!--eslint--disable-next-line--><span style="display: none;">s</span>
-              <img src="@/assets/socialLogo/btnG_완성형.png"
+              <img src="@/assets/socialLogo/btnG_completed.png"
               style="width:191px; height: 46px; margin-bottom: 5px;"
               alt="">
               <!--eslint--disable-next-line-->
@@ -138,7 +139,7 @@ export default {
   height: 660px;
   padding: 50px;
   border: solid 1px rgb(177, 177, 181);
-  border-radius: 10%;
+  border-radius: 15px;
   box-shadow: 2px 2px 2px 2px rgb(154, 152, 152);
 }
 label {
