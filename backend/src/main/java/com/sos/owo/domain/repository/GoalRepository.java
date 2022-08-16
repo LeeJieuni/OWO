@@ -20,8 +20,7 @@ import java.util.List;
 @Repository
 @RequiredArgsConstructor
 @Transactional
-public class GoalRepository {
-
+public class GoalRepository{
     @PersistenceContext
     private final EntityManager em;
 
