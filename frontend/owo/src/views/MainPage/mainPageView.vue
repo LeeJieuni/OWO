@@ -1,5 +1,6 @@
 <template>
-  <NavBar/>
+  <div>
+    <NavBar/>
     <div v-if="!isLogin">
       <Carousel></Carousel>
       <rankingList/>
@@ -10,6 +11,7 @@
       <rankingList/>
       <roomTab></roomTab>
     </div>
+  </div>
 </template>
 
 <script>
