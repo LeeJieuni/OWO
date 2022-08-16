@@ -83,10 +83,12 @@
   <!--운동방 -->
     <div v-if="!noStreaming" class="tab-content wrap">
       <div v-show="currentTab == 0" class="scroll__wrap">
-        <div v-for="(room, i) in roomList.streamingRoomList" :key="i" class="scroll--element">
-         <div class='darkness' v-if="!room.person === 6">
-            <p>
-              모든 인원이 꽉 찼습니다.</p>
+        <div v-for="(room, i) in roomList.streamingRoomList"
+        :key="i" class="scroll--element">
+         <div class='darkness' v-if="room.person === 6">
+             <p>
+              모든 인원이 꽉 찼습니다.
+              </p>
           </div>
               <b-card class="rooms" footer-tag="footer">
                <div class="img_sport">
@@ -167,9 +169,10 @@
     <div v-if="!noFree" class="tab-content wrap">
       <div v-show="currentTab == 1" class="scroll__wrap">
         <div v-for="(room, i) in roomList.freeRoomList" :key="i" class="scroll--element">
-         <div class='darkness' v-if="!room.person === 6">
+         <div class='darkness' v-if="room.person === 6">
             <p>
-              모든 인원이 꽉 찼습니다.</p>
+              모든 인원이 꽉 찼습니다.
+              </p>
           </div>
           <b-card class="rooms" footer-tag="footer">
             <div class="img_sport">
@@ -250,9 +253,10 @@
     <div v-if="!noGame" class="tab-content wrap">
       <div v-show="currentTab == 2" class="scroll__wrap">
         <div v-for="(room, i) in roomList.gameRoomList" :key="i" class="scroll--element">
-         <div class='darkness' v-if="!room.person === 6">
+         <div class='darkness' v-if="room.person === 6">
             <p>
-              모든 인원이 꽉 찼습니다.</p>
+              모든 인원이 꽉 찼습니다.
+              </p>
           </div>
           <b-card class="rooms" footer-tag="footer">
             <div class="img_sport">
@@ -482,8 +486,8 @@ input {
   margin-left: 50px;
 }
 .darkness {
-  line-height: 470px;
-  font-size: 30px;
+  line-height: 390px;
+  font-size: 25px;
   border: none;
   /* padding-left: 1.5vw;
   padding-right: 1.5vw; */
@@ -496,7 +500,7 @@ input {
   background: rgba(0, 0, 0, 0.8);
   width: 100%;
   height: 100%;
-  margin-bottom: -485px;
+  margin-bottom: -405px;
   z-index: 1;
   border-radius: 10px;
 }
