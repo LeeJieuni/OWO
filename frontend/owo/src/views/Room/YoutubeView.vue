@@ -7,48 +7,46 @@
       <!-- eslint-disable-next-line -->
         <h3 class="game-name m-0" style="font-size:3rem; font-family: 'LeferiPoint-WhiteObliqueA';">{{ roomName }}</h3>
       </div>
-      <!-- 세션 -->
-      <div id="session" v-if="session">
-        <div
-          class="d-flex align-items-start justify-content-start mx-1 mb-5"
-          style="background-color: transparent; width: 911px; height: 592px"
-        >
-          <YouTube
-            src="https://www.youtube.com/watch?v=sqgxcCjD04s"
-            @ready="onReady"
-            :vars="controls"
-            @state-change="onChange"
-            width="1050"
-            height="750"
-            ref="youtube"
-            disablekb=0
-          />
-          <!-- <YouTube
-            src="https://www.youtube.com/watch?v=sqgxcCjD04s"
-            @ready="onReady"
-            ref="youtube"
-          /> -->
+      <!-- eslint-disable-next-line -->
+      <div class="d-flex align-items-start justify-content-start" style="position:relative; background-color: transparent; width: 1050px; height: 750px">
+        <YouTube class="my-2 mx-2 col-8"
+          src="https://www.youtube.com/watch?v=sqgxcCjD04s"
+          @ready="onReady"
+          :vars="this.controls"
+          @state-change="onChange"
+          width="1050"
+          height="750"
+          ref="youtube"
+          disablekb=1
+          fs="0"
+        />
+        <!-- eslint-disable-next-line -->
+        <div class="my-2 mx-2 shadow3"></div>
+        <div v-if="!isStarted2" class="my-2 mx-2 shadow"></div>
+        <div v-if="!isStarted2" class="my-2 mx-2 shadow2">
+          오른쪽 위 START 버튼으로<br>
+          시작해주세요 .<br>
         </div>
-        <div>
-          <div id="" class="row d-flex align-items-start justify-content-center">
-            <WebRTC :stream-manager="mainStreamManager"/>
-            <WebRTC :stream-manager="sub"
-              v-for="sub in subscribers"
-              :key="sub.stream.connection.connectionId"
-            />
-            <!-- <WebRTC :stream-manager="sub"
-              v-for="sub in subscribers"
-              :key="sub.stream.connection.connectionId"
-              @click="updateMainVideoStreamManager(sub)"
-            /> -->
-            <div v-show="this.subscribers.length <= 0" class="webrtcetc col-4 m0p0 my-2 mx-2"></div>
-            <div v-show="this.subscribers.length <= 1" class="webrtcetc col-4 m0p0 my-2 mx-2"></div>
-            <div v-show="this.subscribers.length <= 2" class="webrtcetc col-4 m0p0 my-2 mx-2"></div>
-            <div v-show="this.subscribers.length <= 3" class="webrtcetc col-4 m0p0 my-2 mx-2"></div>
-            <div v-show="this.subscribers.length <= 4" class="webrtcetc col-4 m0p0 my-2 mx-2"></div>
-          </div>
+        <!-- eslint-disable-next-line -->
+        <div class="my-2 mx-2 col-4" style="overflow-y: auto; width:560px; max-height:750px;">
+          <WebRTC :stream-manager="mainStreamManager"/>
+          <WebRTC :stream-manager="sub"
+            v-for="sub in subscribers"
+            :key="sub.stream.connection.connectionId"
+          />
+          <!-- <WebRTC :stream-manager="sub"
+            v-for="sub in subscribers"
+            :key="sub.stream.connection.connectionId"
+            @click="updateMainVideoStreamManager(sub)"
+          /> -->
+          <div v-show="this.subscribers.length <= 0" class="webrtcetc col-4 m0p0 my-2 mx-2"></div>
+          <div v-show="this.subscribers.length <= 1" class="webrtcetc col-4 m0p0 my-2 mx-2"></div>
+          <div v-show="this.subscribers.length <= 2" class="webrtcetc col-4 m0p0 my-2 mx-2"></div>
+          <div v-show="this.subscribers.length <= 3" class="webrtcetc col-4 m0p0 my-2 mx-2"></div>
+          <div v-show="this.subscribers.length <= 4" class="webrtcetc col-4 m0p0 my-2 mx-2"></div>
         </div>
       </div>
+      <!-- 세션 -->
       <!-- 운동 종료 모달 -->
       <div>
         <div class="d-flex justify-content-center align-items-center">
@@ -246,6 +244,22 @@
             사진
           </div>
         </button>
+        <button class="mybtn9" @click="volumeUp">
+          <img class="menu_icon2" src="@/assets/icon/soundup.png" alt="photo">
+          <div style="color:#4e8aff; font-size:12px;">볼륨
+          </div>
+          <div style="color:#4e8aff; font-size:12px; line-height:0.8;">
+            Up
+          </div>
+        </button>
+        <button class="mybtn10" @click="volumeDown">
+          <img class="menu_icon2" src="@/assets/icon/sounddown.png" alt="photo">
+          <div style="color:#4e8aff; font-size:12px;">볼륨
+          </div>
+          <div style="color:#4e8aff; font-size:12px; line-height:0.8;">
+            Down
+          </div>
+        </button>
         <!-- <b-button v-b-modal.after-exercise-modal class="mybtn6"> -->
         <button @click="roomOut()" class="mybtn6">
           <img class="menu_icon2" src="@/assets/icon/roomout.png" alt="leaveSession">
@@ -279,6 +293,9 @@
           <Picker :data="emojiIndex" set="twitter" @select="showEmoji" />
         </div>
       </div>
+      <div v-show="isSetting" class="myBackGroundSetting">
+        <setTimer2 ref="setTimer2"/>
+      </div>
       <!-- 사진 양식 -->
       <div class="d-flex justify-content-center align-items-center"
       v-if="is_take_photo" id="take_photo_background"></div>
@@ -301,6 +318,7 @@ import html2canvas from 'html2canvas';
 import WebRTC from '@/components/Room/WebRTC.vue';
 import WebRTCPhoto from '@/components/Room/WebRTCPhoto.vue';
 import setTimer1 from '@/components/Room/setTimer1.vue';
+import setTimer2 from '@/components/Room/setTimer2.vue';
 import axios from 'axios';
 import { OpenVidu } from 'openvidu-browser';
 import emojidata from 'emoji-mart-vue-fast/data/all.json';
@@ -336,10 +354,20 @@ export default {
     WebRTCPhoto,
     Picker,
     setTimer1,
+    setTimer2,
     YouTube,
   },
   data() {
     return {
+      youtubeURL: '',
+      player: null,
+      done: false,
+      statusStart: false,
+      controls: {
+        controls: 0,
+      },
+      volume: 0,
+      isSetting: false,
       limitMininalTime: 1, // 최소한의 기록이 남는 시간(분)
       firstPictureTime: 30, // 첫 사진이 촬영되는 시간(초)
       modalShow: false,
@@ -370,7 +398,6 @@ export default {
       subscribers: [],
       // 방 설정
       photoDisplay: false,
-      youtubeURL: '',
       isMaster: true,
       roommode: 'GAME',
       mode: ['FRIEND', 'YOUTUBE', 'GAME'],
@@ -401,6 +428,7 @@ export default {
       mypictures: [],
       roomTime: null,
       isStarted: false,
+      isStarted2: false,
       isExercising: false,
       RoundStartTimer: null,
       // tm 영역
@@ -466,11 +494,39 @@ export default {
 
   computed: {
     ...mapState(emoji, ['allEmojiList']),
-    ...mapState(accounts, ['accessToken', 'userInfo', 'refreshToken', 'roomName', 'masterId']),
+    ...mapState(accounts, ['accessToken', 'userInfo', 'refreshToken', 'roomName', 'masterId', 'link']),
     ...mapState(openvidu, ['OPENVIDU_SERVER_URL', 'OPENVIDU_SERVER_SECRET']),
     ...mapState(meetingroom, ['mySessionId', 'camera', 'mic']),
   },
   methods: {
+    onChange() {
+      if (this.$refs.youtube.getPlayerState() === -1) {
+        if (!this.statusStart) {
+          this.statusStart = true;
+        } else {
+          this.statusStart = false;
+          this.modalShow = !this.modalShow;
+        }
+      }
+    },
+    volumeUp() {
+      console.log(`==============${this.volume}`);
+      if (this.volume === 100) {
+        alert('볼륨 최대 수치');
+      } else {
+        this.volume += 5;
+        this.$refs.youtube.setVolume(this.volume);
+      }
+    },
+    volumeDown() {
+      console.log(`==============${this.volume}`);
+      if (this.volume === 0) {
+        alert('볼륨 최소 수치');
+      } else {
+        this.volume -= 5;
+        this.$refs.youtube.setVolume(this.volume);
+      }
+    },
     tempLeaveSession() {
       this.leaveSession();
       document.body.removeAttribute('data-bs-overflow');
@@ -507,10 +563,10 @@ export default {
           text: `${this.limitMininalTime}분 미만 운동 시 기록이 저장되지 않습니다.`,
           icon: 'warning',
           showCancelButton: true,
-          confirmButtonColor: '#d33',
-          confirmButtonText: '그래도 나갈래요.',
           cancelButtonColor: '#3085d6',
           cancelButtonText: '더 운동할께요!',
+          confirmButtonColor: '#d33',
+          confirmButtonText: '그래도 나갈래요.',
         }).then((result) => {
           if (result.isConfirmed) {
             this.leaveSession();
@@ -703,10 +759,14 @@ export default {
       });
 
       this.session.on('signal:startTimer', () => {
-        this.$refs.setTimer1.startTimer();
-        const now = new Date();
+        this.start();
+        setTimeout(() => {
+          this.$refs.setTimer1.startTimer();
+          const now = new Date();
+          this.startTimeSet(now);
+          this.startVideo();
+        }, 4000);
         /* eslint-disable new-cap */
-        this.startTimeSet(now);
         setTimeout(() => {
           const el = document.getElementsByClassName('ov-video')[0];
           html2canvas(el).then((canvas) => {
@@ -714,6 +774,31 @@ export default {
           });
         }, this.firstPictureTime * 1000);
       });
+    },
+    startVideo() {
+      this.$refs.youtube.playVideo();
+      this.$refs.youtube.controls = 0;
+      this.volume = this.$refs.youtube.getVolume();
+    },
+    start() {
+      this.isSetting = true;
+      this.isStarted = true;
+      // eslint-disable-next-line
+      const audio = new Audio(require('@/assets/music/321.mp3'));
+      audio.play();
+      this.$refs.setTimer2.pauseTimer();
+      setTimeout(() => {
+        this.isStarted2 = true;
+        this.isSetting = false;
+      }, 4000);
+      setTimeout(() => {
+        // eslint-disable-next-line
+        document.getElementsByClassName('webrtcetc')[0].remove();
+        document.getElementsByClassName('webrtcetc')[0].remove();
+        document.getElementsByClassName('webrtcetc')[0].remove();
+        document.getElementsByClassName('webrtcetc')[0].remove();
+        document.getElementsByClassName('webrtcetc')[0].remove();
+      }, 2000);
     },
     startTimeSet(now) {
       this.startTime = now;
@@ -1053,8 +1138,6 @@ solid #cedfff; border-top: 10px solid transparent; border-bottom: 10px solid tra
   border-radius: 20px;
   border: 4px solid #4e8aff;
   background-color:white;
-  transition-property: width, height;
-  transition-duration: 2s;
 }
 
 .Emoji {
@@ -1170,20 +1253,6 @@ solid #cedfff; border-top: 10px solid transparent; border-bottom: 10px solid tra
   width: 100%;
 }
 
-.photo-row {
-  /* width:100%; */
-}
-
-.photo {
-  /* border: solid 1px black; */
-  /* padding: 0 10px; */
-  /* margin: 10px; */
-  /* background-color:gray; */
-  /* width:10%; */
-  /* width: 100px;
-  height:100px; */
-}
-
 .exerciseMemo {
   font-size: 20px;
   font-weight: 700;
@@ -1289,6 +1358,22 @@ solid #cedfff; border-top: 10px solid transparent; border-bottom: 10px solid tra
   right: 120px;
   /* z-index: 500; */
 }
+.mybtn9 {
+  background-color:transparent;
+  border:none;
+  position:fixed;
+  top: 48%;
+  left: 30px;
+  /* z-index: 500; */
+}
+.mybtn10 {
+  background-color:transparent;
+  border:none;
+  position:fixed;
+  top: 58%;
+  left: 30px;
+  /* z-index: 500; */
+}
 
 .setTimer2position {
   position:fixed;
@@ -1368,6 +1453,56 @@ solid #cedfff; border-top: 10px solid transparent; border-bottom: 10px solid tra
 
 .pickimg:active {
   width:500px;
+}
+
+.shadow {
+  font-size:70px;
+  opacity:0.8;
+  background-color: white;
+  position: absolute;
+  top:0px;
+  left:0px;
+  width: 1050px;
+  height: 750px;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'LeferiPoint-WhiteObliqueA';
+  color:#828282;
+}
+
+.shadow2 {
+  font-size:45px;
+  opacity:0.9;
+  background-color: #4e8aff;
+  position: absolute;
+  top:50%;
+  left:50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50px;;
+  width: 650px;
+  height: 300px;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'LeferiPoint-WhiteObliqueA';
+  color:white;
+}
+
+.shadow3 {
+  font-size:70px;
+  opacity:0;
+  background-color: white;
+  position: absolute;
+  top:0px;
+  left:0px;
+  width: 1050px;
+  height: 750px;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'LeferiPoint-WhiteObliqueA';
+  color:#828282;
 }
 
 </style>

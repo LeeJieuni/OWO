@@ -232,7 +232,7 @@
         </button>
         <setTimer1 ref="setTimer1"></setTimer1>
         <!-- eslint-disable-next-line -->
-        <button v-if="(this.credentialsUser.memberId === this.masterId) & !this.isStarted & (this.subscribers.length >= 0)" class="mybtn7" @click="startTimer">
+        <button v-if="(this.credentialsUser.memberId === this.masterId) & !this.isStarted & (this.subscribers.length >= 1)" class="mybtn7" @click="startTimer">
         <!-- <button v-if="!isExercising" class="mybtn5" @click="startround1"> -->
           <img class="menu_icon4" src="@/assets/icon/start.png" alt="Start">
         </button>
@@ -259,6 +259,9 @@
           <Picker :data="emojiIndex" set="twitter" @select="showEmoji" />
         </div>
       </div>
+      <div v-show="isSetting" class="myBackGroundSetting">
+        <setTimer2 ref="setTimer2"/>
+      </div>
       <!-- 사진 양식 -->
       <div class="d-flex justify-content-center align-items-center"
       v-if="is_take_photo" id="take_photo_background"></div>
@@ -281,6 +284,7 @@ import html2canvas from 'html2canvas';
 import WebRTC from '@/components/Room/WebRTC.vue';
 import WebRTCPhoto from '@/components/Room/WebRTCPhoto.vue';
 import setTimer1 from '@/components/Room/setTimer1.vue';
+import setTimer2 from '@/components/Room/setTimer2.vue';
 import axios from 'axios';
 import { OpenVidu } from 'openvidu-browser';
 import emojidata from 'emoji-mart-vue-fast/data/all.json';
@@ -315,9 +319,11 @@ export default {
     WebRTCPhoto,
     Picker,
     setTimer1,
+    setTimer2,
   },
   data() {
     return {
+      isSetting: false,
       limitMininalTime: 1, // 최소한의 기록이 남는 시간(분)
       firstPictureTime: 30, // 첫 사진이 촬영되는 시간(초)
       modalShow: false,
@@ -485,10 +491,10 @@ export default {
           text: `${this.limitMininalTime}분 미만 운동 시 기록이 저장되지 않습니다.`,
           icon: 'warning',
           showCancelButton: true,
-          confirmButtonColor: '#d33',
-          confirmButtonText: '그래도 나갈래요.',
           cancelButtonColor: '#3085d6',
           cancelButtonText: '더 운동할께요!',
+          confirmButtonColor: '#d33',
+          confirmButtonText: '그래도 나갈래요.',
         }).then((result) => {
           if (result.isConfirmed) {
             this.leaveSession();
@@ -681,10 +687,13 @@ export default {
       });
 
       this.session.on('signal:startTimer', () => {
-        this.$refs.setTimer1.startTimer();
-        const now = new Date();
+        this.start();
+        setTimeout(() => {
+          this.$refs.setTimer1.startTimer();
+          const now = new Date();
+          this.startTimeSet(now);
+        }, 4000);
         /* eslint-disable new-cap */
-        this.startTimeSet(now);
         setTimeout(() => {
           const el = document.getElementsByClassName('ov-video')[0];
           html2canvas(el).then((canvas) => {
@@ -692,6 +701,101 @@ export default {
           });
         }, this.firstPictureTime * 1000);
       });
+    },
+    start() {
+      this.isSetting = true;
+      this.isStarted = true;
+      // eslint-disable-next-line
+      const audio = new Audio(require('@/assets/music/321.mp3'));
+      audio.play();
+      this.$refs.setTimer2.pauseTimer();
+      setTimeout(() => {
+        this.isSetting = false;
+      }, 4000);
+      setTimeout(() => {
+        // eslint-disable-next-line
+        document.getElementsByClassName('webrtcetc')[0].remove();
+        document.getElementsByClassName('webrtcetc')[0].remove();
+        document.getElementsByClassName('webrtcetc')[0].remove();
+        document.getElementsByClassName('webrtcetc')[0].remove();
+        document.getElementsByClassName('webrtcetc')[0].remove();
+        // setTimeout(() => {
+        const el = document.getElementsByClassName('webrtctag');
+        switch (el.length) {
+          case 2:
+            document.getElementsByClassName('webrtctag')[0].style.width = '49%';
+            document.getElementsByClassName('webrtctag')[0].style.height = '50%';
+            document.getElementsByClassName('webrtctag')[0].style.backgroundColor = 'transparent';
+            document.getElementsByClassName('webrtctag')[0].style.border = 'none';
+            document.getElementsByClassName('webrtctag')[1].style.width = '49%';
+            document.getElementsByClassName('webrtctag')[1].style.height = '50%';
+            document.getElementsByClassName('webrtctag')[1].style.backgroundColor = 'transparent';
+            document.getElementsByClassName('webrtctag')[1].style.border = 'none';
+            break;
+          case 3:
+            document.getElementsByClassName('webrtctag')[0].style.width = '33%';
+            document.getElementsByClassName('webrtctag')[0].style.height = '33%';
+            document.getElementsByClassName('webrtctag')[0].style.backgroundColor = 'transparent';
+            document.getElementsByClassName('webrtctag')[0].style.border = 'none';
+            document.getElementsByClassName('webrtctag')[1].style.width = '33%';
+            document.getElementsByClassName('webrtctag')[1].style.height = '33%';
+            document.getElementsByClassName('webrtctag')[1].style.backgroundColor = 'transparent';
+            document.getElementsByClassName('webrtctag')[1].style.border = 'none';
+            document.getElementsByClassName('webrtctag')[2].style.width = '33%';
+            document.getElementsByClassName('webrtctag')[2].style.height = '33%';
+            document.getElementsByClassName('webrtctag')[2].style.backgroundColor = 'transparent';
+            document.getElementsByClassName('webrtctag')[2].style.border = 'none';
+            break;
+          case 4:
+            document.getElementsByClassName('webrtctag')[0].style.width = '33%';
+            document.getElementsByClassName('webrtctag')[0].style.height = '33%';
+            document.getElementsByClassName('webrtctag')[0].style.backgroundColor = 'transparent';
+            document.getElementsByClassName('webrtctag')[0].style.border = 'none';
+            document.getElementsByClassName('webrtctag')[1].style.width = '33%';
+            document.getElementsByClassName('webrtctag')[1].style.height = '33%';
+            document.getElementsByClassName('webrtctag')[1].style.backgroundColor = 'transparent';
+            document.getElementsByClassName('webrtctag')[1].style.border = 'none';
+            document.getElementsByClassName('webrtctag')[2].style.width = '33%';
+            document.getElementsByClassName('webrtctag')[2].style.height = '33%';
+            document.getElementsByClassName('webrtctag')[2].style.backgroundColor = 'transparent';
+            document.getElementsByClassName('webrtctag')[2].style.border = 'none';
+            document.getElementsByClassName('webrtctag')[3].style.width = '33%';
+            document.getElementsByClassName('webrtctag')[3].style.height = '33%';
+            document.getElementsByClassName('webrtctag')[3].style.backgroundColor = 'transparent';
+            document.getElementsByClassName('webrtctag')[3].style.border = 'none';
+            break;
+          case 5:
+            document.getElementsByClassName('webrtctag')[0].style.backgroundColor = 'transparent';
+            document.getElementsByClassName('webrtctag')[0].style.border = 'none';
+            document.getElementsByClassName('webrtctag')[1].style.backgroundColor = 'transparent';
+            document.getElementsByClassName('webrtctag')[1].style.border = 'none';
+            document.getElementsByClassName('webrtctag')[2].style.backgroundColor = 'transparent';
+            document.getElementsByClassName('webrtctag')[2].style.border = 'none';
+            document.getElementsByClassName('webrtctag')[3].style.backgroundColor = 'transparent';
+            document.getElementsByClassName('webrtctag')[3].style.border = 'none';
+            document.getElementsByClassName('webrtctag')[4].style.backgroundColor = 'transparent';
+            document.getElementsByClassName('webrtctag')[4].style.border = 'none';
+            break;
+          case 6:
+            document.getElementsByClassName('webrtcetc')[0].style.width = 0;
+            document.getElementsByClassName('webrtcetc')[0].style.height = 0;
+            document.getElementsByClassName('webrtctag')[0].style.backgroundColor = 'transparent';
+            document.getElementsByClassName('webrtctag')[0].style.border = 'none';
+            document.getElementsByClassName('webrtctag')[1].style.backgroundColor = 'transparent';
+            document.getElementsByClassName('webrtctag')[1].style.border = 'none';
+            document.getElementsByClassName('webrtctag')[2].style.backgroundColor = 'transparent';
+            document.getElementsByClassName('webrtctag')[2].style.border = 'none';
+            document.getElementsByClassName('webrtctag')[3].style.backgroundColor = 'transparent';
+            document.getElementsByClassName('webrtctag')[3].style.border = 'none';
+            document.getElementsByClassName('webrtctag')[4].style.backgroundColor = 'transparent';
+            document.getElementsByClassName('webrtctag')[4].style.border = 'none';
+            document.getElementsByClassName('webrtctag')[5].style.backgroundColor = 'transparent';
+            document.getElementsByClassName('webrtctag')[5].style.border = 'none';
+            break;
+          default:
+            break;
+        }
+      }, 2000);
     },
     startTimeSet(now) {
       this.startTime = now;
@@ -728,8 +832,6 @@ export default {
       this.session
         .signal({
           type: 'startTimer',
-        }).then(() => {
-          this.isStarted = true;
         });
     },
 
