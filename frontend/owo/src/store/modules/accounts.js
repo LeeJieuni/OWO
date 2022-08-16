@@ -8,7 +8,7 @@ window.Swal = swal;
 export const accounts = {
   namespaced: true,
   state: () => ({
-    image: '',
+    images: '',
     LoginErr: '',
     isLoginErr: false,
     accessToken: null,
@@ -219,24 +219,29 @@ export const accounts = {
     SET_LASTING_DAY: (state, payload) => {
       state.lastingDay = payload;
     },
-    SET_IMAGE: (state, payload) => {
-      state.image = payload;
+    SET_IMAGES: (state, payload) => {
+      state.images = payload;
     },
   },
   actions: {
-    getImage({ commit, state }) {
+    getImage({ commit }) {
       axios({
         url: 'https://i7c202.p.ssafy.io:8282/api/record/img/main',
         method: 'get',
-        headers: {
-          'X-AUTH-TOKEN': state.accessToken,
-        },
       })
         .then((res) => {
-          console.log(res);
-          commit('SET_IMAGE', res.data.data);
+          console.log(res.data.data);
+          const images = [];
+          // eslint-disable-next-line
+          for (let i = 0; i < 4; i++) {
+            // const url = res.data.data[i].fileUrl.split(',');
+            images.push(res.data.data[i].fileUrl);
+          }
+          console.log(images);
+          commit('SET_IMAGES', images);
         })
         .catch((err) => {
+          console.log('이미지가져오기 실패 ㅠㅠ');
           console.log(err);
         });
     },
@@ -281,6 +286,7 @@ export const accounts = {
           router.push({ name: 'mainpage' });
         })
         .catch((err) => {
+          console.log(err);
           if (err.response.status === 400) {
             if (err.response.data.message === '회원가입 이메일 인증이 필요합니다.') {
               commit('SET_LOGIN_ERR', err.response.data.message);
@@ -899,6 +905,7 @@ export const accounts = {
     },
   },
   getters: {
+    images: (state) => state.images,
     isLogin: (state) => !!state.accessToken,
     userInfo: (state) => state.userInfo,
     physicalInfo: (state) => state.physicalInfo,

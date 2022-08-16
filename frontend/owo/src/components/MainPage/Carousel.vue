@@ -6,9 +6,10 @@
     </h3>
   </div>
   <div class="carousel">
-    <Carousel :autoplay="2000" :items-to-show="3" :wrap-around="true">
-      <Slide v-for="slide in 10" :key="slide">
-        <div class="carousel__item">{{ slide }}</div>
+    <Carousel :autoplay="2000" :items-to-show="2.5" :wrap-around="true">
+      <Slide v-for="(image, i) in images" :key="i" style="padding: 5px;">
+        <div class="carousel__item"><img :src="image" alt=""
+        style="width: 100%; height: 100%;"></div>
       </Slide>
       <template #addons>
       </template>
@@ -54,6 +55,7 @@ export default defineComponent({
   setup() {
     const store = useStore();
     const isLogin = computed(() => store.getters['accounts/isLogin']);
+    const images = computed(() => store.getters['accounts/images']);
     const state = reactive({
       selected: '',
       options: [
@@ -67,6 +69,7 @@ export default defineComponent({
     return {
       state,
       isLogin,
+      images,
     };
   },
 });

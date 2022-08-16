@@ -23,22 +23,36 @@
             오운완 회원이 아니신가요?
             <b-button Style="font-size: 15px" variant="link" @click="moveToRegister">회원가입</b-button>
           </div>
-          <div class="socialLogin" style="padding: 10px">
-            <div class="socialbtn d-flex justify-content-around">
-              <b-button pill variant="secondary"
-              href="https://i7c202.p.ssafy.io:8282/oauth2/authorization/google?redirect_uri=https://i7c202.p.ssafy.io:443/oauth/redirect"
-              role="button">Google</b-button>
-              <b-button pill variant="success"
-              href="https://i7c202.p.ssafy.io:8282/oauth2/authorization/naver?redirect_uri=https://i7c202.p.ssafy.io:443/oauth/redirect"
-              role="button">Naver</b-button>
-              <b-button pill variant="warning"
-              href="https://i7c202.p.ssafy.io:8282/oauth2/authorization/kakao?redirect_uri=https://i7c202.p.ssafy.io:443/oauth/redirect"
-              role="button">Kakao</b-button>
+              <b-button type="submit" class="mt-3 btn-pers"
+              id="login_button" variant="outline-primary"
+              style="width: 50%; border-radius:50px">로그인</b-button>
+
+          <div class="socialLogin" style="padding: 20px">
+            <p>다른 사이트로 로그인</p>
+            <div class="socialbtn">
+              <!--eslint--disable-next-line-->
+              <a href="https://i7c202.p.ssafy.io:8282/oauth2/authorization/google?redirect_uri=https://i7c202.p.ssafy.io:443/oauth/redirect">
+                <!--eslint--disable-next-line--><span style="display: none;">s</span>
+              <img src="@/assets/socialLogo/btn_google_signin_light_focus_web.png"
+              style="width:191px; height: 46px; margin-bottom: 5px;" alt="">
+              <!--eslint--disable-next-line-->
+              </a>
+              <a href="https://i7c202.p.ssafy.io:8282/oauth2/authorization/naver?redirect_uri=https://i7c202.p.ssafy.io:443/oauth/redirect">
+                <!--eslint--disable-next-line--><span style="display: none;">s</span>
+              <img src="@/assets/socialLogo/btnG_완성형.png"
+              style="width:191px; height: 46px; margin-bottom: 5px;"
+              alt="">
+              <!--eslint--disable-next-line-->
+              </a>
+              <a href="https://i7c202.p.ssafy.io:8282/oauth2/authorization/kakao?redirect_uri=https://i7c202.p.ssafy.io:443/oauth/redirect">
+                <!--eslint--disable-next-line--><span style="display: none;">s</span>
+              <img src="@/assets/socialLogo/kakao_login_medium_narrow.png"
+              style="width:191px; height: 46px; margin-bottom: 5px;"
+              alt="">
+              <!--eslint--disable-next-line-->
+              </a>
             </div>
           </div>
-            <b-button type="submit" class="mt-3 btn-pers"
-            id="login_button" variant="outline-primary"
-            style="width: 90%; border-radius:50px">로그인</b-button>
         </form>
       </div>
     </div>
@@ -88,7 +102,7 @@ export default {
 
 .loginForm {
   width: 350px;
-  height: 500px;
+  height: 600px;
   padding: 50px;
   border: solid 1px rgb(177, 177, 181);
   border-radius: 10%;
