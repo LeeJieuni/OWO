@@ -181,22 +181,11 @@ public class MeetingRoomController {
         Message message = new Message();
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(new MediaType("application","json", Charset.forName("UTF-8")));
-//        try {
-            roomService.startRoom(roomId);
-            message.setStatus(StatusEnum.OK);
-            message.setMessage("방 시작 성공");
-            return new ResponseEntity<>(message,httpHeaders, HttpStatus.OK);
-//        }catch (IllegalStateException e){
-//            e.printStackTrace();
-//            message.setStatus(StatusEnum.BAD_REQUEST);
-//            message.setMessage("잘못된 요청(방이 존재하지 않음)");
-//            return new ResponseEntity<>(message,httpHeaders, HttpStatus.BAD_REQUEST);
-//        }catch (Exception e){
-//            e.printStackTrace();
-//            message.setStatus(StatusEnum.INTERNAL_SERVER_ERROR);
-//            message.setMessage("내부 서버 에러");
-//            return new ResponseEntity<>(message,httpHeaders,HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
+
+        roomService.startRoom(roomId);
+        message.setStatus(StatusEnum.OK);
+        message.setMessage("방 시작 성공");
+        return new ResponseEntity<>(message,httpHeaders, HttpStatus.OK);
     }
 
     @PutMapping("/api/user/room/end/{roomId}")
@@ -206,29 +195,17 @@ public class MeetingRoomController {
         Message message = new Message();
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(new MediaType("application","json", Charset.forName("UTF-8")));
-//        try {
-            // status end, end date 저장
-            roomService.endRoom(roomId);
 
-            //만약에 최종 한명 남아있다면 세션에서 방을 지우기.
-            if(this.roomSession.get(roomId)<=1 || this.roomSession.get(roomId)==null){
-                this.roomSession.remove(roomId);
-            }
-            System.out.println(roomSession);
-            message.setStatus(StatusEnum.OK);
-            message.setMessage("방 종료 성공");
-            return new ResponseEntity<>(message, httpHeaders, HttpStatus.OK);
-//        }catch (IllegalStateException e){
-//            e.printStackTrace();
-//            message.setStatus(StatusEnum.BAD_REQUEST);
-//            message.setMessage("잘못된 요청(방이 존재하지 않음)");
-//            return new ResponseEntity<>(message,httpHeaders, HttpStatus.BAD_REQUEST);
-//        }catch (Exception e){
-//            e.printStackTrace();
-//            message.setStatus(StatusEnum.INTERNAL_SERVER_ERROR);
-//            message.setMessage("내부 서버 에러");
-//            return new ResponseEntity<>(message,httpHeaders,HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
+        roomService.endRoom(roomId);
+
+        /* 만약에 최종 한명 남아있다면 세션에서 방을 지우기 */
+        if(this.roomSession.get(roomId)<=1 || this.roomSession.get(roomId)==null){
+            this.roomSession.remove(roomId);
+        }
+        System.out.println(roomSession);
+        message.setStatus(StatusEnum.OK);
+        message.setMessage("방 종료 성공");
+        return new ResponseEntity<>(message, httpHeaders, HttpStatus.OK);
     }
 
 

@@ -11,7 +11,7 @@ public interface MemberRepository2 extends JpaRepository<Member, Integer> {
 
     Optional<Member> findByEmail(String email);
 
-    @Query(value = "select rank() over (order by member_point desc) as ranking from (select * from member m where m.member_enable = 1) m where m.member_id =:member_id", nativeQuery = true)
+    @Query(value = "select rm.ranking from (select m.member_id, rank() over (order by m.member_point desc) as ranking from (select * from member m where m.member_enable = 1) m) rm where rm.member_id = :member_id", nativeQuery = true)
     int findRanking(@Param("member_id")int member_id) throws Exception;
 
     @Query(value = "select count(*) from member m where m.member_enable = 1", nativeQuery = true)

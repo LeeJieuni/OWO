@@ -30,23 +30,13 @@ public class RankingController {
         Message message = new Message();
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(new MediaType("application","json", Charset.forName("UTF-8")));
-//        try {
-            List<ResponseRankingDto> rankingDtoList=  rankService.getRankingList();
-            message.setStatus(StatusEnum.OK);
-            message.setMessage("랭킹 리스트 불러오기 성공");
-            message.setData(rankingDtoList);
-            return new ResponseEntity<>(message,httpHeaders, HttpStatus.OK);
-//        } catch (IllegalStateException e){
-//            e.printStackTrace();
-//            message.setStatus(StatusEnum.BAD_REQUEST);
-//            message.setMessage("잘못된 요청(ex. memberId가 null인 경우)");
-//            return new ResponseEntity<>(message,httpHeaders,HttpStatus.BAD_REQUEST);
-//        } catch (Exception e){
-//            e.printStackTrace();
-//            message.setStatus(StatusEnum.INTERNAL_SERVER_ERROR);
-//            message.setMessage("내부 서버 에러");
-//            return new ResponseEntity<>(message,httpHeaders,HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
+
+        List<ResponseRankingDto> rankingDtoList=  rankService.getRankingList();
+        message.setStatus(StatusEnum.OK);
+        message.setMessage("랭킹 리스트 불러오기 성공");
+        message.setData(rankingDtoList);
+        return new ResponseEntity<>(message,httpHeaders, HttpStatus.OK);
+
     }
 
     @ApiOperation(value = "나의 랭킹 순위 조회",notes = "나의 memberId를 통해 나의 랭킹정보를 조회한다.")
@@ -56,25 +46,15 @@ public class RankingController {
         Message message = new Message();
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(new MediaType("application","json", Charset.forName("UTF-8")));
-//        try {
-            int rank = rankService.getMyRank(memberId);
-            MyRankDto responseDto = new MyRankDto();
-            responseDto.setRanking(rank);
-            message.setStatus(StatusEnum.OK);
-            message.setMessage("나의 랭킹 조회 성공");
-            message.setData(responseDto);
-            return new ResponseEntity<>(message,httpHeaders, HttpStatus.OK);
-//        } catch (IllegalStateException e){
-//            e.printStackTrace();
-//            message.setStatus(StatusEnum.BAD_REQUEST);
-//            message.setMessage("잘못된 요청(ex. memberId가 null인 경우)");
-//            return new ResponseEntity<>(message,httpHeaders,HttpStatus.BAD_REQUEST);
-//        } catch (Exception e){
-//            e.printStackTrace();
-//            message.setStatus(StatusEnum.INTERNAL_SERVER_ERROR);
-//            message.setMessage("내부 서버 에러");
-//            return new ResponseEntity<>(message,httpHeaders,HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
+
+        int rank = rankService.getMyRank(memberId);
+        MyRankDto responseDto = new MyRankDto();
+        responseDto.setRanking(rank);
+        message.setStatus(StatusEnum.OK);
+        message.setMessage("나의 랭킹 조회 성공");
+        message.setData(responseDto);
+        return new ResponseEntity<>(message,httpHeaders, HttpStatus.OK);
+
     }
 
     @ApiOperation(value = "랭킹 리셋관련 api(크론탭사용)",notes = "어제의 운동왕을 조회하는 부분입니다.")
@@ -83,22 +63,12 @@ public class RankingController {
         Message message = new Message();
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(new MediaType("application","json", Charset.forName("UTF-8")));
-//        try {
-            rankService.addRank();
-            message.setStatus(StatusEnum.OK);
-            message.setMessage("성공");
-            return new ResponseEntity<>(message,httpHeaders, HttpStatus.OK);
-//        } catch (IllegalStateException e){
-//            e.printStackTrace();
-//            message.setStatus(StatusEnum.BAD_REQUEST);
-//            message.setMessage("잘못된 요청");
-//            return new ResponseEntity<>(message,httpHeaders,HttpStatus.BAD_REQUEST);
-//        } catch (Exception e){
-//            e.printStackTrace();
-//            message.setStatus(StatusEnum.INTERNAL_SERVER_ERROR);
-//            message.setMessage("내부 서버 에러");
-//            return new ResponseEntity<>(message,httpHeaders,HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
+
+        rankService.addRank();
+        message.setStatus(StatusEnum.OK);
+        message.setMessage("성공");
+        return new ResponseEntity<>(message,httpHeaders, HttpStatus.OK);
+
     }
 
 }

@@ -50,7 +50,6 @@ public class Record {
     @Column(name="record_datetime")
     @DateTimeFormat(pattern = "yyyyMMdd")
     private LocalDate recordDatetime;
-//    private LocalDateTime recordDatetime;
 
     @Column(name="record_secret")
     private boolean recordSecret;
@@ -59,8 +58,6 @@ public class Record {
     @Enumerated(EnumType.STRING)
     private Exercise recordExercise; //meeting_room_type이 저장될것. 추후 목표시간을 달성했는지를 위함.
 
-    @Column(name="record_place")
-    private int place;
     public void updateRecordImg(RecordImg recordImg){
         this.recordImg = recordImg;
     }
