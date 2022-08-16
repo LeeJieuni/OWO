@@ -36,7 +36,7 @@ public class MeetingRoomRepository {
     }
 
     public List<MeetingRoom> findMeetingRoomList(Mode mode) {
-        List<MeetingRoom> meetingRoomList = em.createQuery("select m from MeetingRoom m where m.mode = :mode and m.status = :status", MeetingRoom.class)
+        List<MeetingRoom> meetingRoomList = em.createQuery("select m from MeetingRoom m where m.mode = :mode and m.status = :status ORDER BY m.openDate DESC", MeetingRoom.class)
                 .setParameter("mode",mode)
                 .setParameter("status", RoomStatus.WAIT)
                 .getResultList();
