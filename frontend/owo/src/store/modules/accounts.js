@@ -8,6 +8,9 @@ window.Swal = swal;
 export const accounts = {
   namespaced: true,
   state: () => ({
+    masterTier: '',
+    userTier: '',
+    images: '',
     LoginErr: '',
     isLoginErr: false,
     accessToken: null,
@@ -43,7 +46,6 @@ export const accounts = {
       bmr: null,
       caloriePerDay: null,
     },
-    image: '',
     record: {
       point: '', // 경쟁
       exp: '', // 자유, 영상 경험치
@@ -92,6 +94,12 @@ export const accounts = {
     },
   }),
   mutations: {
+    SET_MASTER_TIER: (state, payload) => {
+      state.masterTier = payload;
+    },
+    SET_USER_TIER: (state, payload) => {
+      state.userTier = payload;
+    },
     SET_ROOM_NAME: (state, payload) => {
       state.roomName = payload;
     },
@@ -219,29 +227,32 @@ export const accounts = {
     SET_LASTING_DAY: (state, payload) => {
       state.lastingDay = payload;
     },
-    SET_IMAGE: (state, payload) => {
-      state.image = payload;
+    SET_IMAGES: (state, payload) => {
+      state.images = payload;
     },
   },
   actions: {
-    // getImage({ commit }) {
-    //   axios({
-    //     url: 'https://i7c202.p.ssafy.io:8282/api/record/img/main',
-    //     method: 'get',
-    //     headers: {
-    //       'X-AUTH-TOKEN': state.accessToken,
-    //       'REFRESH-TOKEN': state.refreshToken,
-    //     },
-    //   })
-    //     .then((res) => {
-    //       commit('SET_IMAGE', res.data.data);
-    //       console.log(res);
-
-    //     })
-    //     .catch((err) => {
-    //       console.log(err);
-    //     })
-    // },
+    getImage({ commit }) {
+      axios({
+        url: 'https://i7c202.p.ssafy.io:8282/api/record/img/main',
+        method: 'get',
+      })
+        .then((res) => {
+          console.log(res.data.data);
+          const images = [];
+          // eslint-disable-next-line
+          for (let i = 0; i < 4; i++) {
+            // const url = res.data.data[i].fileUrl.split(',');
+            images.push(res.data.data[i].fileUrl);
+          }
+          console.log(images);
+          commit('SET_IMAGES', images);
+        })
+        .catch((err) => {
+          console.log('이미지가져오기 실패 ㅠㅠ');
+          console.log(err);
+        });
+    },
     saveAccessToken({ commit }, token) {
       sessionStorage.setItem('accessToken', token);
       commit('SET_ACCESS_TOKEN', token);
@@ -283,6 +294,7 @@ export const accounts = {
           router.push({ name: 'mainpage' });
         })
         .catch((err) => {
+          console.log(err);
           if (err.response.status === 400) {
             if (err.response.data.message === '회원가입 이메일 인증이 필요합니다.') {
               commit('SET_LOGIN_ERR', err.response.data.message);
@@ -768,8 +780,87 @@ export const accounts = {
           console.log(err);
         });
     },
-    enterroom({ state }, payload) {
+    enterCompetitionRoom({ state, commit }, payload) {
       console.log(payload);
+      // eslint-disable-next-line
+      const master = payload.master;
+      const user = state.userInfo.id;
+      axios({
+        url: `https://i7c202.p.ssafy.io:8282/api/user/point/percentage/${master}`,
+        method: 'get',
+        headers: {
+          'X-AUTH-TOKEN': state.accessToken,
+        },
+      })
+        .then((res) => {
+          console.log('마스터 티어 퍼센트');
+          console.log(res.data.data);
+          commit('SET_MASTER_TIER', Number(res.data.data));
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      axios({
+        url: `https://i7c202.p.ssafy.io:8282/api/user/point/percentage/${user}`,
+        method: 'get',
+        headers: {
+          'X-AUTH-TOKEN': state.accessToken,
+        },
+      })
+        .then((res) => {
+          console.log('유저 티어 퍼센트');
+          console.log(res.data.data);
+          commit('SET_USER_TIER', Number(res.data.data));
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      const masterMod = Number(state.masterTier / 20);
+      const userMod = Number(state.userTier / 20);
+      if (masterMod === userMod) {
+        axios({
+          url: 'https://i7c202.p.ssafy.io:8282/api/user/room/enter',
+          method: 'post',
+          headers: {
+            'X-AUTH-TOKEN': state.accessToken,
+          },
+          data: {
+            roomId: payload.roomId,
+            password: payload.password,
+          },
+        })
+          .then((res) => {
+            console.log('입장처리됫니?');
+            commit('SET_ROOM_NAME', payload.roomName);
+            console.log(res);
+            router.push(`/room/${state.enter_mode[payload.mode]}/${payload.roomId}`);
+            console.log('응완료?');
+          })
+          .catch((err) => {
+            swal.fire(
+              '#오운완',
+              err.response.data.message,
+            );
+          });
+      }
+      console.log('방장티어', masterMod);
+      console.log('유저티어', userMod);
+      if (masterMod > userMod) {
+        swal.fire(
+          '#오운완',
+          '티어가 높아 입장하실 수 없습니다.',
+          'warning',
+        );
+      }
+      if (masterMod < userMod) {
+        swal.fire(
+          '#오운완',
+          '티어가 낮아 입장하실 수 없습니다.',
+          'warning',
+        );
+      }
+    },
+    enterroom({ state, commit }, payload) {
       axios({
         url: 'https://i7c202.p.ssafy.io:8282/api/user/room/enter',
         method: 'post',
@@ -782,8 +873,11 @@ export const accounts = {
         },
       })
         .then((res) => {
+          console.log('입장처리됫니?');
+          commit('SET_ROOM_NAME', payload.roomName);
           console.log(res);
           router.push(`/room/${state.enter_mode[payload.mode]}/${payload.roomId}`);
+          console.log('응완료?');
         })
         .catch((err) => {
           swal.fire(
@@ -852,13 +946,11 @@ export const accounts = {
         });
     },
     fetchLastingDay({ state, commit }) {
-      console.log('lastingday axios 전');
       axios({
         url: `https://i7c202.p.ssafy.io:8282/api/user/record/lastingDay/${state.userInfo.id}`,
         method: 'get',
         headers: {
           'X-AUTH-TOKEN': state.accessToken,
-          'REFRESH-TOKEN': state.refreshToken,
         },
       })
         .then((res) => {
@@ -889,7 +981,21 @@ export const accounts = {
         },
       })
         .then((res) => {
-          console.log(res.data);
+          axios({
+            url: `https://i7c202.p.ssafy.io:8282/api/user/point/percentage/${state.userInfo.id}`,
+            method: 'get',
+            headers: {
+              'X-AUTH-TOKEN': state.accessToken,
+            },
+          })
+            .then((response) => {
+              console.log('마스터 티어 퍼센트');
+              commit('SET_MASTER_TIER', response.data.data);
+              console.log(state.masterTier);
+            })
+            .catch((error) => {
+              console.log(error);
+            });
           commit('SET_MASTER_ID', state.userInfo.id);
           commit('SET_ROOM_NAME', roomdata.roomName);
           router.push(`/room/${state.enter_mode[state.make_mode[roomdata.mode]]}/${res.data.data.roomId}`);
@@ -900,6 +1006,8 @@ export const accounts = {
     },
   },
   getters: {
+    masterTier: (state) => state.masterTier,
+    images: (state) => state.images,
     isLogin: (state) => !!state.accessToken,
     userInfo: (state) => state.userInfo,
     physicalInfo: (state) => state.physicalInfo,

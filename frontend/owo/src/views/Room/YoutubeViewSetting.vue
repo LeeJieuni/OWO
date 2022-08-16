@@ -34,6 +34,7 @@
               width="911"
               height="592"
               ref="youtube"
+              disablekb=0
             />
             <!-- <YouTube
               src="https://www.youtube.com/watch?v=sqgxcCjD04s"
@@ -79,17 +80,15 @@
   </div>
 </template>
 <script>
-import Timer from '@/components/SetTimer.vue';
 import RoomButton from '@/components/Room/RoomButton.vue';
 // import AChat from '@/components/Room/AChat.vue';
 import YouTube from 'vue3-youtube';
 import WebRTCYoutube from '../../components/Room/WebRTCYoutube.vue';
 
 export default {
-  name: 'YoutubeView',
+  name: 'YoutubeSettingView',
   components: {
     YouTube,
-    Timer,
     WebRTCYoutube,
     RoomButton,
     // AChat,

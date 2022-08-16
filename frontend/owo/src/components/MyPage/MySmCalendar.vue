@@ -35,7 +35,7 @@
                 <a class="days day-a" href="#" @click="selectDay(currentYear, currentMonth, day)"
                   v-b-modal="'myModal'">{{day}}</a>
               </span>
-              <img v-if="day"
+              <img v-if="stampChk(day)"
               class="dot" src="@/assets/icon/dot.png" alt="">
             </td>
           </tr>
@@ -87,7 +87,7 @@
                     v-for="(tag, tagI) in exercise.tags"
                     :key="tagI"
                     class="tag ">
-                    <p class="tag-name"># {{tag.tagContent}}</p>
+                    <p class="tag-name">{{tag.tagContent}}</p>
                   </button>
                 </div>
               </div>
@@ -191,7 +191,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters('record', ['dayExerciseList', 'dayPictures']),
+    ...mapGetters('record', ['dayExerciseList', 'dayPictures', 'monthStampHour', 'monthRecord']),
     ...mapGetters('accounts', ['monthRecord', 'isLogin']),
   },
   mounted() {
@@ -200,8 +200,8 @@ export default {
     console.log(this.isLogin);
   },
   methods: {
-    ...mapActions('record', ['fetchDayExerciseList', 'fetchDayPictures']),
-    ...mapActions('accounts', ['fetchMonthRecord']),
+    ...mapActions('record', ['fetchDayExerciseList', 'fetchDayPictures', 'fetchMonthStampHour', 'fetchSessions', 'fetchMonthRecord']),
+    // ...mapActions('accounts', ['fetchMonthRecord']),
     hideModal() {
       console.log(this.$refs.myModal);
       this.$refs.myModal.hide();
@@ -290,7 +290,8 @@ export default {
       this.init();
       const payload = [this.currentYear, this.currentMonth];
       console.log(payload);
-      // this.fetchMonthRecord(payload);
+      this.fetchMonthRecord(payload);
+      this.fetchMonthStampHour(payload);
     },
     onClickNext(month) {
       this.month += 1;
@@ -301,6 +302,14 @@ export default {
         this.currentMonth += 1;
       }
       this.init();
+      const payload = [this.currentYear, this.currentMonth];
+      console.log(payload);
+      this.fetchMonthRecord(payload);
+      // if (this.monthRecord.length !== 0) {
+      //   this.fetchMonthStampHour(payload);
+      // }
+      this.fetchMonthRecord(payload);
+      this.fetchMonthStampHour(payload);
     },
     // 모달 내에서 날짜 변경
     onClickPrevDay(year, month, day) {
@@ -329,6 +338,24 @@ export default {
       // console.log(this.stringDate);
       this.fetchDayExerciseList(this.stringDate);
       this.fetchDayPictures(this.stringDate);
+    },
+    // 월 변경 시마다 기록이 있는 날인지 확인하여 stamp 부여
+    // eslint-disable-next-line
+    stampChk(d) {
+      // const endDay = this.getEndOfDay(this.currentYear, this.currentMonth);
+      // for (let i = 0; i < endDay; i += 1) {
+      // console.log('month record');
+      console.log('length check', this.monthRecord.length);
+      if (this.monthRecord.lenght !== 0) {
+        for (let i = 0; i < this.monthStampHour.length; i += 1) {
+          if (this.monthStampHour[i].day === d) {
+            console.log('true');
+            return true;
+          }
+        }
+      } else {
+        return false;
+      }
     },
     onClickNextDay(year, month, day) {
       const date = new Date(year, month - 1, day);
@@ -508,11 +535,12 @@ table {
   max-width: 28vw;
   margin: 0 auto;
 }
-td, th {
+td {
   padding: 0;
+  /* padding-bottom: 6px; */
 }
 .day-a {
-  font-size: 1.5vh;
+  font-size: 18px;
   font-weight: 900;
   /* font-family: 'Righteous', cursive; */
   padding: 0;
@@ -523,9 +551,9 @@ td, th {
   width: 4px;
 }
 .day-td  {
-  padding: 0.5vh;
+  padding: 10px;
   /* width: 1vw; */
-  --bs-table-hover-bg: #fafafa;
+  --bs-table-hover-bg: #e0e5f3;
   border-bottom: 0;
 }
 .table > a {

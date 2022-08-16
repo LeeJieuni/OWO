@@ -12,10 +12,14 @@
         variant="outline-primary">{{ tab }}
         </b-button>
       </b-button-group>
-      <b-modal id="modal-makeSession" title="#오운완의 운동방 생성하기" hide-footer="true">
+      <b-modal centered id="modal-makeSession" title="#오운완의 운동방 생성하기"
+        hide-footer="true" hide-header="true">
         <div class="d-flex justify-content-center">
           <form class="makesessionForm">
             <div class="roomdata">
+              <p class="modal-title">
+                오운완 운동방 만들기
+              </p>
               <!--기본 입력폼-->
               <b-input-group prepend="방 이름" class="roomdata_input">
                 <b-form-input type="text" v-model="roomdatas.roomName"></b-form-input>
@@ -83,13 +87,15 @@
   <!--운동방 -->
     <div v-if="!noStreaming" class="tab-content wrap">
       <div v-show="currentTab == 0" class="scroll__wrap">
-        <div v-for="(room, i) in roomList.streamingRoomList" :key="i" class="scroll--element">
-         <div class='darkness' v-if="!room.person === 6">
-            <p>
-              모든 인원이 꽉 찼습니다.</p>
+        <div v-for="(room, i) in roomList.streamingRoomList"
+        :key="i" class="scroll--element">
+         <div class='darkness' v-if="room.person === 6">
+             <p>
+              모든 인원이 꽉 찼습니다.
+              </p>
           </div>
               <b-card class="rooms" footer-tag="footer">
-               <div class="img_sport">
+                <div class="img_sport">
               <div v-if="room.type === 'GAME'">
                   <img src="@/assets/sport/game.png" alt="">
                 </div>
@@ -137,6 +143,7 @@
               roomId: room.roomId,
               mode: room.mode,
               roomName: room.roomName,
+              link: room.link,
               })">
               들어가기</b-button>
               <template #footer>
@@ -167,9 +174,10 @@
     <div v-if="!noFree" class="tab-content wrap">
       <div v-show="currentTab == 1" class="scroll__wrap">
         <div v-for="(room, i) in roomList.freeRoomList" :key="i" class="scroll--element">
-         <div class='darkness' v-if="!room.person === 6">
+         <div class='darkness' v-if="room.person === 6">
             <p>
-              모든 인원이 꽉 찼습니다.</p>
+              모든 인원이 꽉 찼습니다.
+              </p>
           </div>
           <b-card class="rooms" footer-tag="footer">
             <div class="img_sport">
@@ -222,7 +230,7 @@
               roomName: room.roomName,
               })">
               들어가기</b-button>
-               <template #footer>
+                <template #footer>
               <div class="d-flex justify-content-end">
                   <b-input-group prepend="PW" class="roomdata_input" v-show="room.secret===true"
                   style="width: 100%; padding: 0px;">
@@ -250,9 +258,10 @@
     <div v-if="!noGame" class="tab-content wrap">
       <div v-show="currentTab == 2" class="scroll__wrap">
         <div v-for="(room, i) in roomList.gameRoomList" :key="i" class="scroll--element">
-         <div class='darkness' v-if="!room.person === 6">
+         <div class='darkness' v-if="room.person === 6">
             <p>
-              모든 인원이 꽉 찼습니다.</p>
+              모든 인원이 꽉 찼습니다.
+              </p>
           </div>
           <b-card class="rooms" footer-tag="footer">
             <div class="img_sport">
@@ -290,16 +299,19 @@
             </div>
                 <div class="d-flex">
                     <p align="left" class="workoutType">{{ workout_reverse[room.type] }}</p>
+                    <p style="background-color: rgba(243, 62, 26, 0.445);">
+                    티어 {{ tier[Number((masterTier / 20)) - 1] }}</p>
                 </div>
             <div class="cardTitle d-flex align-items-center">
               <p style="font-size: 0.7em">{{ room.roomName }}</p>
             </div>
             <b-button size="lg" class="rooms_btn" variant="primary"
-              @click="enterroom({
+              @click="enterCompetitionRoom({
               password: enterPassword,
               roomId: room.roomId,
               mode: room.mode,
               roomName: room.roomName,
+              master: room.memberId,
               })">
               들어가기</b-button>
               <template #footer>
@@ -326,11 +338,11 @@
         <h1>아직 운동중인 방이 없습니다!</h1>
       </div>
     </div>
- </div>
+  </div>
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters, mapActions, mapState } from 'vuex';
 // eslint--disable-next-line
 const accounts = 'accounts';
 
@@ -381,13 +393,21 @@ export default {
       competition_option: {
         게임: 'GAME',
       },
+      tier: {
+        0: '다이아', // 0 ~ 19
+        1: '플래티넘', // 20 ~ 39
+        2: '골드', // 40 ~ 59
+        3: '실버', // 60 ~ 79
+        4: '브론즈', // 80 ~ 100
+      },
     };
   },
   computed: {
+    ...mapState(accounts, ['masterTier']),
     ...mapGetters(accounts, ['roomList', 'userInfo', 'isLogin', 'noGame', 'noFree', 'noStreaming']),
   },
   methods: {
-    ...mapActions(accounts, ['getRoomList', 'enterroom', 'makeRoom']),
+    ...mapActions(accounts, ['getRoomList', 'enterroom', 'makeRoom', 'enterCompetitionRoom']),
     moveRoom(payload) {
       this.makeRoom(payload);
       document.body.removeAttribute('class');
@@ -398,7 +418,14 @@ export default {
 };
 </script>
 
-<style scope>
+<style scoped>
+.body {
+  min-height: 500px;
+  height: 500px;
+  margin: 0 50px;
+  margin: 0;
+  /* background-color: aqua; */
+}
 .img_sport img {
   width: 150px;
   height: 150px;
@@ -423,15 +450,22 @@ export default {
 .wrap {
   max-width: 100%;
   margin: 50px auto;
-  background: #f8f8f8;
+  /* background: #f8f8f8; */
 }
 
+/* .tab-content {
+  height: 300px;
+} */
 /* 가로 스크롤 적용 */
 .scroll__wrap {
   overflow: auto;
   white-space: nowrap;
   font-size: 15px;
   margin-top: -30px;
+  height: 400px;
+  /* background-color: #f4f3f3; */
+  border-radius: 10px;
+  border: solid #DFDFDF 1px;
 }
 
 .scroll--element {
@@ -446,7 +480,9 @@ export default {
 .scroll--element+scroll--element {
   margin-left: 10px;
 }
-
+.rooms {
+  background-color: white;
+}
 .rooms p {
   width: max-content;
   padding: 5px;
@@ -456,14 +492,17 @@ export default {
   font-weight: bold;
   border-radius: 10%;
 }
-
+.card-footer {
+  /* background-color:#246dfe; */
+  background-color: var(--bs-card-cap-bg);
+}
 .rooms_btn {
   margin-top: 20px;
   width: 45%;
 }
 
 .roomdata {
-  display: justify-content-center;
+  /* display: justify-content-center; */
 }
 
 .makeSessionForm {
@@ -482,8 +521,8 @@ input {
   margin-left: 50px;
 }
 .darkness {
-  line-height: 470px;
-  font-size: 30px;
+  line-height: 390px;
+  font-size: 25px;
   border: none;
   /* padding-left: 1.5vw;
   padding-right: 1.5vw; */
@@ -496,8 +535,14 @@ input {
   background: rgba(0, 0, 0, 0.8);
   width: 100%;
   height: 100%;
-  margin-bottom: -485px;
+  margin-bottom: -405px;
   z-index: 1;
   border-radius: 10px;
+}
+.modal-title {
+  font-family: 'Recipekorea';
+  font-size: 20px;
+  font-weight: 900;
+  padding: 20px;
 }
 </style>

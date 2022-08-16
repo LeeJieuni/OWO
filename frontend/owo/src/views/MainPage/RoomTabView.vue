@@ -1,0 +1,50 @@
+<template>
+  <div class="main">
+    <NavBar class="sticky-top"/>
+    <div class="body">
+      <rankingList2 class="rank"/>
+      <div class="rankTitle">
+        <h1 class="title">운동방 입장하기 🚀</h1>
+      </div>
+      <roomTab class="room"></roomTab>
+    </div>
+  </div>
+</template>
+
+<script>
+import NavBar from '@/components/NavBar.vue';
+import roomTab from '@/components/MainPage/roomTab.vue';
+import rankingList2 from '@/components/MainPage/rankingList2.vue';
+
+export default {
+  components: {
+    roomTab,
+    NavBar,
+    rankingList2,
+  },
+};
+</script>
+
+<style scoped>
+.body {
+  padding: 0 50px;
+}
+.title {
+  padding: 8vh 0 5vh 5vh;
+  /* color: white; */
+  font-family: 'LeferiPoint-BlackObliqueA';
+  font-size: 4vh;
+  text-align: left;
+}
+/* .rankTitle {
+  padding-top: 50px;
+  padding-bottom: 20px;
+  padding-right: 100px;
+  padding-left: 100px;
+}
+.rankTitleText {
+  font-size: 40px;
+  text-align: left;
+  font-family: 'Recipekorea';
+} */
+</style>
