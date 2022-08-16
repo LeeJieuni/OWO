@@ -11,27 +11,6 @@
             </router-link>
           </div>
           <div v-if="!isLogin" class="d-flex justify-content-center">
-            <!--dropdows1-rooms-->
-            <li class="menu1 mypages nav-item dropdown">
-              <a class="nav-link dropdown-toggle pe-3"
-                href="#" role="button" data-bs-toggle="dropdown"
-                aria-expanded="false">
-                <span>Rooms</span>
-              </a>
-              <ul class="dropdown-menu">
-                <li>
-                  <span></span>
-                  <router-link class="dropdown-item"
-                  to="/room/competition">Competition</router-link>
-                </li>
-                <li>
-                  <router-link class="dropdown-item" to="/room/friend">FriendChat</router-link>
-                </li>
-                <li>
-                  <router-link class="dropdown-item" to="/room/youtube">Youtube</router-link>
-                </li>
-              </ul>
-            </li>
             <router-link to="/login" style="text-align:center;">
               <li class="menu1">login</li>
             </router-link>
@@ -41,25 +20,6 @@
           </div>
           <div v-else class="d-flex">
             <div class="d-flex align-items-center">
-              <li class="menu1 mypages nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                  aria-expanded="false">
-                  <span> Rooms</span>
-                </a>
-                <ul class="dropdown-menu">
-                  <li>
-                    <span></span>
-                    <router-link class="dropdown-item"
-                    to="/room/competition">Competition</router-link>
-                  </li>
-                  <li>
-                    <router-link class="dropdown-item" to="/room/friend">FriendChat</router-link>
-                  </li>
-                  <li>
-                    <router-link class="dropdown-item" to="/room/youtube">Youtube</router-link>
-                  </li>
-                </ul>
-              </li>
               <div class="navbar-brand mb-0 h1">
                 <span>안녕하세요
                 <router-link to="/mypage/main"><span
