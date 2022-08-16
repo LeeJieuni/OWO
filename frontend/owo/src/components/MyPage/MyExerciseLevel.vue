@@ -14,7 +14,7 @@
         <img
           class="my-level-icon-img"
           :src="require(`@/assets/icon/tier${state.tierNum}.png`)"
-          alt="tear1">
+          alt="tier1">
       </div>
       <div class="bar-info">
         <div class="progress bar">
@@ -22,14 +22,15 @@
             class="progress-bar progress-bar-striped progress-bar-animated"
             role="progressbar"
             aria-label="Example with label"
-            v-bind:style="{ width: state.recordPercentage, backgroundColor: state.tierColor }"
+            v-bind:style="{ width: state.recordPercentage,
+              backgroundColor: state.tierColor[state.tierNum-1] }"
             :aria-valuenow="state.recordPercent"
             aria-valuemin="0"
             aria-valuemax="100">{{state.recordPercentage}}
           </div>
         </div>
-        <div class="tear-info d-flex text-center align-items-end">
-          <div class="tear-name">{{ state.tearName }}&nbsp;&nbsp;</div>
+        <div class="tier-info d-flex text-center align-items-end">
+          <div class="tier-name">{{ state.tierName }}&nbsp;&nbsp;</div>
           <div class="me-auto user-percent">
             LEVEL {{ state.level }}&nbsp;&nbsp;|&nbsp;&nbsp;
             전체 사용자 중 상위 {{pointPercent}}%</div>
@@ -51,14 +52,15 @@ export default {
     const record = computed(() => store.getters['accounts/record']);
     const pointPercent = computed(() => store.getters['accounts/pointPercent']);
     const state = reactive({
-      tierColor: '#919191',
-      tierNum: 2,
-      rankPercent: 70,
-      tearName: '실버',
+      tierColor: [
+        '#78583f', '#919191', '#f5d327', '#08fe8b', '#58eef1',
+      ],
+      tierNum: 5,
+      tierName: '브론즈',
       pointSet: '',
       levelUp: '',
-      recordPercent: '',
-      recordPercentage: '',
+      recordPercent: '100',
+      recordPercentage: '100',
       level: '',
     });
     const refresh = () => {
@@ -89,7 +91,26 @@ export default {
     this.state.recordPercent = Math.round((this.state.pointSet / this.state.levelUp) * 100);
     const stringPercent = String(this.state.recordPercent);
     this.state.recordPercentage = stringPercent.concat('%');
-    console.log('레코드퍼센트', this.state.recordPercent, this.state.recordPercentage);
+    console.log('포인트 퍼센트', this.state.recordPercent, this.state.recordPercentage);
+
+    // 티어 그림 변경
+    if (this.pointPercent > 0 && this.pointPercent < 20) {
+      this.state.tierNum = 5;
+      this.state.tierName = '다이아';
+    } else if (this.pointPercent >= 20 && this.pointPercent < 40) {
+      this.state.tierNum = 4;
+      this.state.tierName = '플레티넘';
+    } else if (this.pointPercent >= 40 && this.pointPercent < 60) {
+      this.state.tierNum = 3;
+      this.state.tierName = '골드';
+    } else if (this.pointPercent >= 60 && this.pointPercent < 80) {
+      this.state.tierNum = 2;
+      this.state.tierName = '실버';
+    } else if (this.pointPercent >= 0 && this.pointPercent <= 100) {
+      this.state.tierNum = 1;
+      this.state.tierName = '브론즈';
+    }
+    console.log(this.state.tierNum);
   },
   moundted() {},
   unmounted() {},
@@ -150,7 +171,7 @@ export default {
   padding-left: 15px;
 }
 
-.tear-bar {
+.tier-bar {
   background-color: #89621d;
 }
 
@@ -164,11 +185,11 @@ export default {
   text-shadow: 2px 2px 2px #2E2E2E;
   /* width: 90% */
 }
-.tear-info {
+.tier-info {
   padding-top: 5px;
   font-size: 12px;
 }
-.tear-name {
+.tier-name {
   padding-top: 0px;
   font-size: 16px;
 }

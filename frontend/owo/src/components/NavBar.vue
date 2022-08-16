@@ -2,7 +2,7 @@
   <div class="navContainer">
     <!--오운완 내브바-->
     <div class="owo_nav">
-      <nav class="navbar sticky-top fixed-top">
+      <nav class="navbar sticky-top">
         <div class="container-fluid d-flex justify-content-between">
           <!--logo-->
           <div class="navbar-brand mb-0 h1">
@@ -11,29 +11,8 @@
             </router-link>
           </div>
           <div v-if="!isLogin" class="d-flex justify-content-center">
-            <!--dropdows1-rooms-->
-            <li class="menu1 mypages nav-item dropdown">
-              <a class="nav-link dropdown-toggle pe-3"
-                href="#" role="button" data-bs-toggle="dropdown"
-                aria-expanded="false">
-                <span>Rooms</span>
-              </a>
-              <ul class="dropdown-menu">
-                <li>
-                  <span></span>
-                  <router-link class="dropdown-item"
-                  to="/room/competition">Competition</router-link>
-                </li>
-                <li>
-                  <router-link class="dropdown-item" to="/room/friend">FriendChat</router-link>
-                </li>
-                <li>
-                  <router-link class="dropdown-item" to="/room/youtube">Youtube</router-link>
-                </li>
-              </ul>
-            </li>
             <router-link to="/login" style="text-align:center;">
-              <li class="menu1">login</li>
+              <li class="menu1">Login</li>
             </router-link>
             <router-link to="/register">
               <li class="menu1">Signup</li>
@@ -41,31 +20,12 @@
           </div>
           <div v-else class="d-flex">
             <div class="d-flex align-items-center">
-              <li class="menu1 mypages nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                  aria-expanded="false">
-                  <span> Rooms</span>
-                </a>
-                <ul class="dropdown-menu">
-                  <li>
-                    <span></span>
-                    <router-link class="dropdown-item"
-                    to="/room/competition">Competition</router-link>
-                  </li>
-                  <li>
-                    <router-link class="dropdown-item" to="/room/friend">FriendChat</router-link>
-                  </li>
-                  <li>
-                    <router-link class="dropdown-item" to="/room/youtube">Youtube</router-link>
-                  </li>
-                </ul>
-              </li>
               <div class="navbar-brand mb-0 h1">
                 <span>안녕하세요
-                <router-link to="/mypage/main"><span
-                  v-once class="nickToMypage">{{ userInfo.nick }}</span>
-                </router-link> 님,
-                  반갑습니다!</span>
+                  <router-link to="/mypage/main"><span
+                    v-once class="nickToMypage">{{ userInfo.nick }}</span>
+                  </router-link> 님,
+                반갑습니다!</span>
               </div>
             </div>
             <div class="dropdown">
@@ -73,10 +33,18 @@
                 <img class="profile-img" :src="profileImg" alt="">
               </div>
               <div class="dropdown-content">
-                <router-link to="/mypage/main">
-                  <li @click="fetchMypage" @keyup.enter="fetchMypage">마이페이지</li>
-                </router-link>
+                <li>
+                  <router-link to="/rooms">운동 시작</router-link>
+                </li>
+                <li>
+                  <router-link
+                  to="/mypage/main" @click="fetchMypage"
+                    @keyup.enter="fetchMypage">마이페이지
+                  </router-link>
+                </li>
+                <li>
                   <button class="logout-btn" @click="logout()">로그아웃</button>
+                </li>
               </div>
             </div>
           </div>
@@ -129,6 +97,7 @@ li {
 }
 .navbar {
   box-shadow: #DFDFDF 5px 0 10px;
+  height: 69px;
 }
 
 .navContainer {

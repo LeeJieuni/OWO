@@ -14,6 +14,8 @@ export const record = {
     achievementRate: '',
     recordPicture: '',
     dayPictures: '',
+    monthStampHour: '',
+    monthRecord: '',
   }),
   getters: {
     percentage: (state) => state.percentage,
@@ -21,6 +23,8 @@ export const record = {
     dayExerciseList: (state) => state.dayExerciseList,
     achievementRate: (state) => state.achievementRate,
     dayPictures: (state) => state.dayPictures,
+    monthStampHour: (state) => state.monthStampHour,
+    monthRecord: (state) => state.monthRecord,
   },
   mutations: {
     SET_PERCENTAGE: (state, payload) => {
@@ -42,6 +46,16 @@ export const record = {
     },
     SET_DAY_PICTURES: (state, payload) => {
       state.dayPictures = payload;
+    },
+    SET_MONTH_STAMP_HOUR: (state, payload) => {
+      console.log('length', payload.length);
+      for (let i = 0; i < payload.length; i += 1) {
+        payload[i].day = Number(payload[i].datetime.substr(8));
+      };
+      state.monthStampHour = payload;
+    },
+    SET_MONTH_RECORD: (state, payload) => {
+      state.monthRecord = payload;
     },
   },
   actions: {
@@ -127,7 +141,7 @@ export const record = {
       console.log(' fetchDayPictures axios 전');
       // console.log(state.userId);
       axios({
-        url: `https://i7c202.p.ssafy.io:8282/api/record/img/${state.userId}/${date}`,
+        url: `https://i7c202.p.ssafy.io:8282/api/user/record/img/${state.userId}/${date}`,
         method: 'get',
         headers: {
           'X-AUTH-TOKEN': state.accessToken,
@@ -157,6 +171,47 @@ export const record = {
       })
         .then((res) => {
           commit('SET_RECORD_PICTURE', res.data.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    fetchMonthStampHour({ state, commit }, date) {
+      console.log(' fetchMonthStampHour axios 전');
+      // console.log(state.userId);
+      axios({
+        url: `https://i7c202.p.ssafy.io:8282/api/user/record/placeNtime/${state.userId}/${date[0]}/${date[1]}`,
+        method: 'get',
+        headers: {
+          'X-AUTH-TOKEN': state.accessToken,
+          'REFRESH-TOKEN': state.refreshToken,
+        },
+      })
+        .then((res) => {
+          console.log('month stamp hour 응답', res.data.data);
+          commit('SET_MONTH_STAMP_HOUR', res.data.data);
+        })
+        .catch((err) => {
+          console.log(err);
+          commit('SET_MONTH_STAMP_HOUR', '')
+          // console.log(state.monthStampHour);
+        });
+    },
+    fetchMonthRecord({ state, commit }, payload) {
+      console.log(' fetchMonthRecord axios 전');
+      console.log(payload[0], payload[1]);
+      axios({
+        url: `https://i7c202.p.ssafy.io:8282/api/user/record/month/${state.userId}/${payload[0]}/${payload[1]}`,
+        method: 'get',
+        headers: {
+          'X-AUTH-TOKEN': state.accessToken,
+          'REFRESH-TOKEN': state.refreshToken,
+        },
+      })
+        .then((res) => {
+          console.log('month record 응답');
+          console.log(res.data.data);
+          commit('SET_MONTH_RECORD', res.data.data);
         })
         .catch((err) => {
           console.log(err);

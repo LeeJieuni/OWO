@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import swal from 'sweetalert2';
 import mainPageView from '../views/MainPage/mainPageView.vue';
+import RoomTabView from '../views/MainPage/RoomTabView.vue';
 import MyPageView from '../views/MyPage/MyPageView.vue';
 import MyPageMainView from '../views/MyPage/MyPageMainView.vue';
 import MyPageAnalysView from '../views/MyPage/MyPageAnalysView.vue';
@@ -13,6 +14,7 @@ import YoutubeView from '../views/Room/YoutubeView.vue';
 import login from '../views/accounts/loginView.vue';
 import register from '../views/accounts/registerView.vue';
 import redirectView from '../views/accounts/RedirectView.vue';
+import YoutubeSettingView from '../views/Room/YoutubeViewSetting.vue';
 
 const routes = [
   {
@@ -20,6 +22,12 @@ const routes = [
     name: 'mainpage',
     component: mainPageView,
     meta: { unauthorized: true },
+  },
+  {
+    path: '/rooms',
+    name: 'roomTabView',
+    component: RoomTabView,
+    // meta: { unauthorized: true },
   },
   {
     path: '/login',
@@ -62,7 +70,7 @@ const routes = [
       },
       {
         path: 'schedule',
-        // name: 'MyPageScheduleView',
+        name: 'MyPageScheduleView',
         component: MyPageScheduleView,
       },
     ],
@@ -91,6 +99,11 @@ const routes = [
     path: '/room/youtube/:sessionId',
     name: 'Youtube',
     component: YoutubeView,
+  },
+  {
+    path: '/room/youtubesetting/',
+    name: 'YoutubeSetting',
+    component: YoutubeSettingView,
   },
 ];
 
