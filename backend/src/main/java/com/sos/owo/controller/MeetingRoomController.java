@@ -90,30 +90,37 @@ public class MeetingRoomController {
         } else {
             message.setMessage("운동방 불러오기 성공");
             List<MeetingListRoomResponse> meetingRooomDtoList = new ArrayList<>();
+            try{
+                for(MeetingRoom meetingRoom:meetingRoomList){
+                    if(!roomSession.containsKey(meetingRoom.getId())) continue;
+                    if(meetingRoom.getStatus() != RoomStatus.WAIT) continue;
+                    meetingRooomDtoList.add(MeetingListRoomResponse.builder()
+                            .roomId(meetingRoom.getId())
+                            .memberId(meetingRoom.getManager())
+                            .manger_percentage(memberService.getPointPercentage(meetingRoom.getManager()))
+                            .person(this.roomSession.get(meetingRoom.getId()))
+                            .secret(meetingRoom.isSecret())
+                            .password(meetingRoom.getPassword())
+                            .mode(meetingRoom.getMode())
+                            .roomName(meetingRoom.getName())
+                            .type(meetingRoom.getType())
+                            .link(meetingRoom.getLink()).build());
+                }
 
-            for(MeetingRoom meetingRoom:meetingRoomList){
-                if(!roomSession.containsKey(meetingRoom.getId())) continue;
-                if(meetingRoom.getStatus() != RoomStatus.WAIT) continue;
-                meetingRooomDtoList.add(MeetingListRoomResponse.builder()
-                        .roomId(meetingRoom.getId())
-                        .memberId(meetingRoom.getManager())
-                        .manger_point(memberService.getMemberPoint(meetingRoom.getManager()))
-                        .person(this.roomSession.get(meetingRoom.getId()))
-                        .secret(meetingRoom.isSecret())
-                        .password(meetingRoom.getPassword())
-                        .mode(meetingRoom.getMode())
-                        .roomName(meetingRoom.getName())
-                        .type(meetingRoom.getType())
-                        .link(meetingRoom.getLink()).build());
-            }
-
-            if(meetingRooomDtoList.size() == 0){
-                message.setMessage("현재 활성화된 운동방이 존재하지 않습니다.");
+                if(meetingRooomDtoList.size() == 0){
+                    message.setMessage("현재 활성화된 운동방이 존재하지 않습니다.");
+                    return new ResponseEntity<>(message, headers, HttpStatus.OK);
+                }
+                message.setData(meetingRooomDtoList);
+                message.setStatus(StatusEnum.OK);
                 return new ResponseEntity<>(message, headers, HttpStatus.OK);
+            } catch (Exception e){
+                e.printStackTrace();
+                message.setStatus(StatusEnum.INTERNAL_SERVER_ERROR);
+                message.setMessage("서버 에러 발생");
+                return new ResponseEntity<>(message, headers,  HttpStatus.INTERNAL_SERVER_ERROR);
             }
-            message.setData(meetingRooomDtoList);
-            message.setStatus(StatusEnum.OK);
-            return new ResponseEntity<>(message, headers, HttpStatus.OK);
+
         }
     }
 
