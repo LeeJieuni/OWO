@@ -1,6 +1,8 @@
 package com.sos.owo.domain.repository;
 
 import com.sos.owo.domain.Compete;
+import com.sos.owo.domain.Member;
+import com.sos.owo.error.Exception.custom.SomethingNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -21,6 +23,9 @@ public class CompeteRepository {
 
     //경쟁모드의 사용자 최고기록 조회
     public List<Integer> findBestScore(int memberId){
+        Member findMember = em.find(Member.class,memberId);
+        if(findMember == null) throw new SomethingNotFoundException("member(id:"+memberId+")");
+
         Query findCompete = em.createQuery("select c from Compete c join c.member m" +
                                 " where m.id = :memberId "
                         , Compete.class)
@@ -45,6 +50,9 @@ public class CompeteRepository {
 
     //경쟁모드의 사용자 최고기록 조회
     public Compete checkBestScore(int memberId){
+        Member findMember = em.find(Member.class,memberId);
+        if(findMember == null) throw new SomethingNotFoundException("member(id:"+memberId+")");
+
         Query findCompete = em.createQuery("select c from Compete c join c.member m" +
                         " where m.id = :memberId "
                 , Compete.class)

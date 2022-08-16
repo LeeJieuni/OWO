@@ -170,8 +170,11 @@ public class MemberService {
     public double getPointPercentage(int memberid) throws Exception{
         int rank = memberRepository2.findRanking(memberid);
         int allCnt = memberRepository2.findMemberCnt();
+        System.out.println(rank+" "+allCnt);
         double percentage = ((double) rank / allCnt) * 100;
+        System.out.println("before  "+percentage);
         percentage = Math.floor(percentage);
+        System.out.println("after  "+percentage);
         return percentage;
     }
 

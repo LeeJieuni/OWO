@@ -7,19 +7,14 @@ import com.sos.owo.domain.RecordImg;
 import com.sos.owo.dto.*;
 import com.sos.owo.error.Exception.custom.SomethingNotFoundException;
 
-import com.sos.owo.service.TagService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.redis.connection.stream.RecordId;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import java.nio.charset.StandardCharsets;
-import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.*;
 
 @Repository
@@ -46,7 +41,7 @@ public class RecordRepository {
         List<TagResponseDto> tagList = tagRepository.findTagList(recordId);
         RecordResponseDto recordResponse = new RecordResponseDto(recordId, record.getMember().getId(),record.getMeetingRoom().getId(),tagList,
                 record.getRecordTime(), record.getRecordImg().getId(),
-                record.getRecordMemo() ,record.getRecordDatetime(),record.isRecordSecret(),record.getRecordExercise().toString(),record.getPlace());
+                record.getRecordMemo() ,record.getRecordDatetime(),record.isRecordSecret(),record.getRecordExercise().toString());
 
         return recordResponse;
     }
@@ -87,7 +82,7 @@ public class RecordRepository {
                 recordResponseDtoList.add(new RecordResponseDto(r.getRecordId(), r.getMember().getId(),r.getMeetingRoom().getId(),tagList,
                         r.getRecordTime(),
                         r.getRecordImg().getId(),
-                        r.getRecordMemo() ,r.getRecordDatetime(),r.isRecordSecret(),r.getRecordExercise().toString(),r.getPlace()));
+                        r.getRecordMemo() ,r.getRecordDatetime(),r.isRecordSecret(),r.getRecordExercise().toString()));
             }
         }
 
@@ -116,7 +111,7 @@ public class RecordRepository {
                     monthList.add(new RecordResponseDto(r.getRecordId(), r.getMember().getId(), r.getMeetingRoom().getId(), tagList,
                             r.getRecordTime(),
                             r.getRecordImg().getId(),
-                            r.getRecordMemo(), r.getRecordDatetime(), r.isRecordSecret(), r.getRecordExercise().toString(), r.getPlace()));
+                            r.getRecordMemo(), r.getRecordDatetime(), r.isRecordSecret(), r.getRecordExercise().toString()));
                 }
             }
         }
@@ -322,21 +317,21 @@ public class RecordRepository {
         return responseList;
     }
 
-    public List<RecordPlaceDto> findPlaceByMonth(int memberId, int year, int month){
+    public List<RecordTimeSumDto> findPlaceByMonth(int memberId, int year, int month){
         Member findMember = em.find(Member.class,memberId);
         if(findMember == null) throw new SomethingNotFoundException("member(id:"+memberId+")");
 
-        Query query = em.createQuery("SELECT r.recordDatetime, min(r.place), sum(r.recordTime) FROM Record as r WHERE r.member.id = :memberId group by r.recordDatetime")
+        Query query = em.createQuery("SELECT r.recordDatetime, sum(r.recordTime) FROM Record as r WHERE r.member.id = :memberId group by r.recordDatetime")
                 .setParameter("memberId",memberId); // 사용자에 대한 모든 운동 기록 리스트
         List<Object[]> recordList = query.getResultList();
-        List<RecordPlaceDto> monthList = new ArrayList<>();
+        List<RecordTimeSumDto> monthList = new ArrayList<>();
 
         if(!recordList.isEmpty()) {
             for (Object[] r : recordList) {
                 String dateString = String.valueOf(r[0]);
                 LocalDate date = LocalDate.parse(dateString);
                 if (date.getYear() == year && date.getMonthValue() == month) {
-                    monthList.add(new RecordPlaceDto(date, Integer.parseInt(String.valueOf(r[1])), Integer.parseInt(String.valueOf(r[2]))));
+                    monthList.add(new RecordTimeSumDto(date, Integer.parseInt(String.valueOf(r[1]))));
                 }
             }
         }

@@ -3,9 +3,7 @@ package com.sos.owo.service;
 
 import com.sos.owo.domain.Record;
 import com.sos.owo.domain.repository.RecordRepository;
-import com.sos.owo.dto.RecordDto;
-import com.sos.owo.dto.RecordImgDto;
-import com.sos.owo.dto.RecordPlaceDto;
+import com.sos.owo.dto.RecordTimeSumDto;
 import com.sos.owo.dto.RecordResponseDto;
 import com.sos.owo.error.Exception.custom.SomethingNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -67,11 +64,10 @@ public class RecordService {
 
     @Transactional
     public int findlastingDay(int memberId) throws SomethingNotFoundException{
-
         return recordRepository.findlastingDay(memberId);
     }
     @Transactional
-    public List<RecordPlaceDto> findPlaceByMonth(int memberId, int year, int month) throws SomethingNotFoundException {
+    public List<RecordTimeSumDto> findPlaceByMonth(int memberId, int year, int month) throws SomethingNotFoundException {
         return recordRepository.findPlaceByMonth(memberId, year, month);
     }
 
