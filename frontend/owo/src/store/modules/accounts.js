@@ -817,7 +817,7 @@ export const accounts = {
         });
       const masterMod = Number(state.masterTier / 20);
       const userMod = Number(state.userTier / 20);
-      if (masterMod === userMod) {
+      if (Math.trunc(masterMod) === Math.trunc(userMod)) {
         axios({
           url: 'https://i7c202.p.ssafy.io:8282/api/user/room/enter',
           method: 'post',
@@ -845,14 +845,16 @@ export const accounts = {
       }
       console.log('방장티어', masterMod);
       console.log('유저티어', userMod);
-      if (masterMod > userMod) {
+      console.log('방장티어', Math.trunc(masterMod));
+      console.log('유저티어', Math.trunc(userMod));
+      if (Math.trunc(masterMod) > Math.trunc(userMod)) {
         swal.fire(
           '#오운완',
           '티어가 높아 입장하실 수 없습니다.',
           'warning',
         );
       }
-      if (masterMod < userMod) {
+      if (Math.trunc(masterMod) < Math.trunc(userMod)) {
         swal.fire(
           '#오운완',
           '티어가 낮아 입장하실 수 없습니다.',
