@@ -46,12 +46,9 @@ public class RecordDto {
     @ApiParam(value = "운동한 시간(단위 : 분)",type = "int")
     private int recordTime;
 
-    @ApiModelProperty(example="1")
-    @ApiParam(value = "그 판에서의 등 수(게임방 이외는 0으로 값이 들어간다.)",type = "int")
-    private int place;
 
     @Builder
-    public RecordDto(String recordMemo, LocalDate recordDatetime, boolean secret, List<String> tagList, String fileOriName, String fileUrl,int recordTime,int place) {
+    public RecordDto(String recordMemo, LocalDate recordDatetime, boolean secret, List<String> tagList, String fileOriName, String fileUrl,int recordTime) {
         this.recordMemo = recordMemo;
         this.recordDatetime = recordDatetime;
         this.secret = secret;
@@ -59,14 +56,13 @@ public class RecordDto {
         this.fileOriName = fileOriName;
         this.fileUrl = fileUrl;
         this.recordTime = recordTime;
-        this.place = place;
     }
 
     
 
     public Record toEntity()
     {
-        return Record.builder().recordMemo(recordMemo).recordDatetime(recordDatetime).recordSecret(secret).recordTime(recordTime).place(place).build();
+        return Record.builder().recordMemo(recordMemo).recordDatetime(recordDatetime).recordSecret(secret).recordTime(recordTime).build();
     }
 
 }
