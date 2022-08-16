@@ -35,7 +35,7 @@
                 <a class="days day-a" href="#" @click="selectDay(currentYear, currentMonth, day)"
                   v-b-modal="'myModal'">{{day}}</a>
               </span>
-              <img v-if="day"
+              <img v-if="stampChk(day)"
               class="dot" src="@/assets/icon/dot.png" alt="">
             </td>
           </tr>
@@ -148,6 +148,8 @@ export default {
       currentMonthStartWeekIndex: null,
       currentCalendarMatrix: [],
       endOfDay: null,
+      day: '',
+      stampDays: [],
       // memoDatas: [],
       // day: null,
       // tags: ['오운완', '상체', '등', '어깨', '복근'],
@@ -155,14 +157,20 @@ export default {
     };
   },
   computed: {
-    ...mapGetters('record', ['dayExerciseList', 'dayPictures']),
+    ...mapGetters('record', ['dayExerciseList', 'dayPictures', 'monthStampHour', 'monthRecord']),
     // ...mapGetters('accounts', ['monthRecord']),
+    // ...mapGetters('accounts', ['monthRecord']),
+  },
+  created() {
+    const payload = [this.currentYear, this.currentMonth];
+    this.fetchMonthStampHour(payload);
   },
   mounted() {
     this.init();
   },
   methods: {
-    ...mapActions('record', ['fetchDayExerciseList', 'fetchDayPictures']),
+    ...mapActions('record', ['fetchDayExerciseList', 'fetchDayPictures', 'fetchMonthStampHour', 'fetchSessions', 'fetchMonthRecord']),
+    // ...mapActions('accounts', ['fetchMonthRecord']),
     // ...mapActions('accounts', ['fetchMonthRecord']),
     hideModal() {
       console.log(this.$refs.myModal);
@@ -252,7 +260,8 @@ export default {
       this.init();
       const payload = [this.currentYear, this.currentMonth];
       console.log(payload);
-      // this.fetchMonthRecord(payload);
+      this.fetchMonthRecord(payload);
+      this.fetchMonthStampHour(payload);
     },
     onClickNext(month) {
       this.month += 1;
@@ -263,6 +272,31 @@ export default {
         this.currentMonth += 1;
       }
       this.init();
+      const payload = [this.currentYear, this.currentMonth];
+      console.log(payload);
+      this.fetchMonthRecord(payload);
+      // if (this.monthRecord.length !== 0) {
+      //   this.fetchMonthStampHour(payload);
+      // }
+      this.fetchMonthRecord(payload);
+      this.fetchMonthStampHour(payload);
+    },
+    // eslint-disable-next-line
+    stampChk(d) {
+      // const endDay = this.getEndOfDay(this.currentYear, this.currentMonth);
+      // for (let i = 0; i < endDay; i += 1) {
+      // console.log('month record');
+      console.log('length check', this.monthRecord.length);
+      if (this.monthRecord.lenght !== 0) {
+        for (let i = 0; i < this.monthStampHour.length; i += 1) {
+          if (this.monthStampHour[i].day === d) {
+            console.log('true');
+            return true;
+          }
+        }
+      } else {
+        return false;
+      }
     },
     // 모달 내에서 날짜 변경
     onClickPrevDay(year, month, day) {
@@ -347,65 +381,6 @@ export default {
       modal('hide');
     },
   },
-  // setup() {
-  //   const store = useStore();
-  //   const dayExerciseList = computed(() => store.getters['accounts/dayExerciseList']);
-
-  //   // 모달 내에서 날짜 변경
-  //   const onClickPrevDay = function (year, month, day) {
-  //     const date = new Date(year, month - 1, day);
-  //     date.setDate(date.getDate() - 1);
-  //     this.currentYear = date.getFullYear();
-  //     this.currentMonth = date.getMonth() + 1;
-  //     this.day = date.getDate();
-  //     // axios로 보낼 문자열 날짜 (예.20220820)
-  //     const stringYear = String(this.currentYear);
-  //     let stringMonth;
-  //     if (this.currentMonth >= 10) {
-  //       stringMonth = String(this.currentMonth);
-  //     } else {
-  //       stringMonth = String(0) + String(this.currentMonth);
-  //     }
-  //     let stringDay;
-  //     if (this.currentDay >= 10) {
-  //       stringDay = String(this.day);
-  //     } else {
-  //       stringDay = String(0) + String(this.day);
-  //     }
-  //     this.stringDate = stringYear + stringMonth + stringDay;
-  //     console.log(this.stringDate);
-  //     store.dispatch('record/fetchDayExerciseList', this.stringDate);
-  //   };
-  //   const onClickNextDay = function (year, month, day) {
-  //     const date = new Date(year, month - 1, day);
-  //     date.setDate(date.getDate() + 1);
-  //     this.currentYear = date.getFullYear();
-  //     this.currentMonth = date.getMonth() + 1;
-  //     this.day = date.getDate();
-  //     // axios로 보낼 문자열 날짜 (예.20220820)
-  //     const stringYear = String(this.currentYear);
-  //     let stringMonth;
-  //     if (this.currentMonth >= 10) {
-  //       stringMonth = String(this.currentMonth);
-  //     } else {
-  //       stringMonth = String(0) + String(this.currentMonth);
-  //     }
-  //     let stringDay;
-  //     if (this.currentDay >= 10) {
-  //       stringDay = String(this.day);
-  //     } else {
-  //       stringDay = String(0) + String(this.day);
-  //     }
-  //     this.stringDate = stringYear + stringMonth + stringDay;
-  //     console.log(this.stringDate);
-  //   };
-  //   return {
-  //     // state,
-  //     dayExerciseList,
-  //     onClickPrevDay,
-  //     onClickNextDay,
-  //   };
-  // },
 };
 </script>
 
@@ -566,7 +541,7 @@ td {
   /* border: 0.5px solid #c5c5c5; */
   /* text-align: left; */
   height: 70px;
-  width: 70px;
+  min-width: 70px;
   /* padding: 20px; */
 }
 .table > a {
