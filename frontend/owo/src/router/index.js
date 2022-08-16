@@ -13,6 +13,7 @@ import YoutubeView from '../views/Room/YoutubeView.vue';
 import login from '../views/accounts/loginView.vue';
 import register from '../views/accounts/registerView.vue';
 import redirectView from '../views/accounts/RedirectView.vue';
+import YoutubeSettingView from '../views/Room/YoutubeViewSetting.vue';
 
 const routes = [
   {
@@ -91,6 +92,11 @@ const routes = [
     path: '/room/youtube/:sessionId',
     name: 'Youtube',
     component: YoutubeView,
+  },
+  {
+    path: '/room/youtubesetting/',
+    name: 'YoutubeSetting',
+    component: YoutubeSettingView,
   },
 ];
 

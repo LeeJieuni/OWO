@@ -1,20 +1,6 @@
 <template>
-    <div style="width:700px;">
-      <div class="d-flex justify-content-between align-items-center">
-        <div class="d-flex align-items-center m-0">
-            <h3 v-if="timer" class="m-0">
-                {{timerHour}} : {{ timerMinute }} : {{ timerSecond }}
-            </h3>
-        </div>
-        <div>
-            <!-- <button class="mybtn5" v-if="!timer" @click="startTimer">
-              <img src="@/assets/icon/play.png" alt="">
-            </button> -->
-            <button v-if="timerONOFF & (timer>1)" @click="startTimer">다시 시작</button>
-            <button v-if="!timerONOFF" @click="stopTimer">휴식 하기</button>
-        </div>
-      </div>
-    </div>
+    <!-- eslint-disable-next-line -->
+    <div v-if="timer" class="mybtn8">&ensp;{{timerHour}} : {{ timerMinute }} : {{ timerSecond }}&ensp;</div>
 </template>
 
 <script>
@@ -33,9 +19,6 @@ export default {
   setup() {},
   created() {},
   moundted() {
-    setTimeout(() => {
-      this.startTimer();
-    });
   },
   unmounted() {},
   methods: {
@@ -76,12 +59,23 @@ p {
     color:black;
 }
 
-.mybtn5 {
-  background-color:transparent;
-  border:none;
+.mybtn8 {
+  color:#4e8aff;
   position:fixed;
-  top:45%;
-  right:30px;
-  z-index: 700;
+  top: 5px;
+  right: 210px;
+  background-image: url('../../assets/icon/startTimer.png');
+  border-radius: 10px;
+  background-position: center;
+  background-size: 220px;
+  background-repeat: no-repeat;
+  line-height:1;
+  font-size:30px;
+  width:220px;
+  height:130px;
+  display:flex;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
 }
 </style>

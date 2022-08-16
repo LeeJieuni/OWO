@@ -5,13 +5,33 @@
       <!-- eslint-disable-next-line -->
       <div class="d-flex justify-content-center align-items-center" style="width: 100%; height: 80px;">
       <!-- eslint-disable-next-line -->
-        <h3 class="game-name m-0 mb-5" style="font-size:3rem;">{{ myRoomName }}<span v-if="roundGameName"> : {{ roundGameName }}</span></h3>
+        <h3 class="game-name m-0" style="font-size:3rem; font-family: 'LeferiPoint-WhiteObliqueA';">{{ roomName }}</h3>
       </div>
       <!-- 세션 -->
       <div id="session" v-if="session">
+        <div
+          class="d-flex align-items-start justify-content-start mx-1 mb-5"
+          style="background-color: transparent; width: 911px; height: 592px"
+        >
+          <YouTube
+            src="https://www.youtube.com/watch?v=sqgxcCjD04s"
+            @ready="onReady"
+            :vars="controls"
+            @state-change="onChange"
+            width="1050"
+            height="750"
+            ref="youtube"
+            disablekb=0
+          />
+          <!-- <YouTube
+            src="https://www.youtube.com/watch?v=sqgxcCjD04s"
+            @ready="onReady"
+            ref="youtube"
+          /> -->
+        </div>
         <div>
           <div id="" class="row d-flex align-items-start justify-content-center">
-            <WebRTC id="" :stream-manager="mainStreamManager"/>
+            <WebRTC :stream-manager="mainStreamManager"/>
             <WebRTC :stream-manager="sub"
               v-for="sub in subscribers"
               :key="sub.stream.connection.connectionId"
@@ -33,7 +53,7 @@
       <div>
         <div class="d-flex justify-content-center align-items-center">
           <!-- eslint-disable-next-line -->
-          <b-modal id="after-exercise-modal" size="xl" no-close-on-esc no-close-on-backdrop hide-footer hide-header>
+          <b-modal v-model="modalShow" id="after-exercise-modal" size="xl" no-close-on-esc no-close-on-backdrop hide-footer hide-header>
             <form @submit.prevent="sendRecord(credentials, credentialsUser)">
               <div class="checkboxposition">
                 <h1 class="title text-center mt-4">🏃‍♂️운동 일지</h1>
@@ -60,14 +80,14 @@
                 </div>
                 <div class="row d-flex align-items-start justify-content-center">
                   <!-- eslint-disable-next-line -->
-                  <button @click.prevent="pickmyImg(`${mypicture}`)" v-for="(mypicture, i) in mypictures" :key="i" class="col-4 m0p0 mx-1 my-1" style="padding:0px; margin:0px; width:330px;">
+                  <button @click.prevent="pickmyImg(`${mypicture}`, i)" v-bind:id="i" v-for="(mypicture, i) in mypictures" :key="i" class="pickimg col-4 m0p0 mx-1 my-1" style="padding:0px; margin:0px; width:330px;">
                     <img :src="mypicture" alt="img" style="width:328px;">
                   </button>
                 </div>
                 <!-- 메모 남기기 버튼 -->
                 <div>
                   <div class="md-title">
-                    <div class="text-center">운동 종류</div>
+                    <div class="text-center">태그를 선택해주세요!</div>
                     <div>
                       <div class="d-flex justify-content-center" style="flex-flow:row wrap;">
                         <!-- eslint-disable-next-line -->
@@ -119,18 +139,17 @@
                 </div>
                 <div class="d-flex justify-content-center">
                   <!-- eslint-disable-next-line -->
-                  <b-button type="submit" class="mybutton btn btn-success m-2 p-2">&ensp;작성 완료&ensp;</b-button>
+                  <b-button type="submit" class="mybutton btn btn-success m-2 p-2">&ensp;기록 저장하기&ensp;</b-button>
                   <!-- eslint-disable-next-line -->
-                  <button @click="tempLeaveSession()" class="mybutton btn btn-danger m-2 p-2">저장하지않고 마치기(임시)</button>
+                  <button @click="tempLeaveSession()" class="mybutton btn btn-danger m-2 p-2">저장하지 않기</button>
                 </div>
               </div>
               <br>
               <div class="d-flex justify-content-center">
                 <!-- eslint-disable-next-line -->
-                <div style="width: 95%; text-align: right; color:red;">강제 종료 / 새로 고침하면 기록이 저장되지 않아요!</div>
+                <div style="width: 95%; text-align: right; color:red;">종료 / 새로 고침 시 기록이 저장되지 않아요!</div>
               </div>
             </form>
-          {{ credentials }}
           </b-modal>
         </div>
       </div>
@@ -227,30 +246,31 @@
             사진
           </div>
         </button>
-        <button v-b-modal.after-exercise-modal class="mybtn6">
+        <!-- <b-button v-b-modal.after-exercise-modal class="mybtn6"> -->
+        <button @click="roomOut()" class="mybtn6">
           <img class="menu_icon2" src="@/assets/icon/roomout.png" alt="leaveSession">
         </button>
-<!-- 여기에 방장 이름이 들어가야함 -->
+        <setTimer1 ref="setTimer1"></setTimer1>
         <!-- eslint-disable-next-line -->
-        <!-- <button v-if="(!isExercising) & (this.subscribers.length >= 1)" class="mybtn5" @click="startround1"> -->
-        <button v-if="!isExercising" class="mybtn5" @click="startround1">
+        <button v-if="(this.credentialsUser.memberId === this.masterId) & !this.isStarted & (this.subscribers.length >= 0)" class="mybtn7" @click="startTimer">
+        <!-- <button v-if="!isExercising" class="mybtn5" @click="startround1"> -->
           <img class="menu_icon4" src="@/assets/icon/start.png" alt="Start">
         </button>
         <!-- eslint-disable-next-line -->
-        <button class="mybtn4 dropdown dropright dropright-toggle-no-caret text-decoration-none" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-          <img class="menu_icon2" src="@/assets/icon/setTimer.png" alt="photo">
-          <div style="color:#4e8aff; font-size:12px;">
-            타이머
-          </div>
-        </button>
-        <ul class="dropdown-menu" role="menu" style="width:50px;">
+        <b-dropdown size="lg" class="mybtn4" style="margin:0; padding:0;" variant="link" toggle-class="text-decoration-none" no-caret>
         <!-- eslint-disable-next-line -->
-          <li role="presentation" style="width:100%;"><button @click="set_timer_3" class="dropdown-item text-center" type="button" target="_self">3초</button></li>
-        <!-- eslint-disable-next-line -->
-          <li role="presentation" style="width:100%;"><button @click="set_timer_5" class="dropdown-item text-center" type="button" target="_self">5초</button></li>
-        <!-- eslint-disable-next-line -->
-          <li role="presentation" style="width:100%;"><button @click="set_timer_10" class="dropdown-item text-center" type="button" target="_self">10초</button></li>
-        </ul>
+        <!-- <b-dropdown no-caret class="dropright mybtn4 text-decoration-none" style="background-color:none;" type="button"> -->
+          <template #button-content>
+            <img class="menu_icon2" src="@/assets/icon/setTimer.png" alt="photo">
+            <div style="color:#4e8aff; font-size:12px;">타이머</div>
+          </template>
+          <!-- eslint-disable-next-line -->
+          <button @click="set_timer_3" class="dropdown-item text-center" type="button" target="_self">3초</button>
+          <!-- eslint-disable-next-line -->
+          <button @click="set_timer_5" class="dropdown-item text-center" type="button" target="_self">5초</button>
+          <!-- eslint-disable-next-line -->
+          <button @click="set_timer_10" class="dropdown-item text-center" type="button" target="_self">10초</button>
+        </b-dropdown>
       </div>
       <!-- 이모티콘 -->
       <div class="emoji_position" v-if="Emoji_ONOFF">
@@ -259,39 +279,20 @@
           <Picker :data="emojiIndex" set="twitter" @select="showEmoji" />
         </div>
       </div>
-      <!-- 타이머 -->
-      <div class="setTimer2position">
-        <setTimer3 ref="setTimer3" />
-        <setTimer4 ref="setTimer4" />
-      </div>
-      <div v-show="isStarted" class="myBackGroundSetting">
-        <setTimer2 ref="setTimer2"/>
-      </div>
       <!-- 사진 양식 -->
       <div class="d-flex justify-content-center align-items-center"
       v-if="is_take_photo" id="take_photo_background"></div>
       <div class="d-flex justify-content-center align-items-center text-white"
       v-if="is_take_photo">
         <!-- eslint-disable-next-line -->
-        <div id="take_photo_WebRTC_warning">&ensp;사진은 최신 3장까지 저장됩니다!&ensp;</div>
         <WebRTCPhoto id="take_photo_WebRTC" :stream-manager="mainStreamManager"/>
+        <div id="take_photo_WebRTC_warning">&ensp;사진은 최신 3장까지 저장됩니다!&ensp;</div>
         <img v-if="this.photoDisplay" id="take_photo_WebRTC_photo" :src="this.mypictures[0]" alt="">
       </div>
       <!-- eslint-disable-next-line -->
       <div class="d-flex justify-content-center align-items-center text-white mt-4" v-if="is_take_photo" id="take_photo_timer">
         {{ temp_timer_2 }}
       </div>
-      <!-- eslint-disable-next-line -->
-      <div v-if="round1Game" class="roundGame" style="font-size:5rem; color:white;">#Round1&ensp;:&ensp;{{ roundGameName }}</div>
-      <!-- eslint-disable-next-line -->
-      <div v-if="round2Game" class="roundGame" style="font-size:5rem; color:white;">#Round2&ensp;:&ensp;{{ roundGameName }}</div>
-      <!-- eslint-disable-next-line -->
-      <div v-if="round3Game" class="roundGame" style="font-size:5rem; color:white;">#Final Round&ensp;:&ensp;{{ roundGameName }}</div>
-      <!-- eslint-disable-next-line -->
-      <div v-if="restTime" class="roundGame" style="font-size:5rem; color:white;">휴식시간</div>
-      <button @click="init">start</button>
-      <div>나의 카운트 : {{ count }} </div>
-      <button @click="stopCam">캠 삭제</button>
     </div>
   </div>
 </template>
@@ -299,9 +300,7 @@
 import html2canvas from 'html2canvas';
 import WebRTC from '@/components/Room/WebRTC.vue';
 import WebRTCPhoto from '@/components/Room/WebRTCPhoto.vue';
-import setTimer2 from '@/components/Room/setTimer2.vue';
-import setTimer3 from '@/components/Room/setTimer3.vue';
-import setTimer4 from '@/components/Room/setTimer4.vue';
+import setTimer1 from '@/components/Room/setTimer1.vue';
 import axios from 'axios';
 import { OpenVidu } from 'openvidu-browser';
 import emojidata from 'emoji-mart-vue-fast/data/all.json';
@@ -309,9 +308,7 @@ import 'emoji-mart-vue-fast/css/emoji-mart.css';
 import { Picker, EmojiIndex } from 'emoji-mart-vue-fast/src';
 import { mapState, mapActions, mapMutations } from 'vuex';
 import swal from 'sweetalert2';
-// eslint-disable-next-line
-import * as tf from '@tensorflow/tfjs';
-import * as tmPose from '@teachablemachine/pose';
+import YouTube from 'vue3-youtube';
 
 window.Swal = swal;
 
@@ -322,8 +319,6 @@ const accounts = 'accounts';
 const meetingroom = 'meetingroom';
 const emojiIndex = new EmojiIndex(emojidata);
 const emoji = 'emoji';
-const exercise = 'exercise';
-
 const today = new Date();
 const year = today.getFullYear();
 const month = today.getMonth() + 1;
@@ -340,18 +335,22 @@ export default {
     WebRTC,
     WebRTCPhoto,
     Picker,
-    setTimer2,
-    setTimer3,
-    setTimer4,
+    setTimer1,
+    YouTube,
   },
   data() {
     return {
+      limitMininalTime: 1, // 최소한의 기록이 남는 시간(분)
+      firstPictureTime: 30, // 첫 사진이 촬영되는 시간(초)
+      modalShow: false,
       // 타이머 셋팅
       timer: 3,
       temp_timer: 3,
       temp_timer_2: 3,
       take_photo_timer: null,
       is_take_photo: false,
+      startTime: undefined,
+      endTime: undefined,
       // 이모지 셋팅
       myemoji: '',
       emojiIndex,
@@ -370,10 +369,8 @@ export default {
       publisher: undefined,
       subscribers: [],
       // 방 설정
-      startTime: undefined,
       photoDisplay: false,
       youtubeURL: '',
-      lockroomcheck: false,
       isMaster: true,
       roommode: 'GAME',
       mode: ['FRIEND', 'YOUTUBE', 'GAME'],
@@ -391,7 +388,7 @@ export default {
         fileUrl: '',
         recordDatetime: format,
         recordMemo: null,
-        recordTime: 30,
+        recordTime: 0,
         secret: false,
         tagList: [],
       },
@@ -469,14 +466,11 @@ export default {
 
   computed: {
     ...mapState(emoji, ['allEmojiList']),
-    ...mapState(accounts, ['accessToken', 'userInfo']),
+    ...mapState(accounts, ['accessToken', 'userInfo', 'refreshToken', 'roomName', 'masterId']),
     ...mapState(openvidu, ['OPENVIDU_SERVER_URL', 'OPENVIDU_SERVER_SECRET']),
-    ...mapState(meetingroom, ['myRoomName', 'mySessionId', 'meetingRoomList', 'camera', 'mic', 'roomMasterId']),
+    ...mapState(meetingroom, ['mySessionId', 'camera', 'mic']),
   },
   methods: {
-    stopCam() {
-      this.webcam.stop();
-    },
     tempLeaveSession() {
       this.leaveSession();
       document.body.removeAttribute('data-bs-overflow');
@@ -487,42 +481,45 @@ export default {
       document.getElementsByClassName('modal-backdrop')[0].remove();
       document.getElementsByClassName('modal-backdrop')[0].remove();
     },
-    drawPose(pose) {
-      if (this.webcam.canvas) {
-        this.ctx.drawImage(this.webcam.canvas, 0, 0);
-        if (pose) {
-          const minPartConfidence = 0.5;
-          tmPose.drawKeypoints(pose.keypoints, minPartConfidence, this.ctx);
-          tmPose.drawSkeleton(pose.keypoints, minPartConfidence, this.ctx);
-        }
-      }
-    },
-    pickmyImg(Img) {
+    pickmyImg(Img, i) {
       this.credentials.fileOriName = `${this.userInfo.nick}_${format}.png`;
       this.credentials.fileUrl = Img;
+      const el1 = document.getElementById('0');
+      const el2 = document.getElementById('1');
+      const el3 = document.getElementById('2');
+      if (el1) { el1.style.opacity = '0.3'; }
+      if (el2) { el2.style.opacity = '0.3'; }
+      if (el3) { el3.style.opacity = '0.3'; }
+      document.getElementById(`${i}`).style.opacity = '1';
     },
-    // roomOut() {
-    //   console.log(this.$bvModal);
-    //   this.$bvModal.show('after-exercise-modal');
-    //   this.leaveSession();
-    //   if (this.roomTime < 1) {
-    //     this.leaveSession();
-    //   } else if (this.roomTime < 5) {
-    //     swal.fire({
-    //       title: '퇴장하실건가요?',
-    //       text: "5분 미만 운동 시 기록이 저장되지 않습니다.",
-    //       icon: 'warning',
-    //       showCancelButton: true,
-    //       confirmButtonColor: '#d33',
-    //       confirmButtonText: '그래도 나갈게요.',
-    //       cancelButtonColor: '#3085d6',
-    //       denyButtonText: `더 운동할께요!`,
-    //     }).then(() => {
-    //       this.leaveSession();
-    //     })
-    //   } else {
-    //   };
-    //   }
+    roomOut() {
+      if (!this.startTime) {
+        this.leaveSession();
+      }
+      const now = new Date();
+      this.endTimeSet(now);
+      // eslint-disable-next-line
+      this.credentials.recordTime = Math.abs((this.startTime.getTime() - this.endTime.getTime()) / (1000 * 60));
+      console.log(this.credentials.recordTime);
+      if (this.credentials.recordTime < this.limitMininalTime) {
+        swal.fire({
+          title: '퇴장하실건가요?',
+          text: `${this.limitMininalTime}분 미만 운동 시 기록이 저장되지 않습니다.`,
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#d33',
+          confirmButtonText: '그래도 나갈래요.',
+          cancelButtonColor: '#3085d6',
+          cancelButtonText: '더 운동할께요!',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.leaveSession();
+          }
+        });
+      } else {
+        this.modalShow = !this.modalShow;
+      }
+    },
     fn_checkByte() {
       const maxByte = 200; // 최대 200바이트
       const textVal = document.getElementById('exerciseMemo').value; // 입력한 문자
@@ -618,17 +615,8 @@ export default {
     ...mapActions(emoji, ['changeEmojiList', 'removeEmojiList']),
     ...mapMutations(meetingroom, ['SET_SESSION_ID']),
     ...mapActions(meetingroom, [
-      'makeSession',
-      'getMeetingRoomList',
       'enterMeetingRoom',
       'leaveMeetingRoom',
-      'startMeetingRoom',
-    ]),
-    ...mapActions(exercise, [
-      'changeExerciseName',
-      'changeSquatCountList',
-      'changeLungeCountList',
-      'changeBurpeeCountList',
     ]),
     joinSession(sessionNum) {
       this.SET_SESSION_ID(sessionNum);
@@ -702,33 +690,6 @@ export default {
         this.changeEmojiList(obj);
       });
 
-      this.session.on('signal:squatCount', (event) => {
-        const sendSquatCountData = event.data.split(',');
-        const obj = {
-          connectionId: sendSquatCountData[0],
-          allUserSquatCount: sendSquatCountData[1],
-        };
-        this.changeSquatCountList(obj);
-      });
-
-      this.session.on('signal:lungeCount', (event) => {
-        const sendLungeCountData = event.data.split(',');
-        const obj = {
-          connectionId: sendLungeCountData[0],
-          allUserLungeCount: sendLungeCountData[1],
-        };
-        this.changeLungeCountList(obj);
-      });
-
-      this.session.on('signal:burpeeCount', (event) => {
-        const sendBurpeeCountData = event.data.split(',');
-        const obj = {
-          connectionId: sendBurpeeCountData[0],
-          allUserBurpeeCount: sendBurpeeCountData[1],
-        };
-        this.changeBurpeeCountList(obj);
-      });
-
       this.session.on('signal:my-chat', (event) => {
         const chatdata = event.data.split(',');
         const obj = {
@@ -741,187 +702,25 @@ export default {
         chat.scrollTop = chat.scrollHeight;
       });
 
-      this.session.on('signal:startround1', () => {
-        // eslint-disable-next-line
-        const audio = new Audio(require('@/assets/music/round1.mp3'));
-        audio.play();
-        this.isExercising = true;
-        this.isStarted = true;
-        this.round1Game = true;
-        this.roundGameName = '스쿼트';
+      this.session.on('signal:startTimer', () => {
+        this.$refs.setTimer1.startTimer();
+        const now = new Date();
+        /* eslint-disable new-cap */
+        this.startTimeSet(now);
         setTimeout(() => {
-          this.round1Game = false;
-          // eslint-disable-next-line
-          const audio = new Audio(require('@/assets/music/321.mp3'));
-          audio.play();
-          this.$refs.setTimer2.pauseTimer();
-          document.getElementsByClassName('webrtcetc')[0].remove();
-          document.getElementsByClassName('webrtcetc')[0].remove();
-          document.getElementsByClassName('webrtcetc')[0].remove();
-          document.getElementsByClassName('webrtcetc')[0].remove();
-          document.getElementsByClassName('webrtcetc')[0].remove();
-          // setTimeout(() => {
-          const el = document.getElementsByClassName('webrtctag');
-          switch (el.length) {
-            case 2:
-              document.getElementsByClassName('webrtctag')[0].style.width = '49%';
-              document.getElementsByClassName('webrtctag')[0].style.height = '50%';
-              document.getElementsByClassName('webrtctag')[0].style.backgroundColor = 'transparent';
-              document.getElementsByClassName('webrtctag')[0].style.border = 'none';
-              document.getElementsByClassName('webrtctag')[1].style.width = '49%';
-              document.getElementsByClassName('webrtctag')[1].style.height = '50%';
-              document.getElementsByClassName('webrtctag')[1].style.backgroundColor = 'transparent';
-              document.getElementsByClassName('webrtctag')[1].style.border = 'none';
-              break;
-            case 3:
-              document.getElementsByClassName('webrtctag')[0].style.width = '33%';
-              document.getElementsByClassName('webrtctag')[0].style.height = '33%';
-              document.getElementsByClassName('webrtctag')[0].style.backgroundColor = 'transparent';
-              document.getElementsByClassName('webrtctag')[0].style.border = 'none';
-              document.getElementsByClassName('webrtctag')[1].style.width = '33%';
-              document.getElementsByClassName('webrtctag')[1].style.height = '33%';
-              document.getElementsByClassName('webrtctag')[1].style.backgroundColor = 'transparent';
-              document.getElementsByClassName('webrtctag')[1].style.border = 'none';
-              document.getElementsByClassName('webrtctag')[2].style.width = '33%';
-              document.getElementsByClassName('webrtctag')[2].style.height = '33%';
-              document.getElementsByClassName('webrtctag')[2].style.backgroundColor = 'transparent';
-              document.getElementsByClassName('webrtctag')[2].style.border = 'none';
-              break;
-            case 4:
-              document.getElementsByClassName('webrtctag')[0].style.width = '33%';
-              document.getElementsByClassName('webrtctag')[0].style.height = '33%';
-              document.getElementsByClassName('webrtctag')[0].style.backgroundColor = 'transparent';
-              document.getElementsByClassName('webrtctag')[0].style.border = 'none';
-              document.getElementsByClassName('webrtctag')[1].style.width = '33%';
-              document.getElementsByClassName('webrtctag')[1].style.height = '33%';
-              document.getElementsByClassName('webrtctag')[1].style.backgroundColor = 'transparent';
-              document.getElementsByClassName('webrtctag')[1].style.border = 'none';
-              document.getElementsByClassName('webrtctag')[2].style.width = '33%';
-              document.getElementsByClassName('webrtctag')[2].style.height = '33%';
-              document.getElementsByClassName('webrtctag')[2].style.backgroundColor = 'transparent';
-              document.getElementsByClassName('webrtctag')[2].style.border = 'none';
-              document.getElementsByClassName('webrtctag')[3].style.width = '33%';
-              document.getElementsByClassName('webrtctag')[3].style.height = '33%';
-              document.getElementsByClassName('webrtctag')[3].style.backgroundColor = 'transparent';
-              document.getElementsByClassName('webrtctag')[3].style.border = 'none';
-              break;
-            case 5:
-              document.getElementsByClassName('webrtctag')[0].style.backgroundColor = 'transparent';
-              document.getElementsByClassName('webrtctag')[0].style.border = 'none';
-              document.getElementsByClassName('webrtctag')[1].style.backgroundColor = 'transparent';
-              document.getElementsByClassName('webrtctag')[1].style.border = 'none';
-              document.getElementsByClassName('webrtctag')[2].style.backgroundColor = 'transparent';
-              document.getElementsByClassName('webrtctag')[2].style.border = 'none';
-              document.getElementsByClassName('webrtctag')[3].style.backgroundColor = 'transparent';
-              document.getElementsByClassName('webrtctag')[3].style.border = 'none';
-              document.getElementsByClassName('webrtctag')[4].style.backgroundColor = 'transparent';
-              document.getElementsByClassName('webrtctag')[4].style.border = 'none';
-              break;
-            case 6:
-              document.getElementsByClassName('webrtcetc')[0].style.width = 0;
-              document.getElementsByClassName('webrtcetc')[0].style.height = 0;
-              document.getElementsByClassName('webrtctag')[0].style.backgroundColor = 'transparent';
-              document.getElementsByClassName('webrtctag')[0].style.border = 'none';
-              document.getElementsByClassName('webrtctag')[1].style.backgroundColor = 'transparent';
-              document.getElementsByClassName('webrtctag')[1].style.border = 'none';
-              document.getElementsByClassName('webrtctag')[2].style.backgroundColor = 'transparent';
-              document.getElementsByClassName('webrtctag')[2].style.border = 'none';
-              document.getElementsByClassName('webrtctag')[3].style.backgroundColor = 'transparent';
-              document.getElementsByClassName('webrtctag')[3].style.border = 'none';
-              document.getElementsByClassName('webrtctag')[4].style.backgroundColor = 'transparent';
-              document.getElementsByClassName('webrtctag')[4].style.border = 'none';
-              document.getElementsByClassName('webrtctag')[5].style.backgroundColor = 'transparent';
-              document.getElementsByClassName('webrtctag')[5].style.border = 'none';
-              break;
-            default:
-              break;
-          }
-          // }, 100);
-        }, 2000);
-        setTimeout(() => {
-          this.gameType = 1;
-          this.changeExerciseName(1);
-          this.init();
-        }, 5000);
-        setTimeout(() => {
-          this.isStarted = false;
-          this.$refs.setTimer3.pauseTimer();
-        }, 6000);
-        setTimeout(() => {
-          this.restTime = true;
-          this.$refs.setTimer4.pauseTimer();
-          this.webcam.stop();
-        }, 67000);
-        setTimeout(() => {
-          this.webcam.start();
-          this.restTime = false;
-          this.startround2();
-        }, 83000);
-      });
-
-      this.session.on('signal:startround2', () => {
-        // eslint-disable-next-line
-        const audio = new Audio(require('@/assets/music/round2.mp3'));
-        audio.play();
-        this.isStarted = true;
-        this.round2Game = true;
-        this.roundGameName = '런지';
-        setTimeout(() => {
-          this.round2Game = false;
-          // eslint-disable-next-line
-          const audio = new Audio(require('@/assets/music/321.mp3'));
-          audio.play();
-          this.$refs.setTimer2.pauseTimer();
-        }, 2000);
-        setTimeout(() => {
-          this.isStarted = false;
-          this.$refs.setTimer3.pauseTimer();
-          this.gameType = 2;
-          this.changeExerciseName(2);
-        }, 6000);
-        setTimeout(() => {
-          this.restTime = true;
-          this.$refs.setTimer4.pauseTimer();
-          this.webcam.stop();
-        }, 67000);
-        setTimeout(() => {
-          this.webcam.start();
-          this.restTime = false;
-          this.startround3();
-        }, 83000);
-      });
-
-      this.session.on('signal:startround3', () => {
-        // eslint-disable-next-line
-        const audio = new Audio(require('@/assets/music/roundfinal.mp3'));
-        audio.play();
-        this.isStarted = true;
-        this.round3Game = true;
-        this.roundGameName = '버피테스트';
-        setTimeout(() => {
-          this.round3Game = false;
-          // eslint-disable-next-line
-          const audio = new Audio(require('@/assets/music/321.mp3'));
-          audio.play();
-          this.$refs.setTimer2.pauseTimer();
-        }, 2000);
-        setTimeout(() => {
-          this.isStarted = false;
-          this.$refs.setTimer3.pauseTimer();
-          this.gameType = 3;
-          this.changeExerciseName(3);
-        }, 6000);
-        setTimeout(() => {
-          this.webcam.stop();
-        }, 67000);
-        setTimeout(() => {
-          this.isExercising = false;
-          this.restTime = false;
-          this.changeExerciseName(0);
-        }, 83000);
+          const el = document.getElementsByClassName('ov-video')[0];
+          html2canvas(el).then((canvas) => {
+            this.mypictures.unshift(canvas.toDataURL('image/png', 1.0));
+          });
+        }, this.firstPictureTime * 1000);
       });
     },
-
+    startTimeSet(now) {
+      this.startTime = now;
+    },
+    endTimeSet(now) {
+      this.endTime = now;
+    },
     sendEmoji() {
       this.session
         .signal({
@@ -930,6 +729,7 @@ export default {
           type: 'my-emoji',
         });
     },
+
     sendMassage() {
       this.session
         .signal({
@@ -946,33 +746,16 @@ export default {
         });
     },
 
-    startround1() {
+    startTimer() {
       this.session
         .signal({
-          data: '', // Any string (optional)
-          to: [], // Array of Connection objects (optional. Broadcast to everyone if empty)
-          type: 'startround1', // The type of message (optional)
-        });
-    },
-    startround2() {
-      this.session
-        .signal({
-          data: '', // Any string (optional)
-          to: [], // Array of Connection objects (optional. Broadcast to everyone if empty)
-          type: 'startround2', // The type of message (optional)
-        });
-    },
-    startround3() {
-      this.session
-        .signal({
-          data: '', // Any string (optional)
-          to: [], // Array of Connection objects (optional. Broadcast to everyone if empty)
-          type: 'startround3', // The type of message (optional)
+          type: 'startTimer',
+        }).then(() => {
+          this.isStarted = true;
         });
     },
 
     async leaveSession() {
-      this.changeExerciseName(0);
       this.removeEmojiList();
       this.removeEmoji();
       // --- Leave the session by calling 'disconnect' method over the Session object ---
@@ -1150,170 +933,8 @@ export default {
     set_timer_3() { this.timer = 3; },
     set_timer_5() { this.timer = 5; },
     set_timer_10() { this.timer = 10; },
-    lockroom() {
-      this.lockroomcheck = !this.lockroomcheck;
-    },
     exerciseJournalSubmit(event) {
       event.preventDefault();
-    },
-    async setmodel() {
-      switch (this.gameType) {
-        case 1: // 스쿼트
-          this.URL = 'https://teachablemachine.withgoogle.com/models/mtTsf3dWh/';
-          break;
-        case 2: // 런지
-          this.URL = 'https://teachablemachine.withgoogle.com/models/rX6NKe6V_/';
-          break;
-        case 3: // 버피
-          this.URL = 'https://teachablemachine.withgoogle.com/models/bLxzzIAS3/';
-          break;
-        default:
-          break;
-      }
-      const modelURL = `${this.URL}model.json`;
-      const metadataURL = `${this.URL}metadata.json`;
-      // console.log('model set before');
-      // this.model = await tmPose.load(modelURL, metadataURL);
-      this.model = Object.freeze(await tmPose.load(modelURL, metadataURL));
-      // console.log('model set -> ', this.model);
-      // const mymodel = await tf.loadGraphModel(modelURL);
-      // mymodel.dispose();
-    },
-
-    async init() {
-      this.setmodel();
-      const flip = false;
-      this.webcam = new tmPose.Webcam(800, 700, flip);
-      await this.webcam.setup();
-      await this.webcam.play();
-      await window.requestAnimationFrame(this.loop);
-      const canvas2 = this.webcam.canvas;
-      canvas2.width = 800;
-      canvas2.height = 700;
-      this.ctx = canvas2.getContext('2d');
-    },
-    async loop() {
-      await this.webcam.update();
-      switch (this.gameType) {
-        case 1:
-          await this.squatpredict();
-          break;
-        case 2:
-          await this.lungepredict();
-          break;
-        case 3:
-          await this.burpeepredict();
-          break;
-        default:
-          break;
-      }
-      await window.requestAnimationFrame(this.loop);
-    },
-
-    async squatpredict() {
-      // Prediction #1: run input through posenet
-      // estimatePose can take in an image, video or canvas html element
-      // console.log('squat predict -> ', this.model);
-      const { pose, posenetOutput } = await this.model.estimatePose(
-        this.webcam.canvas,
-      );
-      // Prediction 2: run input through teachable machine classification model
-      const prediction = await this.model.predict(posenetOutput);
-      if (prediction[1].probability.toFixed(2) > 0.99) { // 스쿼트
-        if (this.check) {
-          this.squatCount += 1;
-          console.log('squatCount', this.squatCount);
-          this.session
-            .signal({
-              data: `${this.connectionId},${this.squatCount}`, // Any string (optional)
-              to: [], // Array of Connection objects (optional. Broadcast to everyone if empty)
-              type: 'squatCount', // The type of message (optional)
-            })
-            .then(() => {
-              // this.setState({ check: false });
-              this.check = false;
-            })
-            .catch(() => {});
-        }
-        this.status = 'squat';
-        // this.setState({ status: 'ready' });
-      } else if (prediction[0].probability.toFixed(2) > 0.99) { // 서 있는 자세
-        // const countTemp = this.count;
-        // this.count = countTemp + 1;
-        // this.count += 1;
-        // console.log('squat count : ', this.count);
-        this.status = 'ready';
-        // this.setState({ check: true });
-        this.check = true;
-      }
-      // console.log('squat finish');
-      this.drawPose(pose);
-    },
-
-    async lungepredict() {
-      const { pose, posenetOutput } = await this.model.estimatePose(
-        this.webcam.canvas,
-      );
-      const prediction = await this.model.predict(posenetOutput);
-      if (prediction[1].probability.toFixed(2) > 0.99) { // 런지
-        if (this.check) {
-          this.lungeCount += 1;
-          console.log('lungeCount', this.lungeCount);
-          this.session
-            .signal({
-              data: `${this.connectionId},${this.lungeCount}`, // Any string (optional)
-              to: [], // Array of Connection objects (optional. Broadcast to everyone if empty)
-              type: 'lungeCount', // The type of message (optional)
-            })
-            .then(() => {
-              // this.setState({ check: false });
-              this.check = false;
-            })
-            .catch(() => {});
-        }
-        this.status = 'lunge';
-        // this.setState({ status: 'ready' });
-      } else if (prediction[0].probability.toFixed(2) > 0.99) { // 서 있는 자세
-        this.status = 'ready';
-        this.check = true;
-      }
-      this.drawPose(pose);
-    },
-
-    async burpeepredict() {
-      const { pose, posenetOutput } = await this.model.estimatePose(
-        this.webcam.canvas,
-      );
-      const prediction = await this.model.predict(posenetOutput);
-      if (prediction[2].probability.toFixed(2) > 0.99) { // 서 있는 자세
-        if (this.check && this.check2) {
-          this.burpeeCount += 1;
-          console.log('burpeeCount', this.burpeeCount);
-          this.session
-            .signal({
-              data: `${this.connectionId},${this.burpeeCount}`, // Any string (optional)
-              to: [], // Array of Connection objects (optional. Broadcast to everyone if empty)
-              type: 'burpeeCount', // The type of message (optional)
-            })
-            .then(() => {
-              // this.setState({ check: false });
-              this.check = false;
-              this.check2 = false;
-            })
-            .catch(() => {});
-        }
-        this.status = 'go';
-        // this.setState({ status: 'ready' });
-      } else if (prediction[1].probability.toFixed(2) > 0.99) { // 쪼그려 앉아 있는 자세
-        this.status = 'ready';
-        if (this.check) {
-          this.check = true;
-        }
-      } else if (prediction[0].probability.toFixed(2) > 0.99) { // 엎드려 있는 자세
-        this.status = 'set';
-        this.check2 = true;
-      }
-      this.drawPose(pose);
     },
   },
 };
@@ -1637,8 +1258,8 @@ solid #cedfff; border-top: 10px solid transparent; border-bottom: 10px solid tra
   background-color:transparent;
   border:none;
   position:fixed;
-  top:40%;
-  left:30px;
+  top:38%;
+  left:10px;
   /* z-index: 500; */
 }
 
@@ -1646,7 +1267,7 @@ solid #cedfff; border-top: 10px solid transparent; border-bottom: 10px solid tra
   background-color:transparent;
   border:none;
   position:fixed;
-  top: 6px;
+  top: 20px;
   right: 120px;
   /* z-index: 500; */
 }
@@ -1655,8 +1276,17 @@ solid #cedfff; border-top: 10px solid transparent; border-bottom: 10px solid tra
   background-color:transparent;
   border:none;
   position:fixed;
-  top: 30px;
+  top: 47px;
   right: 30px;
+  /* z-index: 500; */
+}
+
+.mybtn7 {
+  background-color:transparent;
+  border:none;
+  position:fixed;
+  top: 21px;
+  right: 120px;
   /* z-index: 500; */
 }
 
@@ -1735,4 +1365,9 @@ solid #cedfff; border-top: 10px solid transparent; border-bottom: 10px solid tra
   transform: translate(0, -50%);
   opacity: 0.9;
 }
+
+.pickimg:active {
+  width:500px;
+}
+
 </style>
