@@ -139,6 +139,7 @@
               roomId: room.roomId,
               mode: room.mode,
               roomName: room.roomName,
+              link: room.link,
               })">
               들어가기</b-button>
               <template #footer>
@@ -294,16 +295,19 @@
             </div>
                 <div class="d-flex">
                     <p align="left" class="workoutType">{{ workout_reverse[room.type] }}</p>
+                    <p style="background-color: rgba(243, 62, 26, 0.445);">
+                    티어 {{ tier[Number((masterTier / 20)) - 1] }}</p>
                 </div>
             <div class="cardTitle d-flex align-items-center">
               <p style="font-size: 0.7em">{{ room.roomName }}</p>
             </div>
             <b-button size="lg" class="rooms_btn" variant="primary"
-              @click="enterroom({
+              @click="enterCompetitionRoom({
               password: enterPassword,
               roomId: room.roomId,
               mode: room.mode,
               roomName: room.roomName,
+              master: room.memberId,
               })">
               들어가기</b-button>
               <template #footer>
@@ -334,7 +338,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters, mapActions, mapState } from 'vuex';
 // eslint--disable-next-line
 const accounts = 'accounts';
 
@@ -385,13 +389,21 @@ export default {
       competition_option: {
         게임: 'GAME',
       },
+      tier: {
+        0: '다이아', // 0 ~ 19
+        1: '플래티넘', // 20 ~ 39
+        2: '골드', // 40 ~ 59
+        3: '실버', // 60 ~ 79
+        4: '브론즈', // 80 ~ 100
+      },
     };
   },
   computed: {
+    ...mapState(accounts, ['masterTier']),
     ...mapGetters(accounts, ['roomList', 'userInfo', 'isLogin', 'noGame', 'noFree', 'noStreaming']),
   },
   methods: {
-    ...mapActions(accounts, ['getRoomList', 'enterroom', 'makeRoom']),
+    ...mapActions(accounts, ['getRoomList', 'enterroom', 'makeRoom', 'enterCompetitionRoom']),
     moveRoom(payload) {
       this.makeRoom(payload);
       document.body.removeAttribute('class');
@@ -503,5 +515,8 @@ input {
   margin-bottom: -405px;
   z-index: 1;
   border-radius: 10px;
+}
+html {
+  height: 400px;
 }
 </style>

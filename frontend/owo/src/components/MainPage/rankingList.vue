@@ -29,7 +29,7 @@
         <h5 class="card-title">{{ rankingList[0].name }}님의 record</h5>
         <div class="d-flex justify-content-center align-items-center"
           style="margin-bottom: 10px">
-          <circle-progress class="progress-bar" :percent="achievement"
+          <circle-progress class="progress-bar" :percent="percents"
           :show-percent="true" :viewport="true" :size="160" />
         </div>
         <h5 class="card-bottom">연속 {{ lastingDay }}일 동안 운동하고 있어요!</h5>
@@ -64,7 +64,7 @@
           <h5 class="card-title">Records</h5>
           <div class="d-flex row justify-content-center" sytle="margin-bottom: 10px">
             <p>목표 대비 달성률</p>
-            <circle-progress class="progress-bar" :percent="achievement"
+            <circle-progress class="progress-bar" :percent="percents"
             :show-percent="true" :viewport="true" :size="130"/>
           </div>
           <div class="text">
@@ -100,6 +100,7 @@ export default {
   data() {
     return {
       backColors: ['#274C95', '#4E8AFF', '#98BBFF'],
+      percents: this.lastingDay,
     };
   },
   methods: {
@@ -111,8 +112,7 @@ export default {
   },
   computed: {
     ...mapState(mainpage, ['rankingList', 'myranking']),
-    ...mapGetters(accounts, ['isLogin', 'userInfo', 'lastingDay']),
-    ...mapGetters(mainpage, ['achievement']),
+    ...mapGetters(accounts, ['isLogin', 'userInfo', 'achievementRate', 'lastingDay']),
   },
 };
 </script>
@@ -120,7 +120,7 @@ export default {
 <style scoped>
 .body {
   background-color: #642afb;
-  height: 100vh;
+  height: 80vh;
 }
 p {
   font-size: 1.5vh;
