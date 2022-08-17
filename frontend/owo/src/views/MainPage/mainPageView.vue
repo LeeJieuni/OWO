@@ -6,7 +6,7 @@
     <Carousel></Carousel>
     <!-- <rankingList style="height: 80vh;"/> -->
     <!-- <roomTab class="room"></roomTab> -->
-    <FooFooter style="height: 20vh;"/>
+    <FooFooter style="height: 8vh;"/>
   </div>
 </template>
 
@@ -81,11 +81,6 @@ export default {
           }
         });
       }
-    }
-    const mode = ['FREE', 'GAME', 'STREAMING'];
-    for (let i = 0; i < mode.length; i += 1) {
-      console.log('실행중이다 getroomList');
-      this.getRoomList(mode[i]);
     }
     this.getImage();
   },

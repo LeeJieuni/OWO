@@ -7,14 +7,13 @@ import MyPageMainView from '../views/MyPage/MyPageMainView.vue';
 import MyPageAnalysView from '../views/MyPage/MyPageAnalysView.vue';
 import MyPageUpdateView from '../views/MyPage/MyPageUpdateView.vue';
 import MyPageScheduleView from '../views/MyPage/MyPageScheduleView.vue';
-import MyPageSlideView from '../views/MyPage/MyPageSlideView.vue';
 import CompetitionView from '../views/Room/CompetitionView.vue';
 import FriendView from '../views/Room/FriendView.vue';
 import YoutubeView from '../views/Room/YoutubeView.vue';
 import login from '../views/accounts/loginView.vue';
 import register from '../views/accounts/registerView.vue';
 import redirectView from '../views/accounts/RedirectView.vue';
-import YoutubeSettingView from '../views/Room/YoutubeViewSetting.vue';
+import TutorialView from '../views/Room/ATutorial.vue';
 
 const routes = [
   {
@@ -76,11 +75,6 @@ const routes = [
     ],
   },
   {
-    path: '/slide',
-    name: 'MyPageSlideView',
-    component: MyPageSlideView,
-  },
-  {
     path: '/room/competition/',
     name: 'competition1',
     component: CompetitionView,
@@ -101,9 +95,10 @@ const routes = [
     component: YoutubeView,
   },
   {
-    path: '/room/youtubesetting/',
-    name: 'YoutubeSetting',
-    component: YoutubeSettingView,
+    path: '/tutorial',
+    name: 'ATutorial',
+    component: TutorialView,
+    meta: { unauthorized: true },
   },
 ];
 
@@ -121,11 +116,19 @@ router.beforeEach((to, from, next) => {
   if (to.matched.some((record) => record.meta.unauthorized || token)) {
     return next();
   }
+  if (to.matched.some((record) => !record.meta.unauthorized || !token)) {
+    swal.fire(
+      '#오운완',
+      '로그인이 필요한 서비스입니다.',
+      'warning',
+    );
+    return next('/login');
+  }
   swal.fire(
     '#오운완',
-    '로그인이 필요한 서비스입니다.',
+    '잘못된 접근입니다.',
     'warning',
   );
-  return next('/login');
+  return next('/');
 });
 export default router;

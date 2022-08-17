@@ -237,7 +237,7 @@
           <img class="menu_icon4" src="@/assets/icon/start.png" alt="Start">
         </button>
         <!-- eslint-disable-next-line -->
-        <b-dropdown size="lg" class="mybtn4" style="margin:0; padding:0;" variant="link" toggle-class="text-decoration-none" no-caret>
+        <b-dropdown size="lg" class="mybtn4" style="border:none; margin:0; padding:0;" variant="link" toggle-class="text-decoration-none" no-caret>
         <!-- eslint-disable-next-line -->
         <!-- <b-dropdown no-caret class="dropright mybtn4 text-decoration-none" style="background-color:none;" type="button"> -->
           <template #button-content>

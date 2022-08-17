@@ -41,9 +41,6 @@
           </tr>
         </tbody>
       </table>
-
-      <router-link to="/slide">변화 한 눈에 보기</router-link>
-
       <b-modal id="myModal" size="lg" button-size="sm" scrollable ref="myModal"
       class="myModal" hide-footer
         :title="`${currentYear}년 ${currentMonth}월 ${day}일`" hide-header>

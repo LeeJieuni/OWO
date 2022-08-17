@@ -21,9 +21,9 @@
                 <span>Login</span><span>Start With Us!</span>
               </button>
             </router-link>
-            <router-link v-else to="/mypage/main">
+            <router-link v-if="isLogin" to="/rooms">
               <button class="start-btn btn-12">
-                <span>Mypage</span><span>Start With Us!</span>
+                <span>Let's WorkOut!</span><span>Start With Us!</span>
               </button>
             </router-link>
           </div>
@@ -35,13 +35,14 @@
 
 <script>
 import { useStore } from 'vuex';
-import { reactive } from 'vue';
+import { reactive, computed } from 'vue';
 
 export default {
   name: 'IntroComponent',
   components: {},
   setup() {
     const store = useStore();
+    const isLogin = computed(() => store.getters['accounts/isLogin']);
     const state = reactive({
     });
     const refresh = () => {
@@ -50,6 +51,7 @@ export default {
     return {
       state,
       refresh,
+      isLogin,
     };
   },
 };
