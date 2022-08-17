@@ -3,13 +3,13 @@
   <div class="tabs">
     <div class="tab-menu d-flex">
       <!--eslint-disable-->
-        <div class="mytab" style="color: #37beefef" v-on:click="((currentTab = 0), changeColor())"
+        <div class="mytab" id="mytab1" style="color: #37beefef" v-on:click="((currentTab = 0), changeColor(0))"
         >{{ tabs[0] }}
         </div>
-          <div class="mytab" v-on:click="((currentTab = 1), changeColor())"
+          <div class="mytab" id="mytab2" v-on:click="((currentTab = 1), changeColor(1))"
         >{{ tabs[1] }}
         </div>
-          <div class="mytab" v-on:click="((currentTab = 2), changeColor())"
+          <div class="mytab" id="mytab3" v-on:click="((currentTab = 2), changeColor(2))"
         >{{ tabs[2] }}
         </div>
       <div style="margin-left: auto;">
@@ -442,20 +442,15 @@ export default {
       document.body.removeAttribute('style');
       document.getElementsByClassName('modal-backdrop')[0].remove();
     },
-    changeColor() {
-      const tab = document.getElementsByClassName('mytab');
-      for (let i = 0; i < tab.length; i += 1) {
-        tab[i].addEventListener('click', function () {
-          for (let j = 0; j < tab.length; j += 1) {
-            tab[j].style.color = 'black';
-          }
-          this.style.color = '#37beef';
-        });
-      }
+    changeColor(k) {
+      const el = document.getElementsByClassName('mytab');
+      el[0].style.color = 'black';
+      el[1].style.color = 'black';
+      el[2].style.color = 'black';
+      el[k].style.color = '#37beef';
     },
   },
   created() {
-    this.changeColor();
   },
 };
 </script>
