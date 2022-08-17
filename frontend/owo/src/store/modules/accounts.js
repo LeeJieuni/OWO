@@ -8,6 +8,7 @@ window.Swal = swal;
 export const accounts = {
   namespaced: true,
   state: () => ({
+    link: '',
     masterTier: '',
     userTier: '',
     images: '',
@@ -83,9 +84,9 @@ export const accounts = {
       기타: 'ETC',
     },
     make_mode: {
-      자유: 'FREE',
       경쟁: 'GAME',
-      운동: 'STREAMING',
+      자유: 'FREE',
+      영상: 'STREAMING',
     },
     enter_mode: {
       FREE: 'friend',
@@ -94,6 +95,9 @@ export const accounts = {
     },
   }),
   mutations: {
+    SET_YOUTUBE_LINK: (state, payload) => {
+      state.link = payload;
+    },
     SET_MASTER_TIER: (state, payload) => {
       state.masterTier = payload;
     },
@@ -241,7 +245,7 @@ export const accounts = {
           console.log(res.data.data);
           const images = [];
           // eslint-disable-next-line
-          for (let i = 0; i < 4; i++) {
+          for (let i = 4; i < 10; i++) {
             // const url = res.data.data[i].fileUrl.split(',');
             images.push(res.data.data[i].fileUrl);
           }
@@ -964,8 +968,7 @@ export const accounts = {
         });
     },
     makeRoom({ state, commit }, roomdata) {
-      console.log('makeRoom_actions');
-      console.log(roomdata);
+      commit('SET_YOUTUBE_LINK', roomdata.link);
       axios({
         url: 'https://i7c202.p.ssafy.io:8282/api/user/room',
         method: 'post',
@@ -983,6 +986,7 @@ export const accounts = {
         },
       })
         .then((res) => {
+          console.log(state.link);
           axios({
             url: `https://i7c202.p.ssafy.io:8282/api/user/point/percentage/${state.userInfo.id}`,
             method: 'get',

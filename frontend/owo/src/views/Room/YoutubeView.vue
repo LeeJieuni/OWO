@@ -10,7 +10,7 @@
       <!-- eslint-disable-next-line -->
       <div class="d-flex align-items-start justify-content-start" style="position:relative; background-color: transparent; width: 1050px; height: 750px">
         <YouTube class="my-2 mx-2 col-8"
-          src="https://www.youtube.com/watch?v=sqgxcCjD04s"
+          :src="this.youtubeURL"
           @ready="onReady"
           :vars="this.controls"
           @state-change="onChange"
@@ -271,7 +271,7 @@
           <img class="menu_icon4" src="@/assets/icon/start.png" alt="Start">
         </button>
         <!-- eslint-disable-next-line -->
-        <b-dropdown size="lg" class="mybtn4" style="margin:0; padding:0;" variant="link" toggle-class="text-decoration-none" no-caret>
+        <b-dropdown size="lg" class="mybtn4" style="border:none; margin:0; padding:0;" variant="link" toggle-class="text-decoration-none" no-caret>
         <!-- eslint-disable-next-line -->
         <!-- <b-dropdown no-caret class="dropright mybtn4 text-decoration-none" style="background-color:none;" type="button"> -->
           <template #button-content>
@@ -359,7 +359,7 @@ export default {
   },
   data() {
     return {
-      youtubeURL: '',
+      youtubeURL: this.link,
       player: null,
       done: false,
       statusStart: false,
@@ -512,7 +512,11 @@ export default {
     volumeUp() {
       console.log(`==============${this.volume}`);
       if (this.volume === 100) {
-        alert('볼륨 최대 수치');
+        swal.fire({
+          icon: 'error',
+          title: '볼륨이 최대에요',
+          text: '5씩 조절돼요',
+        });
       } else {
         this.volume += 5;
         this.$refs.youtube.setVolume(this.volume);
@@ -521,7 +525,11 @@ export default {
     volumeDown() {
       console.log(`==============${this.volume}`);
       if (this.volume === 0) {
-        alert('볼륨 최소 수치');
+        swal.fire({
+          icon: 'error',
+          title: '볼륨이 최소에요',
+          text: '5씩 조절돼요',
+        });
       } else {
         this.volume -= 5;
         this.$refs.youtube.setVolume(this.volume);
@@ -670,6 +678,7 @@ export default {
     },
     ...mapActions(emoji, ['changeEmojiList', 'removeEmojiList']),
     ...mapMutations(meetingroom, ['SET_SESSION_ID']),
+    ...mapMutations(accounts, ['SET_YOUTUBE_LINK']),
     ...mapActions(meetingroom, [
       'enterMeetingRoom',
       'leaveMeetingRoom',
@@ -758,7 +767,9 @@ export default {
         chat.scrollTop = chat.scrollHeight;
       });
 
-      this.session.on('signal:startTimer', () => {
+      this.session.on('signal:startTimer', (event) => {
+        this.SET_YOUTUBE_LINK(event.data);
+        this.youtubeURL = event.data;
         this.start();
         setTimeout(() => {
           this.$refs.setTimer1.startTimer();
@@ -834,6 +845,8 @@ export default {
     startTimer() {
       this.session
         .signal({
+          data: this.link,
+          to: [],
           type: 'startTimer',
         }).then(() => {
           this.isStarted = true;
@@ -1457,7 +1470,7 @@ solid #cedfff; border-top: 10px solid transparent; border-bottom: 10px solid tra
 
 .shadow {
   font-size:70px;
-  opacity:0.8;
+  opacity:1;
   background-color: white;
   position: absolute;
   top:0px;

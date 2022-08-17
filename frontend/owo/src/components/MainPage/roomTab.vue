@@ -2,16 +2,32 @@
  <div class="body">
   <div class="tabs">
     <div class="tab-menu d-flex">
-      <b-button lg="4" size="lg" style="margin-right: 5px;"
-      v-b-modal.modal-makeSession variant="outline-primary"
-        v-if="isLogin"> 방 만들기
-      </b-button>
-      <b-button-group class="mx-1" v-for="(tab, index) in tabs" :key="index"
-        v-bind:class="{ active: currentTab === index }">
-        <b-button lg="4" size="lg" v-on:click="currentTab = index"
-        variant="outline-primary">{{ tab }}
-        </b-button>
-      </b-button-group>
+      <!--eslint-disable-->
+        <div class="mytab" id="mytab1" style="color: #37beefef" v-on:click="((currentTab = 2), changeColor(0))"
+        >{{ tabs[0] }}
+        </div>
+          <div class="mytab" id="mytab2" v-on:click="((currentTab = 0), changeColor(1))"
+        >{{ tabs[1] }}
+        </div>
+          <div class="mytab" id="mytab3" v-on:click="((currentTab = 1), changeColor(2))"
+        >{{ tabs[2] }}
+        </div>
+      <div style="margin-left: auto;">
+        <div 
+        style="margin-right: 5px; 
+        font-family: 'Recipekorea';
+        width: 100px;
+        height: 50px;
+        font-size: 22px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: rgba(243, 62, 62, 0.78);
+        "
+        v-b-modal.modal-makeSession variant="outline-danger"
+          v-if="isLogin"> 방 만들기
+        </div>
+      </div>
       <b-modal centered id="modal-makeSession" title="#오운완의 운동방 생성하기"
         hide-footer="true" hide-header="true">
         <div class="d-flex justify-content-center">
@@ -29,7 +45,7 @@
                 v-model="roomdatas.mode"></b-form-select>
               </b-input-group>
               <!--모드 === 운동-->
-              <div v-if="roomdatas.mode === '운동'">
+              <div v-if="roomdatas.mode === '영상'">
                 <b-input-group prepend="운동 종류" class="roomdata_input">
                   <b-form-select :options="Object.keys(workout)"
                   v-model="roomdatas.type"></b-form-select>
@@ -42,7 +58,7 @@
                 </b-input-group>
                 &ensp; <label for="checkbox">
                   <input type="checkbox" v-model="roomdatas.secret"
-                  style="padding:10px; margin-top: 10px"> 비밀방 생성
+                  style="padding:10px; margin-top: 10px;"> 비밀방 생성
                 </label>
                 <div class="btns d-flex row justify-content-center" style="margin-top: 20px;">
                   <b-button variant="primary"
@@ -167,7 +183,11 @@
     </div>
     <div v-if="noStreaming" class="tab-content wrap">
       <div v-show="currentTab == 0" class="scroll__wrap">
-        <h1>아직 운동중인 방이 없습니다!</h1>
+      <div class="darkness">
+        <h1 style="height:200px; line-height: 365px;">아직
+        <strong style="color: #37beef;">영상방</strong>이 없습니다.</h1>
+        <h1 style="margin-top: 20px;">방 만들기를 눌러 만들어 주세요!</h1>
+      </div>
       </div>
     </div>
       <!--자유방  -->
@@ -251,7 +271,11 @@
     </div>
     <div v-if="noFree" class="tab-content wrap">
       <div v-show="currentTab == 1" class="scroll__wrap">
-        <h1>아직 운동중인 방이 없습니다!</h1>
+      <div class="darkness">
+          <h1 style="height:200px; line-height: 365px;">아직
+        <strong style="color: #37beef;">자유방</strong>이 없습니다.</h1>
+        <h1 style="margin-top: 20px;">방 만들기를 눌러 만들어 주세요!</h1>
+      </div>
       </div>
     </div>
       <!--경쟁방 -->
@@ -300,7 +324,7 @@
                 <div class="d-flex">
                     <p align="left" class="workoutType">{{ workout_reverse[room.type] }}</p>
                     <p style="background-color: rgba(243, 62, 26, 0.445);">
-                    티어 {{ tier[Number((masterTier / 20)) - 1] }}</p>
+                    {{ tier[Math.trunc(Number((room.manger_percentage / 20)) - 1)] }}</p>
                 </div>
             <div class="cardTitle d-flex align-items-center">
               <p style="font-size: 0.7em">{{ room.roomName }}</p>
@@ -335,10 +359,14 @@
     </div>
     <div v-if="noGame" class="tab-content wrap">
       <div v-show="currentTab == 2" class="scroll__wrap">
-        <h1>아직 운동중인 방이 없습니다!</h1>
+       <div class="darkness">
+        <h1 style="height:200px; line-height: 365px;">아직
+        <strong style="color: #37beef;">경쟁방</strong>이 없습니다.</h1>
+        <h1 style="margin-top: 20px;">방 만들기를 눌러 만들어 주세요!</h1>
       </div>
     </div>
   </div>
+</div>
 </template>
 
 <script>
@@ -353,12 +381,13 @@ export default {
   data() {
     return {
       enterPassword: '',
-      tabs: ['운동방', '자유방', '경쟁방'],
-      currentTab: 0,
+      tabs: ['경쟁하며 운동하기', '영상보며 운동하기', '자유롭게 운동하기'],
+      tabs2: ['경쟁방', '영상방', '자유방'],
+      currentTab: 2,
       mode: {
-        자유: 'FREE',
         경쟁: 'GAME',
-        운동: 'STREAMING',
+        영상: 'STREAMING',
+        자유: 'FREE',
       },
       workout: {
         유산소: 'AEROBIC',
@@ -388,7 +417,7 @@ export default {
         mode: '',
         roomName: '',
         type: '',
-        link: '--',
+        link: '',
       },
       competition_option: {
         게임: 'GAME',
@@ -414,11 +443,29 @@ export default {
       document.body.removeAttribute('style');
       document.getElementsByClassName('modal-backdrop')[0].remove();
     },
+    changeColor(k) {
+      const el = document.getElementsByClassName('mytab');
+      el[0].style.color = 'black';
+      el[1].style.color = 'black';
+      el[2].style.color = 'black';
+      el[k].style.color = '#37beef';
+    },
+  },
+  created() {
   },
 };
 </script>
 
 <style scoped>
+.mytab {
+  width: 200px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  font-size: 22px;
+  font-family: 'Recipekorea';
+}
 .body {
   min-height: 500px;
   height: 500px;
@@ -465,7 +512,7 @@ export default {
   height: 400px;
   /* background-color: #f4f3f3; */
   border-radius: 10px;
-  border: solid #DFDFDF 1px;
+  border: solid #dfdfdf 1px;
 }
 
 .scroll--element {
@@ -500,11 +547,6 @@ export default {
   margin-top: 20px;
   width: 45%;
 }
-
-.roomdata {
-  /* display: justify-content-center; */
-}
-
 .makeSessionForm {
   width: 50%;
 }
@@ -518,9 +560,10 @@ export default {
 }
 
 input {
-  margin-left: 50px;
+  /* margin-left: 50px; */
 }
 .darkness {
+  font-family: 'Recipekorea';
   line-height: 390px;
   font-size: 25px;
   border: none;
@@ -532,7 +575,7 @@ input {
   text-align: center;
   display: block;
   position: relative;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.7);
   width: 100%;
   height: 100%;
   margin-bottom: -405px;
