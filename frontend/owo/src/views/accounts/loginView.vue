@@ -107,7 +107,7 @@ export default {
 .loginForm {
   width: 350px;
   height: 600px;
-  padding: 50px;
+  padding: 20px;
   border: solid 1px rgb(177, 177, 181);
   border-radius: 15px;
   box-shadow: 2px 2px 2px 2px rgb(154, 152, 152);

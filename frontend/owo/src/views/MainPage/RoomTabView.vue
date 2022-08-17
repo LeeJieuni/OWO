@@ -15,12 +15,26 @@
 import NavBar from '@/components/NavBar.vue';
 import roomTab from '@/components/MainPage/roomTab.vue';
 import rankingList2 from '@/components/MainPage/rankingList2.vue';
+import { mapActions } from 'vuex';
+
+const accounts = 'accounts';
 
 export default {
   components: {
     roomTab,
     NavBar,
     rankingList2,
+  },
+  methods: {
+    ...mapActions(accounts, ['getRoomList']),
+  },
+  created() {
+    const mode = ['FREE', 'GAME', 'STREAMING'];
+    for (let i = 0; i < mode.length; i += 1) {
+      console.log('실행중이다 roomtabvue.view');
+      this.getRoomList(mode[i]);
+    }
+    // this.getImage();
   },
 };
 </script>

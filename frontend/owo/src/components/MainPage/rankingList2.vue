@@ -29,7 +29,7 @@
           <p class="card-title">{{ rankingList[0].name }}님의 record</p>
           <div class="d-flex justify-content-center align-items-center"
             style="margin-bottom: 10px">
-            <circle-progress class="progress-bar" :percent="achievement"
+            <circle-progress class="progress-bar" :percent="(lastingDay / 7)*100"
             :show-percent="true" :viewport="true" :size="240" />
           </div>
         </router-link>
