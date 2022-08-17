@@ -6,7 +6,7 @@
     <Carousel></Carousel>
     <!-- <rankingList style="height: 80vh;"/> -->
     <!-- <roomTab class="room"></roomTab> -->
-    <FooFooter style="height: 8vh;"/>
+    <FooFooter style="height: 14vh;"/>
   </div>
 </template>
 
