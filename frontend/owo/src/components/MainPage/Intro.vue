@@ -62,9 +62,12 @@ export default {
   background-color: white;
   border-bottom: #DFDFDF 0.5px solid;
   height: 97vh;
+  margin:0;
+  padding:0;
 }
   .container {
-    min-width: 100vw;
+    min-width: 100%;
+    margin:0;
     padding: 0;
   }
     .container-fluid {
@@ -78,7 +81,7 @@ export default {
   /* position: absolute; */
   /* top: 0;
   left: 0; */
-  max-width: 100vw;
+  max-width: 100%;
   height: 50%;
   z-index: -1;
   opacity: 0.65;

@@ -260,7 +260,7 @@ export default {
   top:-1px;
   left:-1px;
   background-color:#4e8aff;
-  font-size:24px;
+  font-size:30px;
   border-radius: 15px 0px 10px 0px;
   /* z-index:600; */
 }
@@ -268,10 +268,9 @@ export default {
   position:absolute;
   top:-1px;
   right:-1px;
-  font-size:24px;
+  font-size:30px;
   text-align:right;
   background-color:#4e8aff;
-  font-size:24px;
   border-radius: 0px 15px 0px 10px;
   /* z-index:600; */
 }
@@ -304,19 +303,19 @@ export default {
 
 .mySquatRanking {
   position:absolute;
-  top: 35px;
+  top: 54px;
   left: -18px;
   width:150px;
 }
 .myLungeRanking {
   position:absolute;
-  top: 35px;
+  top: 54px;
   left: -20px;
   width:150px;
 }
 .myBurpeeRanking {
   position:absolute;
-  top: 35px;
+  top: 54px;
   left: -20px;
   width:150px;
 }
