@@ -58,7 +58,7 @@
                 </b-input-group>
                 &ensp; <label for="checkbox">
                   <input type="checkbox" v-model="roomdatas.secret"
-                  style="padding:10px; margin-top: 10px"> 비밀방 생성
+                  style="padding:10px; margin-top: 10px;"> 비밀방 생성
                 </label>
                 <div class="btns d-flex row justify-content-center" style="margin-top: 20px;">
                   <b-button variant="primary"
@@ -564,7 +564,7 @@ export default {
 }
 
 input {
-  margin-left: 50px;
+  /* margin-left: 50px; */
 }
 .darkness {
   font-family: 'Recipekorea';
