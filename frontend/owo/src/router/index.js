@@ -122,11 +122,19 @@ router.beforeEach((to, from, next) => {
   if (to.matched.some((record) => record.meta.unauthorized || token)) {
     return next();
   }
+  if (to.matched.some((record) => !record.meta.unauthorized || !token)) {
+    swal.fire(
+      '#오운완',
+      '로그인이 필요한 서비스입니다.',
+      'warning',
+    );
+    return next('/login');
+  }
   swal.fire(
     '#오운완',
-    '로그인이 필요한 서비스입니다.',
+    '잘못된 접근입니다.',
     'warning',
   );
-  return next('/login');
+  return next('/');
 });
 export default router;
