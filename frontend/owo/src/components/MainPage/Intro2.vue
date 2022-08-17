@@ -295,7 +295,7 @@ img {
 }
 
 .carouselImg {
-  width:80vw;
+  width:79.3vw;
   height:100vh;
 }
 
