@@ -2,16 +2,18 @@
  <div class="body">
   <div class="tabs">
     <div class="tab-menu d-flex">
-      <b-button lg="4" size="lg" style="margin-right: 5px;"
-      v-b-modal.modal-makeSession variant="outline-primary"
-        v-if="isLogin"> 방 만들기
-      </b-button>
       <b-button-group class="mx-1" v-for="(tab, index) in tabs" :key="index"
         v-bind:class="{ active: currentTab === index }">
         <b-button lg="4" size="lg" v-on:click="currentTab = index"
         variant="outline-primary">{{ tab }}
         </b-button>
       </b-button-group>
+      <div style="margin-left: auto;">
+        <b-button lg="4" size="lg" style="margin-right: 5px;"
+        v-b-modal.modal-makeSession variant="outline-danger"
+          v-if="isLogin"> 방 만들기
+        </b-button>
+      </div>
       <b-modal centered id="modal-makeSession" title="#오운완의 운동방 생성하기"
         hide-footer="true" hide-header="true">
         <div class="d-flex justify-content-center">
@@ -167,7 +169,11 @@
     </div>
     <div v-if="noStreaming" class="tab-content wrap">
       <div v-show="currentTab == 0" class="scroll__wrap">
-        <h1>아직 운동중인 방이 없습니다!</h1>
+      <div class="darkness">
+        <h1 style="height:200px; line-height: 365px;">아직
+        <strong style="color: #37beef;">운동방</strong>이 없습니다.</h1>
+        <h1 style="margin-top: 20px;">방 만들기를 눌러 만들어 주세요!</h1>
+      </div>
       </div>
     </div>
       <!--자유방  -->
@@ -251,7 +257,11 @@
     </div>
     <div v-if="noFree" class="tab-content wrap">
       <div v-show="currentTab == 1" class="scroll__wrap">
-        <h1>아직 운동중인 방이 없습니다!</h1>
+      <div class="darkness">
+          <h1 style="height:200px; line-height: 365px;">아직
+        <strong style="color: #37beef;">자유방</strong>이 없습니다.</h1>
+        <h1 style="margin-top: 20px;">방 만들기를 눌러 만들어 주세요!</h1>
+      </div>
       </div>
     </div>
       <!--경쟁방 -->
@@ -300,7 +310,7 @@
                 <div class="d-flex">
                     <p align="left" class="workoutType">{{ workout_reverse[room.type] }}</p>
                     <p style="background-color: rgba(243, 62, 26, 0.445);">
-                    티어 {{ tier[Number((masterTier / 20)) - 1] }}</p>
+                    {{ tier[Math.trunc(Number((room.manger_percentage / 20)) - 1)] }}</p>
                 </div>
             <div class="cardTitle d-flex align-items-center">
               <p style="font-size: 0.7em">{{ room.roomName }}</p>
@@ -335,10 +345,14 @@
     </div>
     <div v-if="noGame" class="tab-content wrap">
       <div v-show="currentTab == 2" class="scroll__wrap">
-        <h1>아직 운동중인 방이 없습니다!</h1>
+       <div class="darkness">
+        <h1 style="height:200px; line-height: 365px;">아직
+        <strong style="color: #37beef;">경쟁방</strong>이 없습니다.</h1>
+        <h1 style="margin-top: 20px;">방 만들기를 눌러 만들어 주세요!</h1>
       </div>
     </div>
   </div>
+</div>
 </template>
 
 <script>
@@ -521,6 +535,7 @@ input {
   margin-left: 50px;
 }
 .darkness {
+  font-family: 'Recipekorea';
   line-height: 390px;
   font-size: 25px;
   border: none;
@@ -532,7 +547,7 @@ input {
   text-align: center;
   display: block;
   position: relative;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.7);
   width: 100%;
   height: 100%;
   margin-bottom: -405px;

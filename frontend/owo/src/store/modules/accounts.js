@@ -241,7 +241,7 @@ export const accounts = {
           console.log(res.data.data);
           const images = [];
           // eslint-disable-next-line
-          for (let i = 0; i < 4; i++) {
+          for (let i = 4; i < 7; i++) {
             // const url = res.data.data[i].fileUrl.split(',');
             images.push(res.data.data[i].fileUrl);
           }
