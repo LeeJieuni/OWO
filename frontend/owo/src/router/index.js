@@ -7,7 +7,6 @@ import MyPageMainView from '../views/MyPage/MyPageMainView.vue';
 import MyPageAnalysView from '../views/MyPage/MyPageAnalysView.vue';
 import MyPageUpdateView from '../views/MyPage/MyPageUpdateView.vue';
 import MyPageScheduleView from '../views/MyPage/MyPageScheduleView.vue';
-import MyPageSlideView from '../views/MyPage/MyPageSlideView.vue';
 import CompetitionView from '../views/Room/CompetitionView.vue';
 import FriendView from '../views/Room/FriendView.vue';
 import YoutubeView from '../views/Room/YoutubeView.vue';
@@ -74,11 +73,6 @@ const routes = [
         component: MyPageScheduleView,
       },
     ],
-  },
-  {
-    path: '/slide',
-    name: 'MyPageSlideView',
-    component: MyPageSlideView,
   },
   {
     path: '/room/competition/',

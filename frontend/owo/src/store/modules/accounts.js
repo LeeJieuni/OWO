@@ -96,7 +96,6 @@ export const accounts = {
   }),
   mutations: {
     SET_YOUTUBE_LINK: (state, payload) => {
-      console.log('payload', payload);
       state.link = payload;
     },
     SET_MASTER_TIER: (state, payload) => {
@@ -246,7 +245,7 @@ export const accounts = {
           console.log(res.data.data);
           const images = [];
           // eslint-disable-next-line
-          for (let i = 4; i < 7; i++) {
+          for (let i = 4; i < 10; i++) {
             // const url = res.data.data[i].fileUrl.split(',');
             images.push(res.data.data[i].fileUrl);
           }

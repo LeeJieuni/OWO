@@ -21,7 +21,7 @@
                 <span>Login</span><span>Start With Us!</span>
               </button>
             </router-link>
-            <router-link v-else to="/mypage/main">
+            <router-link v-if="isLogin" to="/mypage/main">
               <button class="start-btn btn-12">
                 <span>Mypage</span><span>Start With Us!</span>
               </button>
