@@ -10,7 +10,7 @@
       <!-- eslint-disable-next-line -->
       <div class="d-flex align-items-start justify-content-start" style="position:relative; background-color: transparent; width: 1050px; height: 750px">
         <YouTube class="my-2 mx-2 col-8"
-          src="https://www.youtube.com/watch?v=sqgxcCjD04s"
+          :src='this.youtubeURL'
           @ready="onReady"
           :vars="this.controls"
           @state-change="onChange"
@@ -463,6 +463,7 @@ export default {
     this.credentialsUser.memberId = this.userInfo.id;
     this.credentialsUser.meetingRoomId = this.mySessionId;
     document.body.style.backgroundColor = '#ffdddd';
+    this.youtubeURL = this.link;
   },
   moundted() {
   },
@@ -758,7 +759,8 @@ export default {
         chat.scrollTop = chat.scrollHeight;
       });
 
-      this.session.on('signal:startTimer', () => {
+      this.session.on('signal:startTimer', (event) => {
+        this.youtubeURL = event;
         this.start();
         setTimeout(() => {
           this.$refs.setTimer1.startTimer();
@@ -834,6 +836,7 @@ export default {
     startTimer() {
       this.session
         .signal({
+          data: `${this.youtubeURL}`,
           type: 'startTimer',
         }).then(() => {
           this.isStarted = true;

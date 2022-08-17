@@ -3,13 +3,13 @@
   <div class="tabs">
     <div class="tab-menu d-flex">
       <!--eslint-disable-->
-        <div class="mytab" id="mytab1" style="color: #37beefef" v-on:click="((currentTab = 0), changeColor(0))"
+        <div class="mytab" id="mytab1" style="color: #37beefef" v-on:click="((currentTab = 2), changeColor(0))"
         >{{ tabs[0] }}
         </div>
-          <div class="mytab" id="mytab2" v-on:click="((currentTab = 1), changeColor(1))"
+          <div class="mytab" id="mytab2" v-on:click="((currentTab = 0), changeColor(1))"
         >{{ tabs[1] }}
         </div>
-          <div class="mytab" id="mytab3" v-on:click="((currentTab = 2), changeColor(2))"
+          <div class="mytab" id="mytab3" v-on:click="((currentTab = 1), changeColor(2))"
         >{{ tabs[2] }}
         </div>
       <div style="margin-left: auto;">
@@ -45,7 +45,7 @@
                 v-model="roomdatas.mode"></b-form-select>
               </b-input-group>
               <!--모드 === 운동-->
-              <div v-if="roomdatas.mode === '운동'">
+              <div v-if="roomdatas.mode === '영상'">
                 <b-input-group prepend="운동 종류" class="roomdata_input">
                   <b-form-select :options="Object.keys(workout)"
                   v-model="roomdatas.type"></b-form-select>
@@ -185,7 +185,7 @@
       <div v-show="currentTab == 0" class="scroll__wrap">
       <div class="darkness">
         <h1 style="height:200px; line-height: 365px;">아직
-        <strong style="color: #37beef;">운동방</strong>이 없습니다.</h1>
+        <strong style="color: #37beef;">영상방</strong>이 없습니다.</h1>
         <h1 style="margin-top: 20px;">방 만들기를 눌러 만들어 주세요!</h1>
       </div>
       </div>
@@ -381,12 +381,13 @@ export default {
   data() {
     return {
       enterPassword: '',
-      tabs: ['운동방', '자유방', '경쟁방'],
+      tabs: ['경쟁하며 운동하기', '영상보며 운동하기', '자유롭게 운동하기'],
+      tabs2: ['경쟁방', '영상방', '자유방'],
       currentTab: 0,
       mode: {
-        자유: 'FREE',
         경쟁: 'GAME',
-        운동: 'STREAMING',
+        영상: 'STREAMING',
+        자유: 'FREE',
       },
       workout: {
         유산소: 'AEROBIC',
@@ -416,7 +417,7 @@ export default {
         mode: '',
         roomName: '',
         type: '',
-        link: '--',
+        link: '',
       },
       competition_option: {
         게임: 'GAME',
@@ -457,7 +458,7 @@ export default {
 
 <style scoped>
 .mytab {
-  width: 100px;
+  width: 200px;
   height: 50px;
   display: flex;
   align-items: center;

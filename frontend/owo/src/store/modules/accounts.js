@@ -84,9 +84,9 @@ export const accounts = {
       기타: 'ETC',
     },
     make_mode: {
-      자유: 'FREE',
       경쟁: 'GAME',
-      운동: 'STREAMING',
+      자유: 'FREE',
+      영상: 'STREAMING',
     },
     enter_mode: {
       FREE: 'friend',
