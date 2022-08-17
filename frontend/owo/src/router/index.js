@@ -14,7 +14,7 @@ import YoutubeView from '../views/Room/YoutubeView.vue';
 import login from '../views/accounts/loginView.vue';
 import register from '../views/accounts/registerView.vue';
 import redirectView from '../views/accounts/RedirectView.vue';
-import YoutubeSettingView from '../views/Room/YoutubeViewSetting.vue';
+import TutorialView from '../views/Room/ATutorial.vue';
 
 const routes = [
   {
@@ -101,9 +101,9 @@ const routes = [
     component: YoutubeView,
   },
   {
-    path: '/room/youtubesetting/',
-    name: 'YoutubeSetting',
-    component: YoutubeSettingView,
+    path: '/tutorial',
+    name: 'ATutorial',
+    component: TutorialView,
   },
 ];
 
