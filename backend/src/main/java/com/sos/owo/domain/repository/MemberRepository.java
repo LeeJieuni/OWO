@@ -57,7 +57,7 @@ public class MemberRepository {
     public void saveExp(int exp, int id){
         Member findMember = findOne(id);
         int current = findMember.getExp() + exp;
-        findMember.setPoint(current);
+        findMember.setExp(current);
         em.persist(findMember);
         em.flush();
     }
