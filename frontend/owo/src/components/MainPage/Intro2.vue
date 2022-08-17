@@ -17,37 +17,37 @@
               <div class="carousel-item active">
                 <img class="carouselImg" src="@/assets/icon/burpee1.png" alt="...">
                 <div class="carousel-caption d-none d-md-block" style="color:white;">
-                  <div style="font-size:2.5vw;"><strong>#1.</strong> 머리부터 발끝까지 잡히게 자세를 취해주세요.</div>
+                  <div style="font-size:2.3vw;"><strong>#1.</strong> 머리부터 발끝까지 영상에 담기게 옆으로 서주세요.</div>
                 </div>
               </div>
               <div class="carousel-item">
                 <img class="carouselImg" src="@/assets/icon/burpee2.png" alt="...">
                 <div class="carousel-caption d-none d-md-block" style="color:white;">
-                  <div style="font-size:2.5vw;"><strong>#2.</strong> 수구리는 자세를 취해주세요.</div>
+                  <div style="font-size:2.3vw;"><strong>#2.</strong> 수그리는 자세를 취해주세요.</div>
                 </div>
               </div>
               <div class="carousel-item">
                 <img class="carouselImg" src="@/assets/icon/burpee3.png" alt="...">
                 <div class="carousel-caption d-none d-md-block" style="color:white;">
-                  <div style="font-size:2.5vw;"><strong>#3.</strong> 엎드려벋쳐 자세를 취해주세요.</div>
+                  <div style="font-size:2.3vw;"><strong>#3.</strong> 엎드려 뻗쳐 자세를 취해주세요.</div>
                 </div>
               </div>
               <div class="carousel-item">
                 <img class="carouselImg" src="@/assets/icon/burpee2.png" alt="...">
                 <div class="carousel-caption d-none d-md-block" style="color:white;">
-                  <div style="font-size:2.5vw;"><strong>#4.</strong> 다시 수구리는 자세를 취해주세요.</div>
+                  <div style="font-size:2.3vw;"><strong>#4.</strong> 다시 수그리는 자세를 취해주세요.</div>
                 </div>
               </div>
               <div class="carousel-item">
                 <img class="carouselImg" src="@/assets/icon/burpee1.png" alt="...">
                 <div class="carousel-caption d-none d-md-block" style="color:white;">
-                  <div style="font-size:2.5vw;"><strong>#5.</strong> 다시 처음자세로 움직여주세요.</div>
+                  <div style="font-size:2.3vw;"><strong>#5.</strong> 다시 처음 자세로 돌아와 주세요.</div>
                 </div>
               </div>
               <div class="carousel-item">
                 <img class="carouselImg" src="@/assets/icon/burpee4.gif" alt="...">
                 <div class="carousel-caption d-none d-md-block" style="color:white;">
-                  <div style="font-size:2.5vw;"><strong>#6.</strong> 영상입니다.</div>
+                  <div style="font-size:2.3vw;"><strong>#6.</strong> 영상입니다.</div>
                 </div>
               </div>
             </div>
@@ -76,25 +76,25 @@
               <div class="carousel-item active">
                 <img class="carouselImg" src="@/assets/icon/lunge1.png" alt="...">
                 <div class="carousel-caption d-none d-md-block" style="color:white;">
-                  <div style="font-size:2.5vw;"><strong>#1.</strong> 머리부터 발끝까지 잡히게 자세를 취해주세요.</div>
+                  <div style="font-size:2.3vw;"><strong>#1.</strong>  다리를 앞뒤로 벌려 옆모습이 보이도록 서주세요.</div>
                 </div>
               </div>
               <div class="carousel-item">
                 <img class="carouselImg" src="@/assets/icon/lunge2.png" alt="...">
                 <div class="carousel-caption d-none d-md-block" style="color:white;">
-                  <div style="font-size:2.5vw;"><strong>#2.</strong> 무릎 각도에 유의해주세요.</div>
+                  <div style="font-size:2.3vw;"><strong>#2.</strong> 무릎 각도에 유의해주세요.</div>
                 </div>
               </div>
               <div class="carousel-item">
                 <img class="carouselImg" src="@/assets/icon/lunge1.png" alt="...">
                 <div class="carousel-caption d-none d-md-block" style="color:white;">
-                  <div style="font-size:2.5vw;"><strong>#3.</strong> 다시 처음 자세로 움직여주세요.</div>
+                  <div style="font-size:2.3vw;"><strong>#3.</strong> 다시 처음 자세로 움직여주세요.</div>
                 </div>
               </div>
               <div class="carousel-item">
                 <img class="carouselImg" src="@/assets/icon/lunge3.gif" alt="...">
                 <div class="carousel-caption d-none d-md-block" style="color:white;">
-                  <div style="font-size:2.5vw;"><strong>#4.</strong> 영상입니다.</div>
+                  <div style="font-size:2.3vw;"><strong>#4.</strong> 영상입니다.</div>
                 </div>
               </div>
             </div>
@@ -123,25 +123,25 @@
               <div class="carousel-item active">
                 <img class="carouselImg" src="@/assets/icon/squat1.png" alt="...">
                 <div class="carousel-caption d-none d-md-block" style="color:white;">
-                  <div style="font-size:2.5vw;"><strong>#1.</strong> 머리부터 발끝까지 잡히게 자세를 취해주세요.</div>
+                  <div style="font-size:2.3vw;"><strong>#1.</strong> 다리를 어깨 너비보다 조금 벌리고 서주세요.</div>
                 </div>
               </div>
               <div class="carousel-item">
                 <img class="carouselImg" src="@/assets/icon/squat2.png" alt="...">
                 <div class="carousel-caption d-none d-md-block" style="color:white;">
-                  <div style="font-size:2.5vw;"><strong>#2.</strong> 천천히 내려가주세요.</div>
+                  <div style="font-size:2.3vw;"><strong>#2.</strong> 고관절을 접고 무릎을 굽히며 천천히 내려가 주세요.</div>
                 </div>
               </div>
               <div class="carousel-item">
                 <img class="carouselImg" src="@/assets/icon/squat1.png" alt="...">
                 <div class="carousel-caption d-none d-md-block" style="color:white;">
-                  <div style="font-size:2.5vw;"><strong>#3.</strong> 다시 처음 자세로 움직여주세요.</div>
+                  <div style="font-size:2.3vw;"><strong>#3.</strong> 다시 처음 자세로 돌아와 주세요.</div>
                 </div>
               </div>
               <div class="carousel-item">
                 <img class="carouselImg" src="@/assets/icon/squat3.gif" alt="...">
                 <div class="carousel-caption d-none d-md-block" style="color:white;">
-                  <div style="font-size:2.5vw;"><strong>#4.</strong> 영상입니다.</div>
+                  <div style="font-size:2.3vw;"><strong>#4.</strong> 영상입니다.</div>
                 </div>
               </div>
             </div>
