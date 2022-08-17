@@ -1,12 +1,12 @@
 <template>
   <div class="main">
-    <NavBar class="sticky-top"/>
+    <NavBar style="z-index:50000;" class="sticky-top"/>
     <Intro/>
     <Intro2/>
     <Carousel></Carousel>
     <!-- <rankingList style="height: 80vh;"/> -->
     <!-- <roomTab class="room"></roomTab> -->
-    <FooFooter style="height: 8vh;"/>
+    <FooFooter style="height: 14vh;"/>
   </div>
 </template>
 
@@ -89,9 +89,10 @@ export default {
 
 <style scoped>
 .main {
-  overflow-x:hidden;
-  overflow-y:auto;
+  /* overflow-x:hidden; */
+  /* overflow-y:auto; */
 }
+
 .start-btn {
     margin-right: 30px;
 }

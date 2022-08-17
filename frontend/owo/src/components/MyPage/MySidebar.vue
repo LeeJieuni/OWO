@@ -22,7 +22,7 @@
     <div>
       <div class="row additional-info text-cetner mb-0">
         <p class="mb-1">현재 {{ lastingDay }}일간 연속 운동 중!</p>
-        <p>이번주 총 {{ thisWeekHours }}시간 운동했습니다.</p>
+        <p>이번 주 총 {{ thisWeekHours }}분 운동했습니다.</p>
       </div>
     </div>
 
