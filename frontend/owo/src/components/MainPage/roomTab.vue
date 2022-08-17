@@ -2,17 +2,31 @@
  <div class="body">
   <div class="tabs">
     <div class="tab-menu d-flex">
-      <b-button-group class="mx-1" v-for="(tab, index) in tabs" :key="index"
-        v-bind:class="{ active: currentTab === index }">
-        <b-button lg="4" size="lg" v-on:click="currentTab = index"
-        variant="outline-primary">{{ tab }}
-        </b-button>
-      </b-button-group>
+      <!--eslint-disable-->
+        <div class="mytab" style="color: #37beefef" v-on:click="((currentTab = 0), changeColor())"
+        >{{ tabs[0] }}
+        </div>
+          <div class="mytab" v-on:click="((currentTab = 1), changeColor())"
+        >{{ tabs[1] }}
+        </div>
+          <div class="mytab" v-on:click="((currentTab = 2), changeColor())"
+        >{{ tabs[2] }}
+        </div>
       <div style="margin-left: auto;">
-        <b-button lg="4" size="lg" style="margin-right: 5px;"
+        <div 
+        style="margin-right: 5px; 
+        font-family: 'Recipekorea';
+        width: 100px;
+        height: 50px;
+        font-size: 22px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: rgba(243, 62, 62, 0.78);
+        "
         v-b-modal.modal-makeSession variant="outline-danger"
           v-if="isLogin"> 방 만들기
-        </b-button>
+        </div>
       </div>
       <b-modal centered id="modal-makeSession" title="#오운완의 운동방 생성하기"
         hide-footer="true" hide-header="true">
@@ -428,11 +442,34 @@ export default {
       document.body.removeAttribute('style');
       document.getElementsByClassName('modal-backdrop')[0].remove();
     },
+    changeColor() {
+      const tab = document.getElementsByClassName('mytab');
+      for (let i = 0; i < tab.length; i += 1) {
+        tab[i].addEventListener('click', function () {
+          for (let j = 0; j < tab.length; j += 1) {
+            tab[j].style.color = 'black';
+          }
+          this.style.color = '#37beef';
+        });
+      }
+    },
+  },
+  created() {
+    this.changeColor();
   },
 };
 </script>
 
 <style scoped>
+.mytab {
+  width: 100px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  font-size: 22px;
+  font-family: 'Recipekorea';
+}
 .body {
   min-height: 500px;
   height: 500px;
@@ -479,7 +516,7 @@ export default {
   height: 400px;
   /* background-color: #f4f3f3; */
   border-radius: 10px;
-  border: solid #DFDFDF 1px;
+  border: solid #dfdfdf 1px;
 }
 
 .scroll--element {
@@ -514,11 +551,6 @@ export default {
   margin-top: 20px;
   width: 45%;
 }
-
-.roomdata {
-  /* display: justify-content-center; */
-}
-
 .makeSessionForm {
   width: 50%;
 }
