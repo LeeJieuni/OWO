@@ -11,7 +11,7 @@ export const accounts = {
     link: '',
     masterTier: '',
     userTier: '',
-    images: '',
+    // images: '',
     LoginErr: '',
     isLoginErr: false,
     accessToken: null,
@@ -231,32 +231,32 @@ export const accounts = {
     SET_LASTING_DAY: (state, payload) => {
       state.lastingDay = payload;
     },
-    SET_IMAGES: (state, payload) => {
-      state.images = payload;
-    },
+    // SET_IMAGES: (state, payload) => {
+    //   state.images = payload;
+    // },
   },
   actions: {
-    getImage({ commit }) {
-      axios({
-        url: 'https://i7c202.p.ssafy.io:8282/api/record/img/main',
-        method: 'get',
-      })
-        .then((res) => {
-          console.log(res.data.data);
-          const images = [];
-          // eslint-disable-next-line
-          for (let i = 4; i < 10; i++) {
-            // const url = res.data.data[i].fileUrl.split(',');
-            images.push(res.data.data[i].fileUrl);
-          }
-          console.log(images);
-          commit('SET_IMAGES', images);
-        })
-        .catch((err) => {
-          console.log('이미지가져오기 실패 ㅠㅠ');
-          console.log(err);
-        });
-    },
+    // getImage({ commit }) {
+    //   axios({
+    //     url: 'https://i7c202.p.ssafy.io:8282/api/record/img/main',
+    //     method: 'get',
+    //   })
+    //     .then((res) => {
+    //       console.log(res.data.data);
+    //       const images = [];
+    //       // eslint-disable-next-line
+    //       for (let i = 0; i < 3; i++) {
+    //         // const url = res.data.data[i].fileUrl.split(',');
+    //         images.push(res.data.data[i].fileUrl);
+    //       }
+    //       console.log(images);
+    //       commit('SET_IMAGES', images);
+    //     })
+    //     .catch((err) => {
+    //       console.log('이미지가져오기 실패 ㅠㅠ');
+    //       console.log(err);
+    //     });
+    // },
     saveAccessToken({ commit }, token) {
       sessionStorage.setItem('accessToken', token);
       commit('SET_ACCESS_TOKEN', token);

@@ -47,6 +47,7 @@
 import { defineComponent, reactive, computed } from 'vue';
 import { Carousel, Slide } from 'vue3-carousel';
 import { useStore } from 'vuex';
+import axios from 'axios';
 
 import 'vue3-carousel/dist/carousel.css';
 
@@ -59,14 +60,38 @@ export default defineComponent({
   setup() {
     const store = useStore();
     const isLogin = computed(() => store.getters['accounts/isLogin']);
-    const images = computed(() => store.getters['accounts/images']);
     const state = reactive({
     });
     return {
       state,
       isLogin,
-      images,
     };
+  },
+  data() {
+    return {
+      images: [],
+    };
+  },
+  created() {
+    this.getImage();
+  },
+  methods: {
+    getImage() {
+      axios({
+        url: 'https://i7c202.p.ssafy.io:8282/api/record/img/main',
+        method: 'get',
+      })
+        .then((res) => {
+          // eslint-disable-next-line
+          for (let i = 0; i < 10; i += 1) {
+            this.images.push(res.data.data[i].fileUrl);
+          }
+        })
+        .catch((err) => {
+          console.log('이미지가져오기 실패 ㅠㅠ');
+          console.log(err);
+        });
+    },
   },
 });
 </script>
