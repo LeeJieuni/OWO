@@ -324,7 +324,7 @@
                 <div class="d-flex">
                     <p align="left" class="workoutType">{{ workout_reverse[room.type] }}</p>
                     <p style="background-color: rgba(243, 62, 26, 0.445);">
-                    {{ tier[Math.trunc(Number((room.manger_percentage / 20)) - 1)] }}</p>
+                    {{ tier[Math.trunc(Number((room.manger_percentage / 20)))] }}</p> 
                 </div>
             <div class="cardTitle d-flex align-items-center">
               <p style="font-size: 0.7em">{{ room.roomName }}</p>
@@ -423,11 +423,12 @@ export default {
         게임: 'GAME',
       },
       tier: {
-        0: '다이아', // 0 ~ 19
-        1: '플래티넘', // 20 ~ 39
-        2: '골드', // 40 ~ 59
-        3: '실버', // 60 ~ 79
-        4: '브론즈', // 80 ~ 100
+        0: '다이아', // 0 ~ 19 / 20 -> 0....232323
+        1: '플래티넘', // 20 ~ 39 -> 1.xdsdsd
+        2: '골드', // 40 ~ 59 -> 2. xdsadwd
+        3: '실버', // 60 ~ 79 ->  3. xadasd
+        4: '브론즈', // 80 ~ 100  -> 4.dwe
+        5: '브론즈',
       },
     };
   },
