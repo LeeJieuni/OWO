@@ -164,8 +164,8 @@
             <div style="z-index:5000;">
               <h1 class="h1-rem text-start">#오운완<span class="sub-title">오늘의 운동 완료</span></h1>
               <div class="content">
-                <p class="text">사람들과 함께 운동하고 경쟁하며 즐기는 <span class="owo">#오운완</span> !</p>
-                <p class="text">여러분들도 재미있게 운동을 즐기실 수 있습니다!</p>
+                <p class="text">오운완의 3대 운동과 함께 경쟁에 도전해 보세요 !</p>
+                <p class="text">많은 운동 참여와 승리를 통해 레벨과 티어를 높여볼까요?</p>
               </div>
             </div>
             <div class="d-flex justify-content-start ms-5 mt-4 mb-5">
