@@ -383,7 +383,7 @@ export default {
       enterPassword: '',
       tabs: ['경쟁하며 운동하기', '영상보며 운동하기', '자유롭게 운동하기'],
       tabs2: ['경쟁방', '영상방', '자유방'],
-      currentTab: 0,
+      currentTab: 2,
       mode: {
         경쟁: 'GAME',
         영상: 'STREAMING',
