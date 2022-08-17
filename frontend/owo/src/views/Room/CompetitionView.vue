@@ -786,6 +786,7 @@ export default {
       }, 2000);
       setTimeout(() => {
         this.gameType = 2;
+        this.setmodel();
         // this.webcam.play();
         this.isStarted = false;
         this.$refs.setTimer3.pauseTimer();
@@ -872,6 +873,7 @@ export default {
       }, 2000);
       setTimeout(() => {
         this.gameType = 1;
+        this.setmodel();
         // this.webcam.play();
         this.isStarted = false;
         this.$refs.setTimer3.pauseTimer();
