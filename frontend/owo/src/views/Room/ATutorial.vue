@@ -6,15 +6,15 @@
       <div class="d-flex justify-content-around">
         <button style="border:none;" class="btn" @click="burpeeExercise()">
           <img style="width:100px; height:auto;" src="@/assets/icon/burpee.png" alt="">
-          <div style="color:#4e8aff;">버피테스트</div>
+          <div style="color:#4e8aff; font-size:20px;">버피테스트</div>
         </button>
         <button style="border:none;" class="btn" @click="lungeExercise()">
           <img style="width:100px; height:auto;" src="@/assets/icon/lunge.png" alt="">
-          <div style="color:#4e8aff;">런지</div>
+          <div style="color:#4e8aff; font-size:20px;">런지</div>
         </button>
         <button style="border:none;" class="btn" @click="squatExercise()">
           <img style="width:100px; height:auto;" src="@/assets/icon/squat.png" alt="">
-          <div style="color:#4e8aff;">스쿼트</div>
+          <div style="color:#4e8aff; font-size:20px;">스쿼트</div>
         </button>
       </div>
       <div v-if="burpee" class="forCarousel">
@@ -33,43 +33,37 @@
               <div class="carousel-item active">
                 <img src="@/assets/icon/burpee1.png" alt="...">
                 <div class="carousel-caption d-none d-md-block" style="color:white;">
-                  <div style="font-size:50px; font-weight:bold;">버피테스트 #1</div>
-                  <div style="font-size:28px;">머리부터 발끝까지 잡히게 자세를 취해주세요.</div>
+                  <div style="font-size:26px;"><strong>#1.</strong> 머리부터 발끝까지 잡히게 자세를 취해주세요.</div>
                 </div>
               </div>
               <div class="carousel-item">
                 <img src="@/assets/icon/burpee2.png" alt="...">
                 <div class="carousel-caption d-none d-md-block" style="color:white;">
-                  <div style="font-size:50px; font-weight:bold;">버피테스트 #2</div>
-                  <div style="font-size:28px;">수구리는 자세를 취해주세요.</div>
+                  <div style="font-size:26px;"><strong>#2.</strong> 수구리는 자세를 취해주세요.</div>
                 </div>
               </div>
               <div class="carousel-item">
                 <img src="@/assets/icon/burpee3.png" alt="...">
                 <div class="carousel-caption d-none d-md-block" style="color:white;">
-                  <div style="font-size:50px; font-weight:bold;">버피테스트 #3</div>
-                  <div style="font-size:28px;">엎드려벋쳐 자세를 취해주세요.</div>
+                  <div style="font-size:26px;"><strong>#3.</strong> 엎드려벋쳐 자세를 취해주세요.</div>
                 </div>
               </div>
               <div class="carousel-item">
                 <img src="@/assets/icon/burpee2.png" alt="...">
                 <div class="carousel-caption d-none d-md-block" style="color:white;">
-                  <div style="font-size:50px; font-weight:bold;">버피테스트 #4</div>
-                  <div style="font-size:28px;">다시 수구리는 자세를 취해주세요.</div>
+                  <div style="font-size:26px;"><strong>#4.</strong> 다시 수구리는 자세를 취해주세요.</div>
                 </div>
               </div>
               <div class="carousel-item">
                 <img src="@/assets/icon/burpee1.png" alt="...">
                 <div class="carousel-caption d-none d-md-block" style="color:white;">
-                  <div style="font-size:50px; font-weight:bold;">버피테스트 #5</div>
-                  <div style="font-size:28px;">다시 처음자세로 움직여주세요.</div>
+                  <div style="font-size:26px;"><strong>#5.</strong> 다시 처음자세로 움직여주세요.</div>
                 </div>
               </div>
               <div class="carousel-item">
                 <img src="@/assets/icon/burpee4.gif" alt="...">
                 <div class="carousel-caption d-none d-md-block" style="color:white;">
-                  <div style="font-size:50px; font-weight:bold;">버피테스트 #6</div>
-                  <div style="font-size:28px;">영상입니다.</div>
+                  <div style="font-size:26px;"><strong>#6.</strong> 영상입니다.</div>
                 </div>
               </div>
             </div>
@@ -98,29 +92,25 @@
               <div class="carousel-item active">
                 <img src="@/assets/icon/lunge1.png" alt="...">
                 <div class="carousel-caption d-none d-md-block" style="color:white;">
-                  <div style="font-size:50px; font-weight:bold;">런지 #1</div>
-                  <div style="font-size:28px;">머리부터 발끝까지 잡히게 발 벌려 자세를 취해주세요.</div>
+                  <div style="font-size:26px;"><strong>#1.</strong> 머리부터 발끝까지 잡히게 자세를 취해주세요.</div>
                 </div>
               </div>
               <div class="carousel-item">
                 <img src="@/assets/icon/lunge2.png" alt="...">
                 <div class="carousel-caption d-none d-md-block" style="color:white;">
-                  <div style="font-size:50px; font-weight:bold;">런지 #2</div>
-                  <div style="font-size:28px;">무릎 각도에 유의해주세요.</div>
+                  <div style="font-size:26px;"><strong>#2.</strong> 무릎 각도에 유의해주세요.</div>
                 </div>
               </div>
               <div class="carousel-item">
                 <img src="@/assets/icon/lunge1.png" alt="...">
                 <div class="carousel-caption d-none d-md-block" style="color:white;">
-                  <div style="font-size:50px; font-weight:bold;">런지 #3</div>
-                  <div style="font-size:28px;">다시 처음 자세로 움직여주세요.</div>
+                  <div style="font-size:26px;"><strong>#3.</strong> 다시 처음 자세로 움직여주세요.</div>
                 </div>
               </div>
               <div class="carousel-item">
                 <img src="@/assets/icon/lunge3.gif" alt="...">
                 <div class="carousel-caption d-none d-md-block" style="color:white;">
-                  <div style="font-size:50px; font-weight:bold;">런지 #4</div>
-                  <div style="font-size:28px;">영상입니다.</div>
+                  <div style="font-size:26px;"><strong>#4.</strong> 영상입니다.</div>
                 </div>
               </div>
             </div>
@@ -149,29 +139,25 @@
               <div class="carousel-item active">
                 <img src="@/assets/icon/squat1.png" alt="...">
                 <div class="carousel-caption d-none d-md-block" style="color:white;">
-                  <div style="font-size:50px; font-weight:bold;">스쿼트 #1</div>
-                  <div style="font-size:28px;">머리부터 발끝까지 잡히게 자세를 취해주세요.</div>
+                  <div style="font-size:26px;"><strong>#1.</strong> 머리부터 발끝까지 잡히게 자세를 취해주세요.</div>
                 </div>
               </div>
               <div class="carousel-item">
                 <img src="@/assets/icon/squat2.png" alt="...">
                 <div class="carousel-caption d-none d-md-block" style="color:white;">
-                  <div style="font-size:50px; font-weight:bold;">스쿼트 #2</div>
-                  <div style="font-size:28px;">천천히 내려가주세요.</div>
+                  <div style="font-size:26px;"><strong>#2.</strong> 천천히 내려가주세요.</div>
                 </div>
               </div>
               <div class="carousel-item">
                 <img src="@/assets/icon/squat1.png" alt="...">
                 <div class="carousel-caption d-none d-md-block" style="color:white;">
-                  <div style="font-size:50px; font-weight:bold;">스쿼트 #3</div>
-                  <div style="font-size:28px;">다시 처음 자세로 움직여주세요.</div>
+                  <div style="font-size:26px;"><strong>#3.</strong> 다시 처음 자세로 움직여주세요.</div>
                 </div>
               </div>
               <div class="carousel-item">
                 <img src="@/assets/icon/squat3.gif" alt="...">
                 <div class="carousel-caption d-none d-md-block" style="color:white;">
-                  <div style="font-size:50px; font-weight:bold;">스쿼트 #4</div>
-                  <div style="font-size:28px;">영상입니다.</div>
+                  <div style="font-size:26px;"><strong>#4.</strong> 영상입니다.</div>
                 </div>
               </div>
             </div>
@@ -187,6 +173,9 @@
         </div>
       </div>
     </div>
+    <router-link style="position:fixed; bottom:30px; right:30px; text-decoration: none; color: inherit;" to="/">
+      <div style="font-size:20px; color:#4e8aff;">나가기 >></div>
+    </router-link>
   </div>
 </div>
 </template>

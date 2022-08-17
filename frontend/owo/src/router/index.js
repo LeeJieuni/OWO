@@ -104,6 +104,7 @@ const routes = [
     path: '/tutorial',
     name: 'ATutorial',
     component: TutorialView,
+    meta: { unauthorized: true },
   },
 ];
 
