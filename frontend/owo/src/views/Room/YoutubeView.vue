@@ -547,7 +547,7 @@ export default {
     },
     pickmyImg(Img, i) {
       this.credentials.fileOriName = `${this.userInfo.nick}_${format}.png`;
-      this.credentials.fileUrl = Img;
+      this.credentials.fileUrl = Img.replace('data:image/png;base64,', '');
       const el1 = document.getElementById('0');
       const el2 = document.getElementById('1');
       const el3 = document.getElementById('2');
@@ -661,7 +661,7 @@ export default {
         },
         data: {
           fileOriName: credentials.fileOriName, //
-          fileUrl: credentials.fileUrl, //
+          fileEncoding: credentials.fileUrl, //
           recordDatetime: credentials.recordDatetime, //
           recordMemo: credentials.recordMemo, //
           recordTime: credentials.recordTime, // time만 양식에 맞춰서 반영하면 될듯?

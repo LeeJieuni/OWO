@@ -265,7 +265,7 @@ export default {
       myBestLungeCount: 0,
       myBestBurpeeCount: 0,
       // 운동이 끝나면 count는 서버에 보내고, counts에 따라 임의의 score를 저장한다.
-      Score: 0,
+      Score: 5,
     };
   },
   setup() {
@@ -324,65 +324,71 @@ export default {
       // eslint-disable-next-line
       if (this.allScoreList.length === 2) {
         if (this.Score === this.allScoreListSorted[0]) {
-          return 5;
+          return 15;
         }
         if (this.Score === this.allScoreListSorted[1]) {
-          return -5;
+          return 10;
         }
       } else if (this.allScoreList.length === 3) {
         if (this.Score === this.allScoreListSorted[0]) {
-          return 10;
+          return 20;
+        }
+        if (this.Score === this.allScoreListSorted[1]) {
+          return 15;
         }
         if (this.Score === this.allScoreListSorted[2]) {
-          return -10;
+          return 10;
         }
       } else if (this.allScoreList.length === 4) {
         if (this.Score === this.allScoreListSorted[0]) {
-          return 20;
+          return 25;
         }
         if (this.Score === this.allScoreListSorted[1]) {
-          return 10;
+          return 20;
         }
         if (this.Score === this.allScoreListSorted[2]) {
-          return -10;
+          return 15;
         }
         if (this.Score === this.allScoreListSorted[3]) {
-          return -20;
-        }
-      } else if (this.allScoreList.length === 5) {
-        if (this.Score === this.allScoreListSorted[0]) {
-          return 20;
-        }
-        if (this.Score === this.allScoreListSorted[1]) {
           return 10;
         }
-        if (this.Score === this.allScoreListSorted[3]) {
-          return -10;
-        }
-        if (this.Score === this.allScoreListSorted[4]) {
-          return -20;
-        }
-      } else if (this.allScoreList.length === 6) {
+      } else if (this.allScoreList.length === 5) {
         if (this.Score === this.allScoreListSorted[0]) {
           return 30;
         }
         if (this.Score === this.allScoreListSorted[1]) {
-          return 20;
+          return 25;
         }
         if (this.Score === this.allScoreListSorted[2]) {
-          return 10;
+          return 20;
         }
         if (this.Score === this.allScoreListSorted[3]) {
-          return -10;
+          return 15;
         }
         if (this.Score === this.allScoreListSorted[4]) {
-          return -20;
+          return 10;
+        }
+      } else if (this.allScoreList.length === 6) {
+        if (this.Score === this.allScoreListSorted[0]) {
+          return 35;
+        }
+        if (this.Score === this.allScoreListSorted[1]) {
+          return 30;
+        }
+        if (this.Score === this.allScoreListSorted[2]) {
+          return 25;
+        }
+        if (this.Score === this.allScoreListSorted[3]) {
+          return 20;
+        }
+        if (this.Score === this.allScoreListSorted[4]) {
+          return 15;
         }
         if (this.Score === this.allScoreListSorted[5]) {
-          return -30;
+          return 10;
         }
       }
-      return 0;
+      return 10;
     },
   },
   methods: {
@@ -714,49 +720,53 @@ export default {
         this.$refs.setTimer4.pauseTimer();
         if (this.allBurpeeCountList.length === 2) {
           if (this.$refs.webrtc.myBurpeeRanking === 1) {
-            this.Score += 5;
+            this.Score += 10;
           } else if (this.$refs.webrtc.myBurpeeRanking === 2) {
-            this.Score -= 5;
+            this.Score += 5;
           }
         } else if (this.allBurpeeCountList.length === 3) {
           if (this.$refs.webrtc.myBurpeeRanking === 1) {
+            this.Score += 15;
+          } else if (this.$refs.webrtc.myBurpeeRanking === 2) {
             this.Score += 10;
           } else if (this.$refs.webrtc.myBurpeeRanking === 3) {
-            this.Score -= 10;
+            this.Score += 5;
           }
         } else if (this.allBurpeeCountList.length === 4) {
           if (this.$refs.webrtc.myBurpeeRanking === 1) {
             this.Score += 20;
           } else if (this.$refs.webrtc.myBurpeeRanking === 2) {
-            this.Score += 10;
+            this.Score += 15;
           } else if (this.$refs.webrtc.myBurpeeRanking === 3) {
-            this.Score -= 10;
+            this.Score += 10;
           } else if (this.$refs.webrtc.myBurpeeRanking === 4) {
-            this.Score -= 20;
+            this.Score += 5;
           }
         } else if (this.allBurpeeCountList.length === 5) {
           if (this.$refs.webrtc.myBurpeeRanking === 1) {
-            this.Score += 20;
+            this.Score += 25;
           } else if (this.$refs.webrtc.myBurpeeRanking === 2) {
-            this.Score += 10;
+            this.Score += 20;
+          } else if (this.$refs.webrtc.myBurpeeRanking === 3) {
+            this.Score += 15;
           } else if (this.$refs.webrtc.myBurpeeRanking === 4) {
-            this.Score -= 10;
+            this.Score += 10;
           } else if (this.$refs.webrtc.myBurpeeRanking === 5) {
-            this.Score -= 20;
+            this.Score += 5;
           }
         } else if (this.allBurpeeCountList.length === 6) {
           if (this.$refs.webrtc.myBurpeeRanking === 1) {
             this.Score += 30;
           } else if (this.$refs.webrtc.myBurpeeRanking === 2) {
-            this.Score += 20;
+            this.Score += 25;
           } else if (this.$refs.webrtc.myBurpeeRanking === 3) {
-            this.Score += 10;
+            this.Score += 20;
           } else if (this.$refs.webrtc.myBurpeeRanking === 4) {
-            this.Score -= 10;
+            this.Score += 15;
           } else if (this.$refs.webrtc.myBurpeeRanking === 5) {
-            this.Score -= 20;
+            this.Score += 10;
           } else if (this.$refs.webrtc.myBurpeeRanking === 6) {
-            this.Score -= 30;
+            this.Score += 5;
           }
         }
         // this.webcam.stop();
@@ -800,49 +810,53 @@ export default {
         audio.play();
         if (this.allLungeCountList.length === 2) {
           if (this.$refs.webrtc.myLungeRanking === 1) {
-            this.Score += 5;
+            this.Score += 10;
           } else if (this.$refs.webrtc.myLungeRanking === 2) {
-            this.Score -= 5;
+            this.Score += 5;
           }
         } else if (this.allLungeCountList.length === 3) {
           if (this.$refs.webrtc.myLungeRanking === 1) {
+            this.Score += 15;
+          } else if (this.$refs.webrtc.myLungeRanking === 2) {
             this.Score += 10;
           } else if (this.$refs.webrtc.myLungeRanking === 3) {
-            this.Score -= 10;
+            this.Score += 5;
           }
         } else if (this.allLungeCountList.length === 4) {
           if (this.$refs.webrtc.myLungeRanking === 1) {
             this.Score += 20;
           } else if (this.$refs.webrtc.myLungeRanking === 2) {
-            this.Score += 10;
+            this.Score += 15;
           } else if (this.$refs.webrtc.myLungeRanking === 3) {
-            this.Score -= 10;
+            this.Score += 10;
           } else if (this.$refs.webrtc.myLungeRanking === 4) {
-            this.Score -= 20;
+            this.Score += 5;
           }
         } else if (this.allLungeCountList.length === 5) {
           if (this.$refs.webrtc.myLungeRanking === 1) {
-            this.Score += 20;
+            this.Score += 25;
           } else if (this.$refs.webrtc.myLungeRanking === 2) {
-            this.Score += 10;
+            this.Score += 20;
+          } else if (this.$refs.webrtc.myLungeRanking === 3) {
+            this.Score += 15;
           } else if (this.$refs.webrtc.myLungeRanking === 4) {
-            this.Score -= 10;
+            this.Score += 10;
           } else if (this.$refs.webrtc.myLungeRanking === 5) {
-            this.Score -= 20;
+            this.Score += 5;
           }
         } else if (this.allLungeCountList.length === 6) {
           if (this.$refs.webrtc.myLungeRanking === 1) {
             this.Score += 30;
           } else if (this.$refs.webrtc.myLungeRanking === 2) {
-            this.Score += 20;
+            this.Score += 25;
           } else if (this.$refs.webrtc.myLungeRanking === 3) {
-            this.Score += 10;
+            this.Score += 20;
           } else if (this.$refs.webrtc.myLungeRanking === 4) {
-            this.Score -= 10;
+            this.Score += 15;
           } else if (this.$refs.webrtc.myLungeRanking === 5) {
-            this.Score -= 20;
+            this.Score += 10;
           } else if (this.$refs.webrtc.myLungeRanking === 6) {
-            this.Score -= 30;
+            this.Score += 5;
           }
         }
         // this.gameType = 4;
@@ -881,49 +895,53 @@ export default {
       setTimeout(() => {
         if (this.allSquatCountList.length === 2) {
           if (this.$refs.webrtc.mySquatRanking === 1) {
-            this.Score += 5;
+            this.Score += 10;
           } else if (this.$refs.webrtc.mySquatRanking === 2) {
-            this.Score -= 5;
+            this.Score += 5;
           }
         } else if (this.allSquatCountList.length === 3) {
           if (this.$refs.webrtc.mySquatRanking === 1) {
+            this.Score += 15;
+          } else if (this.$refs.webrtc.mySquatRanking === 2) {
             this.Score += 10;
           } else if (this.$refs.webrtc.mySquatRanking === 3) {
-            this.Score -= 10;
+            this.Score += 5;
           }
         } else if (this.allSquatCountList.length === 4) {
           if (this.$refs.webrtc.mySquatRanking === 1) {
             this.Score += 20;
           } else if (this.$refs.webrtc.mySquatRanking === 2) {
-            this.Score += 10;
+            this.Score += 15;
           } else if (this.$refs.webrtc.mySquatRanking === 3) {
-            this.Score -= 10;
+            this.Score += 10;
           } else if (this.$refs.webrtc.mySquatRanking === 4) {
-            this.Score -= 20;
+            this.Score += 5;
           }
         } else if (this.allSquatCountList.length === 5) {
           if (this.$refs.webrtc.mySquatRanking === 1) {
-            this.Score += 20;
+            this.Score += 25;
           } else if (this.$refs.webrtc.mySquatRanking === 2) {
-            this.Score += 10;
+            this.Score += 20;
+          } else if (this.$refs.webrtc.mySquatRanking === 3) {
+            this.Score += 15;
           } else if (this.$refs.webrtc.mySquatRanking === 4) {
-            this.Score -= 10;
+            this.Score += 10;
           } else if (this.$refs.webrtc.mySquatRanking === 5) {
-            this.Score -= 20;
+            this.Score += 5;
           }
         } else if (this.allSquatCountList.length === 6) {
           if (this.$refs.webrtc.mySquatRanking === 1) {
             this.Score += 30;
           } else if (this.$refs.webrtc.mySquatRanking === 2) {
-            this.Score += 20;
+            this.Score += 25;
           } else if (this.$refs.webrtc.mySquatRanking === 3) {
-            this.Score += 10;
+            this.Score += 20;
           } else if (this.$refs.webrtc.mySquatRanking === 4) {
-            this.Score -= 10;
+            this.Score += 15;
           } else if (this.$refs.webrtc.mySquatRanking === 5) {
-            this.Score -= 20;
+            this.Score += 10;
           } else if (this.$refs.webrtc.mySquatRanking === 6) {
-            this.Score -= 30;
+            this.Score += 5;
           }
         }
         this.webcam.stop();
