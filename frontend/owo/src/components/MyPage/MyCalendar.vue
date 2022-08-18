@@ -76,7 +76,7 @@
               <!-- meetingRoomId: {{ exercise.meetingRoomId }} <br> -->
 
               <div class="picture-wrapper d-flex justify-content-center mb-3">
-                <img class="picture" :src="dayPictures[i].fileUrl" alt="">
+                <img class="picture" :src="dayPictures[i]" alt="">
               </div>
 
               <!--태그-->
