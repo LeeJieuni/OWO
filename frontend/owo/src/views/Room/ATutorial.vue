@@ -2,18 +2,19 @@
 <div style="font-family: 'LeferiPoint-WhiteObliqueA';">
   <NavBar/>
   <div style="display:flex; justify-content:center; position:relative;">
-    <div style="position:fixed; top:50%; left:50%; transform:translate(-50%, -47%);">
-      <div class="d-flex justify-content-around">
+    <!-- eslint-disable-next-line -->
+    <div class="d-flex" style="">
+      <div class="d-flex row justify-content-around">
         <button style="border:none;" class="btn" @click="burpeeExercise()">
-          <img style="width:100px; height:auto;" src="@/assets/icon/burpee.png" alt="">
+          <img style="width:5vw; height:auto;" src="@/assets/icon/burpee.png" alt="">
           <div style="color:#4e8aff; font-size:20px;">버피테스트</div>
         </button>
         <button style="border:none;" class="btn" @click="lungeExercise()">
-          <img style="width:100px; height:auto;" src="@/assets/icon/lunge.png" alt="">
+          <img style="width:5vw; height:auto;" src="@/assets/icon/lunge.png" alt="">
           <div style="color:#4e8aff; font-size:20px;">런지</div>
         </button>
         <button style="border:none;" class="btn" @click="squatExercise()">
-          <img style="width:100px; height:auto;" src="@/assets/icon/squat.png" alt="">
+          <img style="width:5vw; height:auto;" src="@/assets/icon/squat.png" alt="">
           <div style="color:#4e8aff; font-size:20px;">스쿼트</div>
         </button>
       </div>
@@ -79,7 +80,7 @@
         </div>
       </div>
       <div v-if="lunge" class="forCarousel">
-        <div class="notebook" style="width:800px; height:450px; transform:translate(0, 8%);">
+        <div class="notebook" style="width:800px; height:450px; transform:translate(0, 7%);">
           <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-indicators">
               <!-- eslint-disable -->
@@ -126,7 +127,7 @@
         </div>
       </div>
       <div v-if="squat" class="forCarousel">
-        <div class="notebook" style="width:800px; height:450px; transform:translate(0, 8%);">
+        <div class="notebook" style="width:800px; height:450px; transform:translate(0, 7%);">
           <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-indicators">
               <!-- eslint-disable -->
@@ -222,11 +223,11 @@ export default {
 .forCarousel {
   background-image:url('@/assets/icon/notebook.png');
   background-repeat: no-repeat;
-  background-size:1000px 700px;
+  background-size:1000px 610px;
   background-position: 0% 100%;
   background-color:white;
   width:1000px;
-  height:700px;
+  height:610px;
   display: flex;
   justify-content: center;
   align-items: start;
@@ -234,7 +235,7 @@ export default {
 
 img {
   width:800px;
-  height:530px;
+  height:460px;
 }
 
 .carousel-inner {
