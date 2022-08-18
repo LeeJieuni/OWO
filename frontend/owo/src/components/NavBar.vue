@@ -11,9 +11,6 @@
             </router-link>
           </div>
           <div v-if="!isLogin" class="d-flex justify-content-center">
-            <router-link to="/tutorial" style="text-align:center;">
-              <li class="menu1">Tutorial</li>
-            </router-link>
             <router-link to="/login" style="text-align:center;">
               <li class="menu1">Login</li>
             </router-link>
@@ -23,9 +20,6 @@
           </div>
           <div v-else class="d-flex">
             <div class="d-flex align-items-center">
-              <router-link to="/tutorial" style="text-align:center;">
-                <li class="menu1">Tutorial</li>
-              </router-link>
               <div class="navbar-brand mb-0 h1">
                 <span>안녕하세요
                   <router-link to="/mypage/main"><span
@@ -36,11 +30,12 @@
             </div>
             <div class="dropdown">
               <div class="img-wrapper">
-                <img class="profile-img" :src="profileImg" alt="">
+                <img class="profile-img" :src="profileImg" alt="" style="cursor:pointer;">
               </div>
               <div class="dropdown-content">
+                <li><router-link to="/tutorial">튜토리얼</router-link></li>
                 <li>
-                  <router-link to="/rooms">운동 시작</router-link>
+                  <router-link to="/roomtabs">운동하기</router-link>
                 </li>
                 <li>
                   <router-link
