@@ -55,6 +55,8 @@ public class RecordController {
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
         if (recordDto.getFileOriName() == null || recordDto.getFileEncoding()==null) {
+            System.out.println("파일이름:"+recordDto.getFileOriName());
+            System.out.println("");
             throw new SomethingNullException("memberId:"+memberId+"'s recordImg in Meetingroom(id:"+meetingRoomId+")");
         }
 
