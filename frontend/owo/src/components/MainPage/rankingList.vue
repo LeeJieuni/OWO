@@ -29,14 +29,14 @@
       <!--운동왕의 레코드  -->
       <b-card class="rounded-5 cards">
         <router-link to="/mypage/main">
-          <p class="card-title">나의 record</p>
-          <div class="d-flex justify-content-center align-items-center"
-            style="margin-bottom: 10px">
-            <circle-progress class="progress-bar" :percent="(lastingDay / 7)*100"
-            :show-percent="true" :viewport="true" :size="180" />
-          </div>
+          <p class="card-title">나의 RECORD</p>
+            <div class="d-flex justify-content-center align-items-center"
+              style="margin-bottom: 10px">
+              <circle-progress class="progress-bar" :percent="(lastingDay / 7)*100"
+              :show-percent="true" :viewport="true" :size="180" />
+            </div>
+          <h5 class="card-bottom">연속 {{ lastingDay }}일 동안 운동하고 있어요!</h5>
         </router-link>
-        <h5 class="card-bottom">연속 {{ lastingDay }}일 동안 운동하고 있어요!</h5>
       </b-card>
 
       <!--캘린더-->
@@ -144,7 +144,7 @@ p {
   font-size: 1vw;
   font-weight: 700;
   padding-top: 15px;
-  margin-bottom: 15px;
+  margin-bottom: 3vh;
 }
 .card-bottom {
   margin-top: 10px;
@@ -152,9 +152,9 @@ p {
 
 .cards {
   position: relative;
-  max-width: 320px;
-  min-height: 320px;
-  height: 320px;
+  max-width: 20vw;
+  min-height: 20vw;
+  height: 20vw;
   max-height: 50vh;
 }
 .cards:hover {

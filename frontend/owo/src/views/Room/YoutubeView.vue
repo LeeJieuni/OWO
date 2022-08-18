@@ -266,9 +266,13 @@
         <button @click="roomOut()" class="mybtn6">
           <img class="menu_icon2" src="@/assets/icon/roomout.png" alt="leaveSession">
         </button>
+        <div v-if="(!this.subscribers.length)" class="mybtn11">2명 이상 모여야 시작 가능!!</div>
+        <!-- eslint-disable-next-line -->
+        <div v-if="!(this.credentialsUser.memberId === this.masterId) & !this.isStarted & (this.subscribers.length >= 1)" class="mybtn11">방장 >> 오른쪽 위 START 버튼!</div>
+        <!-- eslint-disable-next-line -->
         <setTimer1 ref="setTimer1"></setTimer1>
         <!-- eslint-disable-next-line -->
-        <button v-if="(this.credentialsUser.memberId === this.masterId) & !this.isStarted & (this.subscribers.length >= 0)" class="mybtn7" @click="startTimer">
+        <button v-if="(this.credentialsUser.memberId === this.masterId) & !this.isStarted & (this.subscribers.length >= 1)" class="mybtn7" @click="startTimer">
         <!-- <button v-if="!isExercising" class="mybtn5" @click="startround1"> -->
           <img class="menu_icon4" src="@/assets/icon/start.png" alt="Start">
         </button>
@@ -370,8 +374,8 @@ export default {
       },
       volume: 0,
       isSetting: false,
-      limitMininalTime: 1, // 최소한의 기록이 남는 시간(분)
-      firstPictureTime: 30, // 첫 사진이 촬영되는 시간(초)
+      limitMininalTime: 15, // 최소한의 기록이 남는 시간(초)
+      firstPictureTime: 10, // 첫 사진이 촬영되는 시간(초)
       modalShow: false,
       // 타이머 셋팅
       timer: 3,
@@ -568,12 +572,12 @@ export default {
       const now = new Date();
       this.endTimeSet(now);
       // eslint-disable-next-line
-      this.credentials.recordTime = Math.abs((this.startTime.getTime() - this.endTime.getTime()) / (1000 * 60));
+      this.credentials.recordTime = Math.abs((this.startTime.getTime() - this.endTime.getTime()) / (1000));
       console.log(this.credentials.recordTime);
       if (this.credentials.recordTime < this.limitMininalTime) {
         swal.fire({
           title: '퇴장하실건가요?',
-          text: `${this.limitMininalTime}분 미만 운동 시 기록이 저장되지 않습니다.`,
+          text: `${this.limitMininalTime}초 미만 운동 시 기록이 저장되지 않습니다.`,
           icon: 'warning',
           showCancelButton: true,
           cancelButtonColor: '#3085d6',
@@ -1376,6 +1380,20 @@ solid #cedfff; border-top: 10px solid transparent; border-bottom: 10px solid tra
   right: 120px;
   /* z-index: 500; */
 }
+
+.mybtn11 {
+  color:gray;
+  opacity: 0.5;
+  background-color:transparent;
+  border:none;
+  position:fixed;
+  top: 37px;
+  font-size:2vw;
+  right: 150px;
+  font-family: 'LeferiPoint-BlackObliqueA';
+  /* z-index: 500; */
+}
+
 .mybtn9 {
   background-color:transparent;
   border:none;

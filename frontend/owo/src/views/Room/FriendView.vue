@@ -232,6 +232,10 @@
         <button @click="roomOut()" class="mybtn6">
           <img class="menu_icon2" src="@/assets/icon/roomout.png" alt="leaveSession">
         </button>
+        <div v-if="(!this.subscribers.length)" class="mybtn9">2명 이상 모여야 시작 가능!!</div>
+        <!-- eslint-disable-next-line -->
+        <div v-if="!(this.credentialsUser.memberId === this.masterId) & !this.isStarted & (this.subscribers.length >= 1)" class="mybtn9">방장 >> 오른쪽 위 START 버튼!</div>
+        <!-- eslint-disable-next-line -->
         <setTimer1 ref="setTimer1"></setTimer1>
         <!-- eslint-disable-next-line -->
         <button v-if="(this.credentialsUser.memberId === this.masterId) & !this.isStarted & (this.subscribers.length >= 1)" class="mybtn7" @click="startTimer">
@@ -471,7 +475,7 @@ export default {
       document.getElementsByClassName('modal-backdrop')[0].remove();
     },
     pickmyImg(Img, i) {
-      this.credentials.fileOriName = `${this.userInfo.nick},${format}.png`;
+      this.credentials.fileOriName = `${this.userInfo.nick}_${format}.png`;
       this.credentials.fileUrl = Img.replace('data:image/png;base64,', '');
       const el1 = document.getElementById('0');
       const el2 = document.getElementById('1');
@@ -1363,6 +1367,19 @@ solid #cedfff; border-top: 10px solid transparent; border-bottom: 10px solid tra
   position:fixed;
   top: 47px;
   right: 30px;
+  /* z-index: 500; */
+}
+
+.mybtn9 {
+  color:gray;
+  opacity: 0.5;
+  background-color:transparent;
+  border:none;
+  position:fixed;
+  top: 37px;
+  font-size:2vw;
+  right: 150px;
+  font-family: 'LeferiPoint-BlackObliqueA';
   /* z-index: 500; */
 }
 

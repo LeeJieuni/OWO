@@ -9,10 +9,9 @@
       </div>
       <div class="carousel">
         <Carousel :autoplay="2500" :items-to-show="2.5" :wrap-around="true">
-          <Slide v-for="(image, i) in images" :key="i" style="padding: 5px;">
-            <!-- <div class="carousel__item"><img :src="image" alt=""
-            style="width: 100%; height: 100%;"></div> -->
-            <div class="carousel__item">image</div>
+          <Slide v-for="(image, i) in images" :key="i" style="padding: 5px; border-radius: 10px;">
+            <div class="carousel__item"><img :src="image" alt=""
+            style="width: 100%; height: 100%; border-radius: 20px;"></div>
           </Slide>
           <template #addons>
           </template>
@@ -53,7 +52,7 @@
 import { defineComponent, reactive, computed } from 'vue';
 import { Carousel, Slide } from 'vue3-carousel';
 import { useStore } from 'vuex';
-// import axios from 'axios';
+import axios from 'axios';
 
 import 'vue3-carousel/dist/carousel.css';
 
@@ -75,31 +74,35 @@ export default defineComponent({
   },
   data() {
     return {
-      images: [1, 2, 3, 4, 5, 6, 7],
+      images: [],
     };
   },
-  // created() {
-  //   this.getImage();
-  // },
+  created() {
+    this.getImage();
+  },
   methods: {
-    // async getImage() {
-    //   await axios({
-    //     url: 'https://i7c202.p.ssafy.io:8282/api/record/img/main',
-    //     method: 'get',
-    //   })
-    //     .then((res) => {
-    //       console.log('이미지 불러오는 중');
-    //       // eslint-disable-next-line
-    //       for (let i = 0; i < 10; i += 1) {
-    //         this.images.push(res.data.data[i].fileUrl);
-    //       }
-    //       console.log('이미지 가져오기 성공.');
-    //     })
-    //     .catch((err) => {
-    //       console.log('이미지가져오기 실패 ㅠㅠ');
-    //       console.log(err);
-    //     });
-    // },
+    async getImage() {
+      await axios({
+        url: 'https://i7c202.p.ssafy.io:8282/api/record/img/main',
+        method: 'get',
+      })
+        .then((res) => {
+          console.log('이미지 불러오는 중');
+          console.log(res);
+          const url = 'https://i7c202.p.ssafy.io:8282';
+          // eslint-disable-next-line
+          for (let i = 0; i < res.data.data.length; i += 1) {
+            this.images.push(url.concat(res.data.data[i].fileUrl));
+            // this.images[i] = this.images[i].replace(',', '_');
+            console.log(this.images[i]);
+          }
+          console.log('이미지 가져오기 성공.');
+        })
+        .catch((err) => {
+          console.log('이미지 가져오기 실패');
+          console.log(err);
+        });
+    },
   },
 });
 </script>

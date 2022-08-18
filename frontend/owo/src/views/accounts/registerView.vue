@@ -58,26 +58,26 @@
       style="width: 50%; border-radius:50px">
         회원가입
       </b-button>
-      <div class="socialLogin" style="padding: 20px; padding-top:10px;">
+      <div class="socialLogin" style="padding: 20px;">
             <hr>
             <div class="socialbtn">
               <!--eslint--disable-next-line-->
               <a href="https://i7c202.p.ssafy.io:8282/oauth2/authorization/google?redirect_uri=https://i7c202.p.ssafy.io:443/oauth/redirect">
                 <!--eslint--disable-next-line--><span style="display: none;">s</span>
-              <img src="@/assets/socialLogo/btn_google_signin_light_focus_web.png"
+              <img src="@/assets/socialLogo/btn_google_signin_light_normal_web@2x.png"
               style="width:191px; height: 46px; margin-bottom: 5px;" alt="">
               <!--eslint--disable-next-line-->
               </a>
               <a href="https://i7c202.p.ssafy.io:8282/oauth2/authorization/naver?redirect_uri=https://i7c202.p.ssafy.io:443/oauth/redirect">
                 <!--eslint--disable-next-line--><span style="display: none;">s</span>
-              <img src="@/assets/socialLogo/btnG_completed.png"
+              <img src="@/assets/socialLogo/btnG_official.png"
               style="width:191px; height: 46px; margin-bottom: 5px;"
               alt="">
               <!--eslint--disable-next-line-->
               </a>
               <a href="https://i7c202.p.ssafy.io:8282/oauth2/authorization/kakao?redirect_uri=https://i7c202.p.ssafy.io:443/oauth/redirect">
                 <!--eslint--disable-next-line--><span style="display: none;">s</span>
-              <img src="@/assets/socialLogo/kakao_login_medium_narrow.png"
+              <img src="@/assets/socialLogo/kakao_login_medium_narrow_eng.png"
               style="width:191px; height: 46px; margin-bottom: 5px;"
               alt="">
               <!--eslint--disable-next-line-->
@@ -139,7 +139,7 @@ export default {
 }
 .registerForm {
   width: 350px;
-  height: 660px;
+  height: 680px;
   padding: 50px;
   border: solid 1px rgb(177, 177, 181);
   border-radius: 15px;
