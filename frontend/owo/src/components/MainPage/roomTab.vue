@@ -294,43 +294,30 @@
           </div>
           <b-card class="rooms" footer-tag="footer">
             <div class="img_sport">
-              <div v-if="room.type === 'GAME'">
-                  <img src="@/assets/sport/game.png" alt="">
-                </div>
-                <div v-if="room.type === 'AEROBIC'">
-                  <img src="@/assets/sport/running.png"
-                  alt="">
-                </div>
-                <div v-if="room.type === 'HEALTH'" >
-                  <img src="@/assets/sport/weight.png"
-                  alt="">
-                </div>
-                <div v-if="room.type === 'STRETCHING'" >
-                  <img src="@/assets/sport/stretching.png"
-                  alt="">
-                </div>
-                <div v-if="room.type === 'HOME'">
-                  <img src="@/assets/sport/home.png"
-                  alt="">
-                </div>
-                <div v-if="room.type === 'BODYWEIGHT'">
-                  <img src="@/assets/sport/push-up-bar.png"
-                  alt="">
-                </div>
-                <div v-if="room.type === 'YOGA'">
-                  <img src="@/assets/sport/yoga.png"
-                  alt="">
-                </div>
-                <div v-if="room.type === 'PILATES'">
-                  <img src="@/assets/sport/pilates.png"
-                  alt="">
-                </div>
+              <div v-if="Math.trunc(Number(masterTier)) === 0">
+                <img src="@/assets/icon/tier5.png" alt="">
+              </div>
+                <div v-if="Math.trunc(Number(masterTier)) === 1">
+                <img src="@/assets/icon/tier4.png" alt="">
+              </div>
+                <div v-if="Math.trunc(Number(masterTier)) === 2">
+                <img src="@/assets/icon/tier3.png" alt="">
+              </div>
+                <div v-if="Math.trunc(Number(masterTier)) === 3">
+                <img src="@/assets/icon/tier2.png" alt="">
+              </div>
+                <div v-if="Math.trunc(Number(masterTier))=== 4">
+                <img src="@/assets/icon/tier1.png" alt="">
+              </div>
+                <div v-if="Math.trunc(Number(masterTier)) === 5">
+                <img src="@/assets/icon/tier1.png" alt="">
+              </div>
             </div>
-                <div class="d-flex">
-                    <p align="left" class="workoutType">{{ workout_reverse[room.type] }}</p>
-                    <p style="background-color: rgba(243, 62, 26, 0.445);">
-                    {{ tier[Math.trunc(Number((room.manger_percentage / 20)))] }}</p> 
-                </div>
+            <div class="d-flex">
+              <p align="left" class="workoutType">{{ workout_reverse[room.type] }}</p>
+              <p style="background-color: rgba(243, 62, 26, 0.445);">
+              {{ tier[Math.trunc(Number((room.manger_percentage / 20)))] }}</p> 
+            </div>
             <div class="cardTitle d-flex align-items-center">
               <p style="font-size: 0.7em; margin-top: 20px;">{{ room.roomName }}</p>
             </div>
