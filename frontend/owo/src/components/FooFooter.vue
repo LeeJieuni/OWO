@@ -13,9 +13,8 @@
       <a style="text-decoration: none; color: white;" href="https://accidental-postage-c1a.notion.site/bdcd991182e142f8b410f5b9a4aae238">팀 소개</a>
     </div>
     <div class="contents" style="text-align: right;">
-      <router-link to="/tutorial" style="text-align:center; text-decoration: none; color: white;">
-        Tutorial
-      </router-link>
+      <p style="text-align:center; text-decoration: none; color: rgb(29, 29, 29);">
+      </p>
     </div>
   </div>
 </template>

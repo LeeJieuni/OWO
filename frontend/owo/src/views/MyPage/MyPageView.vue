@@ -90,6 +90,8 @@
       </div>
     </div>
     <!-- </div> -->
+    <router-link to="/roomtabs" class="h1-rem2" id="fixedbutton">
+            <span class="h1-rem">운동하러</span> GO!</router-link>
   </div>
 </template>
 
@@ -376,4 +378,28 @@ export default {
     color: black;
     font-weight: 600;
   }
+  #fixedbutton {
+  position: fixed;
+  bottom: 19px;
+  right: 20px;
+}
+#fixedbutton:hover {
+  position: fixed;
+  bottom: 23px;
+  color: #4E8AFF;
+}
+.h1-rem {
+  font-size: 2vh;
+  /* padding: 2vh; */
+  font-family: 'Recipekorea';
+  color: rgb(29, 29, 29);
+}
+.h1-rem2 {
+  font-size: 3vh;
+  padding: 2vh;
+  font-family: 'Recipekorea';
+  color: rgb(29, 29, 29);
+  text-decoration: none;
+  /* text-shadow: 3px 3px #4E8AFF; */
+}
 </style>

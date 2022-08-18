@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="title">
-      <p>{{ user.nick }}님의 캘린더 </p>
+      <!-- <p class="title-p">{{ userInfo.nick }}'s Calendar </p> -->
     </div>
     <div class="calendar">
       <MyCalendar/>
@@ -11,6 +11,9 @@
 
 <script>
 import MyCalendar from '@/components/MyPage/MyCalendar.vue';
+import { createNamespacedHelpers } from 'vuex';
+
+const { mapGetters } = createNamespacedHelpers('accounts');
 
 export default {
   components: { MyCalendar },
@@ -27,10 +30,13 @@ export default {
   mounted() {},
   unmounted() {},
   methods: {
-    dateClass(ymd, date) {
-      const day = date.getDate();
-      return day >= 10 && day <= 19 ? 'table-info' : '';
-    },
+    // dateClass(ymd, date) {
+    //   const day = date.getDate();
+    //   return day >= 10 && day <= 19 ? 'table-info' : '';
+    // },
+  },
+  computed: {
+    ...mapGetters(['userInfo']),
   },
 };
 </script>
@@ -46,5 +52,8 @@ export default {
   }
   .calendar {
     margin: 0 auto;
+  }
+  .title-p {
+    font-family: 'Recipekorea';
   }
 </style>

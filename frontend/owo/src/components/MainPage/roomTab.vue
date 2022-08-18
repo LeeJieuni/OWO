@@ -1,5 +1,8 @@
  <template>
  <div class="body">
+   <NavBar/>
+   <div class="ttab">
+  <h1 class="title">운동방 입장하기 🚀</h1>
   <div class="tabs">
     <div class="tab-menu d-flex">
       <!--eslint-disable-->
@@ -22,6 +25,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        cursor:pointer;
         color: rgba(243, 62, 62, 0.78);
         "
         v-b-modal.modal-makeSession variant="outline-danger"
@@ -101,6 +105,7 @@
     </div>
   </div>
   <!--운동방 -->
+  <div class="rooms">
     <div v-if="!noStreaming" class="tab-content wrap">
       <div v-show="currentTab == 0" class="scroll__wrap">
         <div v-for="(room, i) in roomList.streamingRoomList"
@@ -148,12 +153,12 @@
                     <p align="left" class="workoutType">{{ workout_reverse[room.type] }}</p>
                 </div>
             <div class="cardTitle d-flex align-items-center">
-              <p style="font-size: 0.7em">{{ room.roomName }}</p>
+              <p style="font-size: 0.7em; margin-top: 20px;">{{ room.roomName }}</p>
             <span v-if="!room.secret"><img src="@/assets/icon/lock1.png"
             alt="" style="width:35px"></span>
-            <p v-if="room.secret"><img src="@/assets/icon/lock2.png" alt="" style="width:35px"></p>
+            <span v-if="room.secret"><img src="@/assets/icon/lock2.png" alt="" style="width:35px"></span>
             </div>
-            <b-button size="lg" class="rooms_btn" variant="primary"
+            <b-button size="lg" class="rooms_btn" variant="primary" style="margin-top: 60px;"
               @click="enterroom({
               password: enterPassword,
               roomId: room.roomId,
@@ -237,12 +242,12 @@
                     <p align="left" class="workoutType">{{ workout_reverse[room.type] }}</p>
                 </div>
             <div class="cardTitle d-flex align-items-center">
-              <p style="font-size: 0.7em">{{ room.roomName }}</p>
+              <p style="font-size: 0.7em; margin-top: 20px;">{{ room.roomName }}</p>
             <span v-if="!room.secret"><img src="@/assets/icon/lock1.png"
             alt="" style="width:35px"></span>
-            <p v-if="room.secret"><img src="@/assets/icon/lock2.png" alt="" style="width:35px"></p>
+            <span v-if="room.secret"><img src="@/assets/icon/lock2.png" alt="" style="width:35px"></span>
             </div>
-            <b-button size="lg" class="rooms_btn" variant="primary"
+            <b-button size="lg" class="rooms_btn" variant="primary" style="margin-top: 60px;"
               @click="enterroom({
               password: enterPassword,
               roomId: room.roomId,
@@ -289,47 +294,34 @@
           </div>
           <b-card class="rooms" footer-tag="footer">
             <div class="img_sport">
-              <div v-if="room.type === 'GAME'">
-                  <img src="@/assets/sport/game.png" alt="">
-                </div>
-                <div v-if="room.type === 'AEROBIC'">
-                  <img src="@/assets/sport/running.png"
-                  alt="">
-                </div>
-                <div v-if="room.type === 'HEALTH'" >
-                  <img src="@/assets/sport/weight.png"
-                  alt="">
-                </div>
-                <div v-if="room.type === 'STRETCHING'" >
-                  <img src="@/assets/sport/stretching.png"
-                  alt="">
-                </div>
-                <div v-if="room.type === 'HOME'">
-                  <img src="@/assets/sport/home.png"
-                  alt="">
-                </div>
-                <div v-if="room.type === 'BODYWEIGHT'">
-                  <img src="@/assets/sport/push-up-bar.png"
-                  alt="">
-                </div>
-                <div v-if="room.type === 'YOGA'">
-                  <img src="@/assets/sport/yoga.png"
-                  alt="">
-                </div>
-                <div v-if="room.type === 'PILATES'">
-                  <img src="@/assets/sport/pilates.png"
-                  alt="">
-                </div>
+              <div v-if="Math.trunc(Number(masterTier)) === 0">
+                <img src="@/assets/icon/tier5.png" alt="">
+              </div>
+                <div v-if="Math.trunc(Number(masterTier)) === 1">
+                <img src="@/assets/icon/tier4.png" alt="">
+              </div>
+                <div v-if="Math.trunc(Number(masterTier)) === 2">
+                <img src="@/assets/icon/tier3.png" alt="">
+              </div>
+                <div v-if="Math.trunc(Number(masterTier)) === 3">
+                <img src="@/assets/icon/tier2.png" alt="">
+              </div>
+                <div v-if="Math.trunc(Number(masterTier))=== 4">
+                <img src="@/assets/icon/tier1.png" alt="">
+              </div>
+                <div v-if="Math.trunc(Number(masterTier)) === 5">
+                <img src="@/assets/icon/tier1.png" alt="">
+              </div>
             </div>
-                <div class="d-flex">
-                    <p align="left" class="workoutType">{{ workout_reverse[room.type] }}</p>
-                    <p style="background-color: rgba(243, 62, 26, 0.445);">
-                    {{ tier[Math.trunc(Number((room.manger_percentage / 20)))] }}</p> 
-                </div>
+            <div class="d-flex">
+              <p align="left" class="workoutType">{{ workout_reverse[room.type] }}</p>
+              <p style="background-color: rgba(243, 62, 26, 0.445);">
+              {{ tier[Math.trunc(Number((room.manger_percentage / 20)))] }}</p> 
+            </div>
             <div class="cardTitle d-flex align-items-center">
-              <p style="font-size: 0.7em">{{ room.roomName }}</p>
+              <p style="font-size: 0.7em; margin-top: 20px;">{{ room.roomName }}</p>
             </div>
-            <b-button size="lg" class="rooms_btn" variant="primary"
+            <b-button size="lg" class="rooms_btn" variant="primary" style="margin-top: 60px;"
               @click="enterCompetitionRoom({
               password: enterPassword,
               roomId: room.roomId,
@@ -366,17 +358,22 @@
       </div>
     </div>
   </div>
+
+  </div>
+</div>
 </div>
 </template>
 
 <script>
 import { mapGetters, mapActions, mapState } from 'vuex';
+import NavBar from '../NavBar.vue';
 // eslint--disable-next-line
 const accounts = 'accounts';
 
 export default {
   name: 'myTabs',
   components: {
+    NavBar,
   },
   data() {
     return {
@@ -453,12 +450,24 @@ export default {
     },
   },
   created() {
+    const mode = ['FREE', 'GAME', 'STREAMING'];
+    for (let i = 0; i < mode.length; i += 1) {
+      console.log('실행중이다 roomtabvue.view');
+      this.getRoomList(mode[i]);
+    }
   },
 };
 </script>
 
 <style scoped>
+.ttab {
+  padding: 0 150px;
+}
+.rooms {
+  height: 448px;
+}
 .mytab {
+  cursor:pointer;
   width: 200px;
   height: 50px;
   display: flex;
@@ -510,7 +519,7 @@ export default {
   white-space: nowrap;
   font-size: 15px;
   margin-top: -30px;
-  height: 400px;
+  height: 450px;
   /* background-color: #f4f3f3; */
   border-radius: 10px;
   border: solid #dfdfdf 1px;
@@ -559,10 +568,6 @@ export default {
 .form-check {
   padding: 10px;
 }
-
-input {
-  /* margin-left: 50px; */
-}
 .darkness {
   font-family: 'Recipekorea';
   line-height: 390px;
@@ -588,5 +593,13 @@ input {
   font-size: 20px;
   font-weight: 900;
   padding: 20px;
+}
+.title {
+  padding-top: 100px;
+  padding-left: 0;
+  /* color: white; */
+  font-family: 'LeferiPoint-BlackObliqueA';
+  font-size: 6vh;
+  text-align: left;
 }
 </style>

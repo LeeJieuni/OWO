@@ -196,6 +196,8 @@ export default {
   },
   data() {
     return {
+      myExerciseTime: undefined, // 운동 시간 소요 (초)
+      myRestTime: undefined, // 휴식 시간 소요 (초)
       // 타이머 셋팅
       timer: 3,
       temp_timer: 3,
@@ -265,7 +267,7 @@ export default {
       myBestLungeCount: 0,
       myBestBurpeeCount: 0,
       // 운동이 끝나면 count는 서버에 보내고, counts에 따라 임의의 score를 저장한다.
-      Score: 0,
+      Score: 5,
     };
   },
   setup() {
@@ -324,65 +326,71 @@ export default {
       // eslint-disable-next-line
       if (this.allScoreList.length === 2) {
         if (this.Score === this.allScoreListSorted[0]) {
-          return 5;
+          return 15;
         }
         if (this.Score === this.allScoreListSorted[1]) {
-          return -5;
+          return 10;
         }
       } else if (this.allScoreList.length === 3) {
         if (this.Score === this.allScoreListSorted[0]) {
-          return 10;
+          return 20;
+        }
+        if (this.Score === this.allScoreListSorted[1]) {
+          return 15;
         }
         if (this.Score === this.allScoreListSorted[2]) {
-          return -10;
+          return 10;
         }
       } else if (this.allScoreList.length === 4) {
         if (this.Score === this.allScoreListSorted[0]) {
-          return 20;
+          return 25;
         }
         if (this.Score === this.allScoreListSorted[1]) {
-          return 10;
+          return 20;
         }
         if (this.Score === this.allScoreListSorted[2]) {
-          return -10;
+          return 15;
         }
         if (this.Score === this.allScoreListSorted[3]) {
-          return -20;
-        }
-      } else if (this.allScoreList.length === 5) {
-        if (this.Score === this.allScoreListSorted[0]) {
-          return 20;
-        }
-        if (this.Score === this.allScoreListSorted[1]) {
           return 10;
         }
-        if (this.Score === this.allScoreListSorted[3]) {
-          return -10;
-        }
-        if (this.Score === this.allScoreListSorted[4]) {
-          return -20;
-        }
-      } else if (this.allScoreList.length === 6) {
+      } else if (this.allScoreList.length === 5) {
         if (this.Score === this.allScoreListSorted[0]) {
           return 30;
         }
         if (this.Score === this.allScoreListSorted[1]) {
-          return 20;
+          return 25;
         }
         if (this.Score === this.allScoreListSorted[2]) {
-          return 10;
+          return 20;
         }
         if (this.Score === this.allScoreListSorted[3]) {
-          return -10;
+          return 15;
         }
         if (this.Score === this.allScoreListSorted[4]) {
-          return -20;
+          return 10;
+        }
+      } else if (this.allScoreList.length === 6) {
+        if (this.Score === this.allScoreListSorted[0]) {
+          return 35;
+        }
+        if (this.Score === this.allScoreListSorted[1]) {
+          return 30;
+        }
+        if (this.Score === this.allScoreListSorted[2]) {
+          return 25;
+        }
+        if (this.Score === this.allScoreListSorted[3]) {
+          return 20;
+        }
+        if (this.Score === this.allScoreListSorted[4]) {
+          return 15;
         }
         if (this.Score === this.allScoreListSorted[5]) {
-          return -30;
+          return 10;
         }
       }
-      return 0;
+      return 10;
     },
   },
   methods: {
@@ -697,10 +705,7 @@ export default {
           default:
             break;
         }
-        // }, 100);
       }, 2000);
-      setTimeout(() => {
-      }, 5000);
       setTimeout(() => {
         this.isStarted = false;
         this.$refs.setTimer3.pauseTimer();
@@ -714,60 +719,64 @@ export default {
         this.$refs.setTimer4.pauseTimer();
         if (this.allBurpeeCountList.length === 2) {
           if (this.$refs.webrtc.myBurpeeRanking === 1) {
-            this.Score += 5;
+            this.Score += 10;
           } else if (this.$refs.webrtc.myBurpeeRanking === 2) {
-            this.Score -= 5;
+            this.Score += 5;
           }
         } else if (this.allBurpeeCountList.length === 3) {
           if (this.$refs.webrtc.myBurpeeRanking === 1) {
+            this.Score += 15;
+          } else if (this.$refs.webrtc.myBurpeeRanking === 2) {
             this.Score += 10;
           } else if (this.$refs.webrtc.myBurpeeRanking === 3) {
-            this.Score -= 10;
+            this.Score += 5;
           }
         } else if (this.allBurpeeCountList.length === 4) {
           if (this.$refs.webrtc.myBurpeeRanking === 1) {
             this.Score += 20;
           } else if (this.$refs.webrtc.myBurpeeRanking === 2) {
-            this.Score += 10;
+            this.Score += 15;
           } else if (this.$refs.webrtc.myBurpeeRanking === 3) {
-            this.Score -= 10;
+            this.Score += 10;
           } else if (this.$refs.webrtc.myBurpeeRanking === 4) {
-            this.Score -= 20;
+            this.Score += 5;
           }
         } else if (this.allBurpeeCountList.length === 5) {
           if (this.$refs.webrtc.myBurpeeRanking === 1) {
-            this.Score += 20;
+            this.Score += 25;
           } else if (this.$refs.webrtc.myBurpeeRanking === 2) {
-            this.Score += 10;
+            this.Score += 20;
+          } else if (this.$refs.webrtc.myBurpeeRanking === 3) {
+            this.Score += 15;
           } else if (this.$refs.webrtc.myBurpeeRanking === 4) {
-            this.Score -= 10;
+            this.Score += 10;
           } else if (this.$refs.webrtc.myBurpeeRanking === 5) {
-            this.Score -= 20;
+            this.Score += 5;
           }
         } else if (this.allBurpeeCountList.length === 6) {
           if (this.$refs.webrtc.myBurpeeRanking === 1) {
             this.Score += 30;
           } else if (this.$refs.webrtc.myBurpeeRanking === 2) {
-            this.Score += 20;
+            this.Score += 25;
           } else if (this.$refs.webrtc.myBurpeeRanking === 3) {
-            this.Score += 10;
+            this.Score += 20;
           } else if (this.$refs.webrtc.myBurpeeRanking === 4) {
-            this.Score -= 10;
+            this.Score += 15;
           } else if (this.$refs.webrtc.myBurpeeRanking === 5) {
-            this.Score -= 20;
+            this.Score += 10;
           } else if (this.$refs.webrtc.myBurpeeRanking === 6) {
-            this.Score -= 30;
+            this.Score += 5;
           }
         }
         // this.webcam.stop();
-      }, 36000);
+      }, 21000);
       setTimeout(() => {
         this.restTime = false;
-      }, 42000);
-      setTimeout(() => {
-        this.isExercising = true;
         this.startround2();
-      }, 46000);
+        this.isExercising = true;
+      }, 24000);
+      // setTimeout(() => {
+      // }, 46000);
     },
     startround2() {
       // eslint-disable-next-line
@@ -800,61 +809,65 @@ export default {
         audio.play();
         if (this.allLungeCountList.length === 2) {
           if (this.$refs.webrtc.myLungeRanking === 1) {
-            this.Score += 5;
+            this.Score += 10;
           } else if (this.$refs.webrtc.myLungeRanking === 2) {
-            this.Score -= 5;
+            this.Score += 5;
           }
         } else if (this.allLungeCountList.length === 3) {
           if (this.$refs.webrtc.myLungeRanking === 1) {
+            this.Score += 15;
+          } else if (this.$refs.webrtc.myLungeRanking === 2) {
             this.Score += 10;
           } else if (this.$refs.webrtc.myLungeRanking === 3) {
-            this.Score -= 10;
+            this.Score += 5;
           }
         } else if (this.allLungeCountList.length === 4) {
           if (this.$refs.webrtc.myLungeRanking === 1) {
             this.Score += 20;
           } else if (this.$refs.webrtc.myLungeRanking === 2) {
-            this.Score += 10;
+            this.Score += 15;
           } else if (this.$refs.webrtc.myLungeRanking === 3) {
-            this.Score -= 10;
+            this.Score += 10;
           } else if (this.$refs.webrtc.myLungeRanking === 4) {
-            this.Score -= 20;
+            this.Score += 5;
           }
         } else if (this.allLungeCountList.length === 5) {
           if (this.$refs.webrtc.myLungeRanking === 1) {
-            this.Score += 20;
+            this.Score += 25;
           } else if (this.$refs.webrtc.myLungeRanking === 2) {
-            this.Score += 10;
+            this.Score += 20;
+          } else if (this.$refs.webrtc.myLungeRanking === 3) {
+            this.Score += 15;
           } else if (this.$refs.webrtc.myLungeRanking === 4) {
-            this.Score -= 10;
+            this.Score += 10;
           } else if (this.$refs.webrtc.myLungeRanking === 5) {
-            this.Score -= 20;
+            this.Score += 5;
           }
         } else if (this.allLungeCountList.length === 6) {
           if (this.$refs.webrtc.myLungeRanking === 1) {
             this.Score += 30;
           } else if (this.$refs.webrtc.myLungeRanking === 2) {
-            this.Score += 20;
+            this.Score += 25;
           } else if (this.$refs.webrtc.myLungeRanking === 3) {
-            this.Score += 10;
+            this.Score += 20;
           } else if (this.$refs.webrtc.myLungeRanking === 4) {
-            this.Score -= 10;
+            this.Score += 15;
           } else if (this.$refs.webrtc.myLungeRanking === 5) {
-            this.Score -= 20;
+            this.Score += 10;
           } else if (this.$refs.webrtc.myLungeRanking === 6) {
-            this.Score -= 30;
+            this.Score += 5;
           }
         }
         // this.gameType = 4;
         // this.webcam.stop();
-      }, 36000);
+      }, 21000);
       setTimeout(() => {
         this.restTime = false;
-      }, 42000);
-      setTimeout(() => {
         this.isExercising = true;
         this.startround3();
-      }, 46000);
+      }, 24000);
+      // setTimeout(() => {
+      // }, 46000);
     },
     startround3() {
       // eslint-disable-next-line
@@ -881,49 +894,53 @@ export default {
       setTimeout(() => {
         if (this.allSquatCountList.length === 2) {
           if (this.$refs.webrtc.mySquatRanking === 1) {
-            this.Score += 5;
+            this.Score += 10;
           } else if (this.$refs.webrtc.mySquatRanking === 2) {
-            this.Score -= 5;
+            this.Score += 5;
           }
         } else if (this.allSquatCountList.length === 3) {
           if (this.$refs.webrtc.mySquatRanking === 1) {
+            this.Score += 15;
+          } else if (this.$refs.webrtc.mySquatRanking === 2) {
             this.Score += 10;
           } else if (this.$refs.webrtc.mySquatRanking === 3) {
-            this.Score -= 10;
+            this.Score += 5;
           }
         } else if (this.allSquatCountList.length === 4) {
           if (this.$refs.webrtc.mySquatRanking === 1) {
             this.Score += 20;
           } else if (this.$refs.webrtc.mySquatRanking === 2) {
-            this.Score += 10;
+            this.Score += 15;
           } else if (this.$refs.webrtc.mySquatRanking === 3) {
-            this.Score -= 10;
+            this.Score += 10;
           } else if (this.$refs.webrtc.mySquatRanking === 4) {
-            this.Score -= 20;
+            this.Score += 5;
           }
         } else if (this.allSquatCountList.length === 5) {
           if (this.$refs.webrtc.mySquatRanking === 1) {
-            this.Score += 20;
+            this.Score += 25;
           } else if (this.$refs.webrtc.mySquatRanking === 2) {
-            this.Score += 10;
+            this.Score += 20;
+          } else if (this.$refs.webrtc.mySquatRanking === 3) {
+            this.Score += 15;
           } else if (this.$refs.webrtc.mySquatRanking === 4) {
-            this.Score -= 10;
+            this.Score += 10;
           } else if (this.$refs.webrtc.mySquatRanking === 5) {
-            this.Score -= 20;
+            this.Score += 5;
           }
         } else if (this.allSquatCountList.length === 6) {
           if (this.$refs.webrtc.mySquatRanking === 1) {
             this.Score += 30;
           } else if (this.$refs.webrtc.mySquatRanking === 2) {
-            this.Score += 20;
+            this.Score += 25;
           } else if (this.$refs.webrtc.mySquatRanking === 3) {
-            this.Score += 10;
+            this.Score += 20;
           } else if (this.$refs.webrtc.mySquatRanking === 4) {
-            this.Score -= 10;
+            this.Score += 15;
           } else if (this.$refs.webrtc.mySquatRanking === 5) {
-            this.Score -= 20;
+            this.Score += 10;
           } else if (this.$refs.webrtc.mySquatRanking === 6) {
-            this.Score -= 30;
+            this.Score += 5;
           }
         }
         this.webcam.stop();
@@ -935,10 +952,10 @@ export default {
           title: '획득 포인트 정산중입니다...',
           text: '잠시만 기다려주세요!',
         });
-      }, 36000);
+      }, 21000);
       setTimeout(() => {
         this.sendMyPoints();
-      }, 37000);
+      }, 22000);
       setTimeout(() => {
         // eslint-disable-next-line
         const audio = new Audio(require('@/assets/music/record.mp3'));
@@ -946,6 +963,9 @@ export default {
         swal.fire({
           icon: 'success',
           // eslint-disable-next-line
+          showDenyButton: true,
+          confirmButtonText: '머무르기',
+          denyButtonText: '나가기',
           html: `방 제목 : <strong>${this.roomName}</strong> | 참여자 : <strong>${this.subscribers.length} 명</strong><br>
           <br>
           <strong>${this.userInfo.nick}</strong>님의 기록입니다.<br>
@@ -954,10 +974,18 @@ export default {
           <strong>#Round 2. </strong>Lunge  : <strong>${this.$refs.webrtc.myLunge.userLungeCount}회</strong> / 최고 기록 : <strong>${this.myBestLungeCount}회</strong><br>
           <strong>#Round 3. </strong>Squat  : <strong>${this.$refs.webrtc.mySquat.userSquatCount}회</strong> / 최고 기록 : <strong>${this.myBestSquatCount}회</strong><br>
           <br>
-          이번 경쟁의 포인트 변동 : <strong><U>${this.myExercisePoints}</U></strong> point`,
+          이번 경쟁의 포인트 변동 : <strong><U>${this.myExercisePoints}</U></strong> point<br>
+          <br>
+          <div style="color:gray;">기록이 저장되었습니다.</div>`,
+        }).then((result) => {
+          if (result.isDenied) {
+            this.leaveSession();
+          } else if (result.isConfirmed) {
+            this.resetAllCountList();
+          }
         });
         this.webcam.stop();
-      }, 39000);
+      }, 23000);
     },
     sendScore() {
       this.session
@@ -1122,26 +1150,41 @@ export default {
           // eslint-disable-next-line
           const audio2 = new Audio(require('@/assets/music/takePhoto.mp3'));
           audio2.play();
-        }
+          setTimeout(() => {
+            html2canvas(el).then((canvas) => {
+              this.mypictures.unshift(canvas.toDataURL('image/png', 1.0));
+              if (this.mypictures.length >= 3) { this.mypictures.pop(); }
+            });
+          });
+        } // 0초에 찰칵 사인 -> 소리가 나오는 시간을 체크해야겠네
         if (this.timer === -1) {
           this.temp_timer_2 = '';
-        }
-        if (this.timer === -1) {
-          const el = document.querySelector('#take_photo_WebRTC');
-          html2canvas(el).then((canvas) => {
-            this.mypictures.unshift(canvas.toDataURL('image/png', 1.0));
-            this.photoDisplay = true;
-            setTimeout(() => {
-              this.photoDisplay = false;
-            }, 2000);
-          });
-          if (this.mypictures.length >= 3) { this.mypictures.pop(); }
+          this.photoDisplay = true;
+          setTimeout(() => {
+            this.photoDisplay = false;
+          }, 2000);
           clearInterval(this.take_photo_timer);
           setTimeout(() => {
             this.is_take_photo = false;
             this.timer = this.temp_timer;
           }, 2000);
         }
+        // if (this.timer === -1) {
+        //   const el = document.querySelector('#take_photo_WebRTC');
+        //   html2canvas(el).then((canvas) => {
+        //     this.mypictures.unshift(canvas.toDataURL('image/png', 1.0));
+        //     this.photoDisplay = true;
+        //     setTimeout(() => {
+        //       this.photoDisplay = false;
+        //     }, 2000);
+        //   });
+        //   if (this.mypictures.length >= 3) { this.mypictures.pop(); }
+        //   clearInterval(this.take_photo_timer);
+        //   setTimeout(() => {
+        //     this.is_take_photo = false;
+        //     this.timer = this.temp_timer;
+        //   }, 2000);
+        // }
       }, 1000);
       this.temp_timer_2 = this.temp_timer;
     },

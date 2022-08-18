@@ -10,8 +10,9 @@
       <div class="carousel">
         <Carousel :autoplay="2500" :items-to-show="2.5" :wrap-around="true">
           <Slide v-for="(image, i) in images" :key="i" style="padding: 5px;">
-            <div class="carousel__item"><img :src="image" alt=""
-            style="width: 100%; height: 100%;"></div>
+            <!-- <div class="carousel__item"><img :src="image" alt=""
+            style="width: 100%; height: 100%;"></div> -->
+            <div class="carousel__item">image</div>
           </Slide>
           <template #addons>
           </template>
@@ -24,7 +25,7 @@
           <p class="text">최근 사진들은 메인 화면에 자랑할 수 있답니다!</p>
           <p class="text">이제부터는 번거롭게 인증사진을 찍으러 갈 필요가 없어요!</p>
           <!-- <div class="btns"> -->
-          <div class="btns">
+          <!-- <div class="btns">
             <router-link v-if="!isLogin" to="/login">
               <button class="start-btn btn-12">
                 <span>Login</span><span>Start With Us!</span>
@@ -35,8 +36,13 @@
                 <span>Mypage</span><span>Start With Us!</span>
               </button>
             </router-link>
-          </div>
+          </div> -->
         <!-- </div> -->
+        <!-- <div>
+          <p class="text">이제 #오운완과 함께 운동을 시작해볼까요?<br></p>
+          <router-link to="/rooms" class="h1-rem2">
+            <span class="h1-rem">운동하러</span> GO!</router-link>
+          </div> -->
       </div>
     </div>
   </div>
@@ -47,7 +53,7 @@
 import { defineComponent, reactive, computed } from 'vue';
 import { Carousel, Slide } from 'vue3-carousel';
 import { useStore } from 'vuex';
-import axios from 'axios';
+// import axios from 'axios';
 
 import 'vue3-carousel/dist/carousel.css';
 
@@ -69,29 +75,31 @@ export default defineComponent({
   },
   data() {
     return {
-      images: [],
+      images: [1, 2, 3, 4, 5, 6, 7],
     };
   },
-  created() {
-    this.getImage();
-  },
+  // created() {
+  //   this.getImage();
+  // },
   methods: {
-    getImage() {
-      axios({
-        url: 'https://i7c202.p.ssafy.io:8282/api/record/img/main',
-        method: 'get',
-      })
-        .then((res) => {
-          // eslint-disable-next-line
-          for (let i = 0; i < 10; i += 1) {
-            this.images.push(res.data.data[i].fileUrl);
-          }
-        })
-        .catch((err) => {
-          console.log('이미지가져오기 실패 ㅠㅠ');
-          console.log(err);
-        });
-    },
+    // async getImage() {
+    //   await axios({
+    //     url: 'https://i7c202.p.ssafy.io:8282/api/record/img/main',
+    //     method: 'get',
+    //   })
+    //     .then((res) => {
+    //       console.log('이미지 불러오는 중');
+    //       // eslint-disable-next-line
+    //       for (let i = 0; i < 10; i += 1) {
+    //         this.images.push(res.data.data[i].fileUrl);
+    //       }
+    //       console.log('이미지 가져오기 성공.');
+    //     })
+    //     .catch((err) => {
+    //       console.log('이미지가져오기 실패 ㅠㅠ');
+    //       console.log(err);
+    //     });
+    // },
   },
 });
 </script>
@@ -122,14 +130,28 @@ export default defineComponent({
   height: 40vh;
 }
 .h1-rem {
-  font-size: 4vh;
+  font-size: 4.5vh;
+  /* padding: 2vh; */
+  font-family: 'Recipekorea';
+  color: black;
+  padding-bottom: 20px;
+}
+.h1-rem2 {
+  font-size: 6vh;
   padding: 2vh;
   font-family: 'Recipekorea';
+  color: black;
+  text-decoration: none;
+  text-shadow: 5px 5px #4E8AFF;
+}
+.h1-rem2:hover {
+  text-shadow: 5px 5px #7499e2;
+  top: -2px;
 }
 .text {
   font-size: 2vh;
   line-height: 1.2vh;
-  padding: 0.3em;
+  padding: 0.5em;
 }
 .lg-title {
   font-weight: 800;

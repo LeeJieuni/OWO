@@ -16,13 +16,9 @@
           <div class="input">
             <label for="password"><span>비밀번호</span>
               <input v-model="credentials.password" class="form-control"
-              type="password" placeholder="password123"
+              type="password" placeholder="password"
                 required /></label>
           </div>
-          <!-- <div class="findpassword"> -->
-            <!-- <b-button variant="link" style="text-align-right" @click="">비밀번호 찾기</b-button> -->
-          <!-- </div> -->
-          <!-- <small v-if="isLoginErr">{{ LoginErr }}</small> -->
           <div class="alternative-option mt-2">
             오운완 회원이 아니신가요?
             <b-button style="font-size: 15px" variant="link" @click="moveToRegister">회원가입</b-button>

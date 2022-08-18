@@ -139,7 +139,9 @@
                   <!-- eslint-disable-next-line -->
                   <b-button type="submit" class="mybutton btn btn-success m-2 p-2">&ensp;기록 저장하기&ensp;</b-button>
                   <!-- eslint-disable-next-line -->
-                  <button @click="tempLeaveSession()" class="mybutton btn btn-danger m-2 p-2">저장하지 않기</button>
+                  <button @click="tempLeaveSession()" class="mybutton btn btn-warning m-2 p-2">저장하지 않기</button>
+                  <!-- eslint-disable-next-line -->
+                  <b-button id="modalclose" class="mybutton btn btn-danger m-2 p-2" @click="get_out()">&ensp;취소하기&ensp;</b-button>
                 </div>
               </div>
               <br>
@@ -499,6 +501,9 @@ export default {
     ...mapState(meetingroom, ['mySessionId', 'camera', 'mic']),
   },
   methods: {
+    get_out() {
+      this.modalShow = !this.modalShow;
+    },
     onChange() {
       if (this.$refs.youtube.getPlayerState() === -1) {
         if (!this.statusStart) {
@@ -547,7 +552,7 @@ export default {
     },
     pickmyImg(Img, i) {
       this.credentials.fileOriName = `${this.userInfo.nick}_${format}.png`;
-      this.credentials.fileUrl = Img;
+      this.credentials.fileUrl = Img.replace('data:image/png;base64,', '');
       const el1 = document.getElementById('0');
       const el2 = document.getElementById('1');
       const el3 = document.getElementById('2');
@@ -661,7 +666,7 @@ export default {
         },
         data: {
           fileOriName: credentials.fileOriName, //
-          fileUrl: credentials.fileUrl, //
+          fileEncoding: credentials.fileUrl, //
           recordDatetime: credentials.recordDatetime, //
           recordMemo: credentials.recordMemo, //
           recordTime: credentials.recordTime, // time만 양식에 맞춰서 반영하면 될듯?
