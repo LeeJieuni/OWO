@@ -575,7 +575,8 @@ export const accounts = {
     setProfileImg({ commit }, payload) {
       commit('SET_PROFILE_IMG', payload);
     },
-    fetchProfileImg({ state, dispatch }) {
+    fetchProfileImg({ state, dispatch }) { // 이거 고치기
+      console.log('패치프로필이미지 실행됨');
       axios({
         url: `https://i7c202.p.ssafy.io:8282/api/user/${state.userInfo.id}`,
         method: 'get',
@@ -583,15 +584,16 @@ export const accounts = {
           'X-AUTH-TOKEN': state.accessToken,
           'REFRESH-TOKEN': state.refreshToken,
         },
-        // responseType: 'blob',
       })
         .then((res) => {
-          console.log('프로필 이미지 응답');
-          console.log(res.data.data);
-          console.log(res.data.message);
-          dispatch('setProfileImg', res.data.data.fileUrl);
+          console.log(res);
+          let image = '';
+          const url = 'https://i7c202.p.ssafy.io:8282';
+          image = url.concat(res.data.data.fileUrl);
+          dispatch('setProfileImg', image);
         })
         .catch((err) => {
+          console.log('패치프로필이미지 오류남');
           console.log(err);
         });
     },

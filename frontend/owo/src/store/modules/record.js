@@ -137,7 +137,7 @@ export const record = {
           console.log(err);
         });
     },
-    fetchDayPictures({ state, commit }, date) {
+    fetchDayPictures({ state, commit }, date) { // 이거 고치면 끝.
       console.log(' fetchDayPictures axios 전');
       // console.log(state.userId);
       axios({
@@ -151,7 +151,14 @@ export const record = {
       })
         .then((res) => {
           console.log(res.data.data);
-          commit('SET_DAY_PICTURES', res.data.data);
+          const arr = [];
+          let url = 'https://i7c202.p.ssafy.io:8282';
+          // eslint-disable-next-line
+          for (let i = 0; i < res.data.data.length; i += 1) {
+            arr.push(url.concat(res.data.data[i].fileUrl));
+            console.log(this.arr);
+          }
+          commit('SET_DAY_PICTURES', arr);
         })
         .catch((err) => {
           console.log(err);
