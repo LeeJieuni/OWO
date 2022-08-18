@@ -38,8 +38,6 @@
             </router-link>
           </div> -->
         <!-- </div> -->
-        <br>
-        <hr>
         <!-- <div>
           <p class="text">이제 #오운완과 함께 운동을 시작해볼까요?<br></p>
           <router-link to="/rooms" class="h1-rem2">
@@ -136,6 +134,7 @@ export default defineComponent({
   /* padding: 2vh; */
   font-family: 'Recipekorea';
   color: black;
+  padding-bottom: 20px;
 }
 .h1-rem2 {
   font-size: 6vh;
@@ -152,7 +151,7 @@ export default defineComponent({
 .text {
   font-size: 2vh;
   line-height: 1.2vh;
-  padding: 0.3em;
+  padding: 0.5em;
 }
 .lg-title {
   font-weight: 800;

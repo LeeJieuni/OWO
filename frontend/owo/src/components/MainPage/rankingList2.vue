@@ -26,7 +26,7 @@
       <!-- 본인의 레코드  -->
       <b-card class="rounded-5 cards">
         <router-link to="/mypage/main">
-          <p class="card-title">{{ userInfo.nick }}님의 record</p>
+          <p class="card-title">나의 RECORD</p>
           <div class="d-flex justify-content-center align-items-center"
             style="margin-bottom: 10px">
             <circle-progress class="progress-bar" :percent="(lastingDay / 7)*100"
