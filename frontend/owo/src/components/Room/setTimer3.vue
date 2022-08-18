@@ -27,7 +27,7 @@ export default {
     return {
       intervalTimer: null,
       timeLeft: null,
-      wholeTime: 30,
+      wholeTime: 15,
       isPaused: false,
       isStarted: false,
       length: Math.PI * 2 * 100,

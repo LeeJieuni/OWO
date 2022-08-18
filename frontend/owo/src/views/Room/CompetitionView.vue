@@ -196,6 +196,8 @@ export default {
   },
   data() {
     return {
+      myExerciseTime: undefined, // 운동 시간 소요 (초)
+      myRestTime: undefined, // 휴식 시간 소요 (초)
       // 타이머 셋팅
       timer: 3,
       temp_timer: 3,
@@ -703,10 +705,7 @@ export default {
           default:
             break;
         }
-        // }, 100);
       }, 2000);
-      setTimeout(() => {
-      }, 5000);
       setTimeout(() => {
         this.isStarted = false;
         this.$refs.setTimer3.pauseTimer();
@@ -770,14 +769,14 @@ export default {
           }
         }
         // this.webcam.stop();
-      }, 36000);
+      }, 21000);
       setTimeout(() => {
         this.restTime = false;
-      }, 42000);
-      setTimeout(() => {
-        this.isExercising = true;
         this.startround2();
-      }, 46000);
+        this.isExercising = true;
+      }, 24000);
+      // setTimeout(() => {
+      // }, 46000);
     },
     startround2() {
       // eslint-disable-next-line
@@ -861,14 +860,14 @@ export default {
         }
         // this.gameType = 4;
         // this.webcam.stop();
-      }, 36000);
+      }, 21000);
       setTimeout(() => {
         this.restTime = false;
-      }, 42000);
-      setTimeout(() => {
         this.isExercising = true;
         this.startround3();
-      }, 46000);
+      }, 24000);
+      // setTimeout(() => {
+      // }, 46000);
     },
     startround3() {
       // eslint-disable-next-line
@@ -953,10 +952,10 @@ export default {
           title: '획득 포인트 정산중입니다...',
           text: '잠시만 기다려주세요!',
         });
-      }, 36000);
+      }, 21000);
       setTimeout(() => {
         this.sendMyPoints();
-      }, 37000);
+      }, 22000);
       setTimeout(() => {
         // eslint-disable-next-line
         const audio = new Audio(require('@/assets/music/record.mp3'));
@@ -986,7 +985,7 @@ export default {
           }
         });
         this.webcam.stop();
-      }, 39000);
+      }, 23000);
     },
     sendScore() {
       this.session
@@ -1151,26 +1150,41 @@ export default {
           // eslint-disable-next-line
           const audio2 = new Audio(require('@/assets/music/takePhoto.mp3'));
           audio2.play();
-        }
+          setTimeout(() => {
+            html2canvas(el).then((canvas) => {
+              this.mypictures.unshift(canvas.toDataURL('image/png', 1.0));
+              if (this.mypictures.length >= 3) { this.mypictures.pop(); }
+            });
+          });
+        } // 0초에 찰칵 사인 -> 소리가 나오는 시간을 체크해야겠네
         if (this.timer === -1) {
           this.temp_timer_2 = '';
-        }
-        if (this.timer === -1) {
-          const el = document.querySelector('#take_photo_WebRTC');
-          html2canvas(el).then((canvas) => {
-            this.mypictures.unshift(canvas.toDataURL('image/png', 1.0));
-            this.photoDisplay = true;
-            setTimeout(() => {
-              this.photoDisplay = false;
-            }, 2000);
-          });
-          if (this.mypictures.length >= 3) { this.mypictures.pop(); }
+          this.photoDisplay = true;
+          setTimeout(() => {
+            this.photoDisplay = false;
+          }, 2000);
           clearInterval(this.take_photo_timer);
           setTimeout(() => {
             this.is_take_photo = false;
             this.timer = this.temp_timer;
           }, 2000);
         }
+        // if (this.timer === -1) {
+        //   const el = document.querySelector('#take_photo_WebRTC');
+        //   html2canvas(el).then((canvas) => {
+        //     this.mypictures.unshift(canvas.toDataURL('image/png', 1.0));
+        //     this.photoDisplay = true;
+        //     setTimeout(() => {
+        //       this.photoDisplay = false;
+        //     }, 2000);
+        //   });
+        //   if (this.mypictures.length >= 3) { this.mypictures.pop(); }
+        //   clearInterval(this.take_photo_timer);
+        //   setTimeout(() => {
+        //     this.is_take_photo = false;
+        //     this.timer = this.temp_timer;
+        //   }, 2000);
+        // }
       }, 1000);
       this.temp_timer_2 = this.temp_timer;
     },
