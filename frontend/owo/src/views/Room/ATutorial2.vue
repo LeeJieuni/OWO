@@ -184,14 +184,14 @@
 import NavBar from '@/components/NavBar.vue';
 
 export default {
-  name: 'ATutorialBurpee',
+  name: 'ATutorialLunge',
   components: {
     NavBar,
   },
   data() {
     return {
-      burpee: true,
-      lunge: false,
+      burpee: false,
+      lunge: true,
       squat: false,
     };
   },

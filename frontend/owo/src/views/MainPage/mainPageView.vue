@@ -4,8 +4,10 @@
     <Intro/>
     <Intro2/>
     <Carousel></Carousel>
-    <!-- <rankingList style="height: 80vh;"/> -->
+    <rankingList style="height: 80vh;"/>
     <!-- <roomTab class="room"></roomTab> -->
+     <router-link to="/rooms" class="h1-rem2" id="fixedbutton">
+            <span class="h1-rem">운동하러</span> GO!</router-link>
     <FooFooter style="height: 14vh;"/>
   </div>
 </template>
@@ -16,7 +18,7 @@
 import Intro from '@/components/MainPage/Intro.vue';
 import Intro2 from '@/components/MainPage/Intro2.vue';
 import Carousel from '@/components/MainPage/Carousel.vue';
-// import rankingList from '@/components/MainPage/rankingList.vue';
+import rankingList from '@/components/MainPage/rankingList.vue';
 // import roomTab from '@/components/MainPage/roomTab.vue';
 import FooFooter from '@/components/FooFooter.vue';
 import swal from 'sweetalert2';
@@ -30,7 +32,7 @@ const accounts = 'accounts';
 export default {
   components: {
     Carousel,
-    // rankingList,
+    rankingList,
     // roomTab,
     NavBar,
     Intro,
@@ -115,5 +117,29 @@ export default {
 .btns {
   padding-top: 5px;
   padding-bottom: 20px;
+}
+#fixedbutton {
+  position: fixed;
+  bottom: 19px;
+  right: 20px;
+}
+#fixedbutton:hover {
+  position: fixed;
+  bottom: 23px;
+  color: #4E8AFF;
+}
+.h1-rem {
+  font-size: 2vh;
+  /* padding: 2vh; */
+  font-family: 'Recipekorea';
+  color: rgb(29, 29, 29);
+}
+.h1-rem2 {
+  font-size: 3vh;
+  padding: 2vh;
+  font-family: 'Recipekorea';
+  color: rgb(29, 29, 29);
+  text-decoration: none;
+  /* text-shadow: 3px 3px #4E8AFF; */
 }
 </style>

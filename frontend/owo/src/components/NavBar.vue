@@ -61,6 +61,7 @@
 </template>
 <script>
 import { createNamespacedHelpers } from 'vuex';
+// import axios from 'axios';
 
 const { mapActions, mapGetters } = createNamespacedHelpers('accounts');
 
@@ -68,6 +69,7 @@ export default {
   name: 'NavBar',
   data() {
     return {
+      user: this.userInfo,
     };
   },
   methods: {
@@ -75,13 +77,15 @@ export default {
       logout: 'logout',
     }),
     // ...mapActions('record', ['fetchPercentage', 'fetchAchievementRate']),
-    ...mapActions('accounts', ['fetchMypage']),
+    ...mapActions('accounts', ['fetchMypage', 'fetchUserInfo']),
     // mypageFetch() {
     //   this.fetchMypage();
     // },
   },
   computed: {
     ...mapGetters(['isLogin', 'userInfo', 'profileImg']),
+  },
+  watch: {
   },
 };
 </script>

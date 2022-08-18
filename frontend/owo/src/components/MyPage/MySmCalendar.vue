@@ -161,7 +161,7 @@
     </div>
     <div class="text">
       <router-link to="/login">
-        <p>로그인하고 운동기록을 확인해 보세요!</p>
+        <p class="login_p">로그인하고 운동기록을 확인해 보세요!</p>
       </router-link>
     </div>
   </div>
@@ -184,6 +184,7 @@ export default {
       currentMonthStartWeekIndex: null,
       currentCalendarMatrix: [],
       endOfDay: null,
+      stampDays: [],
       // memoDatas: [],
       // day: null,
       // tags: ['오운완', '상체', '등', '어깨', '복근'],
@@ -311,6 +312,23 @@ export default {
       this.fetchMonthRecord(payload);
       this.fetchMonthStampHour(payload);
     },
+    // eslint-disable-next-line
+    stampChk(d) {
+      // const endDay = this.getEndOfDay(this.currentYear, this.currentMonth);
+      // for (let i = 0; i < endDay; i += 1) {
+      // console.log('month record');
+      console.log('length check', this.monthRecord.length);
+      if (this.monthRecord.lenght !== 0) {
+        for (let i = 0; i < this.monthStampHour.length; i += 1) {
+          if (this.monthStampHour[i].day === d) {
+            console.log('true');
+            return true;
+          }
+        }
+      } else {
+        return false;
+      }
+    },
     // 모달 내에서 날짜 변경
     onClickPrevDay(year, month, day) {
       const date = new Date(year, month - 1, day);
@@ -424,6 +442,9 @@ export default {
 .calendar {
   width: 100%;
   margin: 0 auto;
+}
+.login_p {
+  font-size: 13px;
 }
 .container-fluid {
   height: 100%;
@@ -540,7 +561,7 @@ td {
   /* padding-bottom: 6px; */
 }
 .day-a {
-  font-size: 18px;
+  font-size: 12px;
   font-weight: 900;
   /* font-family: 'Righteous', cursive; */
   padding: 0;
@@ -551,14 +572,14 @@ td {
   width: 4px;
 }
 .day-td  {
-  padding: 10px;
+  padding: 3px;
   /* width: 1vw; */
   --bs-table-hover-bg: #e0e5f3;
   border-bottom: 0;
 }
 .table > a {
   text-decoration: none;
-  font-size: 1vh;
+  /* font-size: 0.5vh; */
 }
 .calendar-title {
   font-size: 18px;
