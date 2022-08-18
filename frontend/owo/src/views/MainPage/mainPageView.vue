@@ -6,7 +6,7 @@
     <Carousel></Carousel>
     <rankingList style="height: 80vh;"/>
     <!-- <roomTab class="room"></roomTab> -->
-     <router-link to="/rooms" class="h1-rem2" id="fixedbutton">
+     <router-link to="/roomtabs" class="h1-rem2" id="fixedbutton">
             <span class="h1-rem">운동하러</span> GO!</router-link>
     <FooFooter style="height: 14vh;"/>
   </div>
