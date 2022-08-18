@@ -426,7 +426,6 @@ public class MemberController {
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
         ProfileImg profileImg = profileImgService.getImg(memberId);
-        System.out.println(">>>>profileImg       "+profileImg.getId()+" "+profileImg.getFileOriName()+" "+profileImg.getFileName()+" "+profileImg.getFileUrl());
         FileDto result = new FileDto(profileImg.getId(),profileImg.getFileOriName(),profileImg.getFileName(),profileImg.getFileUrl());
 
         message.setStatus(StatusEnum.OK);
