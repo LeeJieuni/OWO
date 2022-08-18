@@ -35,13 +35,23 @@ export const mainpage = {
         .then((res) => {
           console.log('랭킹리스트');
           console.log(res);
-          commit('SET_RANKING_LIST', res.data.data);
+          // eslint-disable-next-line
+          let data = res.data.data;
+          if (res.data.data[0].score === 0) {
+            for (let i = 0; i < data.length; i += 1) {
+              data[i].name = '-';
+              data[i].score = '-';
+            }
+            commit('SET_RANKING_LIST', data);
+          } else {
+            commit('SET_RANKING_LIST', data);
+          }
         })
         .catch((err) => {
           console.log(err);
         });
     },
-    getMyRanking({ commit }) {
+    getMyRanking({ commit, state }) {
       let userInfo = sessionStorage.getItem('vuex');
       userInfo = JSON.parse(userInfo);
       // eslint-disable-next-line
@@ -56,6 +66,8 @@ export const mainpage = {
         },
       })
         .then((res) => {
+          console.log('getmyranking', res);
+          console.log(state.rankingList);
           commit('SET_MY_RANKING', res.data.data.ranking);
         })
         .catch((err) => {
