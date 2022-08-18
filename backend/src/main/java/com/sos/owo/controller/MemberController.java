@@ -387,8 +387,8 @@ public class MemberController {
             if (file != null) {
                 String fileOriName = file.getOriginalFilename();
                 String fileName = new MD5Generator(fileOriName).toString();
-                //String savePath = System.getProperty("user.dir") +"\\src\\main\\resources\\static\\img\\profile";
-                String savePath = uploadPath + File.separator + uploadFolder;
+                String savePath = System.getProperty("user.dir") +"\\src\\main\\resources\\static\\img\\profile";
+                //String savePath = uploadPath + File.separator + uploadFolder;
 
                 if (!new File(savePath).exists()) {
                     try {
