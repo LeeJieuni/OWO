@@ -17,17 +17,17 @@ public class ProfileImg {
     @Column(name = "profile_img_id")
     private int id;
 
-    @Column(name = "profile_img_name")
-    private String fileName;
-
     @Column(name = "profile_img_oriname")
     private String fileOriName;
 
+    @Column(name = "profile_img_name")
+    private String fileName;
+
     @Column(name = "profile_img_fileurl")
-    private byte[] fileUrl;
+    private String fileUrl; //byte[]
 
     @Builder
-    public ProfileImg(int id, String fileOriName, String fileName, byte[] fileUrl) {
+    public ProfileImg(int id, String fileOriName, String fileName, String fileUrl) {
         this.id = id;
         this.fileOriName = fileOriName;
         this.fileName = fileName;

@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.*;
 import java.nio.charset.Charset;
 import java.time.LocalDate;
+import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 
@@ -41,20 +42,45 @@ public class RecordController {
             @ApiImplicitParam(name = "meetingRoomId",value = "미팅룸 id",dataType = "int",paramType = "path")
     })
     @PostMapping("/api/user/record/finish/{memberId}/{meetingRoomId}")
-    public ResponseEntity<?> registerRecord(@PathVariable("memberId") int memberId, @PathVariable("meetingRoomId") int meetingRoomId, @RequestBody RecordDto recordDto){
+    public ResponseEntity<?> registerRecord(@PathVariable("memberId") int memberId, @PathVariable("meetingRoomId") int meetingRoomId, @RequestBody RecordDto recordDto) throws IOException {
         Message message = new Message();
         HttpHeaders headers= new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
-
-        if (recordDto.getFileOriName() == null || recordDto.getFileUrl()==null) {
+        if (recordDto.getFileOriName() == null || recordDto.getFileEncoding()==null) {
             throw new SomethingNullException("memberId:"+memberId+"'s recordImg in Meetingroom(id:"+meetingRoomId+")");
         }
-        RecordImgDto recordImgDto = new RecordImgDto(recordDto.getFileOriName(),recordDto.getFileUrl());
+
+
+        byte[] decodedByte = Base64.getDecoder().decode(recordDto.getFileEncoding().getBytes());
+        String fileName = "" + memberId + "_" + recordDto.getFileOriName();
+        String savePath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\img\\record";
+        if (!(new File(savePath)).exists()) {
+            try {
+                (new File(savePath)).mkdir();
+            } catch (Exception var10) {
+                var10.printStackTrace();
+            }
+        }
+        String fileUrl = savePath + "\\" + fileName;
+
+        File convertFile = new File(fileUrl);
+        if (convertFile.createNewFile()) {
+            FileOutputStream fos = new FileOutputStream(convertFile);
+            fos.write(decodedByte);
+            fos.close();
+        }
+
+        RecordImgDto recordImgDto = new RecordImgDto(recordDto.getFileOriName(),fileUrl);
+        if(recordImgDto == null){
+            throw new SomethingNullException("recordReturnImg(id:"+recordImgDto.getId());
+        }
         int recordImgId = recordImgService.saveImg(recordImgDto);
+
 
         Record record = recordService.registRecord(memberId,meetingRoomId,recordImgId,recordDto.toEntity());
         int recordId = record.getRecordId();
+
 
         List<String> tagList = recordDto.getTagList();
         tagService.registTag(recordId,tagList);
@@ -378,4 +404,10 @@ public class RecordController {
         return new ResponseEntity<>(message,httpHeaders,HttpStatus.OK);
 
     }
+
+
+
+
+
+
 }

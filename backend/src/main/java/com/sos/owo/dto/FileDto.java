@@ -9,9 +9,8 @@ import lombok.*;
 @NoArgsConstructor
 public class FileDto {
     private int id;
-//    private int member_id;
     private String fileOriName;
-//    private String fileName;
+    private String fileName;
     private String fileUrl;
 
 
@@ -19,17 +18,17 @@ public class FileDto {
         FileDto build = FileDto.builder()
                 .id(id)
                 .fileOriName(fileOriName)
-//                .fileName(fileName)
+                .fileName(fileName)
                 .fileUrl(fileUrl)
                 .build();
         return build;
     }
 
     @Builder
-    public FileDto(int id,String fileOriName, String fileUrl) {
+    public FileDto(int id,String fileOriName,String fileName, String fileUrl) {
         this.id = id;
         this.fileOriName = fileOriName;
-//        this.fileName = fileName;
+        this.fileName = fileName;
         this.fileUrl = fileUrl;
     }
 }

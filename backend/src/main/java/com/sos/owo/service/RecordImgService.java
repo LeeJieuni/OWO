@@ -4,10 +4,7 @@ import com.sos.owo.domain.Record;
 import com.sos.owo.domain.RecordImg;
 import com.sos.owo.domain.repository.RecordImgRepository;
 import com.sos.owo.domain.repository.RecordRepository;
-import com.sos.owo.dto.FileDto;
-import com.sos.owo.dto.RecordFileDto;
-import com.sos.owo.dto.RecordImgDto;
-import com.sos.owo.dto.RecordResponseDto;
+import com.sos.owo.dto.*;
 import com.sos.owo.error.Exception.custom.SomethingNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -142,6 +139,12 @@ public class RecordImgService {
     @Transactional
     public List<RecordImgDto> findImgForMainList()throws SomethingNotFoundException{//int year, int month
         return recordRepository.findImgForMainList();//year,month);
+    }
+
+    ////////
+    @Transactional
+    public ImgDto saveImgInServer(String fileOriName, String fileName, String fileUrl){
+        return recordRepository.saveImgInServer(fileOriName,fileName,fileUrl);
     }
 
 }

@@ -21,13 +21,13 @@ public class ProfileImgService {
     @Autowired
     private MemberRepository memberRepository;
 
-//    @Transactional
-//    public FileDto saveFile(int memberId, String fileOriName, String fileName, String fileUrl) throws IllegalStateException {
-//        Member findMember = memberRepository.findOne(memberId);
-//        FileDto fileDto = new FileDto();
-//        fileDto.setFileName(fileOriName);
-//        fileDto.setFileOriName(fileName);
-//        fileDto.setFileUrl(fileUrl);
+    @Transactional
+    public FileDto saveFile(int memberId, String fileOriName, String fileName, String fileUrl) throws IllegalStateException {
+        Member findMember = memberRepository.findOne(memberId);
+        FileDto fileDto = new FileDto();
+        fileDto.setFileName(fileOriName);
+        fileDto.setFileOriName(fileName);
+        fileDto.setFileUrl(fileUrl);
 //        ProfileImg profileImg = fileDto.toEntity();
 //        if(findMember.getProfileImg() == null){
 //            profileImgRepository.save(profileImg);
@@ -36,9 +36,9 @@ public class ProfileImgService {
 //            findProfileImg.updateProfileImg(profileImg);
 //        }
 //        findMember.updateProfieImg(profileImg);
-//
-//        return fileDto;
-//    }
+
+        return fileDto;
+    }
 
 //    @Transactional
 //    public FileDto getFile(int memberId){
