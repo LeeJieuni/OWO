@@ -2,7 +2,7 @@
   <div>
     <div class="row mb-3">
       <div class="col my-weekly-goal-title">
-        <p class=" p-0 m-0">나의 운동 비율</p>
+        <p class=" p-0 m-0">운동 목표 달성률</p>
       </div>
       <div class="col refresh">
         <!--eslint-disable-next-line-->
