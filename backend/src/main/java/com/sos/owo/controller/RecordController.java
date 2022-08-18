@@ -14,6 +14,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -36,6 +37,12 @@ public class RecordController {
     private final RecordService recordService;
     private final TagService tagService;
 
+    @Value("${app.fileupload.uploadDir}")
+    private String uploadFolder;
+
+    @Value("${app.fileupload.uploadPath}")
+    private String uploadPath;
+
     @ApiOperation(value = "운동 종료 후 기록 저장",notes = "운동 종료 후 기록한 정보를 저장한다.")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "memberId",value = "사용자 id",dataType = "int",paramType = "path"),
@@ -54,22 +61,33 @@ public class RecordController {
 
         byte[] decodedByte = Base64.getDecoder().decode(recordDto.getFileEncoding().getBytes());
         String fileName = "" + memberId + "_" + recordDto.getFileOriName();
-        String savePath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\img\\record";
-        if (!(new File(savePath)).exists()) {
-            try {
-                (new File(savePath)).mkdir();
-            } catch (Exception var10) {
-                var10.printStackTrace();
-            }
-        }
-        String fileUrl = savePath + "\\" + fileName;
 
-        File convertFile = new File(fileUrl);
-        if (convertFile.createNewFile()) {
-            FileOutputStream fos = new FileOutputStream(convertFile);
-            fos.write(decodedByte);
-            fos.close();
-        }
+        File uploadDir = new File(uploadPath + File.separator + uploadFolder);
+        if(!uploadDir.exists()) uploadDir.mkdir();
+        String fileUrl = uploadPath + File.separator + uploadFolder + File.separator + fileName;
+        File file = new File(fileUrl);
+
+        FileOutputStream fileOutputStream = new FileOutputStream(file);
+        fileOutputStream.write(decodedByte);
+        fileOutputStream.close();
+
+//        String savePath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\img\\record";
+
+//        if (!(new File(savePath)).exists()) {
+//            try {
+//                (new File(savePath)).mkdir();
+//            } catch (Exception var10) {
+//                var10.printStackTrace();
+//            }
+//        }
+//        String fileUrl = savePath + "\\" + fileName;
+//
+//        File convertFile = new File(fileUrl);
+//        if (convertFile.createNewFile()) {
+//            FileOutputStream fos = new FileOutputStream(convertFile);
+//            fos.write(decodedByte);
+//            fos.close();
+//        }
 
         RecordImgDto recordImgDto = new RecordImgDto(recordDto.getFileOriName(),fileUrl);
         if(recordImgDto == null){
