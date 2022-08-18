@@ -120,6 +120,9 @@
         <button v-if="!this.gameType" @click="leaveSession" class="mybtn6">
           <img class="menu_icon2" src="@/assets/icon/roomout.png" alt="leaveSession">
         </button>
+        <div v-if="(!this.subscribers.length)" class="mybtn7">2명 이상 모여야 시작 가능!!</div>
+        <!-- eslint-disable-next-line -->
+        <div v-if="(this.subscribers.length) & !(this.credentialsUser.memberId === this.masterId)" class="mybtn7">방장 >> 오른쪽 위 START 버튼!</div>
         <!-- eslint-disable-next-line -->
         <button v-if="(this.credentialsUser.memberId === this.masterId) & !this.gameType & (this.subscribers.length >= 1)" class="mybtn5" @click="startround">
           <img class="menu_icon4" src="@/assets/icon/start.png" alt="Start">
@@ -1665,6 +1668,19 @@ solid #cedfff; border-top: 10px solid transparent; border-bottom: 10px solid tra
   position:fixed;
   top: 40px;
   right: 30px;
+  /* z-index: 500; */
+}
+
+.mybtn7 {
+  color:gray;
+  opacity: 0.5;
+  background-color:transparent;
+  border:none;
+  position:fixed;
+  top: 37px;
+  font-size:2vw;
+  right: 150px;
+  font-family: 'LeferiPoint-BlackObliqueA';
   /* z-index: 500; */
 }
 
