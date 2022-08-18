@@ -23,10 +23,10 @@ public class RecordImg {
     private String fileOriName;
 
     @Column(name = "record_img_fileurl")
-    private byte[] fileUrl;
+    private String fileUrl;//byte[]
 
     @Builder
-    public RecordImg(int id, String fileOriName, String fileName, byte[] fileUrl){
+    public RecordImg(int id, String fileOriName, String fileName, String fileUrl){
         this.id = id;
         this.fileOriName = fileOriName;
         this.fileName = fileName;

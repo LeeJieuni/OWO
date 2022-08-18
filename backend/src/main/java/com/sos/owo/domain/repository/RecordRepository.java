@@ -1,9 +1,6 @@
 package com.sos.owo.domain.repository;
 
-import com.sos.owo.domain.MeetingRoom;
-import com.sos.owo.domain.Member;
-import com.sos.owo.domain.Record;
-import com.sos.owo.domain.RecordImg;
+import com.sos.owo.domain.*;
 import com.sos.owo.dto.*;
 import com.sos.owo.error.Exception.custom.SomethingNotFoundException;
 
@@ -256,7 +253,7 @@ public class RecordRepository {
         RecordImg recordImg = new RecordImg();
 
         recordImg.setFileOriName(recordImgDto.getFileOriName());
-        recordImg.setFileUrl(recordImgDto.getFileUrl().getBytes());
+        recordImg.setFileUrl(recordImgDto.getFileUrl());
 
         em.persist(recordImg);
 
@@ -287,7 +284,7 @@ public class RecordRepository {
                 RecordImgDto recordImgDto = RecordImgDto.builder()
                         .id(recordImg.getId())
                         .fileOriName(recordImg.getFileOriName())
-                        .fileUrl(new String(recordImg.getFileUrl()))
+                        .fileUrl(recordImg.getFileUrl())
                         .build();
                 responseList.add(recordImgDto);
             }
@@ -309,7 +306,7 @@ public class RecordRepository {
                 RecordImgDto recordImgDto = RecordImgDto.builder()
                         .id(recordImg.getId())
                         .fileOriName(recordImg.getFileOriName())
-                        .fileUrl(new String(recordImg.getFileUrl()))
+                        .fileUrl(recordImg.getFileUrl())
                         .build();
                 responseList.add(recordImgDto);
             }
@@ -356,7 +353,7 @@ public class RecordRepository {
                         RecordImgDto recordImgDto = RecordImgDto.builder()
                                 .id(r.getRecordImg().getId())
                                 .fileOriName(r.getRecordImg().getFileOriName())
-                                .fileUrl(new String(r.getRecordImg().getFileUrl())).build();
+                                .fileUrl(r.getRecordImg().getFileUrl()).build();
                         responseList.add(recordImgDto);
                         count++;
                         if(count>=10) break;
@@ -367,4 +364,25 @@ public class RecordRepository {
 
         return responseList;
     }
+
+    //이미지 한장 저장
+    public ImgDto saveImgInServer(String fileOriName, String fileName, String fileUrl){
+//        Record findRecord = this.findOneRecord(recordId);
+        ImgDto imgDto = new ImgDto();
+        imgDto.setFileName(fileName);
+        imgDto.setFileOriName(fileOriName);
+        imgDto.setFileUrl(fileUrl);
+
+//        RecordImg recordImg = imgDto.toEntity();
+//        if (findMember.getProfileImg() == null) {
+//            this.profileImgRepository.save(profileImg);
+//        } else {
+//            ProfileImg findProfileImg = findMember.getProfileImg();
+//            findProfileImg.updateProfileImg(profileImg);
+//        }
+//        findMember.updateProfieImg(profileImg);
+        return imgDto;
+    }
+
+
 }
