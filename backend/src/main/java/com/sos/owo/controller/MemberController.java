@@ -386,52 +386,29 @@ public class MemberController {
         try {
             if (file != null) {
                 String fileOriName = file.getOriginalFilename();
-                String fileName = "" + memberId + "_" + fileOriName;
-//                String savePath = System.getProperty("user.dir")+"\\src\\main\\resources\\static\\img\\profile";
-//                String savePath = "/profile";
-//                System.out.println("path+++++++++++++++++++++++++++++" + System.getProperty("user.dir"));
-//              //~/Jenkins/jenkins_home/workspace/owoProject/backend/
-                //   /jenkins/workspace/owoproject/backend
-
-                File uploadDir = new File(uploadPath + File.separator + uploadFolder);
-                if(!uploadDir.exists()) uploadDir.mkdir();
-                String fileUrl = uploadPath + File.separator + uploadFolder + File.separator + fileName;
-                File imgfile = new File(fileUrl);
-
-
-//                if (!(new File(savePath)).exists()) {
-//                    try {
-//                        (new File(savePath)).mkdir();
-//                    } catch (Exception var10) {
-//                        var10.printStackTrace();
-//                    }
-//                }
-
-//                String fileUrl = savePath + "/" + fileName;
-//                file.transferTo(new File(fileUrl));
-                file.transferTo(imgfile);
-
-                int profileImgId = profileImgService.saveImg(memberId,fileOriName,fileUrl);
-
-                message.setStatus(StatusEnum.OK);
-                message.setMessage("프로필 사진 수정 성공");
-                message.setData(profileImgId);
-                return new ResponseEntity(message, headers, HttpStatus.OK);
+                String fileName = new MD5Generator(fileOriName).toString();
+                String savePath = System.getProperty("user.dir") +"\\src\\main\\resources\\static\\img\\profile";
+                if (!new File(savePath).exists()) {
+                    try {
+                        new File(savePath).mkdir();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                String fileUrl = savePath + "\\" + fileName;
+                file.transferTo(new File(fileUrl));
+                FileDto fileDto = profileImgService.saveFile(memberId, fileOriName, fileName, fileUrl);
+                return new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
             } else {
-                message.setStatus(StatusEnum.BAD_REQUEST);
-                message.setMessage("이미지 파일 오류 발생");
-                return new ResponseEntity(message, headers, HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<String>("CHECK FILE", HttpStatus.BAD_REQUEST);
             }
-        } catch (IllegalStateException var11) {
-            var11.printStackTrace();
-            message.setStatus(StatusEnum.BAD_REQUEST);
-            message.setMessage("해당 이메일이 존재하지 않습니다.");
-            return new ResponseEntity(message, headers, HttpStatus.BAD_REQUEST);
-        } catch (Exception var12) {
-            var12.printStackTrace();
-            message.setStatus(StatusEnum.INTERNAL_SERVER_ERROR);
-            message.setMessage("서버 에러 발생");
-            return new ResponseEntity(message, headers, HttpStatus.INTERNAL_SERVER_ERROR);
+
+        } catch (IllegalStateException e){
+            e.printStackTrace();
+            return new ResponseEntity<String>("CHECK EMAIL", HttpStatus.BAD_REQUEST);
+        } catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<String>("FAIL", HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
     }
