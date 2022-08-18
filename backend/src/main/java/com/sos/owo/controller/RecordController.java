@@ -79,7 +79,6 @@ public class RecordController {
         fileOutputStream.write(decodedByte);
         fileOutputStream.close();
 
-
         RecordImgDto recordImgDto = new RecordImgDto(recordDto.getFileOriName(),fileUrl);
         if(recordImgDto == null){
             throw new SomethingNullException("recordReturnImg(id:"+recordImgDto.getId());
