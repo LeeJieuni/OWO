@@ -56,47 +56,34 @@ public class RecordController {
 
         if (recordDto.getFileOriName() == null || recordDto.getFileEncoding()==null) {
             System.out.println("파일이름:"+recordDto.getFileOriName());
-            System.out.println("");
-            throw new SomethingNullException("memberId:"+memberId+"'s recordImg in Meetingroom(id:"+meetingRoomId+")");
+            throw new SomethingNullException("memberId:"+memberId+"'s recordDto");
         }
 
 
         byte[] decodedByte = Base64.getDecoder().decode(recordDto.getFileEncoding().getBytes());
-        String fileName = "" + memberId + "_" + recordDto.getFileOriName();
+        String fileName = "" + memberId + "_record_" + recordDto.getFileOriName();
 
-        File uploadDir = new File(uploadPath + File.separator + uploadFolder);
-        if(!uploadDir.exists()) uploadDir.mkdir();
-        String fileUrl = uploadPath + File.separator + uploadFolder + File.separator + fileName;
+        String savePath = System.getProperty("user.dir") +"upload";
+        if (!new File(savePath).exists()) {
+            try {
+                new File(savePath).mkdir();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        String fileUrl = savePath + File.separator + fileName;
         File file = new File(fileUrl);
 
         FileOutputStream fileOutputStream = new FileOutputStream(file);
         fileOutputStream.write(decodedByte);
         fileOutputStream.close();
 
-//        String savePath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\img\\record";
-
-//        if (!(new File(savePath)).exists()) {
-//            try {
-//                (new File(savePath)).mkdir();
-//            } catch (Exception var10) {
-//                var10.printStackTrace();
-//            }
-//        }
-//        String fileUrl = savePath + "\\" + fileName;
-//
-//        File convertFile = new File(fileUrl);
-//        if (convertFile.createNewFile()) {
-//            FileOutputStream fos = new FileOutputStream(convertFile);
-//            fos.write(decodedByte);
-//            fos.close();
-//        }
-
         RecordImgDto recordImgDto = new RecordImgDto(recordDto.getFileOriName(),fileUrl);
         if(recordImgDto == null){
             throw new SomethingNullException("recordReturnImg(id:"+recordImgDto.getId());
         }
         int recordImgId = recordImgService.saveImg(recordImgDto);
-
 
         Record record = recordService.registRecord(memberId,meetingRoomId,recordImgId,recordDto.toEntity());
         int recordId = record.getRecordId();
