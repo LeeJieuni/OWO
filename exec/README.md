@@ -25,7 +25,7 @@
 
 ### 자유모드
 ### 자유
-![자유모드](url 넣기)
+![자유모드](/uploads/b8980086181c568d93a3ee73b04aa7b7/자유모드캡쳐.PNG)
 
 ### 랭킹
 ![랭킹]
@@ -58,7 +58,7 @@
 ---
 **BackEnd**
 - InterlliJ
-- spring boot ver?
+- spring boot ver
 - spring-boot-jpa
 - spring security
 - Java
