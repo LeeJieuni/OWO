@@ -3,17 +3,12 @@
     <NavBar class="sticky-top"/>
     <div class="body">
       <rankingList2 class="rank"/>
-      <div class="rankTitle">
-        <h1 class="title" style="padding-left:10vh;">운동방 입장하기 🚀</h1>
-      </div>
-      <roomTab class="room"></roomTab>
     </div>
   </div>
 </template>
 
 <script>
 import NavBar from '@/components/NavBar.vue';
-import roomTab from '@/components/MainPage/roomTab.vue';
 import rankingList2 from '@/components/MainPage/rankingList2.vue';
 import { mapActions } from 'vuex';
 
@@ -21,7 +16,6 @@ const accounts = 'accounts';
 
 export default {
   components: {
-    roomTab,
     NavBar,
     rankingList2,
   },

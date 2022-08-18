@@ -57,7 +57,7 @@ export const accounts = {
     //   workout3: '', // 운동3 최고기록
     // },
     goals: '',
-    profileImg: '',
+    profileImg: 'https://cdn-icons-png.flaticon.com/512/8214/8214562.png',
     // record
     percentage: {
       recordNames: [],
@@ -278,11 +278,9 @@ export const accounts = {
     login({ dispatch, commit }, credentials) { // 로그인
       axios.post('https://i7c202.p.ssafy.io:8282/api/auth/login', credentials) //
         .then((res) => {
-          console.log('로그인!');
           const response = res.data.data;
           const access = response.accessToken;
           const refresh = response.refreshToken;
-          console.log(response);
           dispatch('saveAccessToken', access);
           dispatch('saveRefreshToken', refresh);
           dispatch('setUserInfo', response);
@@ -327,7 +325,7 @@ export const accounts = {
           }
         });
     },
-    socialLogin({ dispatch, state }, token) {
+    socialLogin({ dispatch }, token) {
       axios({
         url: 'https://i7c202.p.ssafy.io:8282/api/social',
         method: 'get',
@@ -336,19 +334,12 @@ export const accounts = {
         },
       })
         .then((res) => {
-          console.log('소셜로그인 in vuex');
-          console.log('------response 출력 res.data.data--------');
-          console.log(res.data.data);
           const response = res.data.data;
           // eslint-disable-next-line
           const accessToken = response.accessToken;
-          console.log('-------accessToken-------');
-          console.log(accessToken);
           // eslint-disable-next-line
-          console.log('-------refreshToken-------');
           // eslint-disable-next-line
           const refreshToken = response.refreshToken;
-          console.log(refreshToken);
           dispatch('saveAccessToken', accessToken);
           dispatch('saveRefreshToken', refreshToken);
           dispatch('setUserInfo', response);
@@ -361,15 +352,7 @@ export const accounts = {
           dispatch('fetchPointPercent');
           dispatch('fetchThisWeekHours');
           dispatch('fetchLastingDay');
-          console.log('-------state, accessToken-------');
-          console.log(state.accessToken);
-          console.log('-------state, refreshToken-------');
-          console.log(refreshToken);
-          console.log('-------state, userInfo-------');
-          console.log(state.userInfo);
           router.push('/');
-          console.log('---------res 출력----------');
-          console.log(res);
         })
         .catch((err) => {
           console.log(err);
@@ -483,6 +466,24 @@ export const accounts = {
       dispatch('fetchThisWeekHours');
       dispatch('fetchLastingDay');
     },
+    fetchUSerInfo({ state, dispatch }) {
+      axios({
+        url: `https://i7c202.p.ssafy.io:8282/api/user/userInfo/${state.userInfo.id}`,
+        method: 'get',
+        headers: {
+          'X-AUTH-TOKEN': state.accessToken,
+          'REFRESH-TOKEN': state.refreshToken,
+        },
+      })
+        .then((res) => {
+          console.log('내정보 업데이트');
+          console.log(res.data.data);
+          dispatch('setUserInfo', res.data.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
     fetchPhysicalInfo({ state, commit }) {
       axios({
         url: `https://i7c202.p.ssafy.io:8282/api/user/bmi/${state.userInfo.id}`,
@@ -544,10 +545,10 @@ export const accounts = {
           console.log(err);
         });
     },
-    updateUserInfo({ state, dispatch }, payload) {
+    async updateUserInfo({ state, dispatch }, payload) {
       console.log(payload);
       console.log('액시오스하기전');
-      axios({
+      await axios({
         url: 'https://i7c202.p.ssafy.io:8282/api/user',
         method: 'put',
         headers: {
@@ -559,6 +560,7 @@ export const accounts = {
         .then((res) => {
           dispatch('setUserInfo', res.data.data);
           swal.fire('정보가 수정되었습니다.');
+          dispatch('fetchUserInfo');
           dispatch('fetchPhysicalInfo');
           // router.push({ name: 'MyPageMainView' });
         })
@@ -834,11 +836,12 @@ export const accounts = {
           },
         })
           .then((res) => {
-            console.log('입장처리됫니?');
+            console.log('방장티어:', masterMod, '유저티어', userMod);
+            console.log('입장처리됫어?');
             commit('SET_ROOM_NAME', payload.roomName);
             console.log(res);
             router.push(`/room/${state.enter_mode[payload.mode]}/${payload.roomId}`);
-            console.log('응완료?');
+            console.log('입장완료');
           })
           .catch((err) => {
             swal.fire(
@@ -852,6 +855,7 @@ export const accounts = {
       console.log('방장티어', Math.trunc(masterMod));
       console.log('유저티어', Math.trunc(userMod));
       if (Math.trunc(masterMod) > Math.trunc(userMod)) {
+        console.log('방장:', Math.trunc(masterMod), '유저:', Math.trunc(userMod));
         swal.fire(
           '#오운완',
           '티어가 높아 입장하실 수 없습니다.',
@@ -859,6 +863,7 @@ export const accounts = {
         );
       }
       if (Math.trunc(masterMod) < Math.trunc(userMod)) {
+        console.log('방장:', Math.trunc(masterMod), '유저:', Math.trunc(userMod));
         swal.fire(
           '#오운완',
           '티어가 낮아 입장하실 수 없습니다.',

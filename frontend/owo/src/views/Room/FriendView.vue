@@ -121,7 +121,9 @@
                   <!-- eslint-disable-next-line -->
                   <b-button type="submit" class="mybutton btn btn-success m-2 p-2">&ensp;기록 저장하기&ensp;</b-button>
                   <!-- eslint-disable-next-line -->
-                  <button @click="tempLeaveSession()" class="mybutton btn btn-danger m-2 p-2">저장하지 않기</button>
+                  <button @click="tempLeaveSession()" class="mybutton btn btn-warning m-2 p-2">저장하지 않기</button>
+                  <!-- eslint-disable-next-line -->
+                  <b-button id="modalclose" class="mybutton btn btn-danger m-2 p-2" @click="get_out()">&ensp;취소하기&ensp;</b-button>
                 </div>
               </div>
               <br>
@@ -269,8 +271,8 @@
       v-if="is_take_photo">
         <!-- eslint-disable-next-line -->
         <WebRTCPhoto id="take_photo_WebRTC" :stream-manager="mainStreamManager"/>
-        <div id="take_photo_WebRTC_warning">&ensp;사진은 최신 3장까지 저장됩니다!&ensp;</div>
         <img v-if="this.photoDisplay" id="take_photo_WebRTC_photo" :src="this.mypictures[0]" alt="">
+        <div id="take_photo_WebRTC_warning">&ensp;사진은 최신 3장까지 저장됩니다!&ensp;</div>
       </div>
       <!-- eslint-disable-next-line -->
       <div class="d-flex justify-content-center align-items-center text-white mt-4" v-if="is_take_photo" id="take_photo_timer">
@@ -324,8 +326,8 @@ export default {
   data() {
     return {
       isSetting: false,
-      limitMininalTime: 1, // 최소한의 기록이 남는 시간(분)
-      firstPictureTime: 30, // 첫 사진이 촬영되는 시간(초)
+      limitMininalTime: 15, // 최소한의 기록이 남는 시간(초)
+      firstPictureTime: 10, // 첫 사진이 촬영되는 시간(초)
       modalShow: false,
       // 타이머 셋팅
       timer: 3,
@@ -455,6 +457,9 @@ export default {
     ...mapState(meetingroom, ['mySessionId', 'camera', 'mic']),
   },
   methods: {
+    get_out() {
+      this.modalShow = !this.modalShow;
+    },
     tempLeaveSession() {
       this.leaveSession();
       document.body.removeAttribute('data-bs-overflow');
@@ -467,7 +472,7 @@ export default {
     },
     pickmyImg(Img, i) {
       this.credentials.fileOriName = `${this.userInfo.nick},${format}.png`;
-      this.credentials.fileUrl = Img;
+      this.credentials.fileUrl = Img.replace('data:image/png;base64,', '');
       const el1 = document.getElementById('0');
       const el2 = document.getElementById('1');
       const el3 = document.getElementById('2');
@@ -483,12 +488,12 @@ export default {
       const now = new Date();
       this.endTimeSet(now);
       // eslint-disable-next-line
-      this.credentials.recordTime = Math.abs((this.startTime.getTime() - this.endTime.getTime()) / (1000 * 60));
+      this.credentials.recordTime = Math.abs((this.startTime.getTime() - this.endTime.getTime()) / (1000));
       console.log(this.credentials.recordTime);
       if (this.credentials.recordTime < this.limitMininalTime) {
         swal.fire({
           title: '퇴장하실건가요?',
-          text: `${this.limitMininalTime}분 미만 운동 시 기록이 저장되지 않습니다.`,
+          text: `${this.limitMininalTime}초 미만 운동 시 기록이 저장되지 않습니다.`,
           icon: 'warning',
           showCancelButton: true,
           cancelButtonColor: '#3085d6',
@@ -581,7 +586,7 @@ export default {
         },
         data: {
           fileOriName: credentials.fileOriName, //
-          fileUrl: credentials.fileUrl, //
+          fileEncoding: credentials.fileUrl, //
           recordDatetime: credentials.recordDatetime, //
           recordMemo: credentials.recordMemo, //
           recordTime: credentials.recordTime, // time만 양식에 맞춰서 반영하면 될듯?

@@ -21,7 +21,7 @@
                 <span>Login</span><span>Start With Us!</span>
               </button>
             </router-link>
-            <router-link v-if="isLogin" to="/rooms">
+            <router-link v-if="isLogin" to="/roomtabs">
               <button class="start-btn btn-12">
                 <span>Let's WorkOut!</span><span>Start With Us!</span>
               </button>

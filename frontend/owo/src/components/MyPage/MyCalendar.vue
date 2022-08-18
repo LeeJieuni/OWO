@@ -398,7 +398,7 @@ export default {
   padding-left: 50px;
 }
 .date-title {
-  font-family: 'Black Han Sans', sans-serif;
+  font-family: 'Recipekorea';
 }
 
 .calendar-table {
@@ -520,7 +520,7 @@ export default {
 .day-a {
   font-size: 20px;
   font-weight: 900;
-  font-family: 'Righteous', cursive;
+  font-family: 'LeferiPoint-WhiteObliqueA';
   padding: 0;
   margin: 0;
 }
@@ -555,7 +555,7 @@ td {
   align-items: center;
   line-height: 40px;
   height: 10px;
-  font-family: 'Black Han Sans', sans-serif;
+  font-family: 'LeferiPoint-BlackObliqueA';
 }
 
 /* 모달 스타일링 */

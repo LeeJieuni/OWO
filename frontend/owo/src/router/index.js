@@ -13,7 +13,10 @@ import YoutubeView from '../views/Room/YoutubeView.vue';
 import login from '../views/accounts/loginView.vue';
 import register from '../views/accounts/registerView.vue';
 import redirectView from '../views/accounts/RedirectView.vue';
-import TutorialView from '../views/Room/ATutorial.vue';
+import roomTab from '../components/MainPage/roomTab.vue';
+import TutorialBurpeeView from '../views/Room/ATutorial.vue';
+import TutorialLungeView from '../views/Room/ATutorial2.vue';
+import TutorialSquatView from '../views/Room/ATutorial3.vue';
 
 const routes = [
   {
@@ -26,6 +29,12 @@ const routes = [
     path: '/rooms',
     name: 'roomTabView',
     component: RoomTabView,
+    // meta: { unauthorized: true },
+  },
+  {
+    path: '/roomtabs',
+    name: 'roomTab',
+    component: roomTab,
     // meta: { unauthorized: true },
   },
   {
@@ -95,9 +104,21 @@ const routes = [
     component: YoutubeView,
   },
   {
-    path: '/tutorial',
-    name: 'ATutorial',
-    component: TutorialView,
+    path: '/tutorial/burpee',
+    name: 'ATutorialBurpee',
+    component: TutorialBurpeeView,
+    meta: { unauthorized: true },
+  },
+  {
+    path: '/tutorial/lunge',
+    name: 'ATutorialLunge',
+    component: TutorialLungeView,
+    meta: { unauthorized: true },
+  },
+  {
+    path: '/tutorial/squat',
+    name: 'ATutorialSquat',
+    component: TutorialSquatView,
     meta: { unauthorized: true },
   },
 ];
