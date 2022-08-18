@@ -386,7 +386,7 @@ public class MemberController {
         try {
             if (file != null) {
                 String fileOriName = file.getOriginalFilename();
-                String fileName = fileOriName;
+                String fileName = memberId+"_"+fileOriName;
                 String savePath = System.getProperty("user.dir") +"upload";
                 //String savePath = uploadPath + File.separator + uploadFolder;
 
