@@ -22,15 +22,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
                         HttpMethod.DELETE.name());
     }
 
-    @Value("${resources.location}")
-    private String resourcesLocation;
-    @Value("${resources.uri_path:}")
-    private String resourcesUriPath;
-
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        ResourceHandlerRegistration resourceHandlerRegistration = registry.addResourceHandler(resourcesUriPath + "/**")
-                .addResourceLocations("file://" + resourcesLocation);
-
+        registry.addResourceHandler("/upload/**")
+                .addResourceLocations("file:///upload/");
     }
 }
