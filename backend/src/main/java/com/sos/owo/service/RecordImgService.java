@@ -12,6 +12,7 @@ import org.springframework.data.redis.connection.stream.RecordId;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -128,23 +129,19 @@ public class RecordImgService {
 
     //멤버의 하루 운동 기록 사진을 모두 불러온다.
     @Transactional
-    public List<RecordImgDto> getFileDayList(int memberId,LocalDate date) throws SomethingNotFoundException{
+    public List<FileDto> getFileDayList(int memberId, LocalDate date) throws SomethingNotFoundException{
         return recordRepository.getFileDayList(memberId, date);
     }
     @Transactional
-    public List<RecordImgDto> getFileMonthList(int memberId,int year,int day) throws SomethingNotFoundException {
+    public List<FileDto> getFileMonthList(int memberId,int year,int day) throws SomethingNotFoundException {
         return recordRepository.getFileMonthList(memberId, year, day);
     }
 
     @Transactional
-    public List<RecordImgDto> findImgForMainList()throws SomethingNotFoundException{//int year, int month
+    public List<FileDto> findImgForMainList()throws SomethingNotFoundException{//int year, int month
         return recordRepository.findImgForMainList();//year,month);
     }
 
-    ////////
-    @Transactional
-    public ImgDto saveImgInServer(String fileOriName, String fileName, String fileUrl){
-        return recordRepository.saveImgInServer(fileOriName,fileName,fileUrl);
-    }
+
 
 }

@@ -59,9 +59,8 @@ public class RecordController {
             throw new SomethingNullException("memberId:"+memberId+"'s recordDto");
         }
 
-
         byte[] decodedByte = Base64.getDecoder().decode(recordDto.getFileEncoding().getBytes());
-        String fileName = "" + memberId + "_record_" + recordDto.getFileOriName();
+        String fileName = "" + meetingRoomId + "_record_" + recordDto.getFileOriName();
 
         String savePath = System.getProperty("user.dir") +"upload";
         if (!new File(savePath).exists()) {
@@ -315,8 +314,7 @@ public class RecordController {
         if (recordImg == null) {
             throw new SomethingNullException("recordId:"+recordId+"'s recordImg");
         }
-        RecordImgDto result = new RecordImgDto(recordImg.getId(),recordImg.getFileOriName(),new String(recordImg.getFileUrl()));
-
+        FileDto result = new FileDto(recordImg.getId(),recordImg.getFileOriName(),recordImg.getFileName(),recordImg.getFileUrl());
 
         message.setStatus(StatusEnum.OK);
         message.setMessage("사용자의 운동 사진 조회 성공");
@@ -332,8 +330,8 @@ public class RecordController {
         Message message = new Message();
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(new MediaType("application","json", Charset.forName("UTF-8")));
-//        try {
-            List<RecordImgDto> result = recordImgService.getFileDayList(memberId, date);
+
+            List<FileDto> result = recordImgService.getFileDayList(memberId, date);
             if (result.isEmpty()) {
                 throw new SomethingNullException("memebrId:"+memberId+" 's "+date+" record Img List");
             }
@@ -357,7 +355,7 @@ public class RecordController {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(new MediaType("application","json", Charset.forName("UTF-8")));
 
-        List<RecordImgDto> result = recordImgService.getFileMonthList(memberId, year,month);
+        List<FileDto> result = recordImgService.getFileMonthList(memberId, year,month);
         if (result.isEmpty()) {
             throw new SomethingNullException("memberId:"+ memberId+" year:"+year+" month:"+month);
         }
@@ -400,7 +398,7 @@ public class RecordController {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(new MediaType("application","json", Charset.forName("UTF-8")));
 
-        List<RecordImgDto> result = recordImgService.findImgForMainList();//year, month);
+        List<FileDto> result = recordImgService.findImgForMainList();//year, month);
         if (result.isEmpty()) {
             throw new SomethingNullException("Record");
         }
