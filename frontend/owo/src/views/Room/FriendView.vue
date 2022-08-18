@@ -475,7 +475,7 @@ export default {
       document.getElementsByClassName('modal-backdrop')[0].remove();
     },
     pickmyImg(Img, i) {
-      this.credentials.fileOriName = `${this.userInfo.nick}_${format}.png`;
+      this.credentials.fileOriName = `${this.userInfo.id}_${this.sessionId}_${format}.png`;
       this.credentials.fileUrl = Img.replace('data:image/png;base64,', '');
       const el1 = document.getElementById('0');
       const el2 = document.getElementById('1');
