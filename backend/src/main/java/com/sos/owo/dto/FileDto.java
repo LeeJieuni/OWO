@@ -14,8 +14,8 @@ public class FileDto {
     private String fileUrl;
 
 
-    public FileDto toEntity() {
-        FileDto build = FileDto.builder()
+    public ProfileImg toEntity() {
+        ProfileImg build = ProfileImg.builder()
                 .id(id)
                 .fileOriName(fileOriName)
                 .fileName(fileName)
