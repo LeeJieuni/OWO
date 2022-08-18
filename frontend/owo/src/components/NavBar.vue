@@ -33,7 +33,7 @@
                 <img class="profile-img" :src="profileImg" alt="" style="cursor:pointer;">
               </div>
               <div class="dropdown-content">
-                <li><router-link to="/tutorial">튜토리얼</router-link></li>
+                <li><router-link to="/tutorial/burpee">튜토리얼</router-link></li>
                 <li>
                   <router-link to="/roomtabs">운동하기</router-link>
                 </li>

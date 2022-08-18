@@ -836,11 +836,12 @@ export const accounts = {
           },
         })
           .then((res) => {
-            console.log('입장처리됫니?');
+            console.log('방장티어:', masterMod, '유저티어', userMod);
+            console.log('입장처리됫어?');
             commit('SET_ROOM_NAME', payload.roomName);
             console.log(res);
             router.push(`/room/${state.enter_mode[payload.mode]}/${payload.roomId}`);
-            console.log('응완료?');
+            console.log('입장완료');
           })
           .catch((err) => {
             swal.fire(
@@ -854,6 +855,7 @@ export const accounts = {
       console.log('방장티어', Math.trunc(masterMod));
       console.log('유저티어', Math.trunc(userMod));
       if (Math.trunc(masterMod) > Math.trunc(userMod)) {
+        console.log('방장:', Math.trunc(masterMod), '유저:', Math.trunc(userMod));
         swal.fire(
           '#오운완',
           '티어가 높아 입장하실 수 없습니다.',
@@ -861,6 +863,7 @@ export const accounts = {
         );
       }
       if (Math.trunc(masterMod) < Math.trunc(userMod)) {
+        console.log('방장:', Math.trunc(masterMod), '유저:', Math.trunc(userMod));
         swal.fire(
           '#오운완',
           '티어가 낮아 입장하실 수 없습니다.',
