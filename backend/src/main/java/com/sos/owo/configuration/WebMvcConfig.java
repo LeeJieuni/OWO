@@ -1,8 +1,11 @@
 package com.sos.owo.configuration;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistration;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
@@ -17,5 +20,17 @@ public class WebMvcConfig implements WebMvcConfigurer {
                         HttpMethod.POST.name(),
                         HttpMethod.PUT.name(),
                         HttpMethod.DELETE.name());
+    }
+
+    @Value("${resources.location}")
+    private String resourcesLocation;
+    @Value("${resources.uri_path:}")
+    private String resourcesUriPath;
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        ResourceHandlerRegistration resourceHandlerRegistration = registry.addResourceHandler(resourcesUriPath + "/**")
+                .addResourceLocations("file://" + resourcesLocation);
+
     }
 }
