@@ -387,17 +387,16 @@ public class MemberController {
             if (file != null) {
                 String fileOriName = file.getOriginalFilename();
                 String fileName = "" + memberId + "_" + fileOriName;
-//                String savePath = "../img/profile";
-//                System.out.println(savePath);
 //                String savePath = System.getProperty("user.dir")+"\\src\\main\\resources\\static\\img\\profile";
-                String savePath = "/tmp/img/profile";
+//                String savePath = "/profile";
 //                System.out.println("path+++++++++++++++++++++++++++++" + System.getProperty("user.dir"));
 //              //~/Jenkins/jenkins_home/workspace/owoProject/backend/
                 //   /jenkins/workspace/owoproject/backend
 
-//                File uploadDir = new File(uploadPath + File.separator + uploadFolder);
-//                if(!uploadDir.exists()) uploadDir.mkdir();
-//                File imgfile = new File(uploadPath + File.separator + uploadFolder + File.separator + fileName);
+                File uploadDir = new File(uploadPath + File.separator + uploadFolder);
+                if(!uploadDir.exists()) uploadDir.mkdir();
+                String fileUrl = uploadPath + File.separator + uploadFolder + File.separator + fileName;
+                File imgfile = new File(fileUrl);
 
 
 //                if (!(new File(savePath)).exists()) {
@@ -408,8 +407,9 @@ public class MemberController {
 //                    }
 //                }
 
-                String fileUrl = savePath + "/" + fileName;
-                file.transferTo(new File(fileUrl));
+//                String fileUrl = savePath + "/" + fileName;
+//                file.transferTo(new File(fileUrl));
+                file.transferTo(imgfile);
 
                 int profileImgId = profileImgService.saveImg(memberId,fileOriName,fileUrl);
 
