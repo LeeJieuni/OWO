@@ -39,8 +39,8 @@ public class RecordDto {
     private String fileOriName;
 
     @ApiModelProperty(example="base64인코딩된것")
-    @ApiParam(value = "이미지 파일의 url",type = "String")
-    private String fileUrl;
+    @ApiParam(value = "이미지 파일의 인코딩된 url",type = "String")
+    private String fileEncoding;
 
     @ApiModelProperty(example="60")
     @ApiParam(value = "운동한 시간(단위 : 분)",type = "int")
@@ -48,13 +48,13 @@ public class RecordDto {
 
 
     @Builder
-    public RecordDto(String recordMemo, LocalDate recordDatetime, boolean secret, List<String> tagList, String fileOriName, String fileUrl,int recordTime) {
+    public RecordDto(String recordMemo, LocalDate recordDatetime, boolean secret, List<String> tagList, String fileOriName, String fileEncoding,int recordTime) {
         this.recordMemo = recordMemo;
         this.recordDatetime = recordDatetime;
         this.secret = secret;
         this.tagList = tagList;
         this.fileOriName = fileOriName;
-        this.fileUrl = fileUrl;
+        this.fileEncoding = fileEncoding;
         this.recordTime = recordTime;
     }
 

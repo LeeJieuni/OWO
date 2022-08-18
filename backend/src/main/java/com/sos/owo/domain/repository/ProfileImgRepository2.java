@@ -26,17 +26,16 @@ public class ProfileImgRepository2 {
         if(findMember == null){
             throw new NullPointerException();
         }
+
         ProfileImg profileImg = new ProfileImg();
         profileImg.setFileOriName(fileOriName);
-        profileImg.setFileUrl(fileUrl.getBytes()); //String으로 온것 byte[]로 저장
+        profileImg.setFileUrl(fileUrl); //String으로 온것 byte[]로 저장-> 다시 String,,^^
 
         if(findMember.getProfileImg() != null){
             ProfileImg findProfileImg = findMember.getProfileImg();
             em.remove(findProfileImg);
         }
-//        else {
-////            findProfileImg.updateProfileImg(profileImg);
-//        }
+
         profileImgRepository.save(profileImg);
         findMember.updateProfieImg(profileImg);
         return profileImg.getId();
