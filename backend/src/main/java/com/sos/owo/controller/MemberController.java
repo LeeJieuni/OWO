@@ -387,7 +387,9 @@ public class MemberController {
             if (file != null) {
                 String fileOriName = file.getOriginalFilename();
                 String fileName = new MD5Generator(fileOriName).toString();
-                String savePath = System.getProperty("user.dir") +"\\src\\main\\resources\\static\\img\\profile";
+                //String savePath = System.getProperty("user.dir") +"\\src\\main\\resources\\static\\img\\profile";
+                String savePath = uploadPath + File.separator + uploadFolder;
+
                 if (!new File(savePath).exists()) {
                     try {
                         new File(savePath).mkdir();
@@ -395,7 +397,7 @@ public class MemberController {
                         e.printStackTrace();
                     }
                 }
-                String fileUrl = savePath + "\\" + fileName;
+                String fileUrl = savePath +  File.separator + fileName;
                 file.transferTo(new File(fileUrl));
                 System.out.println(">>>>     "+memberId+" "+fileOriName+" "+fileName+" "+fileUrl);
                 FileDto fileDto = profileImgService.saveFile(memberId, fileOriName, fileName, fileUrl);
