@@ -268,12 +268,12 @@ public class RecordRepository {
         return recordImg;
     }
 
-    public List<RecordImgDto> getFileDayList(int memberId,LocalDate date){
+    public List<FileDto> getFileDayList(int memberId,LocalDate date){
         Member findMember = em.find(Member.class,memberId);
         if(findMember == null) throw new SomethingNotFoundException("member(id:"+memberId+")");
 
         List<RecordResponseDto> list = findRecordByDay(memberId,date);
-        List<RecordImgDto> responseList = new ArrayList<>();
+        List<FileDto> responseList = new ArrayList<>();
 
         if(!list.isEmpty()) {
             for (RecordResponseDto findRecord : list) {
@@ -281,21 +281,22 @@ public class RecordRepository {
                 Record r = findOneRecord(recordId);
                 RecordImg recordImg = r.getRecordImg();
                 if (recordImg == null) return null;
-                RecordImgDto recordImgDto = RecordImgDto.builder()
+                FileDto fileDto = FileDto.builder()
                         .id(recordImg.getId())
                         .fileOriName(recordImg.getFileOriName())
+                        .fileName(recordImg.getFileName())
                         .fileUrl(recordImg.getFileUrl())
                         .build();
-                responseList.add(recordImgDto);
+                responseList.add(fileDto);
             }
         }
         return responseList;
     }
 
-    public List<RecordImgDto> getFileMonthList(int memberId,int year,int day){
+    public List<FileDto> getFileMonthList(int memberId,int year,int day){
         /* memberId에 대한 예외처리 생략 */
         List<RecordResponseDto> list = findRecordByMonth(memberId,year,day);
-        List<RecordImgDto> responseList = new ArrayList<>();
+        List<FileDto> responseList = new ArrayList<>();
 
         if(!list.isEmpty()) {
             for (RecordResponseDto findRecord : list) {
@@ -303,12 +304,13 @@ public class RecordRepository {
                 Record r = findOneRecord(recordId);
                 RecordImg recordImg = r.getRecordImg();
                 if (recordImg == null) return null;
-                RecordImgDto recordImgDto = RecordImgDto.builder()
+                FileDto fileDto = FileDto.builder()
                         .id(recordImg.getId())
                         .fileOriName(recordImg.getFileOriName())
+                        .fileName(recordImg.getFileName())
                         .fileUrl(recordImg.getFileUrl())
                         .build();
-                responseList.add(recordImgDto);
+                responseList.add(fileDto);
             }
         }
         return responseList;
@@ -336,53 +338,33 @@ public class RecordRepository {
         return monthList;
     }
 
-    public List<RecordImgDto> findImgForMainList(){//int year,int month){
+    public List<FileDto> findImgForMainList(){//int year,int month){
         List<Record> list = em.createQuery("SELECT r FROM Record as r WHERE r.recordSecret = false and r.recordExercise not in ('GAME') order by r.recordDatetime desc", Record.class)
                .getResultList(); // 사용자에 대한 모든 운동 기록 리스트
 
-        List<RecordImgDto> responseList = new ArrayList<>();
+        List<FileDto> responseList = new ArrayList<>();
         int count = 0;
 
         if(!list.isEmpty()) { /* 값이 없으면 빈 리스트 반환 */
             for (Record r : list) {
-//                if (r.getRecordDatetime().getYear() == year
-//                        && r.getRecordDatetime().getMonthValue() == month) {
 
                     if(!r.getRecordImg().getFileOriName().equals("")){
-                        System.out.println(r.getRecordImg().getId()+" d  "+r.getRecordImg().getFileOriName()+"  dd "+r.getRecordImg().getFileUrl());
-                        RecordImgDto recordImgDto = RecordImgDto.builder()
+                        FileDto fileDto = FileDto.builder()
                                 .id(r.getRecordImg().getId())
                                 .fileOriName(r.getRecordImg().getFileOriName())
-                                .fileUrl(r.getRecordImg().getFileUrl()).build();
-                        responseList.add(recordImgDto);
+                                .fileName(r.getRecordImg().getFileName())
+                                .fileUrl(r.getRecordImg().getFileUrl())
+                                .build();
+                        responseList.add(fileDto);
                         count++;
                         if(count>=10) break;
                     }
-//                }
             }
         }
 
         return responseList;
     }
 
-    //이미지 한장 저장
-    public ImgDto saveImgInServer(String fileOriName, String fileName, String fileUrl){
-//        Record findRecord = this.findOneRecord(recordId);
-        ImgDto imgDto = new ImgDto();
-        imgDto.setFileName(fileName);
-        imgDto.setFileOriName(fileOriName);
-        imgDto.setFileUrl(fileUrl);
-
-//        RecordImg recordImg = imgDto.toEntity();
-//        if (findMember.getProfileImg() == null) {
-//            this.profileImgRepository.save(profileImg);
-//        } else {
-//            ProfileImg findProfileImg = findMember.getProfileImg();
-//            findProfileImg.updateProfileImg(profileImg);
-//        }
-//        findMember.updateProfieImg(profileImg);
-        return imgDto;
-    }
 
 
 }
