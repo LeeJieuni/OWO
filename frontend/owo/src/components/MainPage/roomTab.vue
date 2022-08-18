@@ -294,23 +294,24 @@
           </div>
           <b-card class="rooms" footer-tag="footer">
             <div class="img_sport">
+              <!-- <p>{{Math.trunc(Number(masterTier))}}</p> -->
               <div v-if="Math.trunc(Number(masterTier)) === 0">
-                <img src="@/assets/icon/tier5.png" alt="">
+                <img src="@/assets/icon/tier5.png" alt="diamon">
               </div>
                 <div v-if="Math.trunc(Number(masterTier)) === 1">
-                <img src="@/assets/icon/tier4.png" alt="">
+                <img src="@/assets/icon/tier4.png" alt="platinum">
               </div>
                 <div v-if="Math.trunc(Number(masterTier)) === 2">
-                <img src="@/assets/icon/tier3.png" alt="">
+                <img src="@/assets/icon/tier3.png" alt="gold">
               </div>
                 <div v-if="Math.trunc(Number(masterTier)) === 3">
-                <img src="@/assets/icon/tier2.png" alt="">
+                <img src="@/assets/icon/tier2.png" alt="silver">
               </div>
                 <div v-if="Math.trunc(Number(masterTier))=== 4">
-                <img src="@/assets/icon/tier1.png" alt="">
+                <img src="@/assets/icon/tier1.png" alt="bronze">
               </div>
                 <div v-if="Math.trunc(Number(masterTier)) === 5">
-                <img src="@/assets/icon/tier1.png" alt="">
+                <img src="@/assets/icon/tier1.png" alt="bronze">
               </div>
             </div>
             <div class="d-flex">
