@@ -370,8 +370,8 @@ export default {
       },
       volume: 0,
       isSetting: false,
-      limitMininalTime: 1, // 최소한의 기록이 남는 시간(분)
-      firstPictureTime: 30, // 첫 사진이 촬영되는 시간(초)
+      limitMininalTime: 15, // 최소한의 기록이 남는 시간(초)
+      firstPictureTime: 10, // 첫 사진이 촬영되는 시간(초)
       modalShow: false,
       // 타이머 셋팅
       timer: 3,
@@ -568,12 +568,12 @@ export default {
       const now = new Date();
       this.endTimeSet(now);
       // eslint-disable-next-line
-      this.credentials.recordTime = Math.abs((this.startTime.getTime() - this.endTime.getTime()) / (1000 * 60));
+      this.credentials.recordTime = Math.abs((this.startTime.getTime() - this.endTime.getTime()) / (1000));
       console.log(this.credentials.recordTime);
       if (this.credentials.recordTime < this.limitMininalTime) {
         swal.fire({
           title: '퇴장하실건가요?',
-          text: `${this.limitMininalTime}분 미만 운동 시 기록이 저장되지 않습니다.`,
+          text: `${this.limitMininalTime}초 미만 운동 시 기록이 저장되지 않습니다.`,
           icon: 'warning',
           showCancelButton: true,
           cancelButtonColor: '#3085d6',
