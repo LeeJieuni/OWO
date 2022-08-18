@@ -17,6 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class ProfileImgService {
 
     @Autowired
+    private ProfileImgRepository profileImgRepository;
+    @Autowired
     private ProfileImgRepository2 profileImgRepository2;
     @Autowired
     private MemberRepository memberRepository;
@@ -25,17 +27,18 @@ public class ProfileImgService {
     public FileDto saveFile(int memberId, String fileOriName, String fileName, String fileUrl) throws IllegalStateException {
         Member findMember = memberRepository.findOne(memberId);
         FileDto fileDto = new FileDto();
-        fileDto.setFileName(fileOriName);
-        fileDto.setFileOriName(fileName);
+        fileDto.setFileName(fileName);
+        fileDto.setFileOriName(fileOriName);
         fileDto.setFileUrl(fileUrl);
-//        ProfileImg profileImg = fileDto.toEntity();
-//        if(findMember.getProfileImg() == null){
-//            profileImgRepository.save(profileImg);
-//        } else {
-//            ProfileImg findProfileImg = findMember.getProfileImg();
-//            findProfileImg.updateProfileImg(profileImg);
-//        }
-//        findMember.updateProfieImg(profileImg);
+
+        ProfileImg profileImg = fileDto.toEntity();
+        if(findMember.getProfileImg() == null){
+            profileImgRepository.save(profileImg);
+        } else {
+            ProfileImg findProfileImg = findMember.getProfileImg();
+            findProfileImg.updateProfileImg(profileImg);
+        }
+        findMember.updateProfieImg(profileImg);
 
         return fileDto;
     }
