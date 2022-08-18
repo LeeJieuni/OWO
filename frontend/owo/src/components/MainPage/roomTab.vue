@@ -54,7 +54,7 @@
                   <b-form-select :options="Object.keys(workout)"
                   v-model="roomdatas.type"></b-form-select>
                 </b-input-group>
-                <b-input-group prepend="링크" class="roomdata_input">
+                <b-input-group prepend="Youtube URL" class="roomdata_input">
                 <b-form-input type="link" v-model="roomdatas.link"></b-form-input>
               </b-input-group>
                 <b-input-group v-if="roomdatas.secret" prepend="비밀번호" class="roomdata_input">
