@@ -402,7 +402,7 @@ public class MemberController {
                     }
                 }
 
-                String fileUrl = savePath + "\\" + fileName;
+                String fileUrl = savePath + "/" + fileName;
                 file.transferTo(new File(fileUrl));
 
                 int profileImgId = profileImgService.saveImg(memberId,fileOriName,fileUrl);
