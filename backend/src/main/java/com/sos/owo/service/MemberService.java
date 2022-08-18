@@ -113,6 +113,21 @@ public class MemberService {
         return memberDto;
     }
 
+    public MemberLoginResponseDto memberGet(int memberId) throws Exception {
+        Member member = memberRepository.findOne(memberId);
+
+        MemberLoginResponseDto memberDto = MemberLoginResponseDto.builder()
+                .email(member.getEmail())
+                .id(member.getId()).nick(member.getNick())
+                .gender(member.getGender()).age(member.getAge())
+                .height(member.getHeight()).weight(member.getWeight())
+                .activityNum(member.getActivityNum()).activityHour(member.getActivityHour())
+                .activityLevel(member.getActivityLevel())
+                .build();
+
+        return memberDto;
+    }
+
     @Transactional
     public MemberLoginResponseDto refreshToken(String token, String refreshToken) throws Exception {
 
