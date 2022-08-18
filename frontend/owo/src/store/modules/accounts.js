@@ -173,7 +173,11 @@ export const accounts = {
       state.profileImg = payload;
     },
     SET_POINT: (state, payload) => {
-      state.record.point = payload;
+      if (payload < 0) {
+        state.record.point = 0;
+      } else {
+        state.record.point = payload;
+      }
     },
     // SET_COMPETE: (state, payload) => {
     //   state.compete.workout1 = payload.workout1;

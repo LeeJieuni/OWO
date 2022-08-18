@@ -33,7 +33,7 @@
           <div class="tier-name">{{ state.tierName }}&nbsp;&nbsp;</div>
           <div class="me-auto user-percent">
             LEVEL {{ state.level }}&nbsp;&nbsp;|&nbsp;&nbsp;
-            전체 사용자 중 상위 {{pointPercent}}%</div>
+            전체 사용자 중 상위 {{state.recordPercent}}%</div>
           <div class="user-point">{{ state.pointSet }} / {{ state.levelUp }} P</div>
         </div>
       </div>
@@ -59,8 +59,8 @@ export default {
       tierName: '브론즈',
       pointSet: '',
       levelUp: '',
-      recordPercent: '100',
-      recordPercentage: '100',
+      recordPercent: '',
+      recordPercentage: '',
       level: '',
     });
     const refresh = () => {
@@ -88,10 +88,14 @@ export default {
     this.state.levelUp = lvup;
     this.state.level = level;
 
-    this.state.recordPercent = Math.round((this.state.pointSet / this.state.levelUp) * 100);
+    if (this.state.pointSet > 0) {
+      this.state.recordPercent = Math.round((this.state.pointSet / this.state.levelUp) * 100);
+    } else {
+      this.state.recordPercent = 0;
+    }
     const stringPercent = String(this.state.recordPercent);
     this.state.recordPercentage = stringPercent.concat('%');
-    console.log('포인트 퍼센트', this.state.recordPercent, this.state.recordPercentage);
+    // console.log('포인트 퍼센트', this.state.recordPercent, this.state.recordPercentage);
 
     // 티어 그림 변경
     if (this.pointPercent > 0 && this.pointPercent < 20) {
@@ -110,7 +114,6 @@ export default {
       this.state.tierNum = 1;
       this.state.tierName = '브론즈';
     }
-    console.log(this.state.tierNum);
   },
   moundted() {},
   unmounted() {},
