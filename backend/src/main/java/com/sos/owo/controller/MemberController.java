@@ -395,13 +395,18 @@ public class MemberController {
 //              //~/Jenkins/jenkins_home/workspace/owoProject/backend/
                 //   /jenkins/workspace/owoproject/backend
 
-                if (!(new File(savePath)).exists()) {
-                    try {
-                        (new File(savePath)).mkdir();
-                    } catch (Exception var10) {
-                        var10.printStackTrace();
-                    }
-                }
+//                File uploadDir = new File(uploadPath + File.separator + uploadFolder);
+//                if(!uploadDir.exists()) uploadDir.mkdir();
+//                File imgfile = new File(uploadPath + File.separator + uploadFolder + File.separator + fileName);
+
+
+//                if (!(new File(savePath)).exists()) {
+//                    try {
+//                        (new File(savePath)).mkdir();
+//                    } catch (Exception var10) {
+//                        var10.printStackTrace();
+//                    }
+//                }
 
                 String fileUrl = savePath + "/" + fileName;
                 file.transferTo(new File(fileUrl));
