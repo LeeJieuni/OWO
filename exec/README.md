@@ -58,7 +58,6 @@
 - Java
 - AWS EC2
 - mySql
-- 
 
 **Frontend**
 
