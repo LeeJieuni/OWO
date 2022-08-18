@@ -387,7 +387,10 @@ public class MemberController {
             if (file != null) {
                 String fileOriName = file.getOriginalFilename();
                 String fileName = "" + memberId + "_" + fileOriName;
-                String savePath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\img\\profile";
+                String savePath = System.getProperty("user.dir")+"\\src\\main\\resources\\static\\img\\profile";
+                System.out.println("path+++++++++++++++++++++++++++++" + System.getProperty("user.dir"));
+//              //~/Jenkins/jenkins_home/workspace/owoProject/backend/
+
                 if (!(new File(savePath)).exists()) {
                     try {
                         (new File(savePath)).mkdir();
