@@ -397,7 +397,9 @@ public class MemberController {
                 }
                 String fileUrl = savePath + "\\" + fileName;
                 file.transferTo(new File(fileUrl));
+                System.out.println(">>>>     "+memberId+" "+fileOriName+" "+fileName+" "+fileUrl);
                 FileDto fileDto = profileImgService.saveFile(memberId, fileOriName, fileName, fileUrl);
+                System.out.println(">>>>fileDto    "+fileDto.getId()+" "+fileDto.getFileOriName()+" "+fileDto.getFileName()+" "+fileDto.getFileUrl());
                 return new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
             } else {
                 return new ResponseEntity<String>("CHECK FILE", HttpStatus.BAD_REQUEST);
@@ -422,6 +424,7 @@ public class MemberController {
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
         ProfileImg profileImg = profileImgService.getImg(memberId);
+        System.out.println(">>>>profileImg       "+profileImg.getId()+" "+profileImg.getFileOriName()+" "+profileImg.getFileName()+" "+profileImg.getFileUrl());
         FileDto result = new FileDto(profileImg.getId(),profileImg.getFileOriName(),profileImg.getFileName(),profileImg.getFileUrl());
 
         message.setStatus(StatusEnum.OK);
