@@ -63,7 +63,7 @@ public class RecordController {
         String fileName = "" + meetingRoomId + "_record_" + recordDto.getFileOriName();
 
 //        String savePath = System.getProperty("user.dir") +"upload";
-        String savePath =  "/opt/upload";
+        String savePath = "/upload";
         if (!new File(savePath).exists()) {
             try {
                 new File(savePath).mkdir();
