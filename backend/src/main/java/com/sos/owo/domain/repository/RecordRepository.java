@@ -347,7 +347,6 @@ public class RecordRepository {
 
         if(!list.isEmpty()) { /* 값이 없으면 빈 리스트 반환 */
             for (Record r : list) {
-
                     if(!r.getRecordImg().getFileOriName().equals("")){
                         FileDto fileDto = FileDto.builder()
                                 .id(r.getRecordImg().getId())
