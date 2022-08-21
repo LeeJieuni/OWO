@@ -62,7 +62,8 @@ public class RecordController {
         byte[] decodedByte = Base64.getDecoder().decode(recordDto.getFileEncoding().getBytes());
         String fileName = "" + meetingRoomId + "_record_" + recordDto.getFileOriName();
 
-        String savePath = System.getProperty("user.dir") +"upload";
+//        String savePath = System.getProperty("user.dir") +"upload";
+        String savePath =  "/opt/upload";
         if (!new File(savePath).exists()) {
             try {
                 new File(savePath).mkdir();
