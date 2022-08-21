@@ -14,6 +14,7 @@
             style="width: 100%; height: 100%; border-radius: 20px;"></div>
           </Slide>
           <template #addons>
+            <Pagination />
           </template>
         </Carousel>
         <!-- <div v-for="(image, i) in images" :key="i">
@@ -26,25 +27,6 @@
           <p class="text">오운완을 통해 운동하면 편하게 운동 사진을 보관할 수 있어요.</p>
           <p class="text">최근 사진들은 메인 화면에 자랑할 수 있답니다!</p>
           <p class="text">이제부터는 번거롭게 인증사진을 찍으러 갈 필요가 없어요!</p>
-          <!-- <div class="btns"> -->
-          <!-- <div class="btns">
-            <router-link v-if="!isLogin" to="/login">
-              <button class="start-btn btn-12">
-                <span>Login</span><span>Start With Us!</span>
-              </button>
-            </router-link>
-            <router-link v-if="isLogin" to="/mypage/main">
-              <button class="start-btn btn-12">
-                <span>Mypage</span><span>Start With Us!</span>
-              </button>
-            </router-link>
-          </div> -->
-        <!-- </div> -->
-        <!-- <div>
-          <p class="text">이제 #오운완과 함께 운동을 시작해볼까요?<br></p>
-          <router-link to="/rooms" class="h1-rem2">
-            <span class="h1-rem">운동하러</span> GO!</router-link>
-          </div> -->
       </div>
     </div>
   </div>
@@ -52,18 +34,19 @@
 </template>
 
 <script>
-import { defineComponent, reactive, computed } from 'vue';
-import { Carousel, Slide } from 'vue3-carousel';
+import { reactive, computed } from 'vue';
+import { Carousel, Pagination, Slide } from 'vue3-carousel';
 import { useStore } from 'vuex';
 import axios from 'axios';
 
 import 'vue3-carousel/dist/carousel.css';
 
-export default defineComponent({
+export default ({
   name: 'AutoPlay',
   components: {
     Carousel,
     Slide,
+    Pagination,
   },
   setup() {
     const store = useStore();
