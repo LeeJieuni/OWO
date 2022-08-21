@@ -120,11 +120,12 @@
         <button v-if="!this.gameType" @click="leaveSession" class="mybtn6">
           <img class="menu_icon2" src="@/assets/icon/roomout.png" alt="leaveSession">
         </button>
-        <div v-if="(!this.subscribers.length)" class="mybtn7">2명 이상 모여야 시작 가능!!</div>
         <!-- eslint-disable-next-line -->
-        <div v-if="!(this.credentialsUser.memberId === this.masterId) & !this.gameType & (this.subscribers.length >= 1)" class="mybtn7">방장 >> 오른쪽 위 START 버튼!</div>
+        <div v-if="(!this.subscribers.length && !this.isStartedGame)" class="mybtn7">2명 이상 모여야 시작 가능!!</div>
         <!-- eslint-disable-next-line -->
-        <button v-if="(this.credentialsUser.memberId === this.masterId) & !this.gameType & (this.subscribers.length >= 1)" class="mybtn5" @click="startround">
+        <div v-if="!(this.credentialsUser.memberId === this.masterId) & !this.gameType & (this.subscribers.length >= 1) && !this.isStartedGame" class="mybtn7">방장 >> 오른쪽 위 START 버튼!</div>
+        <!-- eslint-disable-next-line -->
+        <button v-if="(this.credentialsUser.memberId === this.masterId) & !this.gameType & (this.subscribers.length >= 1) && !this.isStartedGame" class="mybtn5" @click="startround">
           <img class="menu_icon4" src="@/assets/icon/start.png" alt="Start">
         </button>
       </div>
@@ -151,10 +152,6 @@
       <div v-if="round3Game" class="roundGame" style="font-size:5rem; color:white; font-family: 'LeferiPoint-BlackObliqueA';">#Final Round&ensp;:&ensp;{{ roundGameName }}</div>
       <!-- eslint-disable-next-line -->
       <div v-if="restTime" class="roundGame" style="font-size:5rem; color:white; font-family: 'LeferiPoint-BlackObliqueA';">휴식 시간</div>
-      <!-- eslint-disable-next-line -->
-      <div v-if="restTime" class="roundGame2" style="font-size:2rem; color:white; font-family: 'LeferiPoint-BlackObliqueA';">휴식 시간의 횟수는&ensp;<span style="color:#de7474;"><U>포인트</U></span>에 반영되지 않아요.</div>
-      <!-- eslint-disable-next-line -->
-      <div v-if="restTime" class="roundGame3" style="font-size:2rem; color:white; font-family: 'LeferiPoint-BlackObliqueA';">단,&ensp;<span style="color:#de7474;"><U>최대횟수</U></span>에는 반영된답니다!</div>
     </div>
   </div>
 </template>
@@ -186,6 +183,9 @@ const emojiIndex = new EmojiIndex(emojidata);
 const emoji = 'emoji';
 const exercise = 'exercise';
 
+// eslint-disable-next-line
+const audioBattle = new Audio(require('@/assets/music/battle.mp3'));
+
 export default {
   name: 'CompetitionView',
   metaInfo: {
@@ -199,6 +199,7 @@ export default {
   },
   data() {
     return {
+      CamOnOff: true,
       myExerciseTime: undefined, // 운동 시간 소요 (초)
       myRestTime: undefined, // 휴식 시간 소요 (초)
       // 타이머 셋팅
@@ -240,7 +241,7 @@ export default {
       round1Game: undefined,
       round2Game: undefined,
       round3Game: undefined,
-      restTime: undefined,
+      restTime: false,
       credentialsUser: {
         memberId: null,
         meetingRoomId: null,
@@ -251,6 +252,7 @@ export default {
       roomTime: null,
       isStarted: false,
       isExercising: false,
+      isStartedGame: false,
       RoundStartTimer: null,
       // tm 영역
       webcam: undefined,
@@ -287,6 +289,7 @@ export default {
   unmounted() {
     this.leaveSession();
     document.body.style.backgroundColor = 'white';
+    audioBattle.stop();
   },
   watch: {
     mySessionId() {},
@@ -326,6 +329,9 @@ export default {
       'allScoreList',
     ]),
     myExercisePoints() {
+      if (!this.burpeeCount && !this.squatCount && !this.lungeCount) {
+        return 0;
+      }
       // eslint-disable-next-line
       if (this.allScoreList.length === 2) {
         if (this.Score === this.allScoreListSorted[0]) {
@@ -616,6 +622,7 @@ export default {
       audio.play();
       this.isExercising = true;
       this.isStarted = true;
+      this.isStartedGame = true;
       this.round1Game = true;
       this.roundGameName = '버피';
       setTimeout(() => {
@@ -712,6 +719,7 @@ export default {
       setTimeout(() => {
         this.isStarted = false;
         this.$refs.setTimer3.pauseTimer();
+        audioBattle.play();
       }, 6000);
       setTimeout(() => {
         this.isExercising = false;
@@ -772,6 +780,7 @@ export default {
           }
         }
         // this.webcam.stop();
+        audioBattle.pause();
       }, 21000);
       setTimeout(() => {
         this.restTime = false;
@@ -802,6 +811,7 @@ export default {
         // this.webcam.play();
         this.isStarted = false;
         this.$refs.setTimer3.pauseTimer();
+        audioBattle.play();
       }, 6000);
       setTimeout(() => {
         this.isExercising = false;
@@ -868,6 +878,7 @@ export default {
         this.restTime = false;
         this.isExercising = true;
         this.startround3();
+        audioBattle.pause();
       }, 24000);
       // setTimeout(() => {
       // }, 46000);
@@ -893,6 +904,7 @@ export default {
         // this.webcam.play();
         this.isStarted = false;
         this.$refs.setTimer3.pauseTimer();
+        audioBattle.play();
       }, 6000);
       setTimeout(() => {
         if (this.allSquatCountList.length === 2) {
@@ -950,6 +962,10 @@ export default {
         this.sendScore();
         this.sendMyRecords();
         this.isExercising = false;
+        audioBattle.pause();
+        // eslint-disable-next-line
+        const audio6 = new Audio(require('@/assets/music/setting.mp3'));
+        audio6.play();
         swal.fire({
           icon: 'info',
           title: '획득 포인트 정산중입니다...',
@@ -969,7 +985,7 @@ export default {
           showDenyButton: true,
           confirmButtonText: '머무르기',
           denyButtonText: '나가기',
-          html: `방 제목 : <strong>${this.roomName}</strong> | 참여자 : <strong>${this.subscribers.length} 명</strong><br>
+          html: `방 제목 : <strong>${this.roomName}</strong> | 참여자 : <strong>${this.subscribers.length + 1} 명</strong><br>
           <br>
           <strong>${this.userInfo.nick}</strong>님의 기록입니다.<br>
           <br>
@@ -988,6 +1004,7 @@ export default {
           }
         });
         this.webcam.stop();
+        this.isStartedGame = true;
       }, 23000);
     },
     sendScore() {
@@ -1256,7 +1273,7 @@ export default {
       );
       const prediction = await this.model.predict(posenetOutput);
       if (prediction[1].probability.toFixed(2) > 0.99) { // 스쿼트
-        if (this.check) {
+        if (this.check && !this.video && !this.restTime) {
           this.squatCount += 1;
           console.log('squatCount', this.squatCount);
           this.session
@@ -1285,7 +1302,7 @@ export default {
       );
       const prediction = await this.model.predict(posenetOutput);
       if (prediction[1].probability.toFixed(2) > 0.99) { // 런지
-        if (this.check) {
+        if (this.check && !this.video && !this.restTime) {
           this.lungeCount += 1;
           console.log('lungeCount', this.lungeCount);
           this.session
@@ -1315,7 +1332,7 @@ export default {
       );
       const prediction = await this.model.predict(posenetOutput);
       if (prediction[2].probability.toFixed(2) > 0.99) { // 서 있는 자세
-        if (this.check && this.check2) {
+        if (this.check && this.check2 && !this.video && !this.restTime) {
           this.burpeeCount += 1;
           console.log('burpeeCount', this.burpeeCount);
           this.session

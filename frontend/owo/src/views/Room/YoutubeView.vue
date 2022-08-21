@@ -266,13 +266,14 @@
         <button @click="roomOut()" class="mybtn6">
           <img class="menu_icon2" src="@/assets/icon/roomout.png" alt="leaveSession">
         </button>
-        <div v-if="(!this.subscribers.length)" class="mybtn11">2명 이상 모여야 시작 가능!!</div>
         <!-- eslint-disable-next-line -->
-        <div v-if="!(this.credentialsUser.memberId === this.masterId) & !this.isStarted & (this.subscribers.length >= 1)" class="mybtn11">방장 >> 오른쪽 위 START 버튼!</div>
+        <div v-if="(!this.subscribers.length && !this.isStartedGame)" class="mybtn11">2명 이상 모여야 시작 가능!!</div>
+        <!-- eslint-disable-next-line -->
+        <div v-if="!(this.credentialsUser.memberId === this.masterId) & !this.isStarted & (this.subscribers.length >= 1) && !this.isStartedGame" class="mybtn11">방장 >> 오른쪽 위 START 버튼!</div>
         <!-- eslint-disable-next-line -->
         <setTimer1 ref="setTimer1"></setTimer1>
         <!-- eslint-disable-next-line -->
-        <button v-if="(this.credentialsUser.memberId === this.masterId) & !this.isStarted & (this.subscribers.length >= 1)" class="mybtn7" @click="startTimer">
+        <button v-if="(this.credentialsUser.memberId === this.masterId) & !this.isStarted & (this.subscribers.length >= 1) && !this.isStartedGame" class="mybtn7" @click="startTimer">
         <!-- <button v-if="!isExercising" class="mybtn5" @click="startround1"> -->
           <img class="menu_icon4" src="@/assets/icon/start.png" alt="Start">
         </button>
@@ -365,6 +366,7 @@ export default {
   },
   data() {
     return {
+      isStartedGame: false,
       youtubeURL: this.link,
       player: null,
       done: false,
@@ -372,7 +374,7 @@ export default {
       controls: {
         controls: 0,
       },
-      volume: 0,
+      volume: 20,
       isSetting: false,
       limitMininalTime: 15, // 최소한의 기록이 남는 시간(초)
       firstPictureTime: 10, // 첫 사진이 촬영되는 시간(초)
@@ -572,9 +574,9 @@ export default {
       const now = new Date();
       this.endTimeSet(now);
       // eslint-disable-next-line
-      this.credentials.recordTime = Math.abs((this.startTime.getTime() - this.endTime.getTime()) / (1000));
+      this.credentials.recordTime = Math.abs((this.startTime.getTime() - this.endTime.getTime()) / (1000 * 60));
       console.log(this.credentials.recordTime);
-      if (this.credentials.recordTime < this.limitMininalTime) {
+      if (this.credentials.recordTime * 60 < this.limitMininalTime) {
         swal.fire({
           title: '퇴장하실건가요?',
           text: `${this.limitMininalTime}초 미만 운동 시 기록이 저장되지 않습니다.`,
@@ -798,9 +800,10 @@ export default {
     startVideo() {
       this.$refs.youtube.playVideo();
       this.$refs.youtube.controls = 0;
-      this.$refs.youtube.getVolume(0);
+      this.$refs.youtube.setVolume(0);
     },
     start() {
+      this.isStartedGame = true;
       this.isSetting = true;
       this.isStarted = true;
       // eslint-disable-next-line

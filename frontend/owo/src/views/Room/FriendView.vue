@@ -232,13 +232,14 @@
         <button @click="roomOut()" class="mybtn6">
           <img class="menu_icon2" src="@/assets/icon/roomout.png" alt="leaveSession">
         </button>
-        <div v-if="(!this.subscribers.length)" class="mybtn9">2명 이상 모여야 시작 가능!!</div>
         <!-- eslint-disable-next-line -->
-        <div v-if="!(this.credentialsUser.memberId === this.masterId) & !this.isStarted & (this.subscribers.length >= 1)" class="mybtn9">방장 >> 오른쪽 위 START 버튼!</div>
+        <div v-if="(!this.subscribers.length && !this.isStartedGame)" class="mybtn9">2명 이상 모여야 시작 가능!!</div>
+        <!-- eslint-disable-next-line -->
+        <div v-if="!(this.credentialsUser.memberId === this.masterId) & !this.isStarted & (this.subscribers.length >= 1) && !this.isStartedGame" class="mybtn9">방장 >> 오른쪽 위 START 버튼!</div>
         <!-- eslint-disable-next-line -->
         <setTimer1 ref="setTimer1"></setTimer1>
         <!-- eslint-disable-next-line -->
-        <button v-if="(this.credentialsUser.memberId === this.masterId) & !this.isStarted & (this.subscribers.length >= 1)" class="mybtn7" @click="startTimer">
+        <button v-if="(this.credentialsUser.memberId === this.masterId) & !this.isStarted & (this.subscribers.length >= 1) && !this.isStartedGame" class="mybtn7" @click="startTimer">
         <!-- <button v-if="!isExercising" class="mybtn5" @click="startround1"> -->
           <img class="menu_icon4" src="@/assets/icon/start.png" alt="Start">
         </button>
@@ -329,6 +330,7 @@ export default {
   },
   data() {
     return {
+      isStartedGame: false,
       isSetting: false,
       limitMininalTime: 15, // 최소한의 기록이 남는 시간(초)
       firstPictureTime: 10, // 첫 사진이 촬영되는 시간(초)
@@ -712,6 +714,7 @@ export default {
       });
     },
     start() {
+      this.isStartedGame = true;
       this.isSetting = true;
       this.isStarted = true;
       // eslint-disable-next-line
