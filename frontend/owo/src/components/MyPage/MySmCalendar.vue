@@ -6,7 +6,7 @@
           @click.prevent="onClickPrev(currentMonth)">◀</a>
       </div>
       <div class="col-8">
-        <p class="date-title p-0 m-0">{{currentYear}}년 {{currentMonth}}월</p>
+        <p class="out-date-title p-0 m-0">{{currentYear}}년 {{currentMonth}}월</p>
       </div>
       <div class="col-2">
         <a class="month-change-btn" href="#" v-on:click.prevent="onClickNext(currentMonth)">▶</a>
@@ -44,75 +44,77 @@
       <b-modal id="myModal" size="lg" button-size="sm" scrollable ref="myModal"
       class="myModal"
         :title="`${currentYear}년 ${currentMonth}월 ${day}일`" hide-header>
-        <div class="carousel-box">
-          <div class="month-title modal-title text-center container-fluid row p-0 m-0 mb-3">
-            <div class="col-2">
-              <a class="day-change-btn" href="#"
-                @click.prevent="onClickPrevDay(currentYear, currentMonth, day)">◀</a>
+        <div class="modal-box">
+
+          <div class="modal-title text-center d-flex align-items-center row p-0 m-0">
+            <div class="col-2 align-items-center">
+              <div class="p-0 m-0">
+                <!-- eslint-disable-next-line-->
+                <img class="arrows" src="@/assets/icon/arrow-left-blue.png" alt=""
+                  @click.prevent="onClickPrevDay(currentYear, currentMonth, day)">
+              </div>
             </div>
-            <div class="col-8">
-              <h1 class="date-title p-0 m-0">{{currentYear}}년 {{currentMonth}}월 {{day}}일</h1>
+            <div class="col-8 align-items-center">
+              <h3 class="date-title p-0 m-0">{{currentYear}}년 {{currentMonth}}월 {{day}}일</h3>
             </div>
-            <div class="col-2">
-              <a class="day-change-btn" href="#"
-                v-on:click.prevent="onClickNextDay(currentYear, currentMonth, day)">▶</a>
+            <div class="col-2 align-items-center">
+              <!-- eslint-disable-next-line-->
+              <img class="arrows" src="@/assets/icon/arrow-right-blue.png" alt=""
+                  @click.prevent="onClickNextDay(currentYear, currentMonth, day)">
             </div>
           </div>
-          <!--카로셀-->
+
           <div class="row">
             <div class="no-record-day mt-5"
               v-if="dayExerciseList.length <= 0">이 날은 운동 기록이 없네요!</div>
-            <!-- {{ dayExerciseList }} -->
-            <!-- <img :src="imageUrl" alt=""> -->
-            <div class="p-0 m-0 mt-5 px-5" v-for="(exercise, i) in dayExerciseList" :key="i">
-              <div class="row record-number">
-                <span>
-                <!--eslint-disable-next-line-->
-                  <span class="record-idx">{{ i + 1 }}</span><span class="record-exercise">{{ exercise.exercise }}</span>
-                </span>
-              </div>
-              <!-- recordId: {{ exercise.recordId }} <br> -->
-              <!-- memberId: {{ exercise.memberId }} <br> -->
-              <!-- meetingRoomId: {{ exercise.meetingRoomId }} <br> -->
 
-              <div class="picture-wrapper d-flex justify-content-center mb-3">
-                <img class="picture" :src="dayPictures[i]" alt="">
-              </div>
-
-              <!--태그-->
-              <!-- tags: {{ exercise.tags }} <br> -->
-              <div class="tags d-flex justify-content-center">
-                <div class="d-flex justify-content-start" style="width: 400px;">
-                  <button
-                    v-for="(tag, tagI) in exercise.tags"
-                    :key="tagI"
-                    class="tag ">
-                    <p class="tag-name">{{tag.tagContent}}</p>
-                  </button>
+            <div class="p-0 m-0 mt-5 px-4" v-for="(exercise, i) in dayExerciseList" :key="i">
+              <div class="d-flex justify-content-center">
+                <div class="row">
+                  <p class="record-idx">{{this.indexes[ i ]}} 번째 운동</p>
                 </div>
               </div>
 
-              <div class=" d-flex justify-content-center">
-                <div class="d-flex justify-content-between" style="width: 400px;">
-                  <div>
-                    <p class="record-exercise">{{ exercise.exercise }}</p>
+              <div class="wrapper ">
+                <div class="test-block">
+                <div class="tags d-flex justify-content-center">
+                  <div class="d-flex justify-content-start" style="width: 500px;">
+                    <button
+                      v-for="(tag, tagI) in exercise.tags"
+                      :key="tagI"
+                      class="test-tag ">
+                      <p class="tag-name">{{tag.tagContent}}</p>
+                    </button>
                   </div>
-                  <div>
-                    <p class="record-min">{{ exercise.recordHour }}분</p>
-                  </div>
+                </div>
+              </div>
+              <div class="test">
+                <div class="picture-wrapper d-flex justify-content-center mb-3">
+                  <img class="picture" :src="dayPictures[i]" alt="">
                 </div>
               </div>
 
-              <div class=" d-flex justify-content-center">
-                <div class="d-flex justify-content-between">
-                  <div class="memo-box">
-                    <p class="memo">
-                      {{ exercise.recordMemo }}
-                    </p>
+                <div class=" d-flex justify-content-center">
+                  <div class="d-flex justify-content-between" style="width: 500px;">
+                    <div>
+                      <p class="record-exercise">{{ exercise.exercise }}</p>
+                    </div>
+                    <div>
+                      <p class="record-min">{{ exercise.recordHour }}분</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class=" d-flex justify-content-center">
+                  <div class="d-flex justify-content-between">
+                    <div class="memo-box">
+                      <p class="memo">
+                        {{ exercise.recordMemo }}
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
-              <!-- recordSecret: {{ exercise.recordSecret }} <br> -->
               <hr>
             </div>
           </div>
@@ -174,6 +176,7 @@ export default {
   name: 'MySmCalendar',
   data() {
     return {
+      indexes: ['첫', '두', '세', '네', '다섯', '여섯', '일곱', '여덟', '아홉', '열', '열 한'],
       weekNames: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
       rootYear: 1904,
       rootDayOfWeekIndex: 4, // 2000년 1월 1일은 토요일
@@ -478,33 +481,18 @@ export default {
   color: #4E8AFF;
   text-decoration: none;
 }
-.carousel-box {
-  margin: 50px;
-}
-
-.d-block {
-  display:block;
-  width: auto;
-  height: 100%;
-}
-.carousel {
-  display: flex;
-}
-.exercise-type-box {
-  margin-bottom: 10px;
-}
-.modalImg {
-  display: flex;
-  margin: 0 auto;
-  Background-size : cover;
-}
-.record-number {
-  margin-left: 80px;
+.modal-box {
+  margin: 10px 50px;
+  padding: 0;
+  min-height: 60vh;
+  margin-top :100px;
 }
 .record-idx {
-  font-size: 28px;
+  font-size: 24px;
   font-weight: 900;
   margin-right: 20px;
+  /* background-color: #4E8AFF;
+  color: white; */
 }
 .tags {
   width: 100%;
@@ -522,7 +510,7 @@ export default {
   margin: .25em .1em;
   font-size: 12px;
   font-weight: 700;
-  background-color:#393939;
+  background-color: #4E8AFF;
   /* padding-left: 10px; */
   line-height: 25px;
   color: white;
@@ -534,13 +522,13 @@ export default {
   text-align: center;
 }
 .tag:hover {
-  background-color: #4E8AFF;
+  background-color:#393939;
   color: white;
   transition: 0.2s;
   cursor: pointer;
 }
 .tag p {
-  text-align: left;
+  /* text-align: left; */
   /* font-size: 0.5vh; */
 }
 .record-min {
@@ -563,7 +551,7 @@ td {
 .day-a {
   font-size: 12px;
   font-weight: 900;
-  /* font-family: 'Righteous', cursive; */
+  font-family: 'LeferiPoint-WhiteObliqueA';
   padding: 0;
   margin: 0;
 }
@@ -592,10 +580,14 @@ td {
 .myModal a, .myModal p:not(.memo) {
   font-family: 'NanumSquareRound';
 }
+.wrapper {
+  width: 500px;
+  margin: 0 auto;
+}
 .picture-wrapper {
   position: relative;
-  width: 400px;
-  height: 277px;
+  width: 500px;
+  height: 346px;
   margin: 0 auto;
 }
 .picture-wrapper img {
@@ -609,9 +601,85 @@ td {
   height: 100%;
   object-fit: cover;
   margin: auto;
-  border-radius: 15px;
+  border-radius: 10px;
+  border: 1px solid #DFDFDF;
+  box-shadow: 3px 3px 3px #474747;
+}
+.date-title {
+  /* line-height: 60px; */
+  font-family: 'LeferiPoint-BlackObliqueA';
+}
+.myModal p{
+  font-family: 'LeferiPoint-WhiteObliqueA';
+}
+.modal-title {
+  height: 55px;
+  width: 100%;
+  /* background-color: #d6dbe83b; */
+  color: #4E8AFF;
+}
+.arrows {
+  width: 30px;
+}
+.arrows:hover {
+  top: -2px;
+}
+.wrapper {
+  width: 500px;
+  margin: 0 auto;
+}
+.picture-wrapper img {
+  /* border-radius: 50%; */
+  /* margin: 0 auto; */
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translate(50, 50);
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  margin: auto;
+  border-radius: 10px;
   border: 1px solid #DFDFDF;
   box-shadow: 3px 3px 3px #DFDFDF;
+}
+.test-block{
+  display: hidden;
+  position: relative;
+  width: 500px;
+  height: 346px;
+  margin: 0 auto;
+  margin-bottom: -346px;
+  z-index: 5;
+  border-radius: 10px;
+}
+.test-block > .tags {
+  display: none;
+}
+.test-tag {
+  width: 80px;
+  height: 26px;
+  border: solid #828282 0px;
+  display:inline-block;
+  border-radius: 3px;
+  padding: .2em .5em .3em;
+  font-weight: 600;
+  margin: .25em .1em;
+  font-size: 12px;
+  font-weight: 700;
+  background-color: #4E8AFF;
+  line-height: 25px;
+  color: white;
+  letter-spacing: -1.5;
+  text-align: center;
+  display: none;
+}
+.test-block:hover {
+  display:block;
+  background: linear-gradient(rgba(60, 110, 247, 0.458), rgba(51, 126, 255, 0));
+}
+.test-block:hover .test-tag {
+  display:block;
 }
 .lg-title {
   font-weight: 900;
@@ -620,12 +688,14 @@ td {
   padding-bottom: 20px;
 }
 .memo-box {
-  border: solid black 1px;
+  border: solid #DFDFDF 1px;
+  box-shadow: 3px 3px 3px #474747;
   margin: 20px;
   padding: 20px;
   margin-bottom: 50px;
   border-radius: 10px;
-  width: 400px;
+  width: 500px;
+  /* color: #2E2E2E; */
 }
 .memo {
   text-align: justify;
@@ -634,6 +704,8 @@ td {
   font-size: 20px;
   letter-spacing: -1.2;
   margin-bottom: 4px;
+  /* color: #2E2E2E; */
+  min-height: 50px;
 }
 .no-record-day {
   font-weight: 700;

@@ -2,7 +2,7 @@
   <div class="navContainer">
     <!--오운완 내브바-->
     <div class="owo_nav">
-      <nav class="navbar sticky-top">
+      <nav class="navbar">
         <div class="container-fluid d-flex justify-content-between">
           <!--logo-->
           <div class="navbar-brand mb-0 h1">

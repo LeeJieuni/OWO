@@ -61,6 +61,19 @@ export default {
   padding: 0;
   margin: 0;
   scrollbar-color: #D4AA70 #e4e4e4;
+  cursor: url('@/assets/cursor/cursor.cur'), auto;
+}
+a, a:link {
+  cursor: url('@/assets/cursor/cursor-hover.cur'), auto;
+}
+a, a:link, a:hover, a:focus, a:active{
+  cursor: url('@/assets/cursor/cursor-hover.cur'), auto;
+}
+a:active {
+  cursor: url('@/assets/cursor/cursor-hover.cur'), auto;
+}
+html, body {
+  cursor: url('@/assets/cursor/cursor.cur');
 }
 ::-webkit-scrollbar {
   width: 16px;
@@ -81,6 +94,7 @@ export default {
 * {
   margin: 0;
   padding: 0;
+  cursor: url('@/assets/cursor/cursor.cur');
 }
 /* font import */
 
