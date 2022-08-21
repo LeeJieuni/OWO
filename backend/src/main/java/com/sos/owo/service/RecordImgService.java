@@ -4,16 +4,15 @@ import com.sos.owo.domain.Record;
 import com.sos.owo.domain.RecordImg;
 import com.sos.owo.domain.repository.RecordImgRepository;
 import com.sos.owo.domain.repository.RecordRepository;
-import com.sos.owo.dto.FileDto;
-import com.sos.owo.dto.RecordFileDto;
-import com.sos.owo.dto.RecordImgDto;
-import com.sos.owo.dto.RecordResponseDto;
+import com.sos.owo.dto.*;
+import com.sos.owo.error.Exception.custom.SomethingNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.stream.RecordId;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -124,18 +123,25 @@ public class RecordImgService {
     }
 
     @Transactional
-    public RecordImg getImg(int recordId){
+    public RecordImg getImg(int recordId)throws SomethingNotFoundException{
         return recordRepository.getImg(recordId);
     }
 
     //멤버의 하루 운동 기록 사진을 모두 불러온다.
     @Transactional
-    public List<RecordImgDto> getFileDayList(int memberId,LocalDate date){
+    public List<FileDto> getFileDayList(int memberId, LocalDate date) throws SomethingNotFoundException{
         return recordRepository.getFileDayList(memberId, date);
     }
     @Transactional
-    public List<RecordImgDto> getFileMonthList(int memberId,int year,int day){
+    public List<FileDto> getFileMonthList(int memberId,int year,int day) throws SomethingNotFoundException {
         return recordRepository.getFileMonthList(memberId, year, day);
     }
+
+    @Transactional
+    public List<FileDto> findImgForMainList()throws SomethingNotFoundException{//int year, int month
+        return recordRepository.findImgForMainList();//year,month);
+    }
+
+
 
 }

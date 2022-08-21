@@ -50,7 +50,6 @@ public class Record {
     @Column(name="record_datetime")
     @DateTimeFormat(pattern = "yyyyMMdd")
     private LocalDate recordDatetime;
-//    private LocalDateTime recordDatetime;
 
     @Column(name="record_secret")
     private boolean recordSecret;

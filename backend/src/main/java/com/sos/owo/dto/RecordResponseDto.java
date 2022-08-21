@@ -53,5 +53,4 @@ public class RecordResponseDto {
     @ApiParam(value = "운동 종류",type = "String")
     private String exercise;
 
-
 }

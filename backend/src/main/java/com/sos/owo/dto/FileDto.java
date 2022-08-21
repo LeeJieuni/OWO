@@ -9,7 +9,6 @@ import lombok.*;
 @NoArgsConstructor
 public class FileDto {
     private int id;
-    private int member_id;
     private String fileOriName;
     private String fileName;
     private String fileUrl;
@@ -26,7 +25,7 @@ public class FileDto {
     }
 
     @Builder
-    public FileDto(int id, String fileOriName, String fileName, String fileUrl) {
+    public FileDto(int id,String fileOriName,String fileName, String fileUrl) {
         this.id = id;
         this.fileOriName = fileOriName;
         this.fileName = fileName;

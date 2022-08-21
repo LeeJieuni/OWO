@@ -8,7 +8,8 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Table(name = "profile_img")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
+//@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProfileImg {
 
     @Id
@@ -16,14 +17,14 @@ public class ProfileImg {
     @Column(name = "profile_img_id")
     private int id;
 
-    @Column(name = "profile_img_name")
-    private String fileName;
-
     @Column(name = "profile_img_oriname")
     private String fileOriName;
 
+    @Column(name = "profile_img_name")
+    private String fileName;
+
     @Column(name = "profile_img_fileurl")
-    private String fileUrl;
+    private String fileUrl; //byte[]
 
     @Builder
     public ProfileImg(int id, String fileOriName, String fileName, String fileUrl) {

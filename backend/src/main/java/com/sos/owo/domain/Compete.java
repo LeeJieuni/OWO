@@ -1,6 +1,7 @@
 package com.sos.owo.domain;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -9,6 +10,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Table(name = "compete")
+@NoArgsConstructor
 public class Compete {
 
     @Id
@@ -28,6 +30,18 @@ public class Compete {
 
     @Column(name="compete_score3")
     private int competeScore3;
+
+    public void updateCompeteScore1(int competeScore1){
+        this.competeScore1 = competeScore1;
+    }
+
+    public void updateCompeteScore2(int competeScore2){
+        this.competeScore2 = competeScore2;
+    }
+
+    public void updateCompeteScore3(int competeScore3){
+        this.competeScore3 = competeScore3;
+    }
 
 
 }
