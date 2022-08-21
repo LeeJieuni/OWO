@@ -295,22 +295,22 @@
           <b-card class="rooms" footer-tag="footer">
             <div class="img_sport">
               <!-- <p>{{Math.trunc(Number(masterTier))}}</p> -->
-              <div v-if="Math.trunc(Number(masterTier)) === 0">
+              <div v-if="getTier(room.memberId) === 0">
                 <img src="@/assets/icon/tier5.png" alt="diamon">
               </div>
-                <div v-if="Math.trunc(Number(masterTier)) === 1">
+                <div v-if="getTier(room.memberId) === 1">
                 <img src="@/assets/icon/tier4.png" alt="platinum">
               </div>
-                <div v-if="Math.trunc(Number(masterTier)) === 2">
+                <div v-if="getTier(room.memberId) === 2">
                 <img src="@/assets/icon/tier3.png" alt="gold">
               </div>
-                <div v-if="Math.trunc(Number(masterTier)) === 3">
+                <div v-if="getTier(room.memberId) === 3">
                 <img src="@/assets/icon/tier2.png" alt="silver">
               </div>
-                <div v-if="Math.trunc(Number(masterTier))=== 4">
+                <div v-if="getTier(room.memberId) === 4">
                 <img src="@/assets/icon/tier1.png" alt="bronze">
               </div>
-                <div v-if="Math.trunc(Number(masterTier)) === 5">
+                <div v-if="getTier(room.memberId) === 5">
                 <img src="@/assets/icon/tier1.png" alt="bronze">
               </div>
             </div>
@@ -367,6 +367,7 @@
 
 <script>
 import { mapGetters, mapActions, mapState } from 'vuex';
+import axios from 'axios';
 import NavBar from '../NavBar.vue';
 // eslint--disable-next-line
 const accounts = 'accounts';
@@ -428,6 +429,7 @@ export default {
         4: '브론즈', // 80 ~ 100  -> 4.dwe
         5: '브론즈',
       },
+      masterTier: '',
     };
   },
   computed: {
@@ -448,6 +450,27 @@ export default {
       el[1].style.color = 'black';
       el[2].style.color = 'black';
       el[k].style.color = '#37beef';
+    },
+    getTier(memberId) {
+      let userInfo = sessionStorage.getItem('vuex');
+      userInfo = JSON.parse(userInfo);
+      // eslint-disable-next-line
+      const accessToken = userInfo['accounts']['accessToken'];
+      axios({
+        url: `https://i7c202.p.ssafy.io:8282/api/user/point/percentage/${memberId}`,
+        method: 'get',
+        headers: {
+          'X-AUTH-TOKEN': accessToken,
+        },
+      })
+        .then((res) => {
+          this.masterTier = Math.trunc(Number(res.data.data) / 20);
+          console.log('나나나나나', this.masterTier);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      return this.masterTier;
     },
   },
   created() {
