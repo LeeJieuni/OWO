@@ -8,17 +8,17 @@
         </p>
       </div>
       <div class="carousel">
-        <!-- <Carousel :autoplay="4000" :items-to-show="3" :wrap-around="true">
+        <Carousel :autoplay="4000" :items-to-show="3" :wrap-around="true">
           <Slide v-for="(image, i) in images" :key="i" style="padding: 5px; border-radius: 10px;">
             <div class="carousel__item"><img :src="image" alt="운동이미지"
             style="width: 100%; height: 100%; border-radius: 20px;"></div>
           </Slide>
           <template #addons>
           </template>
-        </Carousel> -->
-        <div v-for="(image, i) in images" :key="i">
+        </Carousel>
+        <!-- <div v-for="(image, i) in images" :key="i">
         <img :src="image" alt="">
-        </div>
+        </div> -->
       </div>
         <div class="content">
           <h1 class="h1-rem">운동 사진을 찍어 나만의 캘린더에 보관하세요!</h1>
@@ -53,7 +53,7 @@
 
 <script>
 import { defineComponent, reactive, computed } from 'vue';
-// import { Carousel, Slide } from 'vue3-carousel';
+import { Carousel, Slide } from 'vue3-carousel';
 import { useStore } from 'vuex';
 import axios from 'axios';
 
@@ -62,8 +62,8 @@ import 'vue3-carousel/dist/carousel.css';
 export default defineComponent({
   name: 'AutoPlay',
   components: {
-    // Carousel,
-    // Slide,
+    Carousel,
+    Slide,
   },
   setup() {
     const store = useStore();
