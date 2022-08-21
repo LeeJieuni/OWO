@@ -7,6 +7,17 @@
       <!-- eslint-disable-next-line -->
         <h3 class="game-name m-0" style="font-size:3rem; font-family: 'LeferiPoint-WhiteObliqueA';">{{ roomName }}</h3>
       </div>
+      <!-- <YouTube class="my-2 mx-2 col-8"
+        src="https://www.youtube.com/watch?v=ANQjiUCbgNU"
+        @ready="onReady"
+        :vars="this.controls"
+        @state-change="onChange"
+        width="0"
+        height="0"
+        ref="youtube"
+        disablekb=1
+        fs="0"
+      /> -->
       <!-- 세션 -->
       <div id="session" v-if="session">
         <div>
@@ -299,6 +310,7 @@ import 'emoji-mart-vue-fast/css/emoji-mart.css';
 import { Picker, EmojiIndex } from 'emoji-mart-vue-fast/src';
 import { mapState, mapActions, mapMutations } from 'vuex';
 import swal from 'sweetalert2';
+import YouTube from 'vue3-youtube';
 
 window.Swal = swal;
 
@@ -327,6 +339,7 @@ export default {
     Picker,
     setTimer1,
     setTimer2,
+    YouTube,
   },
   data() {
     return {

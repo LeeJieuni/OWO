@@ -624,7 +624,7 @@ export default {
       this.isStarted = true;
       this.isStartedGame = true;
       this.round1Game = true;
-      this.roundGameName = '버피';
+      this.roundGameName = '버피테스트';
       setTimeout(() => {
         this.gameType = 3;
         this.tempInit();

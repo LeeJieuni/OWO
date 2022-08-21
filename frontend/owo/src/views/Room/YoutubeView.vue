@@ -516,7 +516,6 @@ export default {
           this.statusStart = true;
         } else {
           this.statusStart = false;
-          this.modalShow = !this.modalShow;
         }
       }
     },
