@@ -400,11 +400,14 @@ public class RecordController {
 
         List<FileDto> result = recordImgService.findImgForMainList();//year, month);
         if (result.isEmpty()) {
-            throw new SomethingNullException("Record");
+            message.setMessage("최신 운동사진 10개 리스트 조회 성공");
+//            throw new SomethingNullException("Record");
+        }else {
+            message.setMessage("최신 운동사진 10개 리스트 조회 성공");
         }
 
         message.setStatus(StatusEnum.OK);
-        message.setMessage("최신 운동사진 10개 리스트 조회 성공");
+
         message.setData(result);
         return new ResponseEntity<>(message,httpHeaders,HttpStatus.OK);
 
