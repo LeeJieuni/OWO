@@ -1,6 +1,6 @@
 <template>
   <div class="body container-fluid">
-    <h1 class="title">오늘의 운동왕 ✨</h1>
+    <h1 class="title">오늘의 운동왕에 도전해보세요! ✨</h1>
     <b-card-group deck class="d-flex justify-content-evenly"
       v-if="isLogin === true">
 
@@ -9,22 +9,23 @@
         <h1 class="card-title">어제 운동왕</h1>
         <div class="ranking d-flex justify-content-center"
           v-for="(rank, index) in rankingList" :key="index">
-          <button class="ranks d-flex justify-content-between button">
-            <span><img :src="require(`@/assets/icon/medal${ index + 1 }.png`)"
-              alt="" style="width: 25px;"></span><span>{{ rank.name }}</span>
-            <span>{{ rank.score }}분</span>
+          <button class="ranks button">
+            <div class="d-flex justify-content-between align-items-center">
+                <img :src="require(`@/assets/icon/medal${ index + 1 }.png`)"
+                  alt="" style="width: 25px;">
+                <p style="margin: 0px">
+                  {{ rank.name }}
+                </p>
+                <p style="margin: 0px">
+                  {{rank.score}}분
+                </p>
+            </div>
           </button>
         </div>
-        <hr class="hr" />
-        <div class="myranking">
-          <button class="button" block pill size='lg'
+          <button class="button" block pill size='lg' style="margin-top: 12.8px;"
           variant="outline-danger" v-if="isLogin && getMyRanking()">
-            나의 랭킹 : {{ myranking }}위</button>
-          <button class="button" block pill size='lg'
-          variant="outline-danger" v-if="
-          !isLogin">
-            로그인 해주세요</button>
-        </div>
+            나의 랭킹 : {{ myranking }}위
+          </button>
       </b-card>
       <!--운동왕의 레코드  -->
       <b-card class="rounded-5 cards">
@@ -35,7 +36,7 @@
               <circle-progress class="progress-bar" :percent="(lastingDay / 7)*100"
               :show-percent="true" :viewport="true" :size="180" />
             </div>
-          <h5 class="card-bottom">연속 {{ lastingDay }}일 동안 운동하고 있어요!</h5>
+          <h5 class="card-bottom" style="margin-top: 30px">연속 {{ lastingDay }}일 동안 운동하고 있어요!</h5>
         </router-link>
       </b-card>
 
@@ -51,16 +52,22 @@
     <!-- <a v-if="isLogin === false"><router-link to="/login">로그인 후 이용해주세요.</router-link></a> -->
     <b-card-group deck class="d-flex justify-content-evenly" v-if="isLogin === false">
         <b-card class="rounded-5 cards">
-          <h5 class="card-title"> 저번 주 운동왕</h5>
+          <h5 class="card-title"> 어제의 운동왕</h5>
           <div class="ranking d-flex justify-content-center"
           v-for="(rank, index) in rankingList" :key="index">
-          <button class="ranks d-flex justify-content-between button">
-            <span><img :src="require(`@/assets/icon/medal${ index + 1 }.png`)"
-              alt="" style="width: 25px;"></span><span>{{ rank.name }}</span>
-            <span>{{ rank.score }}분</span>
+          <button class="ranks button">
+            <div class="d-flex justify-content-between align-items-center">
+                <img :src="require(`@/assets/icon/medal${ index + 1 }.png`)"
+                  alt="" style="width: 25px;">
+                <p style="margin: 0px">
+                  {{ rank.name }}
+                </p>
+                <p style="margin: 0px">
+                  {{rank.score}}분
+                </p>
+            </div>
           </button>
         </div>
-          <hr class="hr" />
           <div class="myranking text">
             <router-link to="/login">
               <p>내 랭킹을 확인해 볼까요?</p>
@@ -71,11 +78,12 @@
         <!-- 본인의 레코드  -->
         <b-card class="rounded-5 cards">
           <h5 class="card-title">오운완의 RECORD</h5>
-          <div class="d-flex row justify-content-center" sytle="margin-bottom: 10px">
+          <div class="d-flex row justify-content-center" style="margin-bottom: 10px">
             <p>목표 대비 달성률</p>
             <circle-progress class="progress-bar" :percent="percents"
-            :show-percent="true" :viewport="true" :size="130"/>
+            :show-percent="true" :viewport="true" :size="185"/>
           </div>
+
           <div class="text">
             <router-link to="/login">
               <p>내 운동 목표 달성률을 확인해 볼까요?</p>
@@ -144,7 +152,7 @@ p {
   font-size: 1vw;
   font-weight: 700;
   padding-top: 15px;
-  margin-bottom: 3vh;
+  margin-bottom: 2vh;
 }
 .card-bottom {
   margin-top: 10px;
@@ -184,11 +192,6 @@ p {
 .ranking {
   padding: 1vh;
 }
-
-.myranking {
-  padding: 1vh;
-}
-
 .progress-bar {
   font-size: 40px;
   font-weight: 200;
