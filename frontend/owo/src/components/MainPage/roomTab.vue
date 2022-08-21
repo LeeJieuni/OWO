@@ -287,32 +287,32 @@
     <div v-if="!noGame" class="tab-content wrap">
       <div v-show="currentTab == 2" class="scroll__wrap">
         <div v-for="(room, i) in roomList.gameRoomList" :key="i" class="scroll--element">
-         <div class='darkness' v-if="room.person === 6">
-            <p>
-              모든 인원이 꽉 찼습니다.
-              </p>
-          </div>
           <b-card class="rooms" footer-tag="footer">
             <div class="img_sport">
               <!-- <p>{{Math.trunc(Number(masterTier))}}</p> -->
-              <div v-if="Math.trunc(Number(masterTier)) === 0">
+              <div v-if="masterTier[i] === 0">
                 <img src="@/assets/icon/tier5.png" alt="diamon">
               </div>
-                <div v-if="Math.trunc(Number(masterTier)) === 1">
+                <div v-if="masterTier[i] === 1">
                 <img src="@/assets/icon/tier4.png" alt="platinum">
               </div>
-                <div v-if="Math.trunc(Number(masterTier)) === 2">
+                <div v-if="masterTier[i] === 2">
                 <img src="@/assets/icon/tier3.png" alt="gold">
               </div>
-                <div v-if="Math.trunc(Number(masterTier)) === 3">
+                <div v-if="masterTier[i] === 3">
                 <img src="@/assets/icon/tier2.png" alt="silver">
               </div>
-                <div v-if="Math.trunc(Number(masterTier))=== 4">
+                <div v-if="masterTier[i] === 4">
                 <img src="@/assets/icon/tier1.png" alt="bronze">
               </div>
-                <div v-if="Math.trunc(Number(masterTier)) === 5">
+                <div v-if="masterTier[i] === 5">
                 <img src="@/assets/icon/tier1.png" alt="bronze">
               </div>
+            </div>
+            <div class='darkness' v-if="room.person === 6">
+              <p>
+                모든 인원이 꽉 찼습니다.
+              </p>
             </div>
             <div class="d-flex">
               <p align="left" class="workoutType">{{ workout_reverse[room.type] }}</p>
@@ -323,12 +323,11 @@
               <p style="font-size: 0.7em; margin-top: 20px;">{{ room.roomName }}</p>
             </div>
             <b-button size="lg" class="rooms_btn" variant="primary" style="margin-top: 60px;"
-              @click="enterCompetitionRoom({
+              @click="enterCheck(masterTier[i], userTier, {
               password: enterPassword,
               roomId: room.roomId,
               mode: room.mode,
               roomName: room.roomName,
-              master: room.memberId,
               })">
               들어가기</b-button>
               <template #footer>
@@ -366,7 +365,11 @@
 </template>
 
 <script>
-import { mapGetters, mapActions, mapState } from 'vuex';
+import {
+  mapGetters, mapActions, mapState,
+} from 'vuex';
+import swal from 'sweetalert2';
+import axios from 'axios';
 import NavBar from '../NavBar.vue';
 // eslint--disable-next-line
 const accounts = 'accounts';
@@ -428,6 +431,9 @@ export default {
         4: '브론즈', // 80 ~ 100  -> 4.dwe
         5: '브론즈',
       },
+      masterTier: [],
+      userTier: '',
+
     };
   },
   computed: {
@@ -449,6 +455,77 @@ export default {
       el[2].style.color = 'black';
       el[k].style.color = '#37beef';
     },
+    getmasterTier() {
+      let userInfo = sessionStorage.getItem('vuex');
+      userInfo = JSON.parse(userInfo);
+      // eslint-disable-next-line
+      const accessToken = userInfo['accounts']['accessToken'];
+      for (let i = 0; i < this.roomList.gameRoomList.length; i += 1) {
+        // eslint-disable-next-line
+        const memberId = this.roomList.gameRoomList[i].memberId;
+        axios({
+          url: `https://i7c202.p.ssafy.io:8282/api/user/point/percentage/${memberId}`,
+          method: 'get',
+          headers: {
+            'X-AUTH-TOKEN': accessToken,
+          },
+        })
+          .then((res) => {
+            this.masterTier.push(Math.trunc(Number(res.data.data) / 20));
+            console.log(this.masterTier);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    },
+    gerUserTier() {
+      console.log('userTier 불러오는 중....');
+      let userInfo = sessionStorage.getItem('vuex');
+      userInfo = JSON.parse(userInfo);
+      // eslint-disable-next-line
+      const userId = userInfo['accounts']['userInfo']['id'];
+      // eslint-disable-next-line
+      const accessToken = userInfo['accounts']['accessToken'];
+      axios({
+        url: `https://i7c202.p.ssafy.io:8282/api/user/point/percentage/${userId}`,
+        method: 'get',
+        headers: {
+          'X-AUTH-TOKEN': accessToken,
+        },
+      })
+        .then((res) => {
+          console.log('userTier 불러오기 성공.');
+          this.userTier = Math.trunc(Number(res.data.data) / 20);
+          console.log('내티어', this.userTier);
+        })
+        .catch((err) => {
+          console.log('userTier 불러오기 실패.');
+          console.log(err);
+        });
+      // return this.userTier;
+    },
+    enterCheck(masterTier, userTier, roomdata) {
+      console.log('enterCheck 실행 중');
+      console.log('masterTier VS userTier', masterTier, userTier);
+      if (masterTier > userTier) {
+        swal.fire(
+          '#오운완',
+          '티어가 높아 입장하실 수 없습니다.',
+          'warning',
+        );
+      }
+      if (masterTier < userTier) {
+        swal.fire(
+          '#오운완',
+          '티어가 낮아 입장하실 수 없습니다.',
+          'warning',
+        );
+      }
+      if (masterTier === userTier) {
+        this.enterroom(roomdata);
+      }
+    },
   },
   created() {
     const mode = ['FREE', 'GAME', 'STREAMING'];
@@ -456,6 +533,8 @@ export default {
       console.log('실행중이다 roomtabvue.view');
       this.getRoomList(mode[i]);
     }
+    this.gerUserTier();
+    this.getmasterTier();
   },
 };
 </script>
