@@ -777,10 +777,10 @@ export default {
       });
 
       this.session.on('signal:startTimer', (event) => {
-        this.SET_YOUTUBE_LINK(event.data);
-        this.youtubeURL = event.data;
         this.start();
         setTimeout(() => {
+          this.SET_YOUTUBE_LINK(event.data);
+          this.youtubeURL = event.data;
           this.$refs.setTimer1.startTimer();
           const now = new Date();
           this.startTimeSet(now);
@@ -798,7 +798,7 @@ export default {
     startVideo() {
       this.$refs.youtube.playVideo();
       this.$refs.youtube.controls = 0;
-      this.volume = this.$refs.youtube.getVolume();
+      this.$refs.youtube.getVolume(0);
     },
     start() {
       this.isSetting = true;
