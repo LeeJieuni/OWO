@@ -8,8 +8,8 @@
         </p>
       </div>
       <div class="carousel">
-        <Carousel :autoplay="4000" :items-to-show="3" :wrap-around="true">
-          <Slide v-for="(image, i) in images" :key="i" style="padding: 5px; border-radius: 10px;">
+        <Carousel :autoplay="4000" :items-to-show="4" :wrap-around="true">
+          <Slide v-for="(image, i) in images" :key="i" style="padding: 25px; border-radius: 10px;">
             <div class="carousel__item"><img :src="image" alt="운동이미지"
             style="width: 100%; height: 100%; border-radius: 20px;"></div>
           </Slide>
@@ -266,5 +266,23 @@ export default ({
 }
 .btn-12:active {
   top:-16px;
+}
+.carousel__slide > .carousel__item {
+  transform: scale(1);
+  opacity: 0.5;
+  transition: 0.5s;
+}
+.carousel__slide--visible > .carousel__item {
+  opacity: 1;
+  transform: rotateY(0);
+}
+.carousel__slide--next > .carousel__item {
+  transform: scale(0.9) translate(-10px);
+}
+.carousel__slide--prev > .carousel__item {
+  transform: scale(0.9) translate(10px);
+}
+.carousel__slide--active > .carousel__item {
+  transform: scale(1.1);
 }
 </style>
