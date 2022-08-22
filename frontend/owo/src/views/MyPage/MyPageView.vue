@@ -1,5 +1,5 @@
 <template>
-  <NavBar/>
+  <NavBar class="sticky-top"/>
   <div class="mypageview">
     <!-- <div class="spinner-div" v-if="isLoading">
       <q-spinner-cube

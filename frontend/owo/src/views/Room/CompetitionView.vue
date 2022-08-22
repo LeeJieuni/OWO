@@ -1223,13 +1223,13 @@ export default {
     async setmodel() {
       switch (this.gameType) {
         case 1: // 스쿼트
-          this.URL = 'https://teachablemachine.withgoogle.com/models/mtTsf3dWh/';
+          this.URL = 'https://teachablemachine.withgoogle.com/models/rtxvnN4Rz/';
           break;
         case 2: // 런지
-          this.URL = 'https://teachablemachine.withgoogle.com/models/rX6NKe6V_/';
+          this.URL = 'https://teachablemachine.withgoogle.com/models/mHBuIVIsV/';
           break;
         case 3: // 버피
-          this.URL = 'https://teachablemachine.withgoogle.com/models/bLxzzIAS3/';
+          this.URL = 'https://teachablemachine.withgoogle.com/models/E7k2EBOt0/';
           break;
         default:
           break;

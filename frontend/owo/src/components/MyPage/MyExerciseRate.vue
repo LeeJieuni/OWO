@@ -37,7 +37,7 @@
         </div>
         <p v-if="!percentage.recordNames.length == 0"
           class="rate-comment">{{ user.nick }}님은 {{ percentage.best }}를 많이 하셨군요!</p>
-        <router-link v-else class="no-record" to="/">운동을 시작해 볼까요?</router-link>
+        <router-link v-else class="no-record" to="/roomtabs">운동을 시작해 볼까요?</router-link>
       </div>
     </div>
   </div>

@@ -33,7 +33,7 @@
           <div class="tier-name">{{ state.tierName }}&nbsp;&nbsp;</div>
           <div class="me-auto user-percent">
             LEVEL {{ state.level }}&nbsp;&nbsp;|&nbsp;&nbsp;
-            전체 사용자 중 상위 {{state.recordPercent}}%</div>
+            전체 사용자 중 상위 {{pointPercent}}%</div>
           <div class="user-point">{{ state.pointSet }} / {{ state.levelUp }} P</div>
         </div>
       </div>
@@ -98,6 +98,7 @@ export default {
     // console.log('포인트 퍼센트', this.state.recordPercent, this.state.recordPercentage);
 
     // 티어 그림 변경
+    console.log('포인트퍼센트', this.pointPercent);
     if (this.pointPercent > 0 && this.pointPercent < 20) {
       this.state.tierNum = 5;
       this.state.tierName = '다이아';
