@@ -64,7 +64,7 @@
             type="number"
             name="goalHour"
             v-model="state.inputGoal.hour"
-            min='1'> <span>시간</span><svg @click.prevent="addGoal(state.inputGoal.exercise, state.inputGoal.hour)" @keyup.enter="addGoal(state.inputGoal.exercise, state.inputGoal.hour)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path d="M4 3h16a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zm7 8H7v2h4v4h2v-4h4v-2h-4V7h-2v4z"/></svg></span>
+            min='1'> <span>시간</span><svg class="addgoal" @click.prevent="addGoal(state.inputGoal.exercise, state.inputGoal.hour)" @keyup.enter="addGoal(state.inputGoal.exercise, state.inputGoal.hour)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path d="M4 3h16a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zm7 8H7v2h4v4h2v-4h4v-2h-4V7h-2v4z"/></svg></span>
         </div>
       </div>
       <div class="tags row justify-content-center">
@@ -400,4 +400,26 @@ export default {
     font-size: 12px;
     font-weight: 500;
   }
+
+  a, a:link {
+  cursor: url('@/assets/cursor/cursor-hover.cur'), auto;
+}
+a, a:link, a:hover, a:focus, a:active{
+  cursor: url('@/assets/cursor/cursor-hover.cur'), auto;
+}
+a:active {
+  cursor: url('@/assets/cursor/cursor-hover.cur'), auto;
+}
+button:hover {
+  cursor: url('@/assets/cursor/cursor-hover.cur'), auto;
+}
+html, body {
+  cursor: url('@/assets/cursor/cursor-hover.cur'), auto;
+}
+.change-profile-img:hover {
+  cursor: url('@/assets/cursor/cursor-hover.cur'), auto;
+}
+.addgoal {
+  cursor: url('@/assets/cursor/cursor-hover.cur'), auto;
+}
 </style>
