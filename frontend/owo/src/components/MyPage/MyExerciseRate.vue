@@ -133,7 +133,7 @@ font-weight: 900;
   /* border: solid black 1px; */
 }
 .refresh-icon:hover {
-  cursor: pointer;
+  cursor: url('@/assets/cursor/cursor-hover.cur'), auto;
 }
 
 .my-rate-info {
@@ -171,5 +171,20 @@ font-weight: 900;
   text-align : left;
   font-size: 14px;
   margin-top: 10px;
+}
+  a, a:link {
+  cursor: url('@/assets/cursor/cursor-hover.cur'), auto;
+}
+a, a:link, a:hover, a:focus, a:active{
+  cursor: url('@/assets/cursor/cursor-hover.cur'), auto;
+}
+a:active {
+  cursor: url('@/assets/cursor/cursor-hover.cur'), auto;
+}
+button:hover {
+  cursor: url('@/assets/cursor/cursor-hover.cur'), auto;
+}
+html, body {
+  cursor: url('@/assets/cursor/cursor-hover.cur'), auto;
 }
 </style>

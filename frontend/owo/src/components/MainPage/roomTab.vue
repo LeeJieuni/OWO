@@ -15,21 +15,11 @@
           <div class="mytab" id="mytab3" v-on:click="((currentTab = 1), changeColor(2))"
         >{{ tabs[2] }}
         </div>
-      <div style="margin-left: auto;">
+      <div style="margin-left: auto;" class="buttons">
         <div 
-        style="margin-right: 5px; 
-        font-family: 'Recipekorea';
-        width: 100px;
-        height: 50px;
-        font-size: 22px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        cursor:pointer;
-        color: rgba(243, 62, 62, 0.78);
-        "
+        class="roomMakeBtn"
         v-b-modal.modal-makeSession variant="outline-danger"
-          v-if="isLogin"> 방 만들기
+          v-if="isLogin"> <p class="button p-0 m-0">방 만들기</p>
         </div>
       </div>
       <b-modal centered id="modal-makeSession" title="#오운완의 운동방 생성하기"
@@ -683,5 +673,36 @@ export default {
   font-family: 'LeferiPoint-BlackObliqueA';
   font-size: 6vh;
   text-align: left;
+}
+
+a, a:link {
+cursor: url('@/assets/cursor/cursor-hover.cur'), auto;
+}
+a:hover, a:focus {
+  cursor: url('@/assets/cursor/cursor-hover.cur'), auto;
+}
+a:active {
+  cursor: url('@/assets/cursor/cursor-hover.cur'), auto;
+}
+button:hover {
+  cursor: url('@/assets/cursor/cursor-hover.cur'), auto;
+}
+html, body {
+  cursor: url('@/assets/cursor/cursor-hover.cur'), auto;
+}
+.button:hover, .mytab:hover {
+  cursor: url('@/assets/cursor/cursor-hover.cur'), auto;
+}
+.roomMakeBtn {
+  margin-right: 5px;
+  font-family: 'Recipekorea';
+  width: 100px;
+  height: 50px;
+  font-size: 22px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor:pointer;
+  color: rgba(243, 62, 62, 0.78);
 }
 </style>

@@ -71,7 +71,7 @@
                 </div>
                 <div class="row d-flex align-items-start justify-content-center">
                   <!-- eslint-disable-next-line -->
-                  <button @click.prevent="pickmyImg(`${mypicture}`, i)" v-bind:id="i" v-for="(mypicture, i) in mypictures" :key="i" class="pickimg col-4 m0p0 mx-1 my-1" style="padding:0px; margin:0px; width:330px;">
+                  <button @click.prevent="pickmyImg(`${mypicture}`, i)" v-bind:id="i" v-for="(mypicture, i) in mypictures" :key="i" class="pickimg col-4 m0p0 mx-1 my-1" style="padding:0px; margin:0px; width:336px;">
                     <img :src="mypicture" alt="img" style="width:328px;">
                   </button>
                 </div>
@@ -121,8 +121,8 @@
                   <div class="md-title text-center">메모 남기기</div>
                   <!-- eslint-disable-next-line -->
                   <div class="bytepositionsub d-flex justify-content-center" style="width:100%;">
-                    <label for="exerciseMemo" style="width:100%"
-                    class="d-flex justify-content-center">
+                      <!-- eslint-disable-next-line -->
+                    <label for="exerciseMemo" style="width:100%" class="d-flex justify-content-center">
                       <!-- eslint-disable-next-line -->
                       <textarea v-model="credentials.recordMemo" id="exerciseMemo" rows="4" style="width:95%" @keyup="fn_checkByte(this)"></textarea>
                     </label>
@@ -491,15 +491,16 @@ export default {
       document.getElementsByClassName('modal-backdrop')[0].remove();
     },
     pickmyImg(Img, i) {
-      this.credentials.fileOriName = `${this.userInfo.id}_${this.sessionId}_${format}.webp`;
-      this.credentials.fileUrl = Img.replace('data:image/webp;base64,', '');
+      this.credentials.fileOriName = `${this.userInfo.id}_${this.sessionId}_${format}.png`; // webp -> png -> webp
+      this.credentials.fileUrl = Img.replace('data:image/png;base64,', ''); // png -> webp -> png
       const el1 = document.getElementById('0');
       const el2 = document.getElementById('1');
       const el3 = document.getElementById('2');
-      if (el1) { el1.style.opacity = '0.5'; }
-      if (el2) { el2.style.opacity = '0.5'; }
-      if (el3) { el3.style.opacity = '0.5'; }
+      if (el1) { el1.style.opacity = '0.5'; el1.style.border = 'none'; }
+      if (el2) { el2.style.opacity = '0.5'; el2.style.border = 'none'; }
+      if (el3) { el3.style.opacity = '0.5'; el3.style.border = 'none'; }
       document.getElementById(`${i}`).style.opacity = '1';
+      document.getElementById(`${i}`).style.border = '4px solid #4e8aff';
     },
     roomOut() {
       if (!this.startTime) {
@@ -722,7 +723,7 @@ export default {
         setTimeout(() => {
           const el = document.getElementsByClassName('ov-video')[0];
           html2canvas(el).then((canvas) => {
-            this.mypictures.unshift(canvas.toDataURL('image/webp', 1.0));
+            this.mypictures.unshift(canvas.toDataURL('image/png', 1.0));
           });
         }, this.firstPictureTime * 1000);
       });
@@ -1014,7 +1015,7 @@ export default {
           const audio2 = new Audio(require('@/assets/music/takePhoto.mp3'));
           audio2.play();
           html2canvas(el).then((canvas) => {
-            this.mypictures.unshift(canvas.toDataURL('image/png', 1.0));
+            this.mypictures.unshift(canvas.toDataURL('image/png', 1.0)); // HERE
           }, 850);
         }
         if (this.timer === -1) {

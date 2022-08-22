@@ -258,4 +258,20 @@ export default {
     align-items: center;
     align-self: center;
   }
+
+  a, a:link {
+  cursor: url('@/assets/cursor/cursor-hover.cur'), auto;
+}
+a, a:link, a:hover, a:focus, a:active{
+  cursor: url('@/assets/cursor/cursor-hover.cur'), auto;
+}
+a:active {
+  cursor: url('@/assets/cursor/cursor-hover.cur'), auto;
+}
+button:hover {
+  cursor: url('@/assets/cursor/cursor-hover.cur'), auto;
+}
+html, body {
+  cursor: url('@/assets/cursor/cursor.cur');
+}
 </style>

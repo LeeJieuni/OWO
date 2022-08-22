@@ -30,7 +30,7 @@
             </div>
             <div class="dropdown">
               <div class="img-wrapper">
-                <img class="profile-img" :src="profileImg" alt="" style="cursor:pointer;">
+                <img class="profile-img" :src="profileImg" alt="">
               </div>
               <div class="dropdown-content">
                 <li><router-link to="/tutorial/burpee">튜토리얼</router-link></li>
@@ -247,5 +247,25 @@ li {
   object-fit:cover;
   border-radius: 50%;
   border: #DFDFDF 0.2px solid;
+}
+
+/* 마우스 커서 */
+a, a:link {
+  cursor: url('@/assets/cursor/cursor-hover.cur'), auto;
+}
+a, a:link, a:hover, a:focus, a:active{
+  cursor: url('@/assets/cursor/cursor-hover.cur'), auto;
+}
+a:active {
+  cursor: url('@/assets/cursor/cursor-hover.cur'), auto;
+}
+button:hover {
+  cursor: url('@/assets/cursor/cursor-hover.cur'), auto;
+}
+html, body {
+  cursor: url('@/assets/cursor/cursor.cur');
+}
+.img-wrapper:hover {
+  cursor: url('@/assets/cursor/cursor.cur');
 }
 </style>
