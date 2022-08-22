@@ -1,21 +1,21 @@
 <template>
 <div style="font-family: 'LeferiPoint-WhiteObliqueA';">
   <NavBar/>
-  <div style="display:flex; justify-content:center; position:relative;">
+  <div style="display:flex; position:relative;">
     <!-- eslint-disable-next-line -->
     <div class="d-flex" style="">
-      <div class="d-flex row justify-content-around divbtn">
+      <div class="d-flex row justify-content-start divbtn">
         <button style="border:none;" class="btn" @click="burpeeExercise()">
           <img style="width:5vw; height:auto;" src="@/assets/icon/burpee.png" alt="">
-          <div style="color:#4e8aff; font-size:20px;">버피테스트</div>
+          <div style="color:#4e8aff; font-size:1vw;">버피테스트</div>
         </button>
         <button style="border:none;" class="btn" @click="lungeExercise()">
           <img style="width:5vw; height:auto;" src="@/assets/icon/lunge.png" alt="">
-          <div style="color:#4e8aff; font-size:20px;">런지</div>
+          <div style="color:#4e8aff; font-size:1vw;">런지</div>
         </button>
         <button style="border:none;" class="btn" @click="squatExercise()">
           <img style="width:5vw; height:auto;" src="@/assets/icon/squat.png" alt="">
-          <div style="color:#4e8aff; font-size:20px;">스쿼트</div>
+          <div style="color:#4e8aff; font-size:1vw;">스쿼트</div>
         </button>
       </div>
       <div v-if="burpee" class="forCarousel">
@@ -222,13 +222,13 @@ export default {
 .forCarousel {
   background-image:url('@/assets/icon/notebook.png');
   background-repeat: no-repeat;
-  background-size:1000px 610px;
+  background-size:50.2vw 59.7vh;
   background-position: 0% 100%;
   background-color:white;
-  width:1000px;
-  height:610px;
+  width:50vw;
+  height:60vh;
   position: fixed;
-  top: 50%;
+  top: 55%;
   left: 50%;
   transform: translate(-50%, -50%);
   display: flex;
@@ -237,8 +237,8 @@ export default {
 }
 
 img {
-  width:800px;
-  height:460px;
+  width:40vw;
+  height:45vh;
 }
 
 .carousel-inner {
@@ -288,7 +288,8 @@ html, body {
 }
 .divbtn {
   position: fixed;
-  top:30%;
-  left:10%;
+  top:30vh;
+  left:0vw;
 }
+
 </style>
