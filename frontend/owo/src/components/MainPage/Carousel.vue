@@ -22,7 +22,8 @@
         </div> -->
       </div>
         <div class="content">
-          <h1 class="h1-rem">운동 사진을 찍어 나만의 캘린더에 보관하세요!</h1>
+          <h1 class="h1-rem">
+            <span class="blue">운동 사진</span>을 찍어 나만의 <span class="blue">캘린더</span>에 보관하세요!</h1>
           <!-- <p class="first-intro-text fs-4">오운완과 함께 하신 회원님들입니다!</p> -->
           <p class="text">오운완을 통해 운동하면 편하게 운동 사진을 보관할 수 있어요.</p>
           <p class="text">최근 사진들은 메인 화면에 자랑할 수 있답니다!</p>
@@ -171,7 +172,10 @@ export default ({
   box-sizing: content-box;
   /* border: 5px solid white; */
 }
-
+.blue {
+  color: #4E8AFF;
+  font-weight: bold;
+}
 .start-btn {
   font-family: 'yg-jalnan';
   margin-top: 1vh;

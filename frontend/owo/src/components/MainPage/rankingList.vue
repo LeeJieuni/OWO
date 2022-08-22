@@ -1,6 +1,6 @@
 <template>
   <div class="body container-fluid">
-    <h1 class="title">오늘의 운동왕에 도전해보세요! ✨</h1>
+    <h1 class="title">오늘의 <span class="sky-blue">운동왕</span>에 도전해보세요! ✨</h1>
     <b-card-group deck class="d-flex justify-content-evenly"
       v-if="isLogin === true">
 
@@ -183,6 +183,15 @@ p {
   font-family: 'LeferiPoint-BlackObliqueA';
   font-size: 4vh;
   text-align: left;
+  color: white;
+  text-shadow: 2px 2px 1px #393939;
+}
+.sky-blue {
+  /* color:#e7effe; */
+  text-shadow: 1px 1px 1px #393939;
+}
+.ranks {
+  height: 37px;
 }
 .ranks span {
   font-size: 18px;
@@ -204,9 +213,9 @@ p {
   font-size: 1vw;
   font-weight: 400;
   width: 250px;
-  height: 50px;
+  height: 37px;
   text-align: center;
-  border: solid 1px #9f9f9f;
+  border: solid 1px #ffffff;
   border-radius: 5px;
   padding: 10px 30px 10px 30px;
   background-color: white;
