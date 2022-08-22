@@ -222,4 +222,21 @@ router-link:hover {
 router-link:hover {
   cursor: pointer;
 }
+
+/* 마우스 커서 */
+a, a:link {
+  cursor: url('@/assets/cursor/cursor-hover.cur'), auto;
+}
+a, a:link, a:hover, a:focus, a:active{
+  cursor: url('@/assets/cursor/cursor-hover.cur'), auto;
+}
+a:active {
+  cursor: url('@/assets/cursor/cursor-hover.cur'), auto;
+}
+button:hover {
+  cursor: url('@/assets/cursor/cursor-hover.cur'), auto;
+}
+html, body {
+  cursor: url('@/assets/cursor/cursor.cur');
+}
 </style>

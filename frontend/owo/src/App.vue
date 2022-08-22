@@ -72,6 +72,9 @@ a, a:link, a:hover, a:focus, a:active{
 a:active {
   cursor: url('@/assets/cursor/cursor-hover.cur'), auto;
 }
+button:hover {
+  cursor: url('@/assets/cursor/cursor-hover.cur'), auto;
+}
 html, body {
   cursor: url('@/assets/cursor/cursor.cur');
 }
