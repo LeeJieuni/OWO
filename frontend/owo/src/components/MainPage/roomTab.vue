@@ -152,10 +152,10 @@
                     <img src="@/assets/sport/game.png" alt="">
                   </div>
                   <div v-if="room.type === 'AEROBIC'">
-                    <img src="@/assets/sport/running.png" alt="">
+                    <img src="@/assets/sport/cardio.png" alt="">
                   </div>
                   <div v-if="room.type === 'HEALTH'">
-                    <img src="@/assets/sport/weight.png" alt="">
+                    <img src="@/assets/sport/healthy.png" alt="">
                   </div>
                   <div v-if="room.type === 'STRETCHING'">
                     <img src="@/assets/sport/stretching.png" alt="">
@@ -164,7 +164,7 @@
                     <img src="@/assets/sport/home.png" alt="">
                   </div>
                   <div v-if="room.type === 'BODYWEIGHT'">
-                    <img src="@/assets/sport/push-up-bar.png" alt="">
+                    <img src="@/assets/sport/bodyweight.png" alt="">
                   </div>
                   <div v-if="room.type === 'YOGA'">
                     <img src="@/assets/sport/yoga.png" alt="">
