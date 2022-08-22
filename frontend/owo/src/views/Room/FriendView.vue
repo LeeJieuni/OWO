@@ -490,8 +490,8 @@ export default {
       document.getElementsByClassName('modal-backdrop')[0].remove();
     },
     pickmyImg(Img, i) {
-      this.credentials.fileOriName = `${this.userInfo.id}_${this.sessionId}_${format}.png`;
-      this.credentials.fileUrl = Img.replace('data:image/png;base64,', '');
+      this.credentials.fileOriName = `${this.userInfo.id}_${this.sessionId}_${format}.webp`;
+      this.credentials.fileUrl = Img.replace('data:image/webp;base64,', '');
       const el1 = document.getElementById('0');
       const el2 = document.getElementById('1');
       const el3 = document.getElementById('2');
@@ -721,7 +721,7 @@ export default {
         setTimeout(() => {
           const el = document.getElementsByClassName('ov-video')[0];
           html2canvas(el).then((canvas) => {
-            this.mypictures.unshift(canvas.toDataURL('image/png', 1.0));
+            this.mypictures.unshift(canvas.toDataURL('image/webp', 1.0));
           });
         }, this.firstPictureTime * 1000);
       });
