@@ -121,7 +121,8 @@
                   <div class="md-title text-center">메모 남기기</div>
                   <!-- eslint-disable-next-line -->
                   <div class="bytepositionsub d-flex justify-content-center" style="width:100%;">
-                    <label for="exerciseMemo" style="width:100%" class="d-flex justify-content-center">
+                    <label for="exerciseMemo" style="width:100%"
+                    class="d-flex justify-content-center">
                       <!-- eslint-disable-next-line -->
                       <textarea v-model="credentials.recordMemo" id="exerciseMemo" rows="4" style="width:95%" @keyup="fn_checkByte(this)"></textarea>
                     </label>

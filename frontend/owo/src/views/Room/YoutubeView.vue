@@ -128,7 +128,8 @@
                   <div class="md-title text-center">메모 남기기</div>
                   <!-- eslint-disable-next-line -->
                   <div class="bytepositionsub d-flex justify-content-center" style="width:100%;">
-                    <label for="exerciseMemo" style="width:100%" class="d-flex justify-content-center">
+                    <label for="exerciseMemo" style="width:100%"
+                    class="d-flex justify-content-center">
                       <!-- eslint-disable-next-line -->
                       <textarea v-model="credentials.recordMemo" id="exerciseMemo" rows="4" style="width:95%" @keyup="fn_checkByte(this)"></textarea>
                     </label>
@@ -791,7 +792,7 @@ export default {
         setTimeout(() => {
           const el = document.getElementsByClassName('ov-video')[0];
           html2canvas(el).then((canvas) => {
-            this.mypictures.unshift(canvas.toDataURL('image/png', 1.0));
+            this.mypictures.unshift(canvas.toDataURL('image/webp', 1.0));
           });
         }, this.firstPictureTime * 1000);
       });
