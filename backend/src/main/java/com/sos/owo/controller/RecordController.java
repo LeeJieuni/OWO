@@ -58,7 +58,9 @@ public class RecordController {
             System.out.println("파일이름:"+recordDto.getFileOriName());
             throw new SomethingNullException("memberId:"+memberId+"'s recordDto");
         }
-
+        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>1");
+        System.out.println(recordDto.getFileEncoding());
+        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>2");
         byte[] decodedByte = Base64.getDecoder().decode(recordDto.getFileEncoding().getBytes());
         String fileName = "" + meetingRoomId + "_record_" + recordDto.getFileOriName();
 
