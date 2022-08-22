@@ -115,50 +115,40 @@
               모든 인원이 꽉 찼습니다.
               </p>
           </div>
-              <b-card class="rooms" footer-tag="footer">
-                <div class="img_sport">
-              <div v-if="room.type === 'GAME'">
-                  <img src="@/assets/sport/game.png" alt="">
+              <b-card class="rooms">
+                <div class="img_sport2">
+                  <img :src="getThumbnail(room.link)" alt="">
                 </div>
-                <div v-if="room.type === 'AEROBIC'">
-                  <img src="@/assets/sport/running.png"
-                  alt="">
-                </div>
-                <div v-if="room.type === 'HEALTH'" >
-                  <img src="@/assets/sport/weight.png"
-                  alt="">
-                </div>
-                <div v-if="room.type === 'STRETCHING'" >
-                  <img src="@/assets/sport/stretching.png"
-                  alt="">
-                </div>
-                <div v-if="room.type === 'HOME'">
-                  <img src="@/assets/sport/home.png"
-                  alt="">
-                </div>
-                <div v-if="room.type === 'BODYWEIGHT'">
-                  <img src="@/assets/sport/push-up-bar.png"
-                  alt="">
-                </div>
-                <div v-if="room.type === 'YOGA'">
-                  <img src="@/assets/sport/yoga.png"
-                  alt="">
-                </div>
-                <div v-if="room.type === 'PILATES'">
-                  <img src="@/assets/sport/pilates.png"
-                  alt="">
-                </div>
-            </div>
-                <div class="d-flex">
+                <div class="d-flex align-items-center justify-content-between">
+                  <div class="d-flex align-items-center">
                     <p align="left" class="workoutType">{{ workout_reverse[room.type] }}</p>
+                    <span v-if="!room.secret"><img src="@/assets/icon/lock1.png"
+            alt="" style="width:25px"></span>
+            <span v-if="room.secret"><img src="@/assets/icon/lock2.png" alt="" style="width:25px"></span>
+                  </div>
+            <p align="right" style="font-size: 25px;"
+                class="workoutPerson"><img src="@/assets/icon/running.png"
+                    alt="" style="width: 30px"> {{ room.person }} / 6</p>
                 </div>
-            <div class="cardTitle d-flex align-items-center">
+            <div class="cardTitle d-flex justify-content-between align-items-center">
               <p style="font-size: 0.7em; margin-top: 20px;">{{ room.roomName }}</p>
-            <span v-if="!room.secret"><img src="@/assets/icon/lock1.png"
+            <!-- <span v-if="!room.secret"><img src="@/assets/icon/lock1.png"
             alt="" style="width:35px"></span>
-            <span v-if="room.secret"><img src="@/assets/icon/lock2.png" alt="" style="width:35px"></span>
+            <span v-if="room.secret"><img src="@/assets/icon/lock2.png" alt="" style="width:35px"></span> -->
+             <!-- <p align="right" style="font-size: 25px;"
+                class="workoutPerson"><img src="@/assets/icon/running.png"
+                    alt="" style="width: 30px"> {{ room.person }} / 6</p> -->
             </div>
-            <b-button size="lg" class="rooms_btn" variant="primary" style="margin-top: 60px;"
+            <div class="d-flex justify-content-between align-items-center">
+              <b-input-group prepend="" class="roomdata_input" v-show="room.secret===true"
+                  style="padding: 0px; width: 140px;">
+                    <b-form-input style="height: 46px; margin-top: 20px;"
+                    type="password"
+                    v-model="enterPassword"
+                    >
+                    </b-form-input>
+                  </b-input-group>
+            <b-button size="lg" class="rooms_btn" variant="primary"
               @click="enterroom({
               password: enterPassword,
               roomId: room.roomId,
@@ -167,7 +157,8 @@
               link: room.link,
               })">
               들어가기</b-button>
-              <template #footer>
+            </div>
+              <!-- <template #footer>
               <div class="d-flex justify-content-end">
                   <b-input-group prepend="PW" class="roomdata_input" v-show="room.secret===true"
                   style="width: 100%; padding: 0px;">
@@ -181,7 +172,7 @@
                 class="workoutPerson"><img src="@/assets/icon/running.png"
                     alt="" style="width: 30px"> {{ room.person }} / 6</p>
               </div>
-            </template>
+            </template> -->
           </b-card>
         </div>
       </div>
@@ -526,6 +517,12 @@ export default {
         this.enterroom(roomdata);
       }
     },
+    getThumbnail(url) {
+      const YoutubeId = url.split('=', 2)[1];
+      const requestUrl = `https://img.youtube.com/vi/${YoutubeId}/hqdefault.jpg`;
+      console.log(requestUrl);
+      return requestUrl;
+    },
   },
   created() {
     const mode = ['FREE', 'GAME', 'STREAMING'];
@@ -566,6 +563,11 @@ export default {
 .img_sport img {
   width: 150px;
   height: 150px;
+}
+.img_sport2 img {
+  width: 100%;
+  height: 250px;
+  border-radius: 20px;
 }
 .workoutPerson {
   align-items: right;

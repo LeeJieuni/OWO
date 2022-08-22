@@ -4,7 +4,7 @@
   <div style="display:flex; justify-content:center; position:relative;">
     <!-- eslint-disable-next-line -->
     <div class="d-flex" style="">
-      <div class="d-flex row justify-content-around">
+      <div class="d-flex row justify-content-around divbtn">
         <button style="border:none;" class="btn" @click="burpeeExercise()">
           <img style="width:5vw; height:auto;" src="@/assets/icon/burpee.png" alt="">
           <div style="color:#4e8aff; font-size:20px;">버피테스트</div>
@@ -174,8 +174,8 @@
         </div>
       </div>
     </div>
-     <router-link to="/roomtabs" class="h1-rem2" id="fixedbutton">
-            <span class="h1-rem">운동하러</span> GO!</router-link>
+   <router-link to="/roomtabs" class="h1-rem2" id="fixedbutton">
+     <span class="h1-rem">운동하러</span> GO!</router-link>
   </div>
 </div>
 </template>
@@ -183,7 +183,7 @@
 import NavBar from '@/components/NavBar.vue';
 
 export default {
-  name: 'ATutorialSquat',
+  name: 'ATutorialBurpee',
   components: {
     NavBar,
   },
@@ -227,6 +227,10 @@ export default {
   background-color:white;
   width:1000px;
   height:610px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   display: flex;
   justify-content: center;
   align-items: start;
@@ -265,4 +269,11 @@ img {
   text-decoration: none;
   /* text-shadow: 3px 3px #4E8AFF; */
 }
+
+.divbtn {
+  position: fixed;
+  top:30%;
+  left:10%;
+}
+
 </style>
