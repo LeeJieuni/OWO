@@ -8,11 +8,11 @@
           </video>
         </div>
         <div class="content">
-          <h1 class="h1-rem">오운완과 함께 시작해볼까요?</h1>
+          <h1 class="h1-rem"><span class="blue">오운완</span>과 함께 시작해볼까요?</h1>
           <!-- <p class="first-intro-text fs-4">오운완과 함께 하신 회원님들입니다!</p> -->
           <p class="text">집 밖으로 나가기는 귀찮지만 자기관리는 놓치고 싶지 않다면?</p>
-          <p class="text">사람들과 함께 <span class="owo">운동</span>하고
-            <span class="owo">경쟁</span>하며 즐기는 <span class="owo"> #오운완</span>을 통해</p>
+          <p class="text">사람들과 함께 <span class="blue">운동</span>하고
+            <span class="blue">경쟁</span>하며 즐기는 <span class="blue">오운완</span>을 통해</p>
           <p class="text">여러분들도 재미있게 운동을 즐기실 수 있습니다</p>
           <!-- <div class="btns"> -->
           <div class="btns">
@@ -146,7 +146,10 @@ export default {
   line-height: 1.7vh;
   padding: 0.3em;
 }
-
+.blue {
+  color: #4E8AFF;
+  font-weight: bold;
+}
 .start-btn {
   /* font-family: 'yg-jalnan'; */
   margin-top: 1vh;
