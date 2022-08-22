@@ -81,6 +81,7 @@ export default {
   height: 280px;
   border-bottom: solid #DFDFDF 1px;
   background-color: white;
+  border-radius: 20px;
 }
 
 .my-physical-info {

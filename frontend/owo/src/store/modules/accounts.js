@@ -212,8 +212,8 @@ export const accounts = {
     },
     SET_ACHIEVEMENT_RATE: (state, payload) => {
       const achievementRate = payload;
-      console.log(state.goals.length);
-      if (state.goals.length >= 1) {
+      console.log(achievementRate);
+      if (achievementRate) {
         const achieve = Object.keys(achievementRate);
         // }
         const keys = [];

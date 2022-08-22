@@ -25,7 +25,7 @@
             v-if="achievementRate.achieveRates[i]>=100">목표 달성 완료!</p>
         </div>
         <div v-if="achievementRate.achieveNames.length==0" class="pt-5">
-          <router-link class="no-record" to="/">목표를 추가하고 운동을 시작해볼까요?</router-link>
+          <router-link class="no-record" to="/roomtabs">목표를 추가하고 운동을 시작해볼까요?</router-link>
         </div>
       </div>
     </div>
