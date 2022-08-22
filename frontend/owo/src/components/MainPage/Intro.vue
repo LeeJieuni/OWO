@@ -4,7 +4,7 @@
       <div class="container-fluid">
         <div class="bg-video">
           <video class="bg-video__content" autoplay muted loop>
-            <source src="@/assets/video/jumpVideo.mp4" type="video/mp4" />
+            <source src="@/assets/video/yogaVideo.mp4" type="video/mp4" />
           </video>
         </div>
         <div class="content">

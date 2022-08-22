@@ -338,7 +338,7 @@ export default {
   .front-box {
     position: relative;
     padding-top: 100px;
-    backdrop-filter: blur(6px);
+    /* backdrop-filter: blur(6px); */
   }
   .sidebar {
     border-right: solid 1px #DFDFDF;

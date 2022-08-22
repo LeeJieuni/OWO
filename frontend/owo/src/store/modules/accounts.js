@@ -379,11 +379,11 @@ export const accounts = {
       })
         .then(() => {
           dispatch('removeToken');
-          swal.fire(
-            '#오운완',
-            '로그아웃 성공!',
-            'success',
-          );
+          swal.fire({
+            icon: 'success',
+            html: `<div style="font-family: 'LeferiPoint-BlackObliqueA';">#오운완<br><br></div>
+              <div style="font-weight: 700; font-family: 'LeferiPoint-WhiteObliqueA';">로그아웃성공!<br></div>`,
+          });
           router.push({ name: 'mainpage' });
         })
         .catch((err) => {
