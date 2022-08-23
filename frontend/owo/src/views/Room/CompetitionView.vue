@@ -1343,7 +1343,7 @@ export default {
       );
       const prediction = await this.model.predict(posenetOutput);
       if (prediction[1].probability.toFixed(2) > 0.99) { // 스쿼트
-        if (this.check && !this.restTime) {
+        if (this.check) {
           this.squatCount += 1;
           console.log('squatCount', this.squatCount);
           this.session
@@ -1372,7 +1372,7 @@ export default {
       );
       const prediction = await this.model.predict(posenetOutput);
       if (prediction[1].probability.toFixed(2) > 0.99) { // 런지
-        if (this.check && !this.restTime) {
+        if (this.check) {
           this.lungeCount += 1;
           console.log('lungeCount', this.lungeCount);
           this.session
@@ -1402,7 +1402,7 @@ export default {
       );
       const prediction = await this.model.predict(posenetOutput);
       if (prediction[2].probability.toFixed(2) > 0.99) { // 서 있는 자세
-        if (this.check && this.check2 && !this.restTime) {
+        if (this.check && this.check2) {
           this.burpeeCount += 1;
           console.log('burpeeCount', this.burpeeCount);
           this.session
