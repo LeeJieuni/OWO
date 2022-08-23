@@ -688,6 +688,7 @@ export default {
       this.myBestRecord(this.credentialsUser.memberId);
       // eslint-disable-next-line
       const audio = new Audio(require('@/assets/music/round1.mp3'));
+      audio.volume = 0.3;
       audio.play();
       this.isExercising = true;
       this.isStarted = true;
