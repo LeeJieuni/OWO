@@ -398,7 +398,7 @@ export default {
       return 10;
     },
     myExerciseRanking() {
-      if (!this.burpeeCount && !this.squatCount && !this.lungeCount) {
+      if ((this.burpeeCount === 0) && (this.squatCount === 0) && (this.lungeCount === 0)) {
         return this.subscribers.length + 1;
       }
       // eslint-disable-next-line
