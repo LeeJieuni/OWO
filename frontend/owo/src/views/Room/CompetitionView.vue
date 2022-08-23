@@ -397,6 +397,79 @@ export default {
       }
       return 10;
     },
+    myExerciseRanking() {
+      if (!this.burpeeCount && !this.squatCount && !this.lungeCount) {
+        return this.subscribers.length + 1;
+      }
+      // eslint-disable-next-line
+      if (this.allScoreList.length === 2) {
+        if (this.Score === this.allScoreListSorted[0]) {
+          return 1;
+        }
+        if (this.Score === this.allScoreListSorted[1]) {
+          return 2;
+        }
+      } else if (this.allScoreList.length === 3) {
+        if (this.Score === this.allScoreListSorted[0]) {
+          return 1;
+        }
+        if (this.Score === this.allScoreListSorted[1]) {
+          return 2;
+        }
+        if (this.Score === this.allScoreListSorted[2]) {
+          return 3;
+        }
+      } else if (this.allScoreList.length === 4) {
+        if (this.Score === this.allScoreListSorted[0]) {
+          return 1;
+        }
+        if (this.Score === this.allScoreListSorted[1]) {
+          return 2;
+        }
+        if (this.Score === this.allScoreListSorted[2]) {
+          return 3;
+        }
+        if (this.Score === this.allScoreListSorted[3]) {
+          return 4;
+        }
+      } else if (this.allScoreList.length === 5) {
+        if (this.Score === this.allScoreListSorted[0]) {
+          return 1;
+        }
+        if (this.Score === this.allScoreListSorted[1]) {
+          return 2;
+        }
+        if (this.Score === this.allScoreListSorted[2]) {
+          return 3;
+        }
+        if (this.Score === this.allScoreListSorted[3]) {
+          return 4;
+        }
+        if (this.Score === this.allScoreListSorted[4]) {
+          return 5;
+        }
+      } else if (this.allScoreList.length === 6) {
+        if (this.Score === this.allScoreListSorted[0]) {
+          return 1;
+        }
+        if (this.Score === this.allScoreListSorted[1]) {
+          return 2;
+        }
+        if (this.Score === this.allScoreListSorted[2]) {
+          return 3;
+        }
+        if (this.Score === this.allScoreListSorted[3]) {
+          return 4;
+        }
+        if (this.Score === this.allScoreListSorted[4]) {
+          return 5;
+        }
+        if (this.Score === this.allScoreListSorted[5]) {
+          return 6;
+        }
+      }
+      return this.subscribers.length + 1;
+    },
   },
   methods: {
     async tempInit() {
@@ -956,6 +1029,7 @@ export default {
         // eslint-disable-next-line
         const audio6 = new Audio(require('@/assets/music/setting.mp3'));
         audio6.play();
+        audio6.volume = 0.2;
         swal.fire({
           icon: 'info',
           title: '획득 포인트 정산중입니다...',
@@ -977,13 +1051,15 @@ export default {
           denyButtonText: '나가기',
           html: `방 제목 : <strong>${this.roomName}</strong> | 참여자 : <strong>${this.subscribers.length + 1} 명</strong><br>
           <br>
-          <strong>${this.userInfo.nick}</strong>님의 기록입니다.<br>
+          <span style="color:#4e8aff;"><strong>${this.userInfo.nick}</strong></span>님의 기록입니다.<br>
           <br>
           <strong>#Round 1. </strong>Burpee : <strong>${this.$refs.webrtc.myBurpee.userBurpeeCount}회</strong> / 최고 기록 : <strong>${this.myBestBurpeeCount}회</strong><br>
           <strong>#Round 2. </strong>Lunge  : <strong>${this.$refs.webrtc.myLunge.userLungeCount}회</strong> / 최고 기록 : <strong>${this.myBestLungeCount}회</strong><br>
           <strong>#Round 3. </strong>Squat  : <strong>${this.$refs.webrtc.mySquat.userSquatCount}회</strong> / 최고 기록 : <strong>${this.myBestSquatCount}회</strong><br>
           <br>
-          이번 경쟁의 포인트 변동 : <strong><U>${this.myExercisePoints}</U></strong> point<br>
+          <strong>나의 종합 등수 : <span style="color:#4e8aff; font-size:24px;">${this.myExerciseRanking}</span></strong> 등 / <strong>${this.subscribers.length + 1}</strong> 명<br>
+          <br>
+          이번 경쟁의 포인트 변동 : <span style="color:#4e8aff;"><strong><U>${this.myExercisePoints}</U></strong></span> point<br>
           <br>
           <div style="color:gray;">기록이 저장되었습니다.</div>`,
         }).then((result) => {
@@ -1691,6 +1767,23 @@ solid #cedfff; border-top: 10px solid transparent; border-bottom: 10px solid tra
   font-size:2vw;
   right: 150px;
   font-family: 'LeferiPoint-BlackObliqueA';
+  /* z-index: 500; */
+}
+
+.mybtn9 {
+  background-color:transparent;
+  border:none;
+  position:fixed;
+  top: 48%;
+  left: 30px;
+  /* z-index: 500; */
+}
+.mybtn10 {
+  background-color:transparent;
+  border:none;
+  position:fixed;
+  top: 58%;
+  left: 30px;
   /* z-index: 500; */
 }
 
