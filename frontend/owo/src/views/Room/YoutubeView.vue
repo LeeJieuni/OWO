@@ -748,7 +748,7 @@ export default {
               frameRate: 60, // The frame rate of your video
               insertMode: 'APPEND',
               // How the video is inserted in the target element 'video-container'
-              mirror: true, // Whether to mirror your local video or not
+              mirror: false, // Whether to mirror your local video or not
             });
             this.mainStreamManager = publisher;
             this.connectionId = this.mainStreamManager.stream.session.connection.connectionId;
