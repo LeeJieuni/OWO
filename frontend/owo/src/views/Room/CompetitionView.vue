@@ -183,9 +183,6 @@ const emojiIndex = new EmojiIndex(emojidata);
 const emoji = 'emoji';
 const exercise = 'exercise';
 
-// eslint-disable-next-line
-const audioBattle = new Audio(require('@/assets/music/battle.mp3'));
-
 export default {
   name: 'CompetitionView',
   metaInfo: {
@@ -289,7 +286,6 @@ export default {
   unmounted() {
     this.leaveSession();
     document.body.style.backgroundColor = 'white';
-    audioBattle.stop();
   },
   watch: {
     mySessionId() {},
@@ -719,7 +715,6 @@ export default {
       setTimeout(() => {
         this.isStarted = false;
         this.$refs.setTimer3.pauseTimer();
-        audioBattle.play();
       }, 6000);
       setTimeout(() => {
         this.isExercising = false;
@@ -780,7 +775,6 @@ export default {
           }
         }
         // this.webcam.stop();
-        audioBattle.pause();
       }, 21000);
       setTimeout(() => {
         this.restTime = false;
@@ -811,7 +805,6 @@ export default {
         // this.webcam.play();
         this.isStarted = false;
         this.$refs.setTimer3.pauseTimer();
-        audioBattle.play();
       }, 6000);
       setTimeout(() => {
         this.isExercising = false;
@@ -878,7 +871,6 @@ export default {
         this.restTime = false;
         this.isExercising = true;
         this.startround3();
-        audioBattle.pause();
       }, 24000);
       // setTimeout(() => {
       // }, 46000);
@@ -904,7 +896,6 @@ export default {
         // this.webcam.play();
         this.isStarted = false;
         this.$refs.setTimer3.pauseTimer();
-        audioBattle.play();
       }, 6000);
       setTimeout(() => {
         if (this.allSquatCountList.length === 2) {
@@ -962,7 +953,6 @@ export default {
         this.sendScore();
         this.sendMyRecords();
         this.isExercising = false;
-        audioBattle.pause();
         // eslint-disable-next-line
         const audio6 = new Audio(require('@/assets/music/setting.mp3'));
         audio6.play();
@@ -1276,7 +1266,7 @@ export default {
       );
       const prediction = await this.model.predict(posenetOutput);
       if (prediction[1].probability.toFixed(2) > 0.99) { // 스쿼트
-        if (this.check && !this.video && !this.restTime) {
+        if (this.check && !this.restTime) {
           this.squatCount += 1;
           console.log('squatCount', this.squatCount);
           this.session
@@ -1305,7 +1295,7 @@ export default {
       );
       const prediction = await this.model.predict(posenetOutput);
       if (prediction[1].probability.toFixed(2) > 0.99) { // 런지
-        if (this.check && !this.video && !this.restTime) {
+        if (this.check && !this.restTime) {
           this.lungeCount += 1;
           console.log('lungeCount', this.lungeCount);
           this.session
@@ -1335,7 +1325,7 @@ export default {
       );
       const prediction = await this.model.predict(posenetOutput);
       if (prediction[2].probability.toFixed(2) > 0.99) { // 서 있는 자세
-        if (this.check && this.check2 && !this.video && !this.restTime) {
+        if (this.check && this.check2 && !this.restTime) {
           this.burpeeCount += 1;
           console.log('burpeeCount', this.burpeeCount);
           this.session
