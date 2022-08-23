@@ -4,11 +4,11 @@
     <Intro/>
     <Intro2/>
     <Carousel></Carousel>
-    <rankingList style="height: 80vh;"/>
+    <rankingList style="height: 70vh;"/>
     <!-- <roomTab class="room"></roomTab> -->
      <router-link to="/roomtabs" class="h1-rem2" id="fixedbutton">
             <span class="h1-rem">운동하러</span> GO!</router-link>
-    <FooFooter style="height: 14vh;"/>
+    <FooFooter style="height: 25vh;"/>
   </div>
 </template>
 
