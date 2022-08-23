@@ -123,9 +123,9 @@
         <!-- eslint-disable-next-line -->
         <div v-if="(!this.subscribers.length && !this.isStartedGame)" class="mybtn7">2명 이상 모여야 시작 가능!!</div>
         <!-- eslint-disable-next-line -->
-        <div v-if="!(this.credentialsUser.memberId === this.masterId) & !this.gameType & (this.subscribers.length >= 1) && !this.isStartedGame" class="mybtn7">방장 >> 오른쪽 위 START 버튼!</div>
+        <div v-if="!(this.credentialsUser.memberId === this.masterId) && !this.gameType && (this.subscribers.length >= 1) && !this.isStartedGame" class="mybtn7">방장 >> 오른쪽 위 START 버튼!</div>
         <!-- eslint-disable-next-line -->
-        <button v-if="(this.credentialsUser.memberId === this.masterId) & !this.gameType & (this.subscribers.length >= 1) && !this.isStartedGame" class="mybtn5" @click="startround">
+        <button v-if="(this.credentialsUser.memberId === this.masterId) && !this.gameType && (this.subscribers.length >= 1) && !this.isStartedGame" class="mybtn5" @click="startround">
           <img class="menu_icon4" src="@/assets/icon/start.png" alt="Start">
         </button>
       </div>
@@ -601,7 +601,7 @@ export default {
               frameRate: 60, // The frame rate of your video
               insertMode: 'APPEND',
               // How the video is inserted in the target element 'video-container'
-              mirror: false, // Whether to mirror your local video or not
+              mirror: true, // Whether to mirror your local video or not
             });
             this.mainStreamManager = publisher;
             this.connectionId = this.mainStreamManager.stream.session.connection.connectionId;
