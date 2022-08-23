@@ -15,7 +15,7 @@
           <div class="input">
             <label for="password"><span>비밀번호</span>
               <input v-model="credentials.password" class="form-control"
-              type="password" placeholder="password123"
+              type="password" placeholder="password"
                 required /></label>
           </div>
           <!-- <div class="findpassword"> -->

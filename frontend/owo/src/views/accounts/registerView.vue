@@ -26,7 +26,7 @@
           class="form-control"
           type="password"
           name="password"
-          placeholder="password123"
+          placeholder="password"
           required
           @change="isSame()"
         /></label>
@@ -36,7 +36,7 @@
           v-model="confirm"
           class="form-control"
           type="password"
-          placeholder="password123"
+          placeholder="password"
           @change="isSame()"
           required
         /></label>
